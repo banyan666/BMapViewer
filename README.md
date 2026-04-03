@@ -75,3 +75,12 @@ window.Cesium = Cesium
 
 
 该组件若不满足你的需求，可联系作者提供需求，作者会进行开发补充。
+
+# 联系我
+## 邮箱：<EMAIL>15029296293@163.com
+## 微信：bryan_by666
+## QQ：1449301027
+
+# 打赏
+![An image](ds_wx.jpg)
+![An image](ds_zfb.jpg)
