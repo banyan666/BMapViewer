@@ -71,7 +71,7 @@ window.Cesium = Cesium
 ```
 
 
-`文档地址`：还在编写
+`文档地址`：[docs | BMapViewer](https://banyan666.github.io/BMapViewer-docs/)
 
 
 该组件若不满足你的需求，可联系作者提供需求，作者会进行开发补充。
