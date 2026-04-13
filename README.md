@@ -82,5 +82,5 @@ window.Cesium = Cesium
 ## QQ：1449301027
 
 # 打赏
-<img src="ds_wx.jpg" width="200" />
-<img src="ds_zfb.jpg" width="200" />
+<img src="ds_wx.jpg" width="350" />
+<img src="ds_zfb.jpg" width="350" />
