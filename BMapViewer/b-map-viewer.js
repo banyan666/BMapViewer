@@ -289,7 +289,7 @@ const Lg = (n, e) => {
     ]));
   }
 }, so = /* @__PURE__ */ Lg(Og, [["__scopeId", "data-v-1c1de2eb"]]), Ag = "data:image/png;base64,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";
-class h1 {
+class c1 {
   constructor(e, t) {
     var r, s, a, l, u;
     this.viewer = e, this.config = {
@@ -22206,7 +22206,7 @@ function G_(n, e) {
     })
   );
 }
-const m1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const v1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   along: Wg,
   angle: $g,
@@ -24113,7 +24113,123 @@ class a1 {
         `, document.body.appendChild(t), { container: t, width: r, height: s };
   }
 }
-const v1 = {
+class u1 {
+  constructor(e, t = {}) {
+    this.viewer = e, this.config = {
+      position: [0, 0, 0],
+      radius: 1e3,
+      color: "rgb(5,251,248)",
+      speed: 1,
+      hemisphereAlpha: 0.5,
+      scanAlpha: 0.6,
+      outlineColor: "#f1f105",
+      autoStart: !1,
+      ...t
+    };
+    const [r, s, a = 0] = this.config.position;
+    this.centerLongitude = r, this.centerLatitude = s, this.centerHeight = a, this.radius = this.config.radius, this.speed = this.config.speed, this.color = this.getColor(this.config.color), this.outlineColor = this.getColor(this.config.outlineColor), this.heading = 0, this.wallPositions = this.calculateScanPane(
+      this.centerLongitude,
+      this.centerLatitude,
+      this.radius,
+      this.heading
+    ), this.entities = [], this.eventListener = null, this.createRadar(), this.config.autoStart && this.start();
+  }
+  createRadar() {
+    var e, t;
+    !this.viewer || (t = (e = this.viewer).isDestroyed) != null && t.call(e) || this.entities.length || (this.createHemisphere(), this.createScanWall());
+  }
+  start() {
+    var e, t;
+    !this.viewer || (t = (e = this.viewer).isDestroyed) != null && t.call(e) || this.eventListener || (this.eventListener = () => {
+      this.heading = (this.heading + this.speed) % 360, this.wallPositions = this.calculateScanPane(
+        this.centerLongitude,
+        this.centerLatitude,
+        this.radius,
+        this.heading
+      );
+    }, this.viewer.clock.onTick.addEventListener(this.eventListener));
+  }
+  createHemisphere() {
+    const e = this.viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(
+        this.centerLongitude,
+        this.centerLatitude,
+        this.centerHeight
+      ),
+      name: "3D radar scanner",
+      ellipsoid: {
+        radii: new Cesium.Cartesian3(this.radius, this.radius, this.radius),
+        maximumCone: Cesium.Math.toRadians(90),
+        material: this.color.withAlpha(this.config.hemisphereAlpha),
+        outline: !0,
+        outlineColor: this.outlineColor,
+        outlineWidth: 1
+      }
+    });
+    return this.entities.push(e), e;
+  }
+  createScanWall() {
+    const e = this.viewer.entities.add({
+      wall: {
+        positions: new Cesium.CallbackProperty(() => Cesium.Cartesian3.fromDegreesArrayHeights(this.wallPositions), !1),
+        material: this.color.withAlpha(this.config.scanAlpha)
+      }
+    });
+    return this.entities.push(e), e;
+  }
+  calculateScanPane(e, t, r, s) {
+    const a = Cesium.Cartesian3.fromDegrees(e, t, this.centerHeight), l = Cesium.Transforms.eastNorthUpToFixedFrame(a), u = Cesium.Math.toRadians(s), f = Cesium.Cartesian3.fromElements(
+      r * Math.cos(u),
+      r * Math.sin(u),
+      0
+    ), g = Cesium.Matrix4.multiplyByPoint(
+      l,
+      f,
+      new Cesium.Cartesian3()
+    ), m = Cesium.Cartographic.fromCartesian(g);
+    return this.calculateScanSector(
+      e,
+      t,
+      Cesium.Math.toDegrees(m.longitude),
+      Cesium.Math.toDegrees(m.latitude)
+    );
+  }
+  calculateScanSector(e, t, r, s) {
+    const a = [e, t, this.centerHeight], l = Cesium.Cartesian3.distance(
+      Cesium.Cartesian3.fromDegrees(e, t, this.centerHeight),
+      Cesium.Cartesian3.fromDegrees(r, s, this.centerHeight)
+    );
+    for (let u = 0; u <= 90; u += 2) {
+      const f = Cesium.Math.toRadians(u), g = this.centerHeight + l * Math.sin(f), m = Math.cos(f);
+      a.push((r - e) * m + e), a.push((s - t) * m + t), a.push(g);
+    }
+    return a;
+  }
+  getColor(e) {
+    return e instanceof Cesium.Color ? e : Cesium.Color.fromCssColorString(e || "#05fbf8");
+  }
+  stop() {
+    this.viewer && this.eventListener && this.viewer.clock.onTick.removeEventListener(this.eventListener), this.eventListener = null;
+  }
+  setVisible(e) {
+    this.entities.forEach((t) => {
+      t.show = e;
+    });
+  }
+  show() {
+    this.setVisible(!0);
+  }
+  hide() {
+    this.setVisible(!1);
+  }
+  clearLayer() {
+    this.stop(), this.viewer && this.entities.forEach((e) => this.viewer.entities.remove(e)), this.entities = [];
+  }
+  destroy() {
+    this.clearLayer(), this.viewer = null;
+  }
+}
+const y1 = {
   BaseMapLayer: Gg,
   IconGroupLayer: Dg,
   LabelGroupLayer: Fg,
@@ -24129,7 +24245,8 @@ const v1 = {
   PolygonPrimitiveLayer: j_,
   LineMaterialLayer: e1,
   HeatmapLayer: t1,
-  HeatmapPrimitiveLayer: a1
+  HeatmapPrimitiveLayer: a1,
+  RadarScanner3DLayer: u1
 };
 so.install = (n) => {
   n.component("BMapViewer", so);
@@ -24138,8 +24255,8 @@ typeof window < "u" && window.Vue && window.Vue.component("BMapViewer", so);
 export {
   so as BMapViewer,
   Rg as EarthColor,
-  v1 as MapLayers,
-  h1 as PickTools,
-  m1 as turf,
+  y1 as MapLayers,
+  c1 as PickTools,
+  v1 as turf,
   Pg as useCesium
 };
