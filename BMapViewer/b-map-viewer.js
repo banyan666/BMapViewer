@@ -1,43 +1,43 @@
-var t0 = Object.defineProperty;
-var n0 = (n, e, t) => e in n ? t0(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t;
-var ue = (n, e, t) => n0(n, typeof e != "symbol" ? e + "" : e, t);
-import { ref as r0, onMounted as i0, nextTick as s0, onUnmounted as o0, openBlock as a0, createElementBlock as l0, createElementVNode as u0, renderSlot as c0 } from "vue";
+var s0 = Object.defineProperty;
+var o0 = (n, e, t) => e in n ? s0(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t;
+var ue = (n, e, t) => o0(n, typeof e != "symbol" ? e + "" : e, t);
+import { ref as a0, onMounted as l0, nextTick as u0, onUnmounted as c0, openBlock as h0, createElementBlock as f0, createElementVNode as g0, renderSlot as d0 } from "vue";
 import * as x from "cesium";
-const lt = [];
+const ut = [];
 for (let n = 0; n < 256; ++n)
-  lt.push((n + 256).toString(16).slice(1));
-function h0(n, e = 0) {
-  return (lt[n[e + 0]] + lt[n[e + 1]] + lt[n[e + 2]] + lt[n[e + 3]] + "-" + lt[n[e + 4]] + lt[n[e + 5]] + "-" + lt[n[e + 6]] + lt[n[e + 7]] + "-" + lt[n[e + 8]] + lt[n[e + 9]] + "-" + lt[n[e + 10]] + lt[n[e + 11]] + lt[n[e + 12]] + lt[n[e + 13]] + lt[n[e + 14]] + lt[n[e + 15]]).toLowerCase();
+  ut.push((n + 256).toString(16).slice(1));
+function m0(n, e = 0) {
+  return (ut[n[e + 0]] + ut[n[e + 1]] + ut[n[e + 2]] + ut[n[e + 3]] + "-" + ut[n[e + 4]] + ut[n[e + 5]] + "-" + ut[n[e + 6]] + ut[n[e + 7]] + "-" + ut[n[e + 8]] + ut[n[e + 9]] + "-" + ut[n[e + 10]] + ut[n[e + 11]] + ut[n[e + 12]] + ut[n[e + 13]] + ut[n[e + 14]] + ut[n[e + 15]]).toLowerCase();
 }
-let Ao;
-const f0 = new Uint8Array(16);
-function g0() {
-  if (!Ao) {
+let Oo;
+const v0 = new Uint8Array(16);
+function p0() {
+  if (!Oo) {
     if (typeof crypto > "u" || !crypto.getRandomValues)
       throw new Error("crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported");
-    Ao = crypto.getRandomValues.bind(crypto);
+    Oo = crypto.getRandomValues.bind(crypto);
   }
-  return Ao(f0);
+  return Oo(v0);
 }
-const d0 = typeof crypto < "u" && crypto.randomUUID && crypto.randomUUID.bind(crypto), pu = { randomUUID: d0 };
-function m0(n, e, t) {
+const y0 = typeof crypto < "u" && crypto.randomUUID && crypto.randomUUID.bind(crypto), _u = { randomUUID: y0 };
+function _0(n, e, t) {
   var i;
   n = n || {};
-  const r = n.random ?? ((i = n.rng) == null ? void 0 : i.call(n)) ?? g0();
+  const r = n.random ?? ((i = n.rng) == null ? void 0 : i.call(n)) ?? p0();
   if (r.length < 16)
     throw new Error("Random bytes length must be >= 16");
-  return r[6] = r[6] & 15 | 64, r[8] = r[8] & 63 | 128, h0(r);
+  return r[6] = r[6] & 15 | 64, r[8] = r[8] & 63 | 128, m0(r);
 }
-function v0(n, e, t) {
-  return pu.randomUUID && !n ? pu.randomUUID() : m0(n);
+function w0(n, e, t) {
+  return _u.randomUUID && !n ? _u.randomUUID() : _0(n);
 }
-const yu = (n) => {
+const wu = (n) => {
   if (window.Math.abs(n.pitch % 90) === 0)
     return n.lat;
   const t = n.height / Math.tan(n.pitch * Math.PI / 180), r = Number(t / 111e3);
   return n.lat + r;
-}, rt = () => v0();
-function _u(n) {
+}, rt = () => w0();
+function xu(n) {
   const {
     title: e = "",
     content: t = [],
@@ -62,10 +62,10 @@ function _u(n) {
       text: String(te ?? ""),
       color: "#ffffff"
     };
-  }), w = 10 * f, b = a ? 30 * f : 0, M = 8 * f, k = d * f, S = m * f, N = 6 * f, P = 20 * f, B = document.createElement("canvas").getContext("2d");
+  }), w = 10 * f, b = a ? 30 * f : 0, k = 8 * f, I = d * f, S = m * f, P = 6 * f, N = 20 * f, B = document.createElement("canvas").getContext("2d");
   let F = 0;
   if (a) {
-    B.font = `bold ${k}px Arial, sans-serif`;
+    B.font = `bold ${I}px Arial, sans-serif`;
     const te = B.measureText(e).width;
     F = Math.max(F, te);
   }
@@ -73,76 +73,76 @@ function _u(n) {
     const se = B.measureText(te.text).width;
     F = Math.max(F, se);
   });
-  const C = F + w * 2.5, L = S + M, T = y.length * L - M + w * 2, D = 20, z = 20 * f, U = C + z * 2, X = b + T + P + z * 2, O = document.createElement("canvas"), H = window.devicePixelRatio || 1;
-  O.width = U * H, O.height = X * H, O.style.width = `${U}px`, O.style.height = `${X}px`;
-  const q = O.getContext("2d");
-  q.scale(H, H);
-  const V = U / 2, J = X - z, W = z, j = z, Q = (te, se) => {
+  const C = F + w * 2.5, L = S + k, T = y.length * L - k + w * 2, D = 20, z = 20 * f, q = C + z * 2, X = b + T + N + z * 2, O = document.createElement("canvas"), U = window.devicePixelRatio || 1;
+  O.width = q * U, O.height = X * U, O.style.width = `${q}px`, O.style.height = `${X}px`;
+  const H = O.getContext("2d");
+  H.scale(U, U);
+  const V = q / 2, J = X - z, W = z, j = z, Q = (te, se) => {
     let fe = te;
     te.length === 4 && (fe = `#${te[1]}${te[1]}${te[2]}${te[2]}${te[3]}${te[3]}`);
-    const Z = parseInt(fe.slice(1, 3), 16), Fe = parseInt(fe.slice(3, 5), 16), _e = parseInt(fe.slice(5, 7), 16);
-    return `rgba(${Z}, ${Fe}, ${_e}, ${se})`;
+    const Z = parseInt(fe.slice(1, 3), 16), Be = parseInt(fe.slice(3, 5), 16), _e = parseInt(fe.slice(5, 7), 16);
+    return `rgba(${Z}, ${Be}, ${_e}, ${se})`;
   };
-  q.shadowBlur = 10 * f, q.shadowColor = r, q.lineWidth = 2 * f, q.strokeStyle = Q(r, 0.8), q.beginPath(), q.moveTo(V, j + b + T), q.lineTo(V, J), q.stroke(), q.shadowBlur = D * f, q.shadowColor = r, q.lineWidth = 2 * f, q.strokeStyle = Q(r, 0.9), q.beginPath(), q.roundRect(W, j, C, b + T, N), q.stroke(), q.shadowBlur = 0, q.shadowColor = "transparent", q.save(), q.beginPath(), q.roundRect(W, j, C, b + T, N), q.clip(), a ? (q.fillStyle = Q(r, l), q.fillRect(W, j, C, b), q.fillStyle = Q(i, u), q.fillRect(W, j + b, C, T)) : (q.fillStyle = Q(i, u), q.fillRect(W, j, C, T)), q.restore(), q.shadowBlur = 0, q.shadowColor = "transparent", q.textBaseline = "middle", q.fillStyle = "#ffffff", q.textAlign = g === "center" ? "center" : "left";
+  H.shadowBlur = 10 * f, H.shadowColor = r, H.lineWidth = 2 * f, H.strokeStyle = Q(r, 0.8), H.beginPath(), H.moveTo(V, j + b + T), H.lineTo(V, J), H.stroke(), H.shadowBlur = D * f, H.shadowColor = r, H.lineWidth = 2 * f, H.strokeStyle = Q(r, 0.9), H.beginPath(), H.roundRect(W, j, C, b + T, P), H.stroke(), H.shadowBlur = 0, H.shadowColor = "transparent", H.save(), H.beginPath(), H.roundRect(W, j, C, b + T, P), H.clip(), a ? (H.fillStyle = Q(r, l), H.fillRect(W, j, C, b), H.fillStyle = Q(i, u), H.fillRect(W, j + b, C, T)) : (H.fillStyle = Q(i, u), H.fillRect(W, j, C, T)), H.restore(), H.shadowBlur = 0, H.shadowColor = "transparent", H.textBaseline = "middle", H.fillStyle = "#ffffff", H.textAlign = g === "center" ? "center" : "left";
   const re = g === "center" ? W + C / 2 : W + w;
-  a && (q.shadowBlur = 1 * f, q.shadowColor = "rgba(0, 0, 0, 0.3)", q.shadowOffsetX = 0, q.shadowOffsetY = 0, q.font = `bold ${k}px Arial, sans-serif`, q.fillText(e, re, j + b / 2), q.shadowBlur = 0, q.shadowColor = "transparent"), q.font = `${S}px Arial, sans-serif`;
+  a && (H.shadowBlur = 1 * f, H.shadowColor = "rgba(0, 0, 0, 0.3)", H.shadowOffsetX = 0, H.shadowOffsetY = 0, H.font = `bold ${I}px Arial, sans-serif`, H.fillText(e, re, j + b / 2), H.shadowBlur = 0, H.shadowColor = "transparent"), H.font = `${S}px Arial, sans-serif`;
   const ee = a ? j + b : j;
   return y.forEach((te, se) => {
-    q.shadowBlur = 0;
+    H.shadowBlur = 0;
     const fe = ee + w + S / 2 + se * L;
-    q.fillStyle = te.color, q.fillText(te.text, re, fe), q.shadowBlur = 0, q.shadowColor = "transparent";
+    H.fillStyle = te.color, H.fillText(te.text, re, fe), H.shadowBlur = 0, H.shadowColor = "transparent";
   }), O;
 }
-let wu = !1;
-function sn(n) {
+let Eu = !1;
+function on(n) {
   return String.fromCharCode(...n);
 }
-function p0() {
+function x0() {
   return [
-    sn([27426, 36814, 20351, 29992, 32, 66, 77, 97, 112, 86, 105, 101, 119, 101, 114]),
-    sn([20316, 32773, 65306, 98, 97, 110, 121, 97, 110, 54, 54, 54]),
-    sn([37038, 31665, 65306, 49, 53, 48, 50, 57, 50, 57, 54, 50, 57, 51, 64, 49, 54, 51, 46, 99, 111, 109]),
-    sn([22320, 22336, 65306, 104, 116, 116, 112, 115, 58, 47, 47, 98, 97, 110, 121, 97, 110, 54, 54, 54, 46, 103, 105, 116, 104, 117, 98, 46, 105, 111, 47, 66, 77, 97, 112, 86, 105, 101, 119, 101, 114, 47])
+    on([27426, 36814, 20351, 29992, 32, 66, 77, 97, 112, 86, 105, 101, 119, 101, 114]),
+    on([20316, 32773, 65306, 98, 97, 110, 121, 97, 110, 54, 54, 54]),
+    on([37038, 31665, 65306, 49, 53, 48, 50, 57, 50, 57, 54, 50, 57, 51, 64, 49, 54, 51, 46, 99, 111, 109]),
+    on([22320, 22336, 65306, 104, 116, 116, 112, 115, 58, 47, 47, 98, 97, 110, 121, 97, 110, 54, 54, 54, 46, 103, 105, 116, 104, 117, 98, 46, 105, 111, 47, 66, 77, 97, 112, 86, 105, 101, 119, 101, 114, 47])
   ].join(`
 `);
 }
-function y0() {
+function E0() {
   if (typeof globalThis > "u") return null;
-  const n = globalThis[sn([99, 111, 110, 115, 111, 108, 101])], e = n == null ? void 0 : n[sn([105, 110, 102, 111])];
+  const n = globalThis[on([99, 111, 110, 115, 111, 108, 101])], e = n == null ? void 0 : n[on([105, 110, 102, 111])];
   return typeof e != "function" ? null : (...t) => Reflect.apply(e, n, t);
 }
-function _0() {
-  if (wu) return;
-  const n = y0();
+function b0() {
+  if (Eu) return;
+  const n = E0();
   if (!n) return;
-  wu = !0;
-  const e = sn([37, 99]), t = sn([37, 99, 10]);
+  Eu = !0;
+  const e = on([37, 99]), t = on([37, 99, 10]);
   n(
-    `${e}${p0().replace(`
+    `${e}${x0().replace(`
 `, t)}`,
-    sn([112, 97, 100, 100, 105, 110, 103, 58, 32, 52, 112, 120, 32, 56, 112, 120, 59, 32, 99, 111, 108, 111, 114, 58, 32, 35, 48, 54, 49, 53, 49, 100, 59, 32, 98, 97, 99, 107, 103, 114, 111, 117, 110, 100, 58, 32, 35, 52, 53, 101, 97, 100, 102, 59, 32, 102, 111, 110, 116, 45, 119, 101, 105, 103, 104, 116, 58, 32, 55, 48, 48, 59, 32, 102, 111, 110, 116, 45, 115, 105, 122, 101, 58, 32, 49, 52, 112, 120, 59]),
-    sn([99, 111, 108, 111, 114, 58, 32, 35, 54, 57, 98, 57, 102, 102, 59, 32, 102, 111, 110, 116, 45, 115, 105, 122, 101, 58, 32, 49, 50, 112, 120, 59, 32, 108, 105, 110, 101, 45, 104, 101, 105, 103, 104, 116, 58, 32, 49, 46, 55, 59])
+    on([112, 97, 100, 100, 105, 110, 103, 58, 32, 52, 112, 120, 32, 56, 112, 120, 59, 32, 99, 111, 108, 111, 114, 58, 32, 35, 48, 54, 49, 53, 49, 100, 59, 32, 98, 97, 99, 107, 103, 114, 111, 117, 110, 100, 58, 32, 35, 52, 53, 101, 97, 100, 102, 59, 32, 102, 111, 110, 116, 45, 119, 101, 105, 103, 104, 116, 58, 32, 55, 48, 48, 59, 32, 102, 111, 110, 116, 45, 115, 105, 122, 101, 58, 32, 49, 52, 112, 120, 59]),
+    on([99, 111, 108, 111, 114, 58, 32, 35, 54, 57, 98, 57, 102, 102, 59, 32, 102, 111, 110, 116, 45, 115, 105, 122, 101, 58, 32, 49, 50, 112, 120, 59, 32, 108, 105, 110, 101, 45, 104, 101, 105, 103, 104, 116, 58, 32, 49, 46, 55, 59])
   );
 }
-function w0() {
+function C0() {
   let t = null, r = 1, i = 15e5;
   const a = () => ({
     minHeight: r,
     maxHeight: i
   }), l = (b = {}) => {
-    const M = (N, P, A) => {
-      if (N == null) return P;
-      const B = Number(N);
+    const k = (P, N, A) => {
+      if (P == null) return N;
+      const B = Number(P);
       if (!Number.isFinite(B))
         throw new TypeError(`${A} 必须是有限数值`);
       return B;
-    }, k = M(b.minHeight, r, "minHeight"), S = M(b.maxHeight, i, "maxHeight");
-    if (k > S)
+    }, I = k(b.minHeight, r, "minHeight"), S = k(b.maxHeight, i, "maxHeight");
+    if (I > S)
       throw new RangeError("minHeight 不能大于 maxHeight");
-    return r = k, i = S, a();
-  }, u = async (b, M) => {
-    var k, S;
-    _0();
+    return r = I, i = S, a();
+  }, u = async (b, k) => {
+    var I, S;
+    b0();
     try {
       t = new x.Viewer(b, {
         animation: !1,
@@ -155,7 +155,7 @@ function w0() {
         //是否显示geocoder小器件，右上角查询按钮
         homeButton: !1,
         //是否显示Home按钮，右上角home按钮
-        sceneMode: (M == null ? void 0 : M.sceneMode) === 0 ? x.SceneMode.SCENE2D : x.SceneMode.SCENE3D,
+        sceneMode: (k == null ? void 0 : k.sceneMode) === 0 ? x.SceneMode.SCENE2D : x.SceneMode.SCENE3D,
         //初始场景模式
         sceneModePicker: !1,
         //是否显示3D/2D选择器，右上角按钮
@@ -167,7 +167,7 @@ function w0() {
         //是否显示时间轴
         infoBox: !1,
         //是否显示信息框
-        scene3DOnly: (M == null ? void 0 : M.sceneMode) !== 0,
+        scene3DOnly: (k == null ? void 0 : k.sceneMode) !== 0,
         //如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
         orderIndependentTranslucency: !1,
         //是否启用无序透明
@@ -177,11 +177,11 @@ function w0() {
         // 不显示默认图层
         showRenderLoopErrors: !1
       }), l({
-        minHeight: ((k = M == null ? void 0 : M.mapConfig) == null ? void 0 : k.minHeight) ?? 1,
-        maxHeight: ((S = M == null ? void 0 : M.mapConfig) == null ? void 0 : S.maxHeight) ?? 15e5
-      }), M != null && M.mapConfig && g(M.mapConfig), t.scene.preRender.addEventListener(y), M.baseColor && (t.scene.globe.baseColor = x.Color.fromCssColorString(M.baseColor));
-      let N = t.scene.screenSpaceCameraController;
-      return N.tiltEventTypes = [
+        minHeight: ((I = k == null ? void 0 : k.mapConfig) == null ? void 0 : I.minHeight) ?? 1,
+        maxHeight: ((S = k == null ? void 0 : k.mapConfig) == null ? void 0 : S.maxHeight) ?? 15e5
+      }), k != null && k.mapConfig && g(k.mapConfig), t.scene.preRender.addEventListener(y), k.baseColor && (t.scene.globe.baseColor = x.Color.fromCssColorString(k.baseColor));
+      let P = t.scene.screenSpaceCameraController;
+      return P.tiltEventTypes = [
         x.CameraEventType.RIGHT_DRAG,
         // 右键拖动旋转
         x.CameraEventType.PINCH,
@@ -196,7 +196,7 @@ function w0() {
           modifier: x.KeyboardEventModifier.CTRL
           // 保留Ctrl+右键拖动旋转
         }
-      ], N.zoomEventTypes = [
+      ], P.zoomEventTypes = [
         x.CameraEventType.WHEEL,
         // 保留滚轮缩放
         x.CameraEventType.PINCH
@@ -207,29 +207,29 @@ function w0() {
         // }
         // 不包含 RIGHT_DRAG，这样右键就不会缩放了
       ], t;
-    } catch (N) {
-      throw f(), console.error("Failed to initialize Cesium:", N), N;
+    } catch (P) {
+      throw f(), console.error("Failed to initialize Cesium:", P), P;
     }
   }, f = () => {
     t && !t.isDestroyed() && (t.scene.preRender.removeEventListener(y), t.destroy(), t = null);
   }, g = (b) => {
     let {
-      longitude: M = 125.83372000975274,
-      latitude: k = 44.14712267403385,
+      longitude: k = 125.83372000975274,
+      latitude: I = 44.14712267403385,
       height: S = 1e4,
-      pitch: N = 0
+      pitch: P = 0
     } = b;
     t.scene.camera.setView({
-      destination: x.Cartesian3.fromDegrees(M, yu({ lat: k, pitch: N, height: S }), S),
+      destination: x.Cartesian3.fromDegrees(k, wu({ lat: I, pitch: P, height: S }), S),
       orientation: {
         heading: x.Math.toRadians(0),
-        pitch: x.Math.toRadians(N),
+        pitch: x.Math.toRadians(P),
         roll: 0
       }
     });
-  }, d = (b, M = 3) => {
+  }, d = (b, k = 3) => {
     if (!t || (b == null ? void 0 : b.longitude) == null || (b == null ? void 0 : b.latitude) == null) return;
-    let k = {
+    let I = {
       lon: b.longitude,
       lat: b.latitude,
       height: b.height || 800,
@@ -238,13 +238,13 @@ function w0() {
     t.camera.flyTo({
       destination: x.Cartesian3.fromDegrees(
         b.longitude,
-        yu(k),
+        wu(I),
         b.height || 800
       ),
-      duration: M,
+      duration: k,
       orientation: b.orientation || {
         heading: x.Math.toRadians(0),
-        pitch: x.Math.toRadians(k.pitch),
+        pitch: x.Math.toRadians(I.pitch),
         roll: 0
       }
     });
@@ -273,8 +273,8 @@ function w0() {
     setMapCenter: g,
     getCameraHeightRange: a,
     setCameraHeightRange: (b = {}) => {
-      const M = l(b);
-      return y(), M;
+      const k = l(b);
+      return y(), k;
     },
     restrictMaxiHeight: y,
     initCesium: u,
@@ -282,12 +282,12 @@ function w0() {
     flyTo: d
   };
 }
-const x0 = (n, e) => {
+const S0 = (n, e) => {
   const t = n.__vccOpts || n;
   for (const [r, i] of e)
     t[r] = i;
   return t;
-}, E0 = { class: "cesium-container" }, b0 = ["id"], C0 = {
+}, I0 = { class: "cesium-container" }, k0 = ["id"], M0 = {
   __name: "BMapViewer",
   props: {
     id: {
@@ -296,7 +296,7 @@ const x0 = (n, e) => {
     },
     camera: {
       type: Object,
-      default: () => ({})
+      default: null
     },
     sceneMode: {
       type: Number,
@@ -309,7 +309,7 @@ const x0 = (n, e) => {
   },
   emits: ["ready", "error", "click"],
   setup(n, { expose: e, emit: t }) {
-    const r = n, i = t, a = r0(null);
+    const r = n, i = t, a = a0(null);
     let l = null, u = null, f = null, g = !1, d = !1;
     const {
       initCesium: m,
@@ -317,95 +317,100 @@ const x0 = (n, e) => {
       flyTo: y,
       getViewer: w,
       getCameraHeightRange: b,
-      setCameraHeightRange: M,
-      restrictMaxiHeight: k
-    } = w0();
-    i0(async () => {
-      await S(r.camera);
+      setCameraHeightRange: k,
+      restrictMaxiHeight: I
+    } = C0();
+    l0(async () => {
+      S(r.camera) && await P(r.camera);
     });
-    const S = async (F, C = {}) => {
+    const S = (C) => !C || typeof C != "object" || Array.isArray(C) ? !1 : Object.values(C).some((L) => L != null && L !== ""), P = async (C, L = {}) => {
       if (f) return f;
-      const L = (C == null ? void 0 : C.force) === !0, T = u && !u.isDestroyed() ? u : null;
-      if (T && !L) return T;
-      const D = (async () => {
-        if (await s0(), d || !a.value) return null;
-        B(), p(), u = null;
-        const z = await m(a.value, {
-          ...r,
-          mapConfig: F ?? r.camera
-        });
-        return d ? (p(), null) : (u = z, l = new x.ScreenSpaceEventHandler(u.scene.canvas), u.scene.moon.show = !1, u.scene.fog.enabled = !1, u.scene.sun.show = !1, x.FeatureDetection.supportsImageRenderingPixelated() && (u.resolutionScale = window.devicePixelRatio), P(), g || (g = !0, i("ready", u)), u);
-      })();
-      f = D;
-      try {
-        return await D;
-      } catch (z) {
-        return d || i("error", z), null;
-      } finally {
-        f === D && (f = null);
+      const T = (L == null ? void 0 : L.force) === !0, D = u && !u.isDestroyed() ? u : null;
+      if (D && !T) return D;
+      const z = C === void 0 ? r.camera : C;
+      if (!S(z)) {
+        const X = new TypeError("初始化地图需要传入有效的 camera 配置");
+        return d || i("error", X), null;
       }
-    }, N = (F = r.camera) => S(F, { force: !0 }), P = () => {
-      !l || l.isDestroyed() || l.setInputAction((F) => {
-        const C = u.scene.camera.pickEllipsoid(
-          F.position,
+      const q = (async () => {
+        if (await u0(), d || !a.value) return null;
+        F(), p(), u = null;
+        const X = await m(a.value, {
+          ...r,
+          mapConfig: z
+        });
+        return d ? (p(), null) : (u = X, l = new x.ScreenSpaceEventHandler(u.scene.canvas), u.scene.moon.show = !1, u.scene.fog.enabled = !1, u.scene.sun.show = !1, x.FeatureDetection.supportsImageRenderingPixelated() && (u.resolutionScale = window.devicePixelRatio), A(), g || (g = !0, i("ready", u)), u);
+      })();
+      f = q;
+      try {
+        return await q;
+      } catch (X) {
+        return d || i("error", X), null;
+      } finally {
+        f === q && (f = null);
+      }
+    }, N = (C = r.camera) => P(C, { force: !0 }), A = () => {
+      !l || l.isDestroyed() || l.setInputAction((C) => {
+        const L = u.scene.camera.pickEllipsoid(
+          C.position,
           u.scene.globe.ellipsoid
         );
-        if (!C) return;
-        const L = x.Cartographic.fromCartesian(C), T = u.scene.pick(F.position);
-        x.defined(T) ? i("click", {
-          lon: x.Math.toDegrees(L.longitude),
-          lat: x.Math.toDegrees(L.latitude),
-          feature: T
-        }) : i("click", { lon: x.Math.toDegrees(L.longitude), lat: x.Math.toDegrees(L.latitude) });
+        if (!L) return;
+        const T = x.Cartographic.fromCartesian(L), D = u.scene.pick(C.position);
+        x.defined(D) ? i("click", {
+          lon: x.Math.toDegrees(T.longitude),
+          lat: x.Math.toDegrees(T.latitude),
+          feature: D
+        }) : i("click", { lon: x.Math.toDegrees(T.longitude), lat: x.Math.toDegrees(T.latitude) });
       }, x.ScreenSpaceEventType.LEFT_CLICK);
-    }, A = () => {
-      !l || l.isDestroyed() || l.removeInputAction(x.ScreenSpaceEventType.LEFT_CLICK);
     }, B = () => {
+      !l || l.isDestroyed() || l.removeInputAction(x.ScreenSpaceEventType.LEFT_CLICK);
+    }, F = () => {
       l && !l.isDestroyed() && l.destroy(), l = null;
     };
-    return o0(() => {
-      d = !0, B(), p(), u = null, f = null;
+    return c0(() => {
+      d = !0, F(), p(), u = null, f = null;
     }), e({
-      initMap: S,
+      initMap: P,
       reinitializeMap: N,
       flyTo: y,
       getViewer: w,
       getCameraHeightRange: b,
-      setCameraHeightRange: M,
-      restrictMaxiHeight: k,
-      startClick: P,
-      stopClick: A
-    }), (F, C) => (a0(), l0("div", E0, [
-      u0("div", {
+      setCameraHeightRange: k,
+      restrictMaxiHeight: I,
+      startClick: A,
+      stopClick: B
+    }), (C, L) => (h0(), f0("div", I0, [
+      g0("div", {
         ref_key: "cesiumContainer",
         ref: a,
         class: "cesium-viewer",
         id: n.id
-      }, null, 8, b0),
-      c0(F.$slots, "tool", {}, void 0, !0)
+      }, null, 8, k0),
+      d0(C.$slots, "tool", {}, void 0, !0)
     ]));
   }
-}, ga = /* @__PURE__ */ x0(C0, [["__scopeId", "data-v-b817f5cc"]]), S0 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAHdElEQVR4Aexbe2wURRj/5o67QoyJCog87iDKowUCoRIx8R8M1RDkYQgqIg+pwSrFlmL6UpRG0IbWBJtILY0EKcQWG/+AlhIEaU0oQgoSwXJXa4A+ACMa5ZHWu/Zu/M0VynG9u+7M7hYMXObb/Wa+929nZ6d7Vwvd45/7ANzjE4Duz4D7M6APEagfYZvmHmnf4B4ZU9jgtJe5nLYDbqd9D/jtbqftM5fTnuN22Kb2YUrm3wKNI23xDU77OhR62mphR4nT+8T525zoFUYsAcXOAb+UiKUyonXEWB10m90j7VtdjpjnyeSPaWvAaUfME26nbZOPs2MoMAd1TARpbQ7ilMgY3+92xhSdGREzRquhrJ4pAIipbGP8GBFbTUT9QDoaT7JaqbbBYVupw0lEU0tEiaLAjXuaialMNFDRRQ8zzvlgzthmt8O+tYdQ54ChAKD4C8hnDsicxigRt9VBI50bBsCN4ocZmVx4X2wGbrHs8DL5UUMAQPF7ELoPikcUNNxin7gcttfB6m66AUDx3yAL86Y9nIdrjLFtDSNsT4WTyYzpAuCMs794jr8kE9BIXW5hq/T60wWAhfzL9Cag036J7GYpNJ4yADe2rItDHWrpY2MUUBNnQaJz8yx4GcJmSdcsUAYAW9YFMokG62IRC3TFWZDo3DwLXpLmNDrt4yVtutXVASCa3+3lDjOdRC+rpqAEgGtEv+kIaNr+HL6lGopQno2wlYoVUGbMIlb/AH83HLB+TDg5ih4ihY8SAET8YYVY0iYoTLONnWyjNCsHKSoBwIn1CQAyCyPzsb4DgBHddQAQY30HAEnMGxY03cxkGfH+Kv4lSrnlHkX9c6sXnePRxVGl/qjS24WMc805BVsqAcA5UwoWHFgLL5Ocn9RykonRnTOmm2YAWLeVPMMlTCyKF0UJAM7oF625iSL0gKA1jpVbNOcU7FMJAGun9YdgJ73xAoTedHTJGZ0ac6G9VcWHEgAiGGOEt76SIbk5UHDi30tm0q2uBICw9hM/Is5SBNSk9DUqM85+jKTa27gyABYLbYdzD+iONizIB2KbveWqSSgDMO5cx8+c8c2qgY2y85ElX48vZQBE0A5uBQDsT8HfCcLm5/PxzZ4DemLrAmBS879nsQABBD0pqNni0fqb1dcvT836lpUuAISbuGZvDpL5SvB9Sdj5pY2+2N6iN6ZuAEQC1zq9yXhHUC34viDOWHpcs6fSiFiGADD1IrVZGAMIdM6IpKL5YMS+jGvyfBpNR0ZmCAAi4Ngmr8vXBYJf9M0hdriz3ZNmpG/DABBJTWjy7CPOxUwQXYMJTxvuT5twma4b6dhQAERisS0dRdjw5greSOKcp8D3cSN9Cl+GAyCc4snwHjHaJngjCFvdNXEt3lIjfIX6MAUAESS2yZtInPYJXiflj2vxbNLpI6K5aQCIiLEt3lmM6KTgFWlHbLM3Q9FWk5mpAIgMxjV747Em/C54SapA8UslbaTVTQUgPz//gY0bN86tWLVBaqd4beCQS7uT1/8E+2nSFUkaGA5Abm7udBSdk5eXV42V+zpjbDdyyqpY+RF12Oxgo7eLoydS9avvDGWMrYP9Ufj5C7QTYCSBev2tYXTvPaWGAYAk3wQdt1qt1SJ5hBJfoOLU1TheIHyXmEWeBx7sGghzPDvpaTo+c2Go5BEMvAYwikCnAcIexJmNMUOaIQAgIfE7oS3I6ElQxObDDDj2RiZ5Bj/WQ+dSwov0a8L8HuOhAwBB/B6pAkAUh8pU+roBwHT/A4F7/Z3QlClTaPny5bTi3XQav/co9Z84BWZdbeDqtTR96y5KTU2lRYsW0dixY7sEUY4AYgWA1/0HmC4AkMBhTPfBUfIMiGbMmEEJCQk0aNCgQL/fkKE0rKiM7OMmkCh+UNoHgXFxGD58OM2bN48mT54sur1RYL3pTSmaXBkALHaPw/EzoF5bfHx8Dx2bYxQNK/yagosPVoqLiwvuRuRxARZHFGoQKANgs9k0f0N85Ej4F8gxo2PDptje3k4nTpwIKwsdBABDQsdk+soAdHR0nNUaqLa2lkpLS8ntdpPP54toduXKlUDhJSUl1NjYGFEvRHAqpC/VVQYgOzv7b0TSvBK3trZSRUUFFRQUUHl5OVVVVVFNTU2AKisrqaysjIqLi+nQoUN09epVuNbWAGimNs3wWsoACHcZGRlJOEu9nUHCdP78eaqvr6e6uroAuVwuamlRer2XmZWVdRg5KDddAIioACEd50UgbTctFPU23PcVfr9/JmLn6fWlGwCRABIpBYl/dkpCckb8CSzc3kZ47l/GQAloTnp6+lxc+f3gdTdDALiZBUAoRnKzkKwDYysNAOMyfBXias8eMGCAA/6XgQx5G4z8As1QAAIeccjMzGxFol8IMNra2mIAxHMYXohiksF/CL4AtBN9MVuqMLYD/U3orwX/FvgFWCuehY9H4SsZV3tvSkqKKd9DmgIACuhuOTk5XgBxEMXsQjGF4NeDXw1agv4snF/A2FKc16D/Mfgt4L/FU6am24mJjOkAmJi7Ia7/9wDoReE/AAAA///JCpxeAAAABklEQVQDAOWoOZ/unNXTAAAAAElFTkSuQmCC", Mn = 0.1, Mt = (n) => Array.isArray(n) && n.length >= 2 && Number.isFinite(Number(n[0])) && Number.isFinite(Number(n[1])), pt = (n) => [Number(n[0]), Number(n[1])], $n = (n) => x.Cartesian3.fromDegrees(n[0], n[1]), vf = (n) => {
+}, ma = /* @__PURE__ */ S0(M0, [["__scopeId", "data-v-b76c06df"]]), L0 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAHdElEQVR4Aexbe2wURRj/5o67QoyJCog87iDKowUCoRIx8R8M1RDkYQgqIg+pwSrFlmL6UpRG0IbWBJtILY0EKcQWG/+AlhIEaU0oQgoSwXJXa4A+ACMa5ZHWu/Zu/M0VynG9u+7M7hYMXObb/Wa+929nZ6d7Vwvd45/7ANzjE4Duz4D7M6APEagfYZvmHmnf4B4ZU9jgtJe5nLYDbqd9D/jtbqftM5fTnuN22Kb2YUrm3wKNI23xDU77OhR62mphR4nT+8T525zoFUYsAcXOAb+UiKUyonXEWB10m90j7VtdjpjnyeSPaWvAaUfME26nbZOPs2MoMAd1TARpbQ7ilMgY3+92xhSdGREzRquhrJ4pAIipbGP8GBFbTUT9QDoaT7JaqbbBYVupw0lEU0tEiaLAjXuaialMNFDRRQ8zzvlgzthmt8O+tYdQ54ChAKD4C8hnDsicxigRt9VBI50bBsCN4ocZmVx4X2wGbrHs8DL5UUMAQPF7ELoPikcUNNxin7gcttfB6m66AUDx3yAL86Y9nIdrjLFtDSNsT4WTyYzpAuCMs794jr8kE9BIXW5hq/T60wWAhfzL9Cag036J7GYpNJ4yADe2rItDHWrpY2MUUBNnQaJz8yx4GcJmSdcsUAYAW9YFMokG62IRC3TFWZDo3DwLXpLmNDrt4yVtutXVASCa3+3lDjOdRC+rpqAEgGtEv+kIaNr+HL6lGopQno2wlYoVUGbMIlb/AH83HLB+TDg5ih4ihY8SAET8YYVY0iYoTLONnWyjNCsHKSoBwIn1CQAyCyPzsb4DgBHddQAQY30HAEnMGxY03cxkGfH+Kv4lSrnlHkX9c6sXnePRxVGl/qjS24WMc805BVsqAcA5UwoWHFgLL5Ocn9RykonRnTOmm2YAWLeVPMMlTCyKF0UJAM7oF625iSL0gKA1jpVbNOcU7FMJAGun9YdgJ73xAoTedHTJGZ0ac6G9VcWHEgAiGGOEt76SIbk5UHDi30tm0q2uBICw9hM/Is5SBNSk9DUqM85+jKTa27gyABYLbYdzD+iONizIB2KbveWqSSgDMO5cx8+c8c2qgY2y85ElX48vZQBE0A5uBQDsT8HfCcLm5/PxzZ4DemLrAmBS879nsQABBD0pqNni0fqb1dcvT836lpUuAISbuGZvDpL5SvB9Sdj5pY2+2N6iN6ZuAEQC1zq9yXhHUC34viDOWHpcs6fSiFiGADD1IrVZGAMIdM6IpKL5YMS+jGvyfBpNR0ZmCAAi4Ngmr8vXBYJf9M0hdriz3ZNmpG/DABBJTWjy7CPOxUwQXYMJTxvuT5twma4b6dhQAERisS0dRdjw5greSOKcp8D3cSN9Cl+GAyCc4snwHjHaJngjCFvdNXEt3lIjfIX6MAUAESS2yZtInPYJXiflj2vxbNLpI6K5aQCIiLEt3lmM6KTgFWlHbLM3Q9FWk5mpAIgMxjV747Em/C54SapA8UslbaTVTQUgPz//gY0bN86tWLVBaqd4beCQS7uT1/8E+2nSFUkaGA5Abm7udBSdk5eXV42V+zpjbDdyyqpY+RF12Oxgo7eLoydS9avvDGWMrYP9Ufj5C7QTYCSBev2tYXTvPaWGAYAk3wQdt1qt1SJ5hBJfoOLU1TheIHyXmEWeBx7sGghzPDvpaTo+c2Go5BEMvAYwikCnAcIexJmNMUOaIQAgIfE7oS3I6ElQxObDDDj2RiZ5Bj/WQ+dSwov0a8L8HuOhAwBB/B6pAkAUh8pU+roBwHT/A4F7/Z3QlClTaPny5bTi3XQav/co9Z84BWZdbeDqtTR96y5KTU2lRYsW0dixY7sEUY4AYgWA1/0HmC4AkMBhTPfBUfIMiGbMmEEJCQk0aNCgQL/fkKE0rKiM7OMmkCh+UNoHgXFxGD58OM2bN48mT54sur1RYL3pTSmaXBkALHaPw/EzoF5bfHx8Dx2bYxQNK/yagosPVoqLiwvuRuRxARZHFGoQKANgs9k0f0N85Ej4F8gxo2PDptje3k4nTpwIKwsdBABDQsdk+soAdHR0nNUaqLa2lkpLS8ntdpPP54toduXKlUDhJSUl1NjYGFEvRHAqpC/VVQYgOzv7b0TSvBK3trZSRUUFFRQUUHl5OVVVVVFNTU2AKisrqaysjIqLi+nQoUN09epVuNbWAGimNs3wWsoACHcZGRlJOEu9nUHCdP78eaqvr6e6uroAuVwuamlRer2XmZWVdRg5KDddAIioACEd50UgbTctFPU23PcVfr9/JmLn6fWlGwCRABIpBYl/dkpCckb8CSzc3kZ47l/GQAloTnp6+lxc+f3gdTdDALiZBUAoRnKzkKwDYysNAOMyfBXias8eMGCAA/6XgQx5G4z8As1QAAIeccjMzGxFol8IMNra2mIAxHMYXohiksF/CL4AtBN9MVuqMLYD/U3orwX/FvgFWCuehY9H4SsZV3tvSkqKKd9DmgIACuhuOTk5XgBxEMXsQjGF4NeDXw1agv4snF/A2FKc16D/Mfgt4L/FU6am24mJjOkAmJi7Ia7/9wDoReE/AAAA///JCpxeAAAABklEQVQDAOWoOZ/unNXTAAAAAElFTkSuQmCC", Ln = 0.1, Lt = (n) => Array.isArray(n) && n.length >= 2 && Number.isFinite(Number(n[0])) && Number.isFinite(Number(n[1])), yt = (n) => [Number(n[0]), Number(n[1])], Zn = (n) => x.Cartesian3.fromDegrees(n[0], n[1]), _f = (n) => {
   const e = x.Cartographic.fromCartesian(n);
   return [
     x.Math.toDegrees(e.longitude),
     x.Math.toDegrees(e.latitude)
   ];
-}, k0 = (n, e) => {
-  const t = x.Transforms.eastNorthUpToFixedFrame($n(n)), r = x.Matrix4.inverseTransformation(t, new x.Matrix4()), i = x.Matrix4.multiplyByPoint(r, $n(e), new x.Cartesian3());
+}, N0 = (n, e) => {
+  const t = x.Transforms.eastNorthUpToFixedFrame(Zn(n)), r = x.Matrix4.inverseTransformation(t, new x.Matrix4()), i = x.Matrix4.multiplyByPoint(r, Zn(e), new x.Cartesian3());
   return { east: i.x, north: i.y };
-}, qn = (n, e, t) => {
-  const r = x.Transforms.eastNorthUpToFixedFrame($n(n)), i = x.Matrix4.multiplyByPoint(
+}, Hn = (n, e, t) => {
+  const r = x.Transforms.eastNorthUpToFixedFrame(Zn(n)), i = x.Matrix4.multiplyByPoint(
     r,
     new x.Cartesian3(e, t, 0),
     new x.Cartesian3()
   );
-  return vf(i);
-}, Ro = (n, e) => {
+  return _f(i);
+}, Do = (n, e) => {
   const t = x.Cartographic.fromDegrees(n[0], n[1]), r = x.Cartographic.fromDegrees(e[0], e[1]);
   return new x.EllipsoidGeodesic(t, r).surfaceDistance;
 };
-class CC {
+class XC {
   constructor(e, t) {
     var r, i, a, l, u;
     this.viewer = e, this.config = {
@@ -420,7 +425,7 @@ class CC {
       pointSize: (t == null ? void 0 : t.pointSize) || 10,
       fillOpacity: x.Math.clamp(Number((t == null ? void 0 : t.fillOpacity) ?? 0.35), 0, 1),
       icon: {
-        url: ((a = t == null ? void 0 : t.icon) == null ? void 0 : a.url) || S0,
+        url: ((a = t == null ? void 0 : t.icon) == null ? void 0 : a.url) || L0,
         width: ((l = t == null ? void 0 : t.icon) == null ? void 0 : l.width) || 32,
         height: ((u = t == null ? void 0 : t.icon) == null ? void 0 : u.height) || 32
       }
@@ -551,8 +556,8 @@ class CC {
           y !== -1 && (u = y, document.body.style.cursor = "move", this.viewer.scene.screenSpaceCameraController.enableRotate = !1, this.viewer.scene.screenSpaceCameraController.enableTranslate = !1, this.viewer.scene.screenSpaceCameraController.enableZoom = !1, this.handler.setInputAction((w) => {
             const b = this.viewer.scene.camera.pickEllipsoid(w.endPosition);
             if (!b) return;
-            const M = x.Cartographic.fromCartesian(b), k = x.Math.toDegrees(M.longitude), S = x.Math.toDegrees(M.latitude);
-            r[y] = [k, S], i.polyline.positions = new x.CallbackProperty(() => r.map((N) => x.Cartesian3.fromDegrees(N[0], N[1])), !1), l[y].position.setValue(x.Cartesian3.fromDegrees(k, S));
+            const k = x.Cartographic.fromCartesian(b), I = x.Math.toDegrees(k.longitude), S = x.Math.toDegrees(k.latitude);
+            r[y] = [I, S], i.polyline.positions = new x.CallbackProperty(() => r.map((P) => x.Cartesian3.fromDegrees(P[0], P[1])), !1), l[y].position.setValue(x.Cartesian3.fromDegrees(I, S));
           }, x.ScreenSpaceEventType.MOUSE_MOVE));
         }
       }, x.ScreenSpaceEventType.LEFT_DOWN), this.handler.setInputAction((m) => {
@@ -572,17 +577,17 @@ class CC {
       if (!p) return;
       const y = x.Cartographic.fromCartesian(p), w = x.Math.toDegrees(y.longitude), b = x.Math.toDegrees(y.latitude);
       this.addLabel(p, [w, b]), r.length > 0 && (a ? a.polyline.positions = new x.CallbackProperty(() => {
-        let M = r[r.length - 1];
+        let k = r[r.length - 1];
         return [
-          x.Cartesian3.fromDegrees(M[0], M[1]),
+          x.Cartesian3.fromDegrees(k[0], k[1]),
           x.Cartesian3.fromDegrees(w, b)
         ];
       }, !1) : a = this.viewer.entities.add({
         polyline: {
           positions: new x.CallbackProperty(() => {
-            let M = r[r.length - 1];
+            let k = r[r.length - 1];
             return [
-              x.Cartesian3.fromDegrees(M[0], M[1]),
+              x.Cartesian3.fromDegrees(k[0], k[1]),
               x.Cartesian3.fromDegrees(w, b)
             ];
           }, !1),
@@ -600,8 +605,8 @@ class CC {
       if (!p) return;
       const y = x.Cartographic.fromCartesian(p), w = x.Math.toDegrees(y.longitude), b = x.Math.toDegrees(y.latitude);
       if (r.length > 0) {
-        let M = r[r.length - 1][0], k = r[r.length - 1][1];
-        if (M === w && k === b)
+        let k = r[r.length - 1][0], I = r[r.length - 1][1];
+        if (k === w && I === b)
           return;
       }
       r.push([w, b]), f(), g([w, b]);
@@ -656,18 +661,18 @@ class CC {
       this.handler = new x.ScreenSpaceEventHandler(this.viewer.scene.canvas), this.handler.setInputAction((y) => {
         const w = this.viewer.scene.pick(y.position);
         if (f = -1, x.defined(w)) {
-          let b = u.findIndex((M) => M === w.id);
-          b !== -1 && (f = b, document.body.style.cursor = "move", this.viewer.scene.screenSpaceCameraController.enableRotate = !1, this.viewer.scene.screenSpaceCameraController.enableTranslate = !1, this.viewer.scene.screenSpaceCameraController.enableZoom = !1, this.handler.setInputAction((M) => {
-            const k = this.viewer.scene.camera.pickEllipsoid(M.endPosition);
-            if (!k) return;
-            const S = x.Cartographic.fromCartesian(k), N = x.Math.toDegrees(S.longitude), P = x.Math.toDegrees(S.latitude);
-            r[b] = [N, P];
+          let b = u.findIndex((k) => k === w.id);
+          b !== -1 && (f = b, document.body.style.cursor = "move", this.viewer.scene.screenSpaceCameraController.enableRotate = !1, this.viewer.scene.screenSpaceCameraController.enableTranslate = !1, this.viewer.scene.screenSpaceCameraController.enableZoom = !1, this.handler.setInputAction((k) => {
+            const I = this.viewer.scene.camera.pickEllipsoid(k.endPosition);
+            if (!I) return;
+            const S = x.Cartographic.fromCartesian(I), P = x.Math.toDegrees(S.longitude), N = x.Math.toDegrees(S.latitude);
+            r[b] = [P, N];
             let A = [...r, r[0]];
             g(A);
             let B = [];
             r.forEach((F) => {
               B.push(F[0], F[1]);
-            }), a.polygon.hierarchy = new x.CallbackProperty(() => new x.PolygonHierarchy(x.Cartesian3.fromDegreesArray(B)), !1), u[b].position.setValue(x.Cartesian3.fromDegrees(N, P));
+            }), a.polygon.hierarchy = new x.CallbackProperty(() => new x.PolygonHierarchy(x.Cartesian3.fromDegreesArray(B)), !1), u[b].position.setValue(x.Cartesian3.fromDegrees(P, N));
           }, x.ScreenSpaceEventType.MOUSE_MOVE));
         }
       }, x.ScreenSpaceEventType.LEFT_DOWN), this.handler.setInputAction((y) => {
@@ -686,21 +691,21 @@ class CC {
     this.handler = new x.ScreenSpaceEventHandler(this.viewer.scene.canvas), this.handler.setInputAction((y) => {
       const w = this.viewer.scene.camera.pickEllipsoid(y.endPosition);
       if (!w) return;
-      const b = x.Cartographic.fromCartesian(w), M = x.Math.toDegrees(b.longitude), k = x.Math.toDegrees(b.latitude);
-      if (this.addLabel(w, [M, k]), r.length > 0 && (l ? l.polyline.positions = new x.CallbackProperty(() => {
-        let S = r[r.length - 1], N = r[0];
+      const b = x.Cartographic.fromCartesian(w), k = x.Math.toDegrees(b.longitude), I = x.Math.toDegrees(b.latitude);
+      if (this.addLabel(w, [k, I]), r.length > 0 && (l ? l.polyline.positions = new x.CallbackProperty(() => {
+        let S = r[r.length - 1], P = r[0];
         return [
           x.Cartesian3.fromDegrees(S[0], S[1]),
-          x.Cartesian3.fromDegrees(M, k),
-          x.Cartesian3.fromDegrees(N[0], N[1])
+          x.Cartesian3.fromDegrees(k, I),
+          x.Cartesian3.fromDegrees(P[0], P[1])
         ];
       }, !1) : l = this.viewer.entities.add({
         polyline: {
           positions: new x.CallbackProperty(() => {
-            let S = r[0], N = r[r.length - 1];
+            let S = r[0], P = r[r.length - 1];
             return [
-              x.Cartesian3.fromDegrees(N[0], N[1]),
-              x.Cartesian3.fromDegrees(M, k),
+              x.Cartesian3.fromDegrees(P[0], P[1]),
+              x.Cartesian3.fromDegrees(k, I),
               x.Cartesian3.fromDegrees(S[0], S[1])
             ];
           }, !1),
@@ -714,16 +719,16 @@ class CC {
         }
       })), r.length > 1) {
         let S = [];
-        r.forEach((N) => {
-          S.push(N[0], N[1]);
+        r.forEach((P) => {
+          S.push(P[0], P[1]);
         }), a ? a.polygon.hierarchy = new x.CallbackProperty(() => {
-          let N = S[S.length - 2], P = S[S.length - 1];
-          return N !== M && P !== k && S.push(M, k), new x.PolygonHierarchy(x.Cartesian3.fromDegreesArray(S));
+          let P = S[S.length - 2], N = S[S.length - 1];
+          return P !== k && N !== I && S.push(k, I), new x.PolygonHierarchy(x.Cartesian3.fromDegreesArray(S));
         }, !1) : a = this.viewer.entities.add({
           polygon: {
             hierarchy: new x.CallbackProperty(() => {
-              let N = S[S.length - 2], P = S[S.length - 1];
-              return N !== M && P !== k && S.push(M, k), new x.PolygonHierarchy(x.Cartesian3.fromDegreesArray(S));
+              let P = S[S.length - 2], N = S[S.length - 1];
+              return P !== k && N !== I && S.push(k, I), new x.PolygonHierarchy(x.Cartesian3.fromDegreesArray(S));
             }, !1),
             material: x.Color.fromCssColorString(this.config.color).withAlpha(0.5),
             outline: !1
@@ -733,13 +738,13 @@ class CC {
     }, x.ScreenSpaceEventType.MOUSE_MOVE), this.handler.setInputAction((y) => {
       const w = this.viewer.scene.camera.pickEllipsoid(y.position);
       if (!w) return;
-      const b = x.Cartographic.fromCartesian(w), M = x.Math.toDegrees(b.longitude), k = x.Math.toDegrees(b.latitude);
+      const b = x.Cartographic.fromCartesian(w), k = x.Math.toDegrees(b.longitude), I = x.Math.toDegrees(b.latitude);
       if (r.length > 0) {
-        let S = r[r.length - 1][0], N = r[r.length - 1][1];
-        if (S === M && N === k)
+        let S = r[r.length - 1][0], P = r[r.length - 1][1];
+        if (S === k && P === I)
           return;
       }
-      r.push([M, k]), g(r), m([M, k]);
+      r.push([k, I]), g(r), m([k, I]);
     }, x.ScreenSpaceEventType.LEFT_CLICK), this.handler.setInputAction((y) => {
       if (this.viewer.entities.remove(l), this.destroy(), r.length < 3)
         u.forEach((w) => {
@@ -794,48 +799,48 @@ class CC {
   }
   _normalizeShapeData(e, t) {
     if (!t || Array.isArray(t) && t.length === 0) return null;
-    if (Array.isArray(t) && Mt(t[0]) && Mt(t[1]))
+    if (Array.isArray(t) && Lt(t[0]) && Lt(t[1]))
       return {
-        anchor: pt(t[0]),
-        control: pt(t[1])
+        anchor: yt(t[0]),
+        control: yt(t[1])
       };
     if (typeof t != "object" || Array.isArray(t)) return null;
     let r = t.anchor || t.center || t.southwest, i = t.control || t.northeast;
-    if (!Mt(r) && Array.isArray(t.coordinates) && Mt(t.coordinates[0]) && (r = t.coordinates[0]), !Mt(i) && Array.isArray(t.coordinates)) {
+    if (!Lt(r) && Array.isArray(t.coordinates) && Lt(t.coordinates[0]) && (r = t.coordinates[0]), !Lt(i) && Array.isArray(t.coordinates)) {
       const a = t.coordinates.length > 2 ? 2 : 1;
       i = t.coordinates[a];
     }
-    if (Mt(r) && !Mt(i) && e === "circle") {
+    if (Lt(r) && !Lt(i) && e === "circle") {
       const a = Number(t.radius);
-      Number.isFinite(a) && a > 0 && (i = qn(r, a, 0));
+      Number.isFinite(a) && a > 0 && (i = Hn(r, a, 0));
     }
-    if (Mt(r) && !Mt(i) && e === "ellipse") {
+    if (Lt(r) && !Lt(i) && e === "ellipse") {
       const a = Number(t.semiMajorAxis), l = Number(t.semiMinorAxis), u = Number(t.eastRadius), f = Number(t.northRadius);
       if (Number.isFinite(u) && Number.isFinite(f))
-        i = qn(r, u, f);
+        i = Hn(r, u, f);
       else if (Number.isFinite(a) && Number.isFinite(l)) {
         const g = Math.abs(Number(t.rotation) - x.Math.PI_OVER_TWO) < 1e-3;
-        i = qn(r, g ? a : l, g ? l : a);
+        i = Hn(r, g ? a : l, g ? l : a);
       }
     }
-    return !Mt(r) || !Mt(i) ? null : {
-      anchor: pt(r),
-      control: pt(i)
+    return !Lt(r) || !Lt(i) ? null : {
+      anchor: yt(r),
+      control: yt(i)
     };
   }
   _buildShapeResult(e, t, r) {
-    if (!Mt(t) || !Mt(r)) return null;
+    if (!Lt(t) || !Lt(r)) return null;
     if (e === "rectangle") {
       const f = [
-        pt(t),
+        yt(t),
         [r[0], t[1]],
-        pt(r),
+        yt(r),
         [t[0], r[1]]
-      ], g = Ro(f[0], f[1]), d = Ro(f[0], f[3]);
-      return g < Mn || d < Mn ? null : {
+      ], g = Do(f[0], f[1]), d = Do(f[0], f[3]);
+      return g < Ln || d < Ln ? null : {
         type: "rectangle",
-        anchor: pt(t),
-        control: pt(r),
+        anchor: yt(t),
+        control: yt(r),
         center: [(t[0] + r[0]) / 2, (t[1] + r[1]) / 2],
         west: Math.min(t[0], r[0]),
         south: Math.min(t[1], r[1]),
@@ -846,21 +851,21 @@ class CC {
         coordinates: f
       };
     }
-    const i = k0(t, r);
+    const i = N0(t, r);
     if (e === "square") {
       const f = Math.max(Math.abs(i.east), Math.abs(i.north));
-      if (f < Mn) return null;
+      if (f < Ln) return null;
       const g = (i.east < 0 ? -1 : 1) * f, d = (i.north < 0 ? -1 : 1) * f, m = [
-        pt(t),
-        qn(t, g, 0),
-        qn(t, g, d),
-        qn(t, 0, d)
+        yt(t),
+        Hn(t, g, 0),
+        Hn(t, g, d),
+        Hn(t, 0, d)
       ];
       return {
         type: "square",
-        anchor: pt(t),
-        control: pt(m[2]),
-        center: qn(t, g / 2, d / 2),
+        anchor: yt(t),
+        control: yt(m[2]),
+        center: Hn(t, g / 2, d / 2),
         sideLength: f,
         width: f,
         height: f,
@@ -868,21 +873,21 @@ class CC {
       };
     }
     if (e === "circle") {
-      const f = Ro(t, r);
-      return f < Mn ? null : {
+      const f = Do(t, r);
+      return f < Ln ? null : {
         type: "circle",
-        center: pt(t),
-        control: pt(r),
+        center: yt(t),
+        control: yt(r),
         radius: f
       };
     }
     const a = Math.abs(i.east), l = Math.abs(i.north);
-    if (a < Mn || l < Mn) return null;
+    if (a < Ln || l < Ln) return null;
     const u = a >= l;
     return {
       type: "ellipse",
-      center: pt(t),
-      control: pt(r),
+      center: yt(t),
+      control: yt(r),
       eastRadius: a,
       northRadius: l,
       semiMajorAxis: Math.max(a, l),
@@ -904,7 +909,7 @@ class CC {
         A,
         ((F = this.viewer.scene.globe) == null ? void 0 : F.ellipsoid) || x.Ellipsoid.WGS84
       );
-      return B ? vf(B) : null;
+      return B ? _f(B) : null;
     }, y = () => {
       const A = this.viewer.scene.screenSpaceCameraController;
       A.enableRotate = !0, A.enableTranslate = !0, A.enableZoom = !0, document.body.style.cursor = "default";
@@ -914,12 +919,12 @@ class CC {
       if (A === 0) return a.anchor;
       const B = m();
       return e === "square" ? B == null ? void 0 : B.control : a.control;
-    }, M = (A) => {
+    }, k = (A) => {
       if (u[A]) return u[A];
       const B = this.viewer.entities.add({
         position: new x.CallbackProperty(() => {
           const F = b(A);
-          return F ? $n(F) : void 0;
+          return F ? Zn(F) : void 0;
         }, !1),
         point: {
           pixelSize: this.config.pointSize,
@@ -930,10 +935,10 @@ class CC {
         }
       });
       return u[A] = B, l.push(B), B;
-    }, k = () => {
+    }, I = () => {
       const A = m();
       if (!A || f) return !!A;
-      M(1);
+      k(1);
       const B = x.Color.fromCssColorString(this.config.color);
       return e === "square" || e === "rectangle" ? (f = this.viewer.entities.add({
         polygon: {
@@ -950,7 +955,7 @@ class CC {
         polyline: {
           positions: new x.CallbackProperty(() => {
             const F = m();
-            return F ? [...F.coordinates, F.coordinates[0]].map($n) : [];
+            return F ? [...F.coordinates, F.coordinates[0]].map(Zn) : [];
           }, !1),
           width: this.config.lineWidth,
           material: B,
@@ -959,16 +964,16 @@ class CC {
       }), l.push(f, g)) : (f = this.viewer.entities.add({
         position: new x.CallbackProperty(() => {
           const F = m();
-          return F ? $n(F.center) : void 0;
+          return F ? Zn(F.center) : void 0;
         }, !1),
         ellipse: {
           semiMajorAxis: new x.CallbackProperty(() => {
             const F = m();
-            return (F == null ? void 0 : F.semiMajorAxis) || (F == null ? void 0 : F.radius) || Mn;
+            return (F == null ? void 0 : F.semiMajorAxis) || (F == null ? void 0 : F.radius) || Ln;
           }, !1),
           semiMinorAxis: new x.CallbackProperty(() => {
             const F = m();
-            return (F == null ? void 0 : F.semiMinorAxis) || (F == null ? void 0 : F.radius) || Mn;
+            return (F == null ? void 0 : F.semiMinorAxis) || (F == null ? void 0 : F.radius) || Ln;
           }, !1),
           rotation: new x.CallbackProperty(() => {
             var F;
@@ -983,7 +988,7 @@ class CC {
     }, S = () => {
       const A = m();
       A && t && t(A);
-    }, N = () => {
+    }, P = () => {
       this.destroy(), this.handler = new x.ScreenSpaceEventHandler(this.viewer.scene.canvas), this.handler.setInputAction((A) => {
         const B = this.viewer.scene.pick(A.position);
         if (d = u.findIndex((C) => C === (B == null ? void 0 : B.id)), d < 0) return;
@@ -997,28 +1002,28 @@ class CC {
         const A = d >= 0;
         d = -1, y(), this.handler.removeInputAction(x.ScreenSpaceEventType.MOUSE_MOVE), A && S();
       }, x.ScreenSpaceEventType.LEFT_UP);
-    }, P = () => {
+    }, N = () => {
       const A = m();
-      A && (this.destroy(), this.config.isReserve ? N() : w(), t && t(A));
+      A && (this.destroy(), this.config.isReserve ? P() : w(), t && t(A));
     };
     if (i) {
-      if (k()) {
-        M(0), N();
+      if (I()) {
+        k(0), P();
         return;
       }
       a.anchor = null, a.control = null;
     }
     this.handler = new x.ScreenSpaceEventHandler(this.viewer.scene.canvas), this.handler.setInputAction((A) => {
       const B = p(A.endPosition);
-      B && (this.addLabel($n(B), B), a.anchor && (a.control = B, k(), this.viewer.scene.requestRender()));
+      B && (this.addLabel(Zn(B), B), a.anchor && (a.control = B, I(), this.viewer.scene.requestRender()));
     }, x.ScreenSpaceEventType.MOUSE_MOVE), this.handler.setInputAction((A) => {
       const B = p(A.position);
       if (B) {
         if (!a.anchor) {
-          a.anchor = B, M(0);
+          a.anchor = B, k(0);
           return;
         }
-        a.control = B, k() && P();
+        a.control = B, I() && N();
       }
     }, x.ScreenSpaceEventType.LEFT_CLICK);
   }
@@ -1052,7 +1057,7 @@ class CC {
     e && (e.enableRotate = !0, e.enableTranslate = !0, e.enableZoom = !0), typeof document < "u" && (document.body.style.cursor = "default");
   }
 }
-class I0 {
+class P0 {
   constructor(e) {
     this.viewModelBefore = {}, this.beforeColorStr = [], this.viewer = e;
   }
@@ -1103,7 +1108,7 @@ class I0 {
     };
   }
 }
-class M0 {
+class T0 {
   constructor(e, t) {
     this.viewer = e, this.config = {
       width: 60,
@@ -1223,56 +1228,56 @@ class M0 {
     this.billboardCollection.removeAll(), this.viewer.scene.primitives.remove(this.billboardCollection), this.billboardCollection = null, this.viewer = null, this.data = null;
   }
 }
-const Is = [
+const Ls = [
   { min: 2, size: 34, color: "#1c86d1dd" },
   { min: 50, size: 40, color: "#43b86add" },
   { min: 100, size: 46, color: "#f56c6cdd" },
   { min: 200, size: 52, color: "#e6a23cdd" }
-], L0 = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
+], A0 = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
   <svg xmlns="http://www.w3.org/2000/svg" width="42" height="52" viewBox="0 0 42 52">
     <path fill="#31c8ff" stroke="#d9f8ff" stroke-width="2" d="M21 1C10 1 1 10 1 21c0 14.8 20 30 20 30s20-15.2 20-30C41 10 32 1 21 1Z"/>
     <circle cx="21" cy="20" r="7" fill="#07384e"/>
   </svg>
-`)}`, P0 = {
+`)}`, R0 = {
   enabled: !0,
   pixelRange: 36,
   minimumClusterSize: 2,
-  icon: L0,
+  icon: A0,
   width: 34,
   height: 42,
   color: "#ffffff",
   offset: [0, 0],
   disableDepthTestDistance: Number.POSITIVE_INFINITY,
-  clusterStyles: Is,
+  clusterStyles: Ls,
   clusterTextColor: "#ffffff",
   clusterStrokeColor: "#d9f8ffff",
   clusterStrokeWidth: 2,
   clusterFontSize: 15
 };
-function Wt(n, e) {
+function $t(n, e) {
   const t = Number(n);
   return Number.isFinite(t) ? t : e;
 }
-function N0(n, e = x.Color.WHITE) {
+function O0(n, e = x.Color.WHITE) {
   return n instanceof x.Color ? n : x.Color.fromCssColorString(n) || e;
 }
-function T0(n) {
+function D0(n) {
   if (n instanceof x.Cartesian2) return n;
   const e = Array.isArray(n) ? n : [0, 0];
   return new x.Cartesian2(
-    Wt(e[0], 0),
-    Wt(e[1], 0)
+    $t(e[0], 0),
+    $t(e[1], 0)
   );
 }
-function xu(n) {
-  return (Array.isArray(n) && n.length ? n : Is).map((t, r) => {
+function bu(n) {
+  return (Array.isArray(n) && n.length ? n : Ls).map((t, r) => {
     var i;
     return {
-      min: Math.max(1, Math.floor(Wt(
+      min: Math.max(1, Math.floor($t(
         t.min ?? t.num,
-        ((i = Is[r]) == null ? void 0 : i.min) ?? (r + 1) * 50
+        ((i = Ls[r]) == null ? void 0 : i.min) ?? (r + 1) * 50
       ))),
-      size: Math.max(20, Wt(t.size, 34)),
+      size: Math.max(20, $t(t.size, 34)),
       color: t.color || "#1c86d1dd",
       strokeColor: t.strokeColor,
       strokeWidth: t.strokeWidth,
@@ -1281,24 +1286,24 @@ function xu(n) {
     };
   }).sort((t, r) => t.min - r.min);
 }
-function A0(n) {
+function F0(n) {
   return Array.isArray(n) ? n : (n == null ? void 0 : n.type) === "FeatureCollection" && Array.isArray(n.features) ? n.features : (n == null ? void 0 : n.type) === "Feature" ? [n] : null;
 }
-class R0 {
+class B0 {
   constructor(e, t = {}) {
     if (!e) throw new Error("Viewer is required.");
-    const r = t.clusterStyles ?? t.colorArr ?? Is;
+    const r = t.clusterStyles ?? t.colorArr ?? Ls;
     this.viewer = e, this.config = {
-      ...P0,
+      ...R0,
       ...t,
-      clusterStyles: xu(r)
+      clusterStyles: bu(r)
     }, this.data = [], this.dataSource = new x.CustomDataSource(t.name || "bmap-viewer-icon-cluster"), this.clusterIconCache = /* @__PURE__ */ new Map(), this.removeClusterListener = null, this.destroyed = !1, this.viewer.dataSources.add(this.dataSource), this.applyClustering(), this.bindClusterStyle();
   }
   applyClustering() {
     const e = this.dataSource.clustering;
-    e.enabled = !!this.config.enabled, e.pixelRange = Math.max(0, Wt(this.config.pixelRange, 36)), e.minimumClusterSize = Math.max(
+    e.enabled = !!this.config.enabled, e.pixelRange = Math.max(0, $t(this.config.pixelRange, 36)), e.minimumClusterSize = Math.max(
       1,
-      Math.floor(Wt(this.config.minimumClusterSize, 2))
+      Math.floor($t(this.config.minimumClusterSize, 2))
     ), this.forceCluster();
   }
   bindClusterStyle() {
@@ -1323,7 +1328,7 @@ class R0 {
   createClusterImage(e, t = this.getClusterStyle(e)) {
     const r = t.strokeColor || this.config.clusterStrokeColor, i = Math.max(
       0,
-      Wt(t.strokeWidth, this.config.clusterStrokeWidth)
+      $t(t.strokeWidth, this.config.clusterStrokeWidth)
     ), a = t.textColor || this.config.clusterTextColor, l = JSON.stringify([
       e,
       t.size,
@@ -1340,16 +1345,16 @@ class R0 {
     d.scale(f, f);
     const m = u / 2, p = m - Math.max(1, i / 2);
     d.beginPath(), d.arc(m, m, p, 0, Math.PI * 2), d.fillStyle = t.color, d.shadowColor = t.color, d.shadowBlur = Math.max(4, u * 0.16), d.fill(), d.shadowBlur = 0, i > 0 && (d.strokeStyle = r, d.lineWidth = i, d.stroke()), d.beginPath(), d.arc(m, m, Math.max(1, p - 4), 0, Math.PI * 2), d.strokeStyle = "rgba(255, 255, 255, 0.2)", d.lineWidth = 1, d.stroke();
-    const y = String(e), w = Wt(t.fontSize, this.config.clusterFontSize), b = Math.max(10, Math.min(w, u / Math.max(2.2, y.length * 0.68)));
+    const y = String(e), w = $t(t.fontSize, this.config.clusterFontSize), b = Math.max(10, Math.min(w, u / Math.max(2.2, y.length * 0.68)));
     d.fillStyle = a, d.font = `700 ${b}px "Cascadia Code", "Microsoft YaHei", sans-serif`, d.textAlign = "center", d.textBaseline = "middle", d.fillText(y, m, m + 0.5);
-    const M = g.toDataURL("image/png");
-    return this.clusterIconCache.set(l, M), M;
+    const k = g.toDataURL("image/png");
+    return this.clusterIconCache.set(l, k), k;
   }
   /**
    * 批量设置数据，支持 SDK 点数据数组或 GeoJSON FeatureCollection。
    */
   setData(e) {
-    const t = A0(e);
+    const t = F0(e);
     if (!t)
       return console.error("data must be an array or GeoJSON FeatureCollection."), [];
     this.clearLayer(), this.data = t;
@@ -1375,7 +1380,7 @@ class R0 {
       return console.error("缺少coordinates字段"), null;
     if (e.geometry.type && e.geometry.type !== "Point")
       return console.error("IconClusterLayer only supports Point geometry."), null;
-    const r = Number(t[0]), i = Number(t[1]), a = Wt(t[2], 0);
+    const r = Number(t[0]), i = Number(t[1]), a = $t(t[2], 0);
     if (!Number.isFinite(r) || !Number.isFinite(i))
       return console.error("coordinates must contain valid longitude and latitude."), null;
     const l = e.properties || {}, u = l.id ?? e.id ?? rt(), f = this.dataSource.entities.add({
@@ -1384,12 +1389,12 @@ class R0 {
       properties: { ...l },
       billboard: {
         image: l.icon || e.icon || this.config.icon,
-        width: Wt(l.width ?? e.width, this.config.width),
-        height: Wt(l.height ?? e.height, this.config.height),
-        color: N0(l.color || e.color || this.config.color),
+        width: $t(l.width ?? e.width, this.config.width),
+        height: $t(l.height ?? e.height, this.config.height),
+        color: O0(l.color || e.color || this.config.color),
         horizontalOrigin: x.HorizontalOrigin.CENTER,
         verticalOrigin: x.VerticalOrigin.BOTTOM,
-        pixelOffset: T0(l.offset || e.offset || this.config.offset),
+        pixelOffset: D0(l.offset || e.offset || this.config.offset),
         disableDepthTestDistance: this.config.disableDepthTestDistance,
         scaleByDistance: this.config.scaleByDistance || new x.NearFarScalar(15e4, 1, 4e5, 0.5)
       }
@@ -1426,7 +1431,7 @@ class R0 {
     this.config = {
       ...this.config,
       ...e,
-      clusterStyles: xu(t)
+      clusterStyles: bu(t)
     }, this.clusterIconCache.clear(), this.applyClustering();
   }
   forceCluster() {
@@ -1442,7 +1447,7 @@ class R0 {
     return this.destroyed;
   }
 }
-class O0 {
+class z0 {
   constructor(e, t) {
     this.viewer = e, this.config = {
       text: "label",
@@ -1566,7 +1571,437 @@ class O0 {
     this.labelCollection.removeAll(), this.viewer.scene.primitives.remove(this.layer), this.layer = null, this.labelCollection = null;
   }
 }
-class D0 {
+const G0 = {
+  text: "text",
+  dpr: 1,
+  maxWidth: 180,
+  fontSize: 18,
+  fontFamily: '"Microsoft YaHei", "PingFang SC", sans-serif',
+  fontWeight: 600,
+  fontStyle: "normal",
+  lineHeight: 1.25,
+  color: "#ffffff",
+  showBackground: !1,
+  backgroundColor: "transparent",
+  padding: [6, 3],
+  border: !1,
+  borderColor: "#ffffff",
+  borderWidth: 1,
+  borderRadius: 2,
+  textAlign: "center",
+  overflowMode: "ellipsis",
+  shadowColor: "rgba(0, 0, 0, 0.65)",
+  shadowBlur: 2,
+  offset: [0, 0],
+  scale: 1,
+  scaleByDistance: [15e4, 1, 4e5, 0.5],
+  pixelOffsetScaleByDistance: null,
+  distanceDisplayCondition: null,
+  horizontalOrigin: x.HorizontalOrigin.CENTER,
+  verticalOrigin: x.VerticalOrigin.CENTER,
+  disableDepthTestDistance: Number.POSITIVE_INFINITY,
+  enableCollisionDetection: !0,
+  collisionThreshold: 0.2,
+  collisionPadding: 2,
+  collisionCellSize: 96,
+  hideStrategy: "distance",
+  allowClick: !1
+};
+function Fe(n, e) {
+  const t = Number(n);
+  return Number.isFinite(t) ? t : e;
+}
+function ri(n, e, t) {
+  return Math.min(t, Math.max(e, n));
+}
+function q0(n) {
+  return Array.isArray(n) ? n : (n == null ? void 0 : n.type) === "FeatureCollection" && Array.isArray(n.features) ? n.features : (n == null ? void 0 : n.type) === "Feature" ? [n] : null;
+}
+function Cu(n, e) {
+  if (Array.isArray(n))
+    return [
+      Fe(n[0], e[0]),
+      Fe(n[1], e[1])
+    ];
+  if (Number.isFinite(Number(n))) {
+    const t = Number(n);
+    return [t, t];
+  }
+  return [...e];
+}
+function Su(n, e = null) {
+  return n instanceof x.NearFarScalar ? n : Array.isArray(n) && n.length >= 4 ? new x.NearFarScalar(
+    Fe(n[0], 0),
+    Fe(n[1], 1),
+    Fe(n[2], Number.MAX_VALUE),
+    Fe(n[3], 1)
+  ) : n && typeof n == "object" ? new x.NearFarScalar(
+    Fe(n.near, 0),
+    Fe(n.nearValue, 1),
+    Fe(n.far, Number.MAX_VALUE),
+    Fe(n.farValue, 1)
+  ) : e;
+}
+function H0(n) {
+  if (n instanceof x.DistanceDisplayCondition) return n;
+  if (Array.isArray(n) && n.length >= 2)
+    return new x.DistanceDisplayCondition(
+      Math.max(0, Fe(n[0], 0)),
+      Math.max(0, Fe(n[1], Number.MAX_VALUE))
+    );
+  if (n && typeof n == "object")
+    return new x.DistanceDisplayCondition(
+      Math.max(0, Fe(n.near, 0)),
+      Math.max(0, Fe(n.far, Number.MAX_VALUE))
+    );
+}
+function U0(n) {
+  return typeof n != "string" ? n ?? x.HorizontalOrigin.CENTER : {
+    left: x.HorizontalOrigin.LEFT,
+    center: x.HorizontalOrigin.CENTER,
+    right: x.HorizontalOrigin.RIGHT
+  }[n.toLowerCase()] ?? x.HorizontalOrigin.CENTER;
+}
+function Y0(n) {
+  return typeof n != "string" ? n ?? x.VerticalOrigin.CENTER : {
+    top: x.VerticalOrigin.TOP,
+    center: x.VerticalOrigin.CENTER,
+    bottom: x.VerticalOrigin.BOTTOM,
+    baseline: x.VerticalOrigin.BASELINE
+  }[n.toLowerCase()] ?? x.VerticalOrigin.CENTER;
+}
+function X0(n, e, t, r, i, a) {
+  const l = ri(a, 0, Math.min(r, i) / 2);
+  n.beginPath(), n.moveTo(e + l, t), n.lineTo(e + r - l, t), n.quadraticCurveTo(e + r, t, e + r, t + l), n.lineTo(e + r, t + i - l), n.quadraticCurveTo(e + r, t + i, e + r - l, t + i), n.lineTo(e + l, t + i), n.quadraticCurveTo(e, t + i, e, t + i - l), n.lineTo(e, t + l), n.quadraticCurveTo(e, t, e + l, t), n.closePath();
+}
+function V0(n, e, t) {
+  const r = String(e ?? "");
+  if (!t || n.measureText(r).width <= t) return r;
+  const i = Array.from(r), a = "…";
+  let l = 0, u = i.length;
+  for (; l < u; ) {
+    const f = Math.ceil((l + u) / 2), g = `${i.slice(0, f).join("")}${a}`;
+    n.measureText(g).width <= t ? l = f : u = f - 1;
+  }
+  return `${i.slice(0, l).join("")}${a}`;
+}
+function W0(n, e, t) {
+  const r = String(e ?? "").split(/\r?\n/);
+  if (!t) return r.length ? r : [""];
+  const i = [];
+  return r.forEach((a) => {
+    const l = Array.from(a);
+    if (!l.length) {
+      i.push("");
+      return;
+    }
+    let u = "";
+    l.forEach((f) => {
+      const g = `${u}${f}`;
+      u && n.measureText(g).width > t ? (i.push(u), u = f) : u = g;
+    }), (u || !i.length) && i.push(u);
+  }), i.length ? i : [""];
+}
+class $0 {
+  constructor(e, t = {}) {
+    if (!e) throw new Error("Viewer is required.");
+    this.viewer = e, this.config = { ...G0, ...t }, this.billboardCollection = new x.BillboardCollection(), this.layer = this.viewer.scene.primitives.add(this.billboardCollection), this.data = [], this.textMetrics = /* @__PURE__ */ new Map(), this.canvasCache = /* @__PURE__ */ new Map(), this.creationSequence = 0, this.destroyed = !1, this.renderListener = () => this.render(), this.viewer.scene.postRender.addEventListener(this.renderListener);
+  }
+  resolveStyle(e = {}) {
+    const t = e.properties || {}, r = (i) => t[i] ?? e[i] ?? this.config[i];
+    return {
+      text: t.text ?? t.name ?? e.text ?? e.name ?? this.config.text,
+      dpr: ri(Fe(r("dpr"), 1), 0.5, 3),
+      maxWidth: Math.max(0, Fe(r("maxWidth"), 180)),
+      fontSize: Math.max(1, Fe(r("fontSize"), 18)),
+      fontFamily: r("fontFamily"),
+      fontWeight: r("fontWeight"),
+      fontStyle: r("fontStyle"),
+      lineHeight: Math.max(1, Fe(r("lineHeight"), 1.25)),
+      color: r("color"),
+      showBackground: !!r("showBackground"),
+      backgroundColor: r("backgroundColor"),
+      padding: Cu(r("padding"), [6, 3]),
+      border: !!r("border"),
+      borderColor: r("borderColor"),
+      borderWidth: Math.max(0, Fe(r("borderWidth"), 1)),
+      borderRadius: Math.max(0, Fe(r("borderRadius"), 2)),
+      textAlign: ["left", "center", "right"].includes(r("textAlign")) ? r("textAlign") : "center",
+      overflowMode: r("overflowMode") === "wrap" ? "wrap" : "ellipsis",
+      shadowColor: r("shadowColor"),
+      shadowBlur: Math.max(0, Fe(r("shadowBlur"), 2))
+    };
+  }
+  createTextCanvas(e) {
+    const t = JSON.stringify(e);
+    if (this.canvasCache.has(t)) return this.canvasCache.get(t);
+    const i = document.createElement("canvas").getContext("2d"), a = `${e.fontStyle} ${e.fontWeight} ${e.fontSize}px ${e.fontFamily}`;
+    i.font = a;
+    const l = e.overflowMode === "wrap" ? W0(i, e.text, e.maxWidth) : [V0(i, String(e.text ?? "").replace(/\r?\n/g, " "), e.maxWidth)], u = Math.ceil(Math.max(
+      0,
+      ...l.map((B) => i.measureText(B).width)
+    )), f = Math.ceil(e.fontSize * e.lineHeight), [g, d] = e.padding, m = e.border ? e.borderWidth * 2 : 0, p = Math.max(1, Math.ceil(u + g * 2 + m)), y = Math.max(
+      1,
+      Math.ceil(f * l.length + d * 2 + m)
+    ), w = ri((window.devicePixelRatio || 1) * e.dpr, 1, 4), b = document.createElement("canvas");
+    b.width = Math.ceil(p * w), b.height = Math.ceil(y * w), b.style.width = `${p}px`, b.style.height = `${y}px`;
+    const k = b.getContext("2d");
+    k.imageSmoothingEnabled = !0, k.imageSmoothingQuality = "high", k.scale(w, w);
+    const I = e.border ? e.borderWidth / 2 : 0;
+    X0(
+      k,
+      I,
+      I,
+      p - I * 2,
+      y - I * 2,
+      e.borderRadius
+    ), e.showBackground && e.backgroundColor && e.backgroundColor !== "transparent" && (k.fillStyle = e.backgroundColor, k.fill()), e.border && e.borderWidth > 0 && (k.strokeStyle = e.borderColor, k.lineWidth = e.borderWidth, k.stroke()), k.font = a, k.textAlign = e.textAlign, k.textBaseline = "middle", k.fillStyle = e.color, k.shadowColor = e.shadowColor || "transparent", k.shadowBlur = e.shadowBlur;
+    const S = e.textAlign === "left" ? g + m / 2 : e.textAlign === "right" ? p - g - m / 2 : p / 2, P = f * l.length, N = (y - P) / 2 + f / 2;
+    l.forEach((B, F) => {
+      const C = N + F * f;
+      e.maxWidth > 0 ? k.fillText(B, S, C, e.maxWidth) : k.fillText(B, S, C);
+    });
+    const A = { canvas: b, width: p, height: y, text: l.join(`
+`), lines: l };
+    return this.canvasCache.set(t, A), A;
+  }
+  setData(e) {
+    const t = q0(e);
+    if (!t)
+      return console.error("data must be an array or GeoJSON FeatureCollection."), [];
+    this.clearLayer(), this.data = [...t];
+    const r = t.map((i) => this.addLayer(i, !1)).filter(Boolean);
+    return this.viewer.scene.requestRender(), r;
+  }
+  addLayer(e, t = !0) {
+    var I;
+    const r = (I = e == null ? void 0 : e.geometry) == null ? void 0 : I.coordinates;
+    if (!Array.isArray(r) || r.length < 2)
+      return console.error("缺少coordinates字段"), null;
+    if (e.geometry.type && e.geometry.type !== "Point")
+      return console.error("TextGroupLayer only supports Point geometry."), null;
+    const i = Number(r[0]), a = Number(r[1]), l = Fe(r[2], 0);
+    if (!Number.isFinite(i) || !Number.isFinite(a))
+      return console.error("coordinates must contain valid longitude and latitude."), null;
+    const u = e.properties || {}, f = u.id ?? e.id ?? rt(), g = this.resolveStyle(e), d = this.createTextCanvas(g), m = Cu(u.offset ?? e.offset ?? this.config.offset, [0, 0]), p = Su(
+      u.scaleByDistance ?? e.scaleByDistance ?? this.config.scaleByDistance
+    ), y = Su(
+      u.pixelOffsetScaleByDistance ?? e.pixelOffsetScaleByDistance ?? this.config.pixelOffsetScaleByDistance
+    ), w = H0(
+      u.distanceDisplayCondition ?? e.distanceDisplayCondition ?? this.config.distanceDisplayCondition
+    ), b = {
+      position: x.Cartesian3.fromDegrees(i, a, l),
+      image: d.canvas,
+      width: d.width,
+      height: d.height,
+      scale: Math.max(0, Fe(u.scale ?? e.scale, this.config.scale)),
+      pixelOffset: new x.Cartesian2(m[0], m[1]),
+      horizontalOrigin: U0(
+        u.horizontalOrigin ?? e.horizontalOrigin ?? this.config.horizontalOrigin
+      ),
+      verticalOrigin: Y0(
+        u.verticalOrigin ?? e.verticalOrigin ?? this.config.verticalOrigin
+      ),
+      disableDepthTestDistance: Fe(
+        u.disableDepthTestDistance ?? e.disableDepthTestDistance,
+        this.config.disableDepthTestDistance
+      ),
+      color: x.Color.WHITE,
+      id: f
+    };
+    p && (b.scaleByDistance = p), y && (b.pixelOffsetScaleByDistance = y), w && (b.distanceDisplayCondition = w);
+    const k = this.billboardCollection.add(b);
+    return k.properties = { ...u }, this.config.allowClick || (k.pickPrimitive = !1), this.creationSequence += 1, this.textMetrics.set(f, {
+      width: d.width,
+      height: d.height,
+      priority: Fe(u.priority ?? e.priority, 0),
+      createdOrder: this.creationSequence,
+      source: e
+    }), t && this.data.push(e), k;
+  }
+  getDistanceScale(e, t) {
+    if (!(e instanceof x.NearFarScalar)) return 1;
+    if (t <= e.near) return e.nearValue;
+    if (t >= e.far) return e.farValue;
+    const r = (t - e.near) / Math.max(1, e.far - e.near);
+    return x.Math.lerp(e.nearValue, e.farValue, r);
+  }
+  getScreenRect(e, t) {
+    const r = x.SceneTransforms.wgs84ToWindowCoordinates(
+      this.viewer.scene,
+      e.position
+    );
+    if (!r || !Number.isFinite(r.x) || !Number.isFinite(r.y))
+      return null;
+    const i = x.Cartesian3.distance(
+      this.viewer.camera.positionWC,
+      e.position
+    ), a = e.distanceDisplayCondition;
+    if (a && (i < a.near || i > a.far)) return null;
+    const l = this.getDistanceScale(e.scaleByDistance, i), u = this.getDistanceScale(e.pixelOffsetScaleByDistance, i), f = Math.max(0, e.scale * l), g = t.width * f, d = t.height * f, m = e.pixelOffset.x * u, p = e.pixelOffset.y * u, y = r.x + m, w = r.y + p;
+    let b = y - g / 2;
+    e.horizontalOrigin === x.HorizontalOrigin.LEFT ? b = y : e.horizontalOrigin === x.HorizontalOrigin.RIGHT && (b = y - g);
+    let k = w - d / 2;
+    e.verticalOrigin === x.VerticalOrigin.TOP ? k = w : (e.verticalOrigin === x.VerticalOrigin.BOTTOM || e.verticalOrigin === x.VerticalOrigin.BASELINE) && (k = w - d);
+    const I = Math.max(0, Fe(this.config.collisionPadding, 2)), S = this.viewer.scene.canvas, P = S.clientWidth || S.width, N = S.clientHeight || S.height;
+    return b > P || b + g < 0 || k > N || k + d < 0 ? null : {
+      id: e.id,
+      billboard: e,
+      left: b - I,
+      right: b + g + I,
+      top: k - I,
+      bottom: k + d + I,
+      width: g + I * 2,
+      height: d + I * 2,
+      area: Math.max(1, (g + I * 2) * (d + I * 2)),
+      priority: t.priority,
+      createdOrder: t.createdOrder,
+      screenPosition: r
+    };
+  }
+  render() {
+    if (this.destroyed || !this.viewer || this.viewer.isDestroyed() || !this.billboardCollection || !this.billboardCollection.show) return;
+    const e = [];
+    for (let t = 0; t < this.billboardCollection.length; t += 1) {
+      const r = this.billboardCollection.get(t), i = this.textMetrics.get(r.id), a = i ? this.getScreenRect(r, i) : null;
+      r.show = !!a, a && e.push(a);
+    }
+    !this.config.enableCollisionDetection || e.length < 2 || this.performCollisionDetection(e);
+  }
+  sortForCollision(e) {
+    const t = (i) => {
+      const a = this.viewer.scene.canvas, l = (a.clientWidth || a.width) / 2, u = (a.clientHeight || a.height) / 2;
+      return Math.hypot(
+        i.screenPosition.x - l,
+        i.screenPosition.y - u
+      );
+    }, r = (i, a) => a.priority - i.priority;
+    switch (this.config.hideStrategy) {
+      case "smaller":
+        return [...e].sort((i, a) => r(i, a) || a.area - i.area || i.createdOrder - a.createdOrder);
+      case "newer":
+        return [...e].sort((i, a) => r(i, a) || i.createdOrder - a.createdOrder);
+      case "priority":
+        return [...e].sort((i, a) => r(i, a) || t(i) - t(a));
+      case "distance":
+      default:
+        return [...e].sort((i, a) => r(i, a) || t(i) - t(a));
+    }
+  }
+  performCollisionDetection(e) {
+    const t = Math.max(16, Fe(this.config.collisionCellSize, 96)), r = /* @__PURE__ */ new Map(), i = (a) => ({
+      minimumX: Math.floor(a.left / t),
+      maximumX: Math.floor(a.right / t),
+      minimumY: Math.floor(a.top / t),
+      maximumY: Math.floor(a.bottom / t)
+    });
+    this.sortForCollision(e).forEach((a) => {
+      const l = i(a), u = /* @__PURE__ */ new Set();
+      for (let g = l.minimumX; g <= l.maximumX; g += 1)
+        for (let d = l.minimumY; d <= l.maximumY; d += 1) {
+          const m = r.get(`${g}:${d}`);
+          m == null || m.forEach((p) => u.add(p));
+        }
+      const f = [...u].some((g) => this.checkCollision(a, g));
+      if (a.billboard.show = !f, !f)
+        for (let g = l.minimumX; g <= l.maximumX; g += 1)
+          for (let d = l.minimumY; d <= l.maximumY; d += 1) {
+            const m = `${g}:${d}`;
+            r.has(m) || r.set(m, []), r.get(m).push(a);
+          }
+    });
+  }
+  checkCollision(e, t) {
+    const r = Math.max(e.left, t.left), i = Math.min(e.right, t.right), a = Math.max(e.top, t.top), l = Math.min(e.bottom, t.bottom);
+    if (r >= i || a >= l) return !1;
+    const u = (i - r) * (l - a), f = Math.min(e.area, t.area), g = ri(Fe(this.config.collisionThreshold, 0.2), 0, 1);
+    return u / f > g;
+  }
+  updateLayerById(e, t = {}) {
+    var m;
+    const r = this.getLayerById(e);
+    if (!r) return null;
+    const i = this.textMetrics.get(r.id), a = (i == null ? void 0 : i.source) || { geometry: {}, properties: {} }, l = {
+      ...a,
+      ...t,
+      geometry: t.geometry || a.geometry,
+      properties: {
+        ...a.properties || {},
+        ...t.properties || {},
+        id: r.id
+      }
+    }, u = (m = l.geometry) == null ? void 0 : m.coordinates;
+    Array.isArray(u) && u.length >= 2 && (r.position = x.Cartesian3.fromDegrees(
+      Number(u[0]),
+      Number(u[1]),
+      Fe(u[2], 0)
+    ));
+    const f = this.resolveStyle(l), g = this.createTextCanvas(f);
+    r.image = g.canvas, r.width = g.width, r.height = g.height, r.properties = { ...l.properties }, this.textMetrics.set(r.id, {
+      ...i,
+      width: g.width,
+      height: g.height,
+      priority: Fe(l.properties.priority ?? l.priority, 0),
+      source: l
+    });
+    const d = this.data.findIndex((p) => {
+      var y;
+      return (((y = p.properties) == null ? void 0 : y.id) ?? p.id) === r.id;
+    });
+    return d >= 0 && (this.data[d] = l), this.viewer.scene.requestRender(), r;
+  }
+  removeLayer(e) {
+    if (!e || !this.billboardCollection) return !1;
+    const t = this.textMetrics.get(e.id);
+    return this.textMetrics.delete(e.id), this.data = this.data.filter((r) => {
+      var i;
+      return r !== (t == null ? void 0 : t.source) && (((i = r.properties) == null ? void 0 : i.id) ?? r.id) !== e.id;
+    }), this.billboardCollection.remove(e);
+  }
+  getLayerById(e) {
+    if (e == null || !this.billboardCollection) return null;
+    for (let t = 0; t < this.billboardCollection.length; t += 1) {
+      const r = this.billboardCollection.get(t);
+      if (r.id === e) return r;
+    }
+    return null;
+  }
+  removeLayerById(e) {
+    const t = this.getLayerById(e);
+    return t ? this.removeLayer(t) : !1;
+  }
+  clearLayer() {
+    var e;
+    (e = this.billboardCollection) == null || e.removeAll(), this.textMetrics.clear(), this.data = [];
+  }
+  show() {
+    var e;
+    this.billboardCollection && (this.billboardCollection.show = !0, (e = this.viewer) == null || e.scene.requestRender());
+  }
+  hide() {
+    this.billboardCollection && (this.billboardCollection.show = !1);
+  }
+  setCollisionEnabled(e) {
+    var t;
+    this.config.enableCollisionDetection = !!e, (t = this.viewer) == null || t.scene.requestRender();
+  }
+  setCollisionThreshold(e) {
+    var t;
+    this.config.collisionThreshold = ri(Fe(e, 0.2), 0, 1), (t = this.viewer) == null || t.scene.requestRender();
+  }
+  updateConfig(e = {}, t = !0) {
+    var i;
+    const r = [...this.data];
+    this.config = { ...this.config, ...e }, this.canvasCache.clear(), t && r.length ? this.setData(r) : (i = this.viewer) == null || i.scene.requestRender();
+  }
+  destroy() {
+    this.destroyed || (this.viewer && !this.viewer.isDestroyed() && this.renderListener && this.viewer.scene.postRender.removeEventListener(this.renderListener), this.renderListener = null, this.clearLayer(), this.canvasCache.clear(), this.viewer && !this.viewer.isDestroyed() && this.layer && this.viewer.scene.primitives.remove(this.layer), this.layer = null, this.billboardCollection = null, this.viewer = null, this.data = null, this.destroyed = !0);
+  }
+  isDestroyed() {
+    return this.destroyed;
+  }
+}
+class Z0 {
   constructor(e, t) {
     this.viewer = e, this.config = {
       type: "default",
@@ -1689,7 +2124,7 @@ class D0 {
     this.viewer.scene.primitives.remove(this.layer), this.polylineCollection = null, this.layer = null;
   }
 }
-class F0 {
+class K0 {
   constructor(e, t) {
     this.viewer = e, this.config = {
       width: 2,
@@ -1790,7 +2225,7 @@ class F0 {
     this.clearLayer();
   }
 }
-class B0 {
+class J0 {
   /**
    * 创建3D楼宇图层实例
    * @param {Cesium.Viewer} viewer - Cesium Viewer实例
@@ -1960,7 +2395,7 @@ class B0 {
     this.clearLayer(), this.viewer = null, this.config = null, this.tileset = null;
   }
 }
-class z0 {
+class Q0 {
   constructor(e, t = {}) {
     this.options = t, this.viewer = e, this.className = t == null ? void 0 : t.className, this.html = (t == null ? void 0 : t.html) || null, this.ctnList = {}, this.allVisible = !0, this.eventListener = null, this.collisionThreshold = Number.isFinite(t == null ? void 0 : t.collisionThreshold) ? Math.max(0, Math.min(1, t.collisionThreshold)) : 0.3;
   }
@@ -2092,34 +2527,34 @@ class z0 {
     this.clearLayer(), this.viewer = null;
   }
 }
-var Be = 63710088e-1, Vs = {
-  centimeters: Be * 100,
-  centimetres: Be * 100,
-  cm: Be * 100,
+var ze = 63710088e-1, $s = {
+  centimeters: ze * 100,
+  centimetres: ze * 100,
+  cm: ze * 100,
   degrees: 360 / (2 * Math.PI),
   deg: 360 / (2 * Math.PI),
-  feet: Be * 3.28084,
-  ft: Be * 3.28084,
-  inches: Be * 39.37,
-  in: Be * 39.37,
-  kilometers: Be / 1e3,
-  kilometres: Be / 1e3,
-  km: Be / 1e3,
-  meters: Be,
-  metres: Be,
-  m: Be,
-  miles: Be / 1609.344,
-  mi: Be / 1609.344,
-  millimeters: Be * 1e3,
-  millimetres: Be * 1e3,
-  mm: Be * 1e3,
-  nauticalmiles: Be / 1852,
-  nmi: Be / 1852,
+  feet: ze * 3.28084,
+  ft: ze * 3.28084,
+  inches: ze * 39.37,
+  in: ze * 39.37,
+  kilometers: ze / 1e3,
+  kilometres: ze / 1e3,
+  km: ze / 1e3,
+  meters: ze,
+  metres: ze,
+  m: ze,
+  miles: ze / 1609.344,
+  mi: ze / 1609.344,
+  millimeters: ze * 1e3,
+  millimetres: ze * 1e3,
+  mm: ze * 1e3,
+  nauticalmiles: ze / 1852,
+  nmi: ze / 1852,
   radians: 1,
   rad: 1,
-  yards: Be * 1.0936,
-  yd: Be * 1.0936
-}, Ms = {
+  yards: ze * 1.0936,
+  yd: ze * 1.0936
+}, Ns = {
   acres: 247105e-9,
   ac: 247105e-9,
   centimeters: 1e4,
@@ -2147,24 +2582,24 @@ var Be = 63710088e-1, Vs = {
   yards: 1.195990046,
   yd: 1.195990046
 };
-function Qe(n, e, t = {}) {
+function je(n, e, t = {}) {
   const r = { type: "Feature" };
   return (t.id === 0 || t.id) && (r.id = t.id), t.bbox && (r.bbox = t.bbox), r.properties = e || {}, r.geometry = n, r;
 }
-function pf(n, e, t = {}) {
+function wf(n, e, t = {}) {
   switch (n) {
     case "Point":
       return de(e).geometry;
     case "LineString":
-      return ke(e).geometry;
+      return Ie(e).geometry;
     case "Polygon":
       return pe(e).geometry;
     case "MultiPoint":
-      return Li(e).geometry;
+      return Pi(e).geometry;
     case "MultiLineString":
-      return An(e).geometry;
+      return Rn(e).geometry;
     case "MultiPolygon":
-      return bt(e).geometry;
+      return Ct(e).geometry;
     default:
       throw new Error(n + " is invalid");
   }
@@ -2176,14 +2611,14 @@ function de(n, e, t = {}) {
     throw new Error("coordinates must be an Array");
   if (n.length < 2)
     throw new Error("coordinates must be at least 2 numbers long");
-  if (!tt(n[0]) || !tt(n[1]))
+  if (!nt(n[0]) || !nt(n[1]))
     throw new Error("coordinates must contain numbers");
-  return Qe({
+  return je({
     type: "Point",
     coordinates: n
   }, e, t);
 }
-function yf(n, e, t = {}) {
+function xf(n, e, t = {}) {
   return ce(
     n.map((r) => de(r, e)),
     t
@@ -2201,28 +2636,28 @@ function pe(n, e, t = {}) {
       if (i[i.length - 1][a] !== i[0][a])
         throw new Error("First and last Position are not equivalent.");
   }
-  return Qe({
+  return je({
     type: "Polygon",
     coordinates: n
   }, e, t);
 }
-function _f(n, e, t = {}) {
+function Ef(n, e, t = {}) {
   return ce(
     n.map((r) => pe(r, e)),
     t
   );
 }
-function ke(n, e, t = {}) {
+function Ie(n, e, t = {}) {
   if (n.length < 2)
     throw new Error("coordinates must be an array of two or more positions");
-  return Qe({
+  return je({
     type: "LineString",
     coordinates: n
   }, e, t);
 }
-function wf(n, e, t = {}) {
+function bf(n, e, t = {}) {
   return ce(
-    n.map((r) => ke(r, e)),
+    n.map((r) => Ie(r, e)),
     t
   );
 }
@@ -2230,90 +2665,90 @@ function ce(n, e = {}) {
   const t = { type: "FeatureCollection" };
   return e.id && (t.id = e.id), e.bbox && (t.bbox = e.bbox), t.features = n, t;
 }
-function An(n, e, t = {}) {
-  return Qe({
+function Rn(n, e, t = {}) {
+  return je({
     type: "MultiLineString",
     coordinates: n
   }, e, t);
 }
-function Li(n, e, t = {}) {
-  return Qe({
+function Pi(n, e, t = {}) {
+  return je({
     type: "MultiPoint",
     coordinates: n
   }, e, t);
 }
-function bt(n, e, t = {}) {
-  return Qe({
+function Ct(n, e, t = {}) {
+  return je({
     type: "MultiPolygon",
     coordinates: n
   }, e, t);
 }
-function Xa(n, e, t = {}) {
-  return Qe({
+function Wa(n, e, t = {}) {
+  return je({
     type: "GeometryCollection",
     geometries: n
   }, e, t);
 }
-function xf(n, e = 0) {
+function Cf(n, e = 0) {
   if (e && !(e >= 0))
     throw new Error("precision must be a positive number");
   const t = Math.pow(10, e || 0);
   return Math.round(n * t) / t;
 }
-function Pi(n, e = "kilometers") {
-  const t = Vs[e];
+function Ti(n, e = "kilometers") {
+  const t = $s[e];
   if (!t)
     throw new Error(e + " units is invalid");
   return n * t;
 }
-function Or(n, e = "kilometers") {
-  const t = Vs[e];
+function Dr(n, e = "kilometers") {
+  const t = $s[e];
   if (!t)
     throw new Error(e + " units is invalid");
   return n / t;
 }
-function Ni(n, e) {
-  return ln(Or(n, e));
+function Ai(n, e) {
+  return un(Dr(n, e));
 }
-function Mr(n) {
+function Lr(n) {
   let e = n % 360;
   return e < 0 && (e += 360), e;
 }
-function Ef(n) {
+function Sf(n) {
   return n = n % 360, n > 180 ? n - 360 : n < -180 ? n + 360 : n;
 }
-function ln(n) {
+function un(n) {
   return n % (2 * Math.PI) * 180 / Math.PI;
 }
-function je(n) {
+function et(n) {
   return n % 360 * Math.PI / 180;
 }
-function Kn(n, e = "kilometers", t = "kilometers") {
+function Jn(n, e = "kilometers", t = "kilometers") {
   if (!(n >= 0))
     throw new Error("length must be a positive number");
-  return Pi(Or(n, e), t);
+  return Ti(Dr(n, e), t);
 }
-function Va(n, e = "meters", t = "kilometers") {
+function $a(n, e = "meters", t = "kilometers") {
   if (!(n >= 0))
     throw new Error("area must be a positive number");
-  const r = Ms[e];
+  const r = Ns[e];
   if (!r)
     throw new Error("invalid original units");
-  const i = Ms[t];
+  const i = Ns[t];
   if (!i)
     throw new Error("invalid final units");
   return n / r * i;
 }
-function tt(n) {
+function nt(n) {
   return !isNaN(n) && n !== null && !Array.isArray(n);
 }
 function Oe(n) {
   return n !== null && typeof n == "object" && !Array.isArray(n);
 }
-function Nn(n) {
-  delete n.bbox, n.type === "Feature" ? n.geometry && Nn(n.geometry) : n.type === "FeatureCollection" ? n.features.forEach(Nn) : n.type === "GeometryCollection" && n.geometries.forEach(Nn);
+function Tn(n) {
+  delete n.bbox, n.type === "Feature" ? n.geometry && Tn(n.geometry) : n.type === "FeatureCollection" ? n.features.forEach(Tn) : n.type === "GeometryCollection" && n.geometries.forEach(Tn);
 }
-function pi(n) {
+function _i(n) {
   if (!n)
     throw new Error("bbox is required");
   if (!Array.isArray(n))
@@ -2321,49 +2756,49 @@ function pi(n) {
   if (n.length !== 4 && n.length !== 6)
     throw new Error("bbox must be an Array of 4 or 6 numbers");
   n.forEach((e) => {
-    if (!tt(e))
+    if (!nt(e))
       throw new Error("bbox must only contain numbers");
   });
 }
-function bf(n) {
+function If(n) {
   if (!n)
     throw new Error("id is required");
   if (["string", "number"].indexOf(typeof n) === -1)
     throw new Error("id must be a number or a string");
 }
-const G0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const j0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  areaFactors: Ms,
-  azimuthToBearing: Ef,
-  bearingToAzimuth: Mr,
-  convertArea: Va,
-  convertLength: Kn,
-  degreesToRadians: je,
-  earthRadius: Be,
-  factors: Vs,
-  feature: Qe,
+  areaFactors: Ns,
+  azimuthToBearing: Sf,
+  bearingToAzimuth: Lr,
+  convertArea: $a,
+  convertLength: Jn,
+  degreesToRadians: et,
+  earthRadius: ze,
+  factors: $s,
+  feature: je,
   featureCollection: ce,
-  geometry: pf,
-  geometryCollection: Xa,
-  isNumber: tt,
+  geometry: wf,
+  geometryCollection: Wa,
+  isNumber: nt,
   isObject: Oe,
-  lengthToDegrees: Ni,
-  lengthToRadians: Or,
-  lineString: ke,
-  lineStrings: wf,
-  multiLineString: An,
-  multiPoint: Li,
-  multiPolygon: bt,
+  lengthToDegrees: Ai,
+  lengthToRadians: Dr,
+  lineString: Ie,
+  lineStrings: bf,
+  multiLineString: Rn,
+  multiPoint: Pi,
+  multiPolygon: Ct,
   point: de,
-  points: yf,
+  points: xf,
   polygon: pe,
-  polygons: _f,
-  radiansToDegrees: ln,
-  radiansToLength: Pi,
-  removeBbox: Nn,
-  round: xf,
-  validateBBox: pi,
-  validateId: bf
+  polygons: Ef,
+  radiansToDegrees: un,
+  radiansToLength: Ti,
+  removeBbox: Tn,
+  round: Cf,
+  validateBBox: _i,
+  validateId: If
 }, Symbol.toStringTag, { value: "Module" }));
 function Me(n) {
   if (!n)
@@ -2390,14 +2825,14 @@ function me(n) {
     "coords must be GeoJSON Feature, Geometry Object or an Array"
   );
 }
-function Wa(n) {
-  if (n.length > 1 && tt(n[0]) && tt(n[1]))
+function Za(n) {
+  if (n.length > 1 && nt(n[0]) && nt(n[1]))
     return !0;
   if (Array.isArray(n[0]) && n[0].length)
-    return Wa(n[0]);
+    return Za(n[0]);
   throw new Error("coordinates must only contain numbers");
 }
-function Cf(n, e, t) {
+function kf(n, e, t) {
   if (!e || !t)
     throw new Error("type and name required");
   if (!n || n.type !== e)
@@ -2405,7 +2840,7 @@ function Cf(n, e, t) {
       "Invalid input to " + t + ": must be a " + e + ", given " + n.type
     );
 }
-function yi(n, e, t) {
+function wi(n, e, t) {
   if (!n)
     throw new Error("No feature passed");
   if (!t)
@@ -2419,7 +2854,7 @@ function yi(n, e, t) {
       "Invalid input to " + t + ": must be a " + e + ", given " + n.geometry.type
     );
 }
-function Cn(n, e, t) {
+function Sn(n, e, t) {
   if (!n)
     throw new Error("No featureCollection passed");
   if (!t)
@@ -2439,58 +2874,58 @@ function Cn(n, e, t) {
       );
   }
 }
-function He(n) {
+function Ye(n) {
   return n.type === "Feature" ? n.geometry : n;
 }
-function Ct(n, e) {
+function St(n, e) {
   return n.type === "FeatureCollection" ? "FeatureCollection" : n.type === "GeometryCollection" ? "GeometryCollection" : n.type === "Feature" && n.geometry !== null ? n.geometry.type : n.type;
 }
-const q0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const ev = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  collectionOf: Cn,
-  containsNumber: Wa,
-  featureOf: yi,
-  geojsonType: Cf,
+  collectionOf: Sn,
+  containsNumber: Za,
+  featureOf: wi,
+  geojsonType: kf,
   getCoord: Me,
   getCoords: me,
-  getGeom: He,
-  getType: Ct
+  getGeom: Ye,
+  getType: St
 }, Symbol.toStringTag, { value: "Module" }));
-function En(n, e, t = {}) {
+function bn(n, e, t = {}) {
   if (t.final === !0)
-    return U0(n, e);
-  const r = Me(n), i = Me(e), a = je(r[0]), l = je(i[0]), u = je(r[1]), f = je(i[1]), g = Math.sin(l - a) * Math.cos(f), d = Math.cos(u) * Math.sin(f) - Math.sin(u) * Math.cos(f) * Math.cos(l - a);
-  return ln(Math.atan2(g, d));
+    return tv(n, e);
+  const r = Me(n), i = Me(e), a = et(r[0]), l = et(i[0]), u = et(r[1]), f = et(i[1]), g = Math.sin(l - a) * Math.cos(f), d = Math.cos(u) * Math.sin(f) - Math.sin(u) * Math.cos(f) * Math.cos(l - a);
+  return un(Math.atan2(g, d));
 }
-function U0(n, e) {
-  let t = En(e, n);
+function tv(n, e) {
+  let t = bn(e, n);
   return t = (t + 180) % 360, t > 180 ? t - 360 : t;
 }
-function un(n, e, t, r = {}) {
-  const i = Me(n), a = je(i[0]), l = je(i[1]), u = je(t), f = Or(e, r.units), g = Math.asin(
+function cn(n, e, t, r = {}) {
+  const i = Me(n), a = et(i[0]), l = et(i[1]), u = et(t), f = Dr(e, r.units), g = Math.asin(
     Math.sin(l) * Math.cos(f) + Math.cos(l) * Math.sin(f) * Math.cos(u)
   ), d = a + Math.atan2(
     Math.sin(u) * Math.sin(f) * Math.cos(l),
     Math.cos(f) - Math.sin(l) * Math.sin(g)
-  ), m = ln(d), p = ln(g);
+  ), m = un(d), p = un(g);
   return i[2] !== void 0 ? de([m, p, i[2]], r.properties) : de([m, p], r.properties);
 }
-function Ge(n, e, t = {}) {
-  var r = Me(n), i = Me(e), a = je(i[1] - r[1]), l = je(i[0] - r[0]), u = je(r[1]), f = je(i[1]), g = Math.pow(Math.sin(a / 2), 2) + Math.pow(Math.sin(l / 2), 2) * Math.cos(u) * Math.cos(f);
-  return Pi(
+function qe(n, e, t = {}) {
+  var r = Me(n), i = Me(e), a = et(i[1] - r[1]), l = et(i[0] - r[0]), u = et(r[1]), f = et(i[1]), g = Math.pow(Math.sin(a / 2), 2) + Math.pow(Math.sin(l / 2), 2) * Math.cos(u) * Math.cos(f);
+  return Ti(
     2 * Math.atan2(Math.sqrt(g), Math.sqrt(1 - g)),
     t.units
   );
 }
-function H0(n, e, t = {}) {
-  const i = He(n).coordinates;
+function nv(n, e, t = {}) {
+  const i = Ye(n).coordinates;
   let a = 0;
   for (let l = 0; l < i.length && !(e >= a && l === i.length - 1); l++)
     if (a >= e) {
       const u = e - a;
       if (u) {
-        const f = En(i[l], i[l - 1]) - 180;
-        return un(
+        const f = bn(i[l], i[l - 1]) - 180;
+        return cn(
           i[l],
           u,
           f,
@@ -2499,23 +2934,23 @@ function H0(n, e, t = {}) {
       } else
         return de(i[l]);
     } else
-      a += Ge(i[l], i[l + 1], t);
+      a += qe(i[l], i[l + 1], t);
   return de(i[i.length - 1]);
 }
-function Jn(n, e, t = {}) {
+function Qn(n, e, t = {}) {
   let r;
-  return t.final ? r = Eu(Me(e), Me(n)) : r = Eu(Me(n), Me(e)), r > 180 ? -(360 - r) : r;
+  return t.final ? r = Iu(Me(e), Me(n)) : r = Iu(Me(n), Me(e)), r > 180 ? -(360 - r) : r;
 }
-function Eu(n, e) {
-  const t = je(n[1]), r = je(e[1]);
-  let i = je(e[0] - n[0]);
+function Iu(n, e) {
+  const t = et(n[1]), r = et(e[1]);
+  let i = et(e[0] - n[0]);
   i > Math.PI && (i -= 2 * Math.PI), i < -Math.PI && (i += 2 * Math.PI);
   const a = Math.log(
     Math.tan(r / 2 + Math.PI / 4) / Math.tan(t / 2 + Math.PI / 4)
   ), l = Math.atan2(i, a);
-  return (ln(l) + 360) % 360;
+  return (un(l) + 360) % 360;
 }
-function Y0(n, e, t, r = {}) {
+function rv(n, e, t, r = {}) {
   if (!Oe(r))
     throw new Error("options is invalid");
   if (!n)
@@ -2524,28 +2959,28 @@ function Y0(n, e, t, r = {}) {
     throw new Error("midPoint is required");
   if (!t)
     throw new Error("endPoint is required");
-  const i = n, a = e, l = t, u = Mr(
-    r.mercator !== !0 ? En(a, i) : Jn(a, i)
+  const i = n, a = e, l = t, u = Lr(
+    r.mercator !== !0 ? bn(a, i) : Qn(a, i)
   );
-  let f = Mr(
-    r.mercator !== !0 ? En(a, l) : Jn(a, l)
+  let f = Lr(
+    r.mercator !== !0 ? bn(a, l) : Qn(a, l)
   );
   f < u && (f = f + 360);
   const g = f - u;
   return r.explementary === !0 ? 360 - g : g;
 }
-function Ve(n, e, t) {
+function We(n, e, t) {
   if (n !== null)
-    for (var r, i, a, l, u, f, g, d = 0, m = 0, p, y = n.type, w = y === "FeatureCollection", b = y === "Feature", M = w ? n.features.length : 1, k = 0; k < M; k++) {
+    for (var r, i, a, l, u, f, g, d = 0, m = 0, p, y = n.type, w = y === "FeatureCollection", b = y === "Feature", k = w ? n.features.length : 1, I = 0; I < k; I++) {
       g = w ? (
         // @ts-expect-error: Known type conflict
-        n.features[k].geometry
+        n.features[I].geometry
       ) : b ? (
         // @ts-expect-error: Known type conflict
         n.geometry
       ) : n, p = g ? g.type === "GeometryCollection" : !1, u = p ? g.geometries.length : 1;
       for (var S = 0; S < u; S++) {
-        var N = 0, P = 0;
+        var P = 0, N = 0;
         if (l = p ? g.geometries[S] : g, l !== null) {
           f = l.coordinates;
           var A = l.type;
@@ -2558,13 +2993,13 @@ function Ve(n, e, t) {
                 e(
                   f,
                   m,
-                  k,
-                  N,
-                  P
+                  I,
+                  P,
+                  N
                 ) === !1
               )
                 return !1;
-              m++, N++;
+              m++, P++;
               break;
             case "LineString":
             case "MultiPoint":
@@ -2574,15 +3009,15 @@ function Ve(n, e, t) {
                   e(
                     f[r],
                     m,
-                    k,
-                    N,
-                    P
+                    I,
+                    P,
+                    N
                   ) === !1
                 )
                   return !1;
-                m++, A === "MultiPoint" && N++;
+                m++, A === "MultiPoint" && P++;
               }
-              A === "LineString" && N++;
+              A === "LineString" && P++;
               break;
             case "Polygon":
             case "MultiLineString":
@@ -2593,45 +3028,45 @@ function Ve(n, e, t) {
                     e(
                       f[r][i],
                       m,
-                      k,
-                      N,
-                      P
+                      I,
+                      P,
+                      N
                     ) === !1
                   )
                     return !1;
                   m++;
                 }
-                A === "MultiLineString" && N++, A === "Polygon" && P++;
+                A === "MultiLineString" && P++, A === "Polygon" && N++;
               }
-              A === "Polygon" && N++;
+              A === "Polygon" && P++;
               break;
             case "MultiPolygon":
               for (r = 0; r < f.length; r++) {
-                for (P = 0, i = 0; i < f[r].length; i++) {
+                for (N = 0, i = 0; i < f[r].length; i++) {
                   for (a = 0; a < f[r][i].length - d; a++) {
                     if (
                       // @ts-expect-error: Known type conflict
                       e(
                         f[r][i][a],
                         m,
-                        k,
-                        N,
-                        P
+                        I,
+                        P,
+                        N
                       ) === !1
                     )
                       return !1;
                     m++;
                   }
-                  P++;
+                  N++;
                 }
-                N++;
+                P++;
               }
               break;
             case "GeometryCollection":
               for (r = 0; r < l.geometries.length; r++)
                 if (
                   // @ts-expect-error: Known type conflict
-                  Ve(l.geometries[r], e, t) === !1
+                  We(l.geometries[r], e, t) === !1
                 )
                   return !1;
               break;
@@ -2642,9 +3077,9 @@ function Ve(n, e, t) {
       }
     }
 }
-function $a(n, e, t, r) {
+function Ka(n, e, t, r) {
   var i = t;
-  return Ve(
+  return We(
     n,
     function(a, l, u, f, g) {
       l === 0 && t === void 0 ? i = a : i = e(
@@ -2660,7 +3095,7 @@ function $a(n, e, t, r) {
     r
   ), i;
 }
-function Za(n, e) {
+function Ja(n, e) {
   var t;
   switch (n.type) {
     case "FeatureCollection":
@@ -2672,9 +3107,9 @@ function Za(n, e) {
       break;
   }
 }
-function Sf(n, e, t) {
+function Mf(n, e, t) {
   var r = t;
-  return Za(n, function(i, a) {
+  return Ja(n, function(i, a) {
     a === 0 && t === void 0 ? r = i : r = e(r, i, a);
   }), r;
 }
@@ -2685,19 +3120,19 @@ function Le(n, e) {
     for (var t = 0; t < n.features.length && e(n.features[t], t) !== !1; t++)
       ;
 }
-function Ka(n, e, t) {
+function Qa(n, e, t) {
   var r = t;
   return Le(n, function(i, a) {
     a === 0 && t === void 0 ? r = i : r = e(r, i, a);
   }), r;
 }
-function _i(n) {
+function xi(n) {
   var e = [];
-  return Ve(n, function(t) {
+  return We(n, function(t) {
     e.push(t);
   }), e;
 }
-function ut(n, e) {
+function ct(n, e) {
   var t, r, i, a, l, u, f, g, d, m, p = 0, y = n.type === "FeatureCollection", w = n.type === "Feature", b = y ? n.features.length : 1;
   for (t = 0; t < b; t++) {
     for (u = y ? (
@@ -2782,9 +3217,9 @@ function ut(n, e) {
     p++;
   }
 }
-function Ja(n, e, t) {
+function ja(n, e, t) {
   var r = t;
-  return ut(
+  return ct(
     n,
     function(i, a, l, u, f) {
       a === 0 && t === void 0 ? r = i : r = e(
@@ -2799,8 +3234,8 @@ function Ja(n, e, t) {
     }
   ), r;
 }
-function ot(n, e) {
-  ut(n, function(t, r, i, a, l) {
+function at(n, e) {
+  ct(n, function(t, r, i, a, l) {
     var u = t === null ? null : t.type;
     switch (u) {
       case null:
@@ -2810,7 +3245,7 @@ function ot(n, e) {
         return (
           // @ts-expect-error: Known type conflict
           e(
-            Qe(t, i, { bbox: a, id: l }),
+            je(t, i, { bbox: a, id: l }),
             r,
             0
           ) === !1 ? !1 : void 0
@@ -2840,15 +3275,15 @@ function ot(n, e) {
       };
       if (
         // @ts-expect-error: Known type conflict
-        e(Qe(m, i), r, g) === !1
+        e(je(m, i), r, g) === !1
       )
         return !1;
     }
   });
 }
-function kf(n, e, t) {
+function Lf(n, e, t) {
   var r = t;
-  return ot(
+  return at(
     n,
     function(i, a, l) {
       a === 0 && l === 0 && t === void 0 ? r = i : r = e(
@@ -2861,8 +3296,8 @@ function kf(n, e, t) {
     }
   ), r;
 }
-function on(n, e) {
-  ot(n, function(t, r, i) {
+function an(n, e) {
+  at(n, function(t, r, i) {
     var a = 0;
     if (t.geometry) {
       var l = t.geometry.type;
@@ -2870,7 +3305,7 @@ function on(n, e) {
         var u, f = 0, g = 0, d = 0;
         if (
           // @ts-expect-error: Known type conflict
-          Ve(
+          We(
             t,
             function(m, p, y, w, b) {
               if (
@@ -2880,7 +3315,7 @@ function on(n, e) {
                 u = m, f = r, g = w, d = b, a = 0;
                 return;
               }
-              var M = ke(
+              var k = Ie(
                 // @ts-expect-error: Known type conflict
                 [u, m],
                 t.properties
@@ -2889,7 +3324,7 @@ function on(n, e) {
                 // @ts-expect-error: Known type conflict
                 e(
                   // @ts-expect-error: Known type conflict
-                  M,
+                  k,
                   r,
                   i,
                   b,
@@ -2906,9 +3341,9 @@ function on(n, e) {
     }
   });
 }
-function Ws(n, e, t) {
+function Zs(n, e, t) {
   var r = t, i = !1;
-  return on(
+  return an(
     n,
     function(a, l, u, f, g) {
       i === !1 && t === void 0 ? r = a : r = e(
@@ -2923,9 +3358,9 @@ function Ws(n, e, t) {
     }
   ), r;
 }
-function Qa(n, e) {
+function el(n, e) {
   if (!n) throw new Error("geojson is required");
-  ot(n, function(t, r, i) {
+  at(n, function(t, r, i) {
     if (t.geometry !== null) {
       var a = t.geometry.type, l = t.geometry.coordinates;
       switch (a) {
@@ -2939,7 +3374,7 @@ function Qa(n, e) {
               // @ts-expect-error: Known type conflict
               e(
                 // @ts-expect-error: Known type conflict
-                ke(l[u], t.properties),
+                Ie(l[u], t.properties),
                 r,
                 i,
                 u
@@ -2951,9 +3386,9 @@ function Qa(n, e) {
     }
   });
 }
-function ja(n, e, t) {
+function tl(n, e, t) {
   var r = t;
-  return Qa(
+  return el(
     n,
     function(i, a, l, u) {
       a === 0 && t === void 0 ? r = i : r = e(
@@ -2966,7 +3401,7 @@ function ja(n, e, t) {
     }
   ), r;
 }
-function If(n, e) {
+function Nf(n, e) {
   if (e = e || {}, !Oe(e)) throw new Error("options is invalid");
   var t = e.featureIndex || 0, r = e.multiFeatureIndex || 0, i = e.geometryIndex || 0, a = e.segmentIndex || 0, l = e.properties, u;
   switch (n.type) {
@@ -2995,14 +3430,14 @@ function If(n, e) {
     case "MultiPoint":
       return null;
     case "LineString":
-      return a < 0 && (a = f.length + a - 1), ke(
+      return a < 0 && (a = f.length + a - 1), Ie(
         // @ts-expect-error: Known type conflict
         [f[a], f[a + 1]],
         l,
         e
       );
     case "Polygon":
-      return i < 0 && (i = f.length + i), a < 0 && (a = f[i].length + a - 1), ke(
+      return i < 0 && (i = f.length + i), a < 0 && (a = f[i].length + a - 1), Ie(
         [
           // @ts-expect-error: Known type conflict
           f[i][a],
@@ -3013,7 +3448,7 @@ function If(n, e) {
         e
       );
     case "MultiLineString":
-      return r < 0 && (r = f.length + r), a < 0 && (a = f[r].length + a - 1), ke(
+      return r < 0 && (r = f.length + r), a < 0 && (a = f[r].length + a - 1), Ie(
         [
           // @ts-expect-error: Known type conflict
           f[r][a],
@@ -3025,7 +3460,7 @@ function If(n, e) {
       );
     case "MultiPolygon":
       return r < 0 && (r = f.length + r), i < 0 && (i = f[r].length + i), a < 0 && (a = // @ts-expect-error: Known type conflict
-      f[r][i].length - a - 1), ke(
+      f[r][i].length - a - 1), Ie(
         [
           // @ts-expect-error: Known type conflict
           f[r][i][a],
@@ -3038,7 +3473,7 @@ function If(n, e) {
   }
   throw new Error("geojson is invalid");
 }
-function Mf(n, e) {
+function Pf(n, e) {
   if (e = e || {}, !Oe(e)) throw new Error("options is invalid");
   var t = e.featureIndex || 0, r = e.multiFeatureIndex || 0, i = e.geometryIndex || 0, a = e.coordIndex || 0, l = e.properties, u;
   switch (n.type) {
@@ -3082,41 +3517,41 @@ function Mf(n, e) {
   }
   throw new Error("geojson is invalid");
 }
-const X0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const iv = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  coordAll: _i,
-  coordEach: Ve,
-  coordReduce: $a,
+  coordAll: xi,
+  coordEach: We,
+  coordReduce: Ka,
   featureEach: Le,
-  featureReduce: Ka,
-  findPoint: Mf,
-  findSegment: If,
-  flattenEach: ot,
-  flattenReduce: kf,
-  geomEach: ut,
-  geomReduce: Ja,
-  lineEach: Qa,
-  lineReduce: ja,
-  propEach: Za,
-  propReduce: Sf,
-  segmentEach: on,
-  segmentReduce: Ws
+  featureReduce: Qa,
+  findPoint: Pf,
+  findSegment: Nf,
+  flattenEach: at,
+  flattenReduce: Lf,
+  geomEach: ct,
+  geomReduce: ja,
+  lineEach: el,
+  lineReduce: tl,
+  propEach: Ja,
+  propReduce: Mf,
+  segmentEach: an,
+  segmentReduce: Zs
 }, Symbol.toStringTag, { value: "Module" }));
-function Ti(n) {
-  return Ja(
+function Ri(n) {
+  return ja(
     n,
-    (e, t) => e + V0(t),
+    (e, t) => e + sv(t),
     0
   );
 }
-function V0(n) {
+function sv(n) {
   let e = 0, t;
   switch (n.type) {
     case "Polygon":
-      return bu(n.coordinates);
+      return ku(n.coordinates);
     case "MultiPolygon":
       for (t = 0; t < n.coordinates.length; t++)
-        e += bu(n.coordinates[t]);
+        e += ku(n.coordinates[t]);
       return e;
     case "Point":
     case "MultiPoint":
@@ -3126,43 +3561,43 @@ function V0(n) {
   }
   return 0;
 }
-function bu(n) {
+function ku(n) {
   let e = 0;
   if (n && n.length > 0) {
-    e += Math.abs(Cu(n[0]));
+    e += Math.abs(Mu(n[0]));
     for (let t = 1; t < n.length; t++)
-      e -= Math.abs(Cu(n[t]));
+      e -= Math.abs(Mu(n[t]));
   }
   return e;
 }
-var W0 = Be * Be / 2, Oo = Math.PI / 180;
-function Cu(n) {
+var ov = ze * ze / 2, Fo = Math.PI / 180;
+function Mu(n) {
   const e = n.length - 1;
   if (e <= 2) return 0;
   let t = 0, r = 0;
   for (; r < e; ) {
-    const i = n[r], a = n[r + 1 === e ? 0 : r + 1], l = n[r + 2 >= e ? (r + 2) % e : r + 2], u = i[0] * Oo, f = a[1] * Oo, g = l[0] * Oo;
+    const i = n[r], a = n[r + 1 === e ? 0 : r + 1], l = n[r + 2 >= e ? (r + 2) % e : r + 2], u = i[0] * Fo, f = a[1] * Fo, g = l[0] * Fo;
     t += (g - u) * Math.sin(f), r++;
   }
-  return t * W0;
+  return t * ov;
 }
-function qe(n, e = {}) {
+function He(n, e = {}) {
   if (n.bbox != null && e.recompute !== !0)
     return n.bbox;
   const t = [1 / 0, 1 / 0, -1 / 0, -1 / 0];
-  return Ve(n, (r) => {
+  return We(n, (r) => {
     t[0] > r[0] && (t[0] = r[0]), t[1] > r[1] && (t[1] = r[1]), t[2] < r[0] && (t[2] = r[0]), t[3] < r[1] && (t[3] = r[1]);
   }), t;
 }
-function $0(n, e, t) {
-  var r = n.length, i = yr(n[0], e), a = [], l, u, f;
+function av(n, e, t) {
+  var r = n.length, i = _r(n[0], e), a = [], l, u, f;
   let g, d;
   for (t || (t = []), l = 1; l < r; l++) {
-    for (g = n[l - 1], d = n[l], u = f = yr(d, e); ; )
+    for (g = n[l - 1], d = n[l], u = f = _r(d, e); ; )
       if (i | u) {
         if (i & u)
           break;
-        i ? (g = da(g, d, i, e), i = yr(g, e)) : (d = da(g, d, u, e), u = yr(d, e));
+        i ? (g = va(g, d, i, e), i = _r(g, e)) : (d = va(g, d, u, e), u = _r(d, e));
       } else {
         a.push(g), u !== f ? (a.push(d), l < r - 1 && (t.push(a), a = [])) : l === r - 1 && a.push(d);
         break;
@@ -3171,53 +3606,53 @@ function $0(n, e, t) {
   }
   return a.length && t.push(a), t;
 }
-function Z0(n, e) {
+function lv(n, e) {
   var t, r, i, a, l, u, f;
   for (r = 1; r <= 8; r *= 2) {
-    for (t = [], i = n[n.length - 1], a = !(yr(i, e) & r), l = 0; l < n.length; l++)
-      u = n[l], f = !(yr(u, e) & r), f !== a && t.push(da(i, u, r, e)), f && t.push(u), i = u, a = f;
+    for (t = [], i = n[n.length - 1], a = !(_r(i, e) & r), l = 0; l < n.length; l++)
+      u = n[l], f = !(_r(u, e) & r), f !== a && t.push(va(i, u, r, e)), f && t.push(u), i = u, a = f;
     if (n = t, !n.length) break;
   }
   return t;
 }
-function da(n, e, t, r) {
+function va(n, e, t, r) {
   return t & 8 ? [n[0] + (e[0] - n[0]) * (r[3] - n[1]) / (e[1] - n[1]), r[3]] : t & 4 ? [n[0] + (e[0] - n[0]) * (r[1] - n[1]) / (e[1] - n[1]), r[1]] : t & 2 ? [r[2], n[1] + (e[1] - n[1]) * (r[2] - n[0]) / (e[0] - n[0])] : t & 1 ? [r[0], n[1] + (e[1] - n[1]) * (r[0] - n[0]) / (e[0] - n[0])] : null;
 }
-function yr(n, e) {
+function _r(n, e) {
   var t = 0;
   return n[0] < e[0] ? t |= 1 : n[0] > e[2] && (t |= 2), n[1] < e[1] ? t |= 4 : n[1] > e[3] && (t |= 8), t;
 }
-function K0(n, e) {
-  const t = He(n), r = t.type, i = n.type === "Feature" ? n.properties : {};
+function uv(n, e) {
+  const t = Ye(n), r = t.type, i = n.type === "Feature" ? n.properties : {};
   let a = t.coordinates;
   switch (r) {
     case "LineString":
     case "MultiLineString": {
       const l = [];
       return r === "LineString" && (a = [a]), a.forEach((u) => {
-        $0(u, e, l);
-      }), l.length === 1 ? ke(l[0], i) : An(l, i);
+        av(u, e, l);
+      }), l.length === 1 ? Ie(l[0], i) : Rn(l, i);
     }
     case "Polygon":
-      return pe(Su(a, e), i);
+      return pe(Lu(a, e), i);
     case "MultiPolygon":
-      return bt(
-        a.map((l) => Su(l, e)),
+      return Ct(
+        a.map((l) => Lu(l, e)),
         i
       );
     default:
       throw new Error("geometry " + r + " not supported");
   }
 }
-function Su(n, e) {
+function Lu(n, e) {
   const t = [];
   for (const r of n) {
-    const i = Z0(r, e);
+    const i = lv(r, e);
     i.length > 0 && ((i[0][0] !== i[i.length - 1][0] || i[0][1] !== i[i.length - 1][1]) && i.push(i[0]), i.length >= 4 && t.push(i));
   }
   return t;
 }
-function Ai(n, e = {}) {
+function Oi(n, e = {}) {
   const t = Number(n[0]), r = Number(n[1]), i = Number(n[2]), a = Number(n[3]);
   if (n.length === 6)
     throw new Error(
@@ -3230,7 +3665,7 @@ function Ai(n, e = {}) {
     { bbox: n, id: e.id }
   );
 }
-var J0 = class {
+var cv = class {
   constructor(n) {
     this.points = n.points || [], this.duration = n.duration || 1e4, this.sharpness = n.sharpness || 0.85, this.centers = [], this.controls = [], this.stepLength = n.stepLength || 60, this.length = this.points.length, this.delay = 0;
     for (let e = 0; e < this.length; e++)
@@ -3305,7 +3740,7 @@ var J0 = class {
     if (t >= 1)
       return this.points[this.length - 1];
     const r = Math.floor((this.points.length - 1) * t), i = (this.length - 1) * t - r;
-    return Q0(
+    return hv(
       i,
       this.points[r],
       this.controls[r][1],
@@ -3314,15 +3749,15 @@ var J0 = class {
     );
   }
 };
-function Q0(n, e, t, r, i) {
-  const a = j0(n);
+function hv(n, e, t, r, i) {
+  const a = fv(n);
   return {
     x: i.x * a[0] + r.x * a[1] + t.x * a[2] + e.x * a[3],
     y: i.y * a[0] + r.y * a[1] + t.y * a[2] + e.y * a[3],
     z: i.z * a[0] + r.z * a[1] + t.z * a[2] + e.z * a[3]
   };
 }
-function j0(n) {
+function fv(n) {
   const e = n * n;
   return [
     e * n,
@@ -3331,8 +3766,8 @@ function j0(n) {
     (1 - n) * (1 - n) * (1 - n)
   ];
 }
-function ev(n, e = {}) {
-  const t = e.resolution || 1e4, r = e.sharpness || 0.85, i = [], a = He(n).coordinates.map((g) => ({ x: g[0], y: g[1] })), l = new J0({
+function gv(n, e = {}) {
+  const t = e.resolution || 1e4, r = e.sharpness || 0.85, i = [], a = Ye(n).coordinates.map((g) => ({ x: g[0], y: g[1] })), l = new cv({
     duration: t,
     points: a,
     sharpness: r
@@ -3342,17 +3777,17 @@ function ev(n, e = {}) {
   };
   for (var f = 0; f < l.duration; f += 10)
     u(f);
-  return u(l.duration), ke(i, e.properties);
+  return u(l.duration), Ie(i, e.properties);
 }
-function Ls(n) {
+function Ps(n) {
   const e = me(n);
   let t = 0, r = 1, i, a;
   for (; r < e.length; )
     i = a || e[0], a = e[r], t += (a[0] - i[0]) * (a[1] + i[1]), r++;
   return t > 0;
 }
-function tv(n) {
-  const e = He(n).coordinates;
+function dv(n) {
+  const e = Ye(n).coordinates;
   if (e[0].length <= 4)
     return !1;
   let t = !1;
@@ -3366,8 +3801,8 @@ function tv(n) {
   }
   return !1;
 }
-const wn = 11102230246251565e-32, ht = 134217729, nv = (3 + 8 * wn) * wn;
-function Do(n, e, t, r, i) {
+const xn = 11102230246251565e-32, ft = 134217729, mv = (3 + 8 * xn) * xn;
+function Bo(n, e, t, r, i) {
   let a, l, u, f, g = e[0], d = r[0], m = 0, p = 0;
   d > g == d > -g ? (a = g, g = e[++m]) : (a = d, d = r[++p]);
   let y = 0;
@@ -3380,46 +3815,46 @@ function Do(n, e, t, r, i) {
     l = a + d, f = l - a, u = a - (l - f) + (d - f), d = r[++p], a = l, u !== 0 && (i[y++] = u);
   return (a !== 0 || y === 0) && (i[y++] = a), y;
 }
-function rv(n, e) {
+function vv(n, e) {
   let t = e[0];
   for (let r = 1; r < n; r++) t += e[r];
   return t;
 }
-function Ri(n) {
+function Di(n) {
   return new Float64Array(n);
 }
-const iv = (3 + 16 * wn) * wn, sv = (2 + 12 * wn) * wn, ov = (9 + 64 * wn) * wn * wn, cr = Ri(4), ku = Ri(8), Iu = Ri(12), Mu = Ri(16), yt = Ri(4);
-function av(n, e, t, r, i, a, l) {
-  let u, f, g, d, m, p, y, w, b, M, k, S, N, P, A, B, F, C;
+const pv = (3 + 16 * xn) * xn, yv = (2 + 12 * xn) * xn, _v = (9 + 64 * xn) * xn * xn, hr = Di(4), Nu = Di(8), Pu = Di(12), Tu = Di(16), _t = Di(4);
+function wv(n, e, t, r, i, a, l) {
+  let u, f, g, d, m, p, y, w, b, k, I, S, P, N, A, B, F, C;
   const L = n - i, T = t - i, D = e - a, z = r - a;
-  P = L * z, p = ht * L, y = p - (p - L), w = L - y, p = ht * z, b = p - (p - z), M = z - b, A = w * M - (P - y * b - w * b - y * M), B = D * T, p = ht * D, y = p - (p - D), w = D - y, p = ht * T, b = p - (p - T), M = T - b, F = w * M - (B - y * b - w * b - y * M), k = A - F, m = A - k, cr[0] = A - (k + m) + (m - F), S = P + k, m = S - P, N = P - (S - m) + (k - m), k = N - B, m = N - k, cr[1] = N - (k + m) + (m - B), C = S + k, m = C - S, cr[2] = S - (C - m) + (k - m), cr[3] = C;
-  let U = rv(4, cr), X = sv * l;
-  if (U >= X || -U >= X || (m = n - L, u = n - (L + m) + (m - i), m = t - T, g = t - (T + m) + (m - i), m = e - D, f = e - (D + m) + (m - a), m = r - z, d = r - (z + m) + (m - a), u === 0 && f === 0 && g === 0 && d === 0) || (X = ov * l + nv * Math.abs(U), U += L * d + z * u - (D * g + T * f), U >= X || -U >= X)) return U;
-  P = u * z, p = ht * u, y = p - (p - u), w = u - y, p = ht * z, b = p - (p - z), M = z - b, A = w * M - (P - y * b - w * b - y * M), B = f * T, p = ht * f, y = p - (p - f), w = f - y, p = ht * T, b = p - (p - T), M = T - b, F = w * M - (B - y * b - w * b - y * M), k = A - F, m = A - k, yt[0] = A - (k + m) + (m - F), S = P + k, m = S - P, N = P - (S - m) + (k - m), k = N - B, m = N - k, yt[1] = N - (k + m) + (m - B), C = S + k, m = C - S, yt[2] = S - (C - m) + (k - m), yt[3] = C;
-  const O = Do(4, cr, 4, yt, ku);
-  P = L * d, p = ht * L, y = p - (p - L), w = L - y, p = ht * d, b = p - (p - d), M = d - b, A = w * M - (P - y * b - w * b - y * M), B = D * g, p = ht * D, y = p - (p - D), w = D - y, p = ht * g, b = p - (p - g), M = g - b, F = w * M - (B - y * b - w * b - y * M), k = A - F, m = A - k, yt[0] = A - (k + m) + (m - F), S = P + k, m = S - P, N = P - (S - m) + (k - m), k = N - B, m = N - k, yt[1] = N - (k + m) + (m - B), C = S + k, m = C - S, yt[2] = S - (C - m) + (k - m), yt[3] = C;
-  const H = Do(O, ku, 4, yt, Iu);
-  P = u * d, p = ht * u, y = p - (p - u), w = u - y, p = ht * d, b = p - (p - d), M = d - b, A = w * M - (P - y * b - w * b - y * M), B = f * g, p = ht * f, y = p - (p - f), w = f - y, p = ht * g, b = p - (p - g), M = g - b, F = w * M - (B - y * b - w * b - y * M), k = A - F, m = A - k, yt[0] = A - (k + m) + (m - F), S = P + k, m = S - P, N = P - (S - m) + (k - m), k = N - B, m = N - k, yt[1] = N - (k + m) + (m - B), C = S + k, m = C - S, yt[2] = S - (C - m) + (k - m), yt[3] = C;
-  const q = Do(H, Iu, 4, yt, Mu);
-  return Mu[q - 1];
+  N = L * z, p = ft * L, y = p - (p - L), w = L - y, p = ft * z, b = p - (p - z), k = z - b, A = w * k - (N - y * b - w * b - y * k), B = D * T, p = ft * D, y = p - (p - D), w = D - y, p = ft * T, b = p - (p - T), k = T - b, F = w * k - (B - y * b - w * b - y * k), I = A - F, m = A - I, hr[0] = A - (I + m) + (m - F), S = N + I, m = S - N, P = N - (S - m) + (I - m), I = P - B, m = P - I, hr[1] = P - (I + m) + (m - B), C = S + I, m = C - S, hr[2] = S - (C - m) + (I - m), hr[3] = C;
+  let q = vv(4, hr), X = yv * l;
+  if (q >= X || -q >= X || (m = n - L, u = n - (L + m) + (m - i), m = t - T, g = t - (T + m) + (m - i), m = e - D, f = e - (D + m) + (m - a), m = r - z, d = r - (z + m) + (m - a), u === 0 && f === 0 && g === 0 && d === 0) || (X = _v * l + mv * Math.abs(q), q += L * d + z * u - (D * g + T * f), q >= X || -q >= X)) return q;
+  N = u * z, p = ft * u, y = p - (p - u), w = u - y, p = ft * z, b = p - (p - z), k = z - b, A = w * k - (N - y * b - w * b - y * k), B = f * T, p = ft * f, y = p - (p - f), w = f - y, p = ft * T, b = p - (p - T), k = T - b, F = w * k - (B - y * b - w * b - y * k), I = A - F, m = A - I, _t[0] = A - (I + m) + (m - F), S = N + I, m = S - N, P = N - (S - m) + (I - m), I = P - B, m = P - I, _t[1] = P - (I + m) + (m - B), C = S + I, m = C - S, _t[2] = S - (C - m) + (I - m), _t[3] = C;
+  const O = Bo(4, hr, 4, _t, Nu);
+  N = L * d, p = ft * L, y = p - (p - L), w = L - y, p = ft * d, b = p - (p - d), k = d - b, A = w * k - (N - y * b - w * b - y * k), B = D * g, p = ft * D, y = p - (p - D), w = D - y, p = ft * g, b = p - (p - g), k = g - b, F = w * k - (B - y * b - w * b - y * k), I = A - F, m = A - I, _t[0] = A - (I + m) + (m - F), S = N + I, m = S - N, P = N - (S - m) + (I - m), I = P - B, m = P - I, _t[1] = P - (I + m) + (m - B), C = S + I, m = C - S, _t[2] = S - (C - m) + (I - m), _t[3] = C;
+  const U = Bo(O, Nu, 4, _t, Pu);
+  N = u * d, p = ft * u, y = p - (p - u), w = u - y, p = ft * d, b = p - (p - d), k = d - b, A = w * k - (N - y * b - w * b - y * k), B = f * g, p = ft * f, y = p - (p - f), w = f - y, p = ft * g, b = p - (p - g), k = g - b, F = w * k - (B - y * b - w * b - y * k), I = A - F, m = A - I, _t[0] = A - (I + m) + (m - F), S = N + I, m = S - N, P = N - (S - m) + (I - m), I = P - B, m = P - I, _t[1] = P - (I + m) + (m - B), C = S + I, m = C - S, _t[2] = S - (C - m) + (I - m), _t[3] = C;
+  const H = Bo(U, Pu, 4, _t, Tu);
+  return Tu[H - 1];
 }
-function lv(n, e, t, r, i, a) {
+function xv(n, e, t, r, i, a) {
   const l = (e - a) * (t - i), u = (n - i) * (r - a), f = l - u, g = Math.abs(l + u);
-  return Math.abs(f) >= iv * g ? f : -av(n, e, t, r, i, a, g);
+  return Math.abs(f) >= pv * g ? f : -wv(n, e, t, r, i, a, g);
 }
-function uv(n, e) {
+function Ev(n, e) {
   var t, r, i = 0, a, l, u, f, g, d, m, p = n[0], y = n[1], w = e.length;
   for (t = 0; t < w; t++) {
     r = 0;
-    var b = e[t], M = b.length - 1;
-    if (d = b[0], d[0] !== b[M][0] && d[1] !== b[M][1])
+    var b = e[t], k = b.length - 1;
+    if (d = b[0], d[0] !== b[k][0] && d[1] !== b[k][1])
       throw new Error("First and last coordinates in a ring must be the same");
-    for (l = d[0] - p, u = d[1] - y, r; r < M; r++) {
+    for (l = d[0] - p, u = d[1] - y, r; r < k; r++) {
       if (m = b[r + 1], f = m[0] - p, g = m[1] - y, u === 0 && g === 0) {
         if (f <= 0 && l >= 0 || l <= 0 && f >= 0)
           return 0;
       } else if (g >= 0 && u <= 0 || g <= 0 && u >= 0) {
-        if (a = lv(l, f, u, g, 0, 0), a === 0)
+        if (a = xv(l, f, u, g, 0, 0), a === 0)
           return 0;
         (a > 0 && g > 0 && u <= 0 || a < 0 && g <= 0 && u > 0) && i++;
       }
@@ -3433,26 +3868,26 @@ function xe(n, e, t = {}) {
     throw new Error("point is required");
   if (!e)
     throw new Error("polygon is required");
-  const r = Me(n), i = He(e), a = i.type, l = e.bbox;
+  const r = Me(n), i = Ye(e), a = i.type, l = e.bbox;
   let u = i.coordinates;
-  if (l && cv(r, l) === !1)
+  if (l && bv(r, l) === !1)
     return !1;
   a === "Polygon" && (u = [u]);
   for (var f = 0; f < u.length; ++f) {
-    const g = uv(r, u[f]);
+    const g = Ev(r, u[f]);
     if (g === 0 && !t.ignoreBoundary) return !0;
     if (g) return !0;
   }
   return !1;
 }
-function cv(n, e) {
+function bv(n, e) {
   return e[0] <= n[0] && e[1] <= n[1] && e[2] >= n[0] && e[3] >= n[1];
 }
 function Se(n, e, t = {}) {
   const r = Me(n), i = me(e);
   for (let a = 0; a < i.length - 1; a++) {
     let l = !1;
-    if (t.ignoreEndVertices && (a === 0 && (l = "start"), a === i.length - 2 && (l = "end"), a === 0 && a + 1 === i.length - 1 && (l = "both")), hv(
+    if (t.ignoreEndVertices && (a === 0 && (l = "start"), a === i.length - 2 && (l = "end"), a === 0 && a + 1 === i.length - 1 && (l = "both")), Cv(
       i[a],
       i[a + 1],
       r,
@@ -3463,7 +3898,7 @@ function Se(n, e, t = {}) {
   }
   return !1;
 }
-function hv(n, e, t, r, i) {
+function Cv(n, e, t, r, i) {
   const a = t[0], l = t[1], u = n[0], f = n[1], g = e[0], d = e[1], m = t[0] - u, p = t[1] - f, y = g - u, w = d - f, b = m * w - p * y;
   if (i !== null) {
     if (Math.abs(b) > i)
@@ -3482,31 +3917,31 @@ function hv(n, e, t, r, i) {
   } else return Math.abs(y) >= Math.abs(w) ? y > 0 ? u <= a && a <= g : g <= a && a <= u : w > 0 ? f <= l && l <= d : d <= l && l <= f;
   return !1;
 }
-function fv(n, e, t, r, i) {
-  Lf(n, e, t || 0, r || n.length - 1, i || gv);
+function Sv(n, e, t, r, i) {
+  Tf(n, e, t || 0, r || n.length - 1, i || Iv);
 }
-function Lf(n, e, t, r, i) {
+function Tf(n, e, t, r, i) {
   for (; r > t; ) {
     if (r - t > 600) {
       var a = r - t + 1, l = e - t + 1, u = Math.log(a), f = 0.5 * Math.exp(2 * u / 3), g = 0.5 * Math.sqrt(u * f * (a - f) / a) * (l - a / 2 < 0 ? -1 : 1), d = Math.max(t, Math.floor(e - l * f / a + g)), m = Math.min(r, Math.floor(e + (a - l) * f / a + g));
-      Lf(n, e, d, m, i);
+      Tf(n, e, d, m, i);
     }
     var p = n[e], y = t, w = r;
-    for ($r(n, t, e), i(n[r], p) > 0 && $r(n, t, r); y < w; ) {
-      for ($r(n, y, w), y++, w--; i(n[y], p) < 0; ) y++;
+    for (Zr(n, t, e), i(n[r], p) > 0 && Zr(n, t, r); y < w; ) {
+      for (Zr(n, y, w), y++, w--; i(n[y], p) < 0; ) y++;
       for (; i(n[w], p) > 0; ) w--;
     }
-    i(n[t], p) === 0 ? $r(n, t, w) : (w++, $r(n, w, r)), w <= e && (t = w + 1), e <= w && (r = w - 1);
+    i(n[t], p) === 0 ? Zr(n, t, w) : (w++, Zr(n, w, r)), w <= e && (t = w + 1), e <= w && (r = w - 1);
   }
 }
-function $r(n, e, t) {
+function Zr(n, e, t) {
   var r = n[e];
   n[e] = n[t], n[t] = r;
 }
-function gv(n, e) {
+function Iv(n, e) {
   return n < e ? -1 : n > e ? 1 : 0;
 }
-let Dr = class {
+let Fr = class {
   constructor(e = 9) {
     this._maxEntries = Math.max(4, e), this._minEntries = Math.max(2, Math.ceil(this._maxEntries * 0.4)), this.clear();
   }
@@ -3516,12 +3951,12 @@ let Dr = class {
   search(e) {
     let t = this.data;
     const r = [];
-    if (!Ji(e, t)) return r;
+    if (!ji(e, t)) return r;
     const i = this.toBBox, a = [];
     for (; t; ) {
       for (let l = 0; l < t.children.length; l++) {
         const u = t.children[l], f = t.leaf ? i(u) : u;
-        Ji(e, f) && (t.leaf ? r.push(u) : Bo(e, f) ? this._all(u, r) : a.push(u));
+        ji(e, f) && (t.leaf ? r.push(u) : Go(e, f) ? this._all(u, r) : a.push(u));
       }
       t = a.pop();
     }
@@ -3529,13 +3964,13 @@ let Dr = class {
   }
   collides(e) {
     let t = this.data;
-    if (!Ji(e, t)) return !1;
+    if (!ji(e, t)) return !1;
     const r = [];
     for (; t; ) {
       for (let i = 0; i < t.children.length; i++) {
         const a = t.children[i], l = t.leaf ? this.toBBox(a) : a;
-        if (Ji(e, l)) {
-          if (t.leaf || Bo(e, l)) return !0;
+        if (ji(e, l)) {
+          if (t.leaf || Go(e, l)) return !0;
           r.push(a);
         }
       }
@@ -3568,7 +4003,7 @@ let Dr = class {
     return e && this._insert(e, this.data.height - 1), this;
   }
   clear() {
-    return this.data = vr([]), this;
+    return this.data = pr([]), this;
   }
   remove(e, t) {
     if (!e) return this;
@@ -3577,11 +4012,11 @@ let Dr = class {
     let u, f, g;
     for (; r || a.length; ) {
       if (r || (r = a.pop(), f = a[a.length - 1], u = l.pop(), g = !0), r.leaf) {
-        const d = dv(e, r.children, t);
+        const d = kv(e, r.children, t);
         if (d !== -1)
           return r.children.splice(d, 1), a.push(r), this._condense(a), this;
       }
-      !g && !r.leaf && Bo(r, i) ? (a.push(r), l.push(u), u = 0, f = r, r = r.children[0]) : f ? (u++, r = f.children[u], g = !1) : r = null;
+      !g && !r.leaf && Go(r, i) ? (a.push(r), l.push(u), u = 0, f = r, r = r.children[0]) : f ? (u++, r = f.children[u], g = !1) : r = null;
     }
     return this;
   }
@@ -3610,25 +4045,25 @@ let Dr = class {
     const a = r - t + 1;
     let l = this._maxEntries, u;
     if (a <= l)
-      return u = vr(e.slice(t, r + 1)), hr(u, this.toBBox), u;
-    i || (i = Math.ceil(Math.log(a) / Math.log(l)), l = Math.ceil(a / Math.pow(l, i - 1))), u = vr([]), u.leaf = !1, u.height = i;
+      return u = pr(e.slice(t, r + 1)), fr(u, this.toBBox), u;
+    i || (i = Math.ceil(Math.log(a) / Math.log(l)), l = Math.ceil(a / Math.pow(l, i - 1))), u = pr([]), u.leaf = !1, u.height = i;
     const f = Math.ceil(a / l), g = f * Math.ceil(Math.sqrt(l));
-    Lu(e, t, r, g, this.compareMinX);
+    Au(e, t, r, g, this.compareMinX);
     for (let d = t; d <= r; d += g) {
       const m = Math.min(d + g - 1, r);
-      Lu(e, d, m, f, this.compareMinY);
+      Au(e, d, m, f, this.compareMinY);
       for (let p = d; p <= m; p += f) {
         const y = Math.min(p + f - 1, m);
         u.children.push(this._build(e, p, y, i - 1));
       }
     }
-    return hr(u, this.toBBox), u;
+    return fr(u, this.toBBox), u;
   }
   _chooseSubtree(e, t, r, i) {
     for (; i.push(t), !(t.leaf || i.length - 1 === r); ) {
       let a = 1 / 0, l = 1 / 0, u;
       for (let f = 0; f < t.children.length; f++) {
-        const g = t.children[f], d = Fo(g), m = pv(e, g) - d;
+        const g = t.children[f], d = zo(g), m = Nv(e, g) - d;
         m < l ? (l = m, a = d < a ? d : a, u = g) : m === l && d < a && (a = d, u = g);
       }
       t = u || t.children[0];
@@ -3637,7 +4072,7 @@ let Dr = class {
   }
   _insert(e, t, r) {
     const i = r ? e : this.toBBox(e), a = [], l = this._chooseSubtree(i, this.data, t, a);
-    for (l.children.push(e), ri(l, i); t >= 0 && a[t].children.length > this._maxEntries; )
+    for (l.children.push(e), si(l, i); t >= 0 && a[t].children.length > this._maxEntries; )
       this._split(a, t), t--;
     this._adjustParentBBoxes(i, a, t);
   }
@@ -3645,95 +4080,95 @@ let Dr = class {
   _split(e, t) {
     const r = e[t], i = r.children.length, a = this._minEntries;
     this._chooseSplitAxis(r, a, i);
-    const l = this._chooseSplitIndex(r, a, i), u = vr(r.children.splice(l, r.children.length - l));
-    u.height = r.height, u.leaf = r.leaf, hr(r, this.toBBox), hr(u, this.toBBox), t ? e[t - 1].children.push(u) : this._splitRoot(r, u);
+    const l = this._chooseSplitIndex(r, a, i), u = pr(r.children.splice(l, r.children.length - l));
+    u.height = r.height, u.leaf = r.leaf, fr(r, this.toBBox), fr(u, this.toBBox), t ? e[t - 1].children.push(u) : this._splitRoot(r, u);
   }
   _splitRoot(e, t) {
-    this.data = vr([e, t]), this.data.height = e.height + 1, this.data.leaf = !1, hr(this.data, this.toBBox);
+    this.data = pr([e, t]), this.data.height = e.height + 1, this.data.leaf = !1, fr(this.data, this.toBBox);
   }
   _chooseSplitIndex(e, t, r) {
     let i, a = 1 / 0, l = 1 / 0;
     for (let u = t; u <= r - t; u++) {
-      const f = ni(e, 0, u, this.toBBox), g = ni(e, u, r, this.toBBox), d = yv(f, g), m = Fo(f) + Fo(g);
+      const f = ii(e, 0, u, this.toBBox), g = ii(e, u, r, this.toBBox), d = Pv(f, g), m = zo(f) + zo(g);
       d < a ? (a = d, i = u, l = m < l ? m : l) : d === a && m < l && (l = m, i = u);
     }
     return i || r - t;
   }
   // sorts node children by the best axis for split
   _chooseSplitAxis(e, t, r) {
-    const i = e.leaf ? this.compareMinX : mv, a = e.leaf ? this.compareMinY : vv, l = this._allDistMargin(e, t, r, i), u = this._allDistMargin(e, t, r, a);
+    const i = e.leaf ? this.compareMinX : Mv, a = e.leaf ? this.compareMinY : Lv, l = this._allDistMargin(e, t, r, i), u = this._allDistMargin(e, t, r, a);
     l < u && e.children.sort(i);
   }
   // total margin of all possible split distributions where each node is at least m full
   _allDistMargin(e, t, r, i) {
     e.children.sort(i);
-    const a = this.toBBox, l = ni(e, 0, t, a), u = ni(e, r - t, r, a);
-    let f = Ki(l) + Ki(u);
+    const a = this.toBBox, l = ii(e, 0, t, a), u = ii(e, r - t, r, a);
+    let f = Qi(l) + Qi(u);
     for (let g = t; g < r - t; g++) {
       const d = e.children[g];
-      ri(l, e.leaf ? a(d) : d), f += Ki(l);
+      si(l, e.leaf ? a(d) : d), f += Qi(l);
     }
     for (let g = r - t - 1; g >= t; g--) {
       const d = e.children[g];
-      ri(u, e.leaf ? a(d) : d), f += Ki(u);
+      si(u, e.leaf ? a(d) : d), f += Qi(u);
     }
     return f;
   }
   _adjustParentBBoxes(e, t, r) {
     for (let i = r; i >= 0; i--)
-      ri(t[i], e);
+      si(t[i], e);
   }
   _condense(e) {
     for (let t = e.length - 1, r; t >= 0; t--)
-      e[t].children.length === 0 ? t > 0 ? (r = e[t - 1].children, r.splice(r.indexOf(e[t]), 1)) : this.clear() : hr(e[t], this.toBBox);
+      e[t].children.length === 0 ? t > 0 ? (r = e[t - 1].children, r.splice(r.indexOf(e[t]), 1)) : this.clear() : fr(e[t], this.toBBox);
   }
 };
-function dv(n, e, t) {
+function kv(n, e, t) {
   if (!t) return e.indexOf(n);
   for (let r = 0; r < e.length; r++)
     if (t(n, e[r])) return r;
   return -1;
 }
-function hr(n, e) {
-  ni(n, 0, n.children.length, e, n);
+function fr(n, e) {
+  ii(n, 0, n.children.length, e, n);
 }
-function ni(n, e, t, r, i) {
-  i || (i = vr(null)), i.minX = 1 / 0, i.minY = 1 / 0, i.maxX = -1 / 0, i.maxY = -1 / 0;
+function ii(n, e, t, r, i) {
+  i || (i = pr(null)), i.minX = 1 / 0, i.minY = 1 / 0, i.maxX = -1 / 0, i.maxY = -1 / 0;
   for (let a = e; a < t; a++) {
     const l = n.children[a];
-    ri(i, n.leaf ? r(l) : l);
+    si(i, n.leaf ? r(l) : l);
   }
   return i;
 }
-function ri(n, e) {
+function si(n, e) {
   return n.minX = Math.min(n.minX, e.minX), n.minY = Math.min(n.minY, e.minY), n.maxX = Math.max(n.maxX, e.maxX), n.maxY = Math.max(n.maxY, e.maxY), n;
 }
-function mv(n, e) {
+function Mv(n, e) {
   return n.minX - e.minX;
 }
-function vv(n, e) {
+function Lv(n, e) {
   return n.minY - e.minY;
 }
-function Fo(n) {
+function zo(n) {
   return (n.maxX - n.minX) * (n.maxY - n.minY);
 }
-function Ki(n) {
+function Qi(n) {
   return n.maxX - n.minX + (n.maxY - n.minY);
 }
-function pv(n, e) {
+function Nv(n, e) {
   return (Math.max(e.maxX, n.maxX) - Math.min(e.minX, n.minX)) * (Math.max(e.maxY, n.maxY) - Math.min(e.minY, n.minY));
 }
-function yv(n, e) {
+function Pv(n, e) {
   const t = Math.max(n.minX, e.minX), r = Math.max(n.minY, e.minY), i = Math.min(n.maxX, e.maxX), a = Math.min(n.maxY, e.maxY);
   return Math.max(0, i - t) * Math.max(0, a - r);
 }
-function Bo(n, e) {
+function Go(n, e) {
   return n.minX <= e.minX && n.minY <= e.minY && e.maxX <= n.maxX && e.maxY <= n.maxY;
 }
-function Ji(n, e) {
+function ji(n, e) {
   return e.minX <= n.maxX && e.minY <= n.maxY && e.maxX >= n.minX && e.maxY >= n.minY;
 }
-function vr(n) {
+function pr(n) {
   return {
     children: n,
     height: 1,
@@ -3744,26 +4179,26 @@ function vr(n) {
     maxY: -1 / 0
   };
 }
-function Lu(n, e, t, r, i) {
+function Au(n, e, t, r, i) {
   const a = [e, t];
   for (; a.length; ) {
     if (t = a.pop(), e = a.pop(), t - e <= r) continue;
     const l = e + Math.ceil((t - e) / r / 2) * r;
-    fv(n, l, e, t, i), a.push(e, l, l, t);
+    Sv(n, l, e, t, i), a.push(e, l, l, t);
   }
 }
-const _v = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Tv = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: Dr
+  default: Fr
 }, Symbol.toStringTag, { value: "Module" }));
-function zo(n) {
+function qo(n) {
   var e;
   if (n.bbox) e = n.bbox;
   else if (Array.isArray(n) && n.length === 4) e = n;
   else if (Array.isArray(n) && n.length === 6)
     e = [n[0], n[1], n[3], n[4]];
-  else if (n.type === "Feature") e = qe(n);
-  else if (n.type === "FeatureCollection") e = qe(n);
+  else if (n.type === "Feature") e = He(n);
+  else if (n.type === "FeatureCollection") e = He(n);
   else throw new Error("invalid geojson");
   return {
     minX: e[0],
@@ -3772,9 +4207,9 @@ function zo(n) {
     maxY: e[3]
   };
 }
-var wv = class {
+var Av = class {
   constructor(e = 9) {
-    this.tree = new Dr(e), this.tree.toBBox = zo;
+    this.tree = new Fr(e), this.tree.toBBox = qo;
   }
   /**
    * [insert](https://github.com/mourner/rbush#data-format)
@@ -3788,7 +4223,7 @@ var wv = class {
    */
   insert(e) {
     if (e.type !== "Feature") throw new Error("invalid feature");
-    return e.bbox = e.bbox ? e.bbox : qe(e), this.tree.insert(e), this;
+    return e.bbox = e.bbox ? e.bbox : He(e), this.tree.insert(e), this;
   }
   /**
    * [load](https://github.com/mourner/rbush#bulk-inserting-data)
@@ -3807,10 +4242,10 @@ var wv = class {
     var t = [];
     return Array.isArray(e) ? e.forEach(function(r) {
       if (r.type !== "Feature") throw new Error("invalid features");
-      r.bbox = r.bbox ? r.bbox : qe(r), t.push(r);
+      r.bbox = r.bbox ? r.bbox : He(r), t.push(r);
     }) : Le(e, function(r) {
       if (r.type !== "Feature") throw new Error("invalid features");
-      r.bbox = r.bbox ? r.bbox : qe(r), t.push(r);
+      r.bbox = r.bbox ? r.bbox : He(r), t.push(r);
     }), this.tree.load(t), this;
   }
   /**
@@ -3827,7 +4262,7 @@ var wv = class {
    */
   remove(e, t) {
     if (e.type !== "Feature") throw new Error("invalid feature");
-    return e.bbox = e.bbox ? e.bbox : qe(e), this.tree.remove(e, t), this;
+    return e.bbox = e.bbox ? e.bbox : He(e), this.tree.remove(e, t), this;
   }
   /**
    * [clear](https://github.com/mourner/rbush#removing-data)
@@ -3852,7 +4287,7 @@ var wv = class {
    * tree.search(poly);
    */
   search(e) {
-    var t = this.tree.search(zo(e));
+    var t = this.tree.search(qo(e));
     return ce(t);
   }
   /**
@@ -3867,7 +4302,7 @@ var wv = class {
    * tree.collides(poly);
    */
   collides(e) {
-    return this.tree.collides(zo(e));
+    return this.tree.collides(qo(e));
   }
   /**
    * [all](https://github.com/mourner/rbush#search)
@@ -3924,10 +4359,10 @@ var wv = class {
     return this.tree.fromJSON(e), this;
   }
 };
-function $s(n) {
-  return new wv(n);
+function Ks(n) {
+  return new Av(n);
 }
-function Pf(n, e) {
+function Af(n, e) {
   if (e = e ?? {}, !Oe(e)) throw new Error("options is invalid");
   var t = e.precision, r = e.coordinates, i = e.mutate;
   if (t = t == null || isNaN(t) ? 6 : t, r = r == null || isNaN(r) ? 3 : r, !n) throw new Error("<geojson> is required");
@@ -3937,25 +4372,25 @@ function Pf(n, e) {
     throw new Error("<coordinates> must be a number");
   (i === !1 || i === void 0) && (n = JSON.parse(JSON.stringify(n)));
   var a = Math.pow(10, t);
-  return Ve(n, function(l) {
-    xv(l, a, r);
+  return We(n, function(l) {
+    Rv(l, a, r);
   }), n;
 }
-function xv(n, e, t) {
+function Rv(n, e, t) {
   n.length > t && n.splice(t, n.length);
   for (var r = 0; r < n.length; r++)
     n[r] = Math.round(n[r] * e) / e;
   return n;
 }
-function wi(n) {
+function Ei(n) {
   if (!n)
     throw new Error("geojson is required");
   const e = [];
-  return ot(n, (t) => {
-    Ev(t, e);
+  return at(n, (t) => {
+    Ov(t, e);
   }), ce(e);
 }
-function Ev(n, e) {
+function Ov(n, e) {
   let t = [];
   const r = n.geometry;
   if (r !== null) {
@@ -3967,25 +4402,25 @@ function Ev(n, e) {
         t = [me(r)];
     }
     t.forEach((i) => {
-      bv(i, n.properties).forEach((l) => {
+      Dv(i, n.properties).forEach((l) => {
         l.id = e.length, e.push(l);
       });
     });
   }
 }
-function bv(n, e) {
+function Dv(n, e) {
   const t = [];
   return n.reduce((r, i) => {
-    const a = ke([r, i], e);
-    return a.bbox = Cv(r, i), t.push(a), i;
+    const a = Ie([r, i], e);
+    return a.bbox = Fv(r, i), t.push(a), i;
   }), t;
 }
-function Cv(n, e) {
+function Fv(n, e) {
   const t = n[0], r = n[1], i = e[0], a = e[1], l = t < i ? t : i, u = r < a ? r : a, f = t > i ? t : i, g = r > a ? r : a;
   return [l, u, f, g];
 }
-class el {
-  constructor(e = [], t = Sv) {
+class nl {
+  constructor(e = [], t = Bv) {
     if (this.data = e, this.length = this.data.length, this.compare = t, this.length > 0)
       for (let r = (this.length >> 1) - 1; r >= 0; r--) this._down(r);
   }
@@ -4020,14 +4455,14 @@ class el {
     t[e] = a;
   }
 }
-function Sv(n, e) {
+function Bv(n, e) {
   return n < e ? -1 : n > e ? 1 : 0;
 }
-const kv = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const zv = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: el
-}, Symbol.toStringTag, { value: "Module" })), xn = 11102230246251565e-32, ft = 134217729, Iv = (3 + 8 * xn) * xn;
-function Go(n, e, t, r, i) {
+  default: nl
+}, Symbol.toStringTag, { value: "Module" })), En = 11102230246251565e-32, gt = 134217729, Gv = (3 + 8 * En) * En;
+function Ho(n, e, t, r, i) {
   let a, l, u, f, g = e[0], d = r[0], m = 0, p = 0;
   d > g == d > -g ? (a = g, g = e[++m]) : (a = d, d = r[++p]);
   let y = 0;
@@ -4040,71 +4475,71 @@ function Go(n, e, t, r, i) {
     l = a + d, f = l - a, u = a - (l - f) + (d - f), d = r[++p], a = l, u !== 0 && (i[y++] = u);
   return (a !== 0 || y === 0) && (i[y++] = a), y;
 }
-function Mv(n, e) {
+function qv(n, e) {
   let t = e[0];
   for (let r = 1; r < n; r++) t += e[r];
   return t;
 }
-function Oi(n) {
+function Fi(n) {
   return new Float64Array(n);
 }
-const Lv = (3 + 16 * xn) * xn, Pv = (2 + 12 * xn) * xn, Nv = (9 + 64 * xn) * xn * xn, fr = Oi(4), Pu = Oi(8), Nu = Oi(12), Tu = Oi(16), _t = Oi(4);
-function Tv(n, e, t, r, i, a, l) {
-  let u, f, g, d, m, p, y, w, b, M, k, S, N, P, A, B, F, C;
+const Hv = (3 + 16 * En) * En, Uv = (2 + 12 * En) * En, Yv = (9 + 64 * En) * En * En, gr = Fi(4), Ru = Fi(8), Ou = Fi(12), Du = Fi(16), wt = Fi(4);
+function Xv(n, e, t, r, i, a, l) {
+  let u, f, g, d, m, p, y, w, b, k, I, S, P, N, A, B, F, C;
   const L = n - i, T = t - i, D = e - a, z = r - a;
-  P = L * z, p = ft * L, y = p - (p - L), w = L - y, p = ft * z, b = p - (p - z), M = z - b, A = w * M - (P - y * b - w * b - y * M), B = D * T, p = ft * D, y = p - (p - D), w = D - y, p = ft * T, b = p - (p - T), M = T - b, F = w * M - (B - y * b - w * b - y * M), k = A - F, m = A - k, fr[0] = A - (k + m) + (m - F), S = P + k, m = S - P, N = P - (S - m) + (k - m), k = N - B, m = N - k, fr[1] = N - (k + m) + (m - B), C = S + k, m = C - S, fr[2] = S - (C - m) + (k - m), fr[3] = C;
-  let U = Mv(4, fr), X = Pv * l;
-  if (U >= X || -U >= X || (m = n - L, u = n - (L + m) + (m - i), m = t - T, g = t - (T + m) + (m - i), m = e - D, f = e - (D + m) + (m - a), m = r - z, d = r - (z + m) + (m - a), u === 0 && f === 0 && g === 0 && d === 0) || (X = Nv * l + Iv * Math.abs(U), U += L * d + z * u - (D * g + T * f), U >= X || -U >= X)) return U;
-  P = u * z, p = ft * u, y = p - (p - u), w = u - y, p = ft * z, b = p - (p - z), M = z - b, A = w * M - (P - y * b - w * b - y * M), B = f * T, p = ft * f, y = p - (p - f), w = f - y, p = ft * T, b = p - (p - T), M = T - b, F = w * M - (B - y * b - w * b - y * M), k = A - F, m = A - k, _t[0] = A - (k + m) + (m - F), S = P + k, m = S - P, N = P - (S - m) + (k - m), k = N - B, m = N - k, _t[1] = N - (k + m) + (m - B), C = S + k, m = C - S, _t[2] = S - (C - m) + (k - m), _t[3] = C;
-  const O = Go(4, fr, 4, _t, Pu);
-  P = L * d, p = ft * L, y = p - (p - L), w = L - y, p = ft * d, b = p - (p - d), M = d - b, A = w * M - (P - y * b - w * b - y * M), B = D * g, p = ft * D, y = p - (p - D), w = D - y, p = ft * g, b = p - (p - g), M = g - b, F = w * M - (B - y * b - w * b - y * M), k = A - F, m = A - k, _t[0] = A - (k + m) + (m - F), S = P + k, m = S - P, N = P - (S - m) + (k - m), k = N - B, m = N - k, _t[1] = N - (k + m) + (m - B), C = S + k, m = C - S, _t[2] = S - (C - m) + (k - m), _t[3] = C;
-  const H = Go(O, Pu, 4, _t, Nu);
-  P = u * d, p = ft * u, y = p - (p - u), w = u - y, p = ft * d, b = p - (p - d), M = d - b, A = w * M - (P - y * b - w * b - y * M), B = f * g, p = ft * f, y = p - (p - f), w = f - y, p = ft * g, b = p - (p - g), M = g - b, F = w * M - (B - y * b - w * b - y * M), k = A - F, m = A - k, _t[0] = A - (k + m) + (m - F), S = P + k, m = S - P, N = P - (S - m) + (k - m), k = N - B, m = N - k, _t[1] = N - (k + m) + (m - B), C = S + k, m = C - S, _t[2] = S - (C - m) + (k - m), _t[3] = C;
-  const q = Go(H, Nu, 4, _t, Tu);
-  return Tu[q - 1];
+  N = L * z, p = gt * L, y = p - (p - L), w = L - y, p = gt * z, b = p - (p - z), k = z - b, A = w * k - (N - y * b - w * b - y * k), B = D * T, p = gt * D, y = p - (p - D), w = D - y, p = gt * T, b = p - (p - T), k = T - b, F = w * k - (B - y * b - w * b - y * k), I = A - F, m = A - I, gr[0] = A - (I + m) + (m - F), S = N + I, m = S - N, P = N - (S - m) + (I - m), I = P - B, m = P - I, gr[1] = P - (I + m) + (m - B), C = S + I, m = C - S, gr[2] = S - (C - m) + (I - m), gr[3] = C;
+  let q = qv(4, gr), X = Uv * l;
+  if (q >= X || -q >= X || (m = n - L, u = n - (L + m) + (m - i), m = t - T, g = t - (T + m) + (m - i), m = e - D, f = e - (D + m) + (m - a), m = r - z, d = r - (z + m) + (m - a), u === 0 && f === 0 && g === 0 && d === 0) || (X = Yv * l + Gv * Math.abs(q), q += L * d + z * u - (D * g + T * f), q >= X || -q >= X)) return q;
+  N = u * z, p = gt * u, y = p - (p - u), w = u - y, p = gt * z, b = p - (p - z), k = z - b, A = w * k - (N - y * b - w * b - y * k), B = f * T, p = gt * f, y = p - (p - f), w = f - y, p = gt * T, b = p - (p - T), k = T - b, F = w * k - (B - y * b - w * b - y * k), I = A - F, m = A - I, wt[0] = A - (I + m) + (m - F), S = N + I, m = S - N, P = N - (S - m) + (I - m), I = P - B, m = P - I, wt[1] = P - (I + m) + (m - B), C = S + I, m = C - S, wt[2] = S - (C - m) + (I - m), wt[3] = C;
+  const O = Ho(4, gr, 4, wt, Ru);
+  N = L * d, p = gt * L, y = p - (p - L), w = L - y, p = gt * d, b = p - (p - d), k = d - b, A = w * k - (N - y * b - w * b - y * k), B = D * g, p = gt * D, y = p - (p - D), w = D - y, p = gt * g, b = p - (p - g), k = g - b, F = w * k - (B - y * b - w * b - y * k), I = A - F, m = A - I, wt[0] = A - (I + m) + (m - F), S = N + I, m = S - N, P = N - (S - m) + (I - m), I = P - B, m = P - I, wt[1] = P - (I + m) + (m - B), C = S + I, m = C - S, wt[2] = S - (C - m) + (I - m), wt[3] = C;
+  const U = Ho(O, Ru, 4, wt, Ou);
+  N = u * d, p = gt * u, y = p - (p - u), w = u - y, p = gt * d, b = p - (p - d), k = d - b, A = w * k - (N - y * b - w * b - y * k), B = f * g, p = gt * f, y = p - (p - f), w = f - y, p = gt * g, b = p - (p - g), k = g - b, F = w * k - (B - y * b - w * b - y * k), I = A - F, m = A - I, wt[0] = A - (I + m) + (m - F), S = N + I, m = S - N, P = N - (S - m) + (I - m), I = P - B, m = P - I, wt[1] = P - (I + m) + (m - B), C = S + I, m = C - S, wt[2] = S - (C - m) + (I - m), wt[3] = C;
+  const H = Ho(U, Ou, 4, wt, Du);
+  return Du[H - 1];
 }
-function Au(n, e, t, r, i, a) {
+function Fu(n, e, t, r, i, a) {
   const l = (e - a) * (t - i), u = (n - i) * (r - a), f = l - u;
   if (l === 0 || u === 0 || l > 0 != u > 0) return f;
   const g = Math.abs(l + u);
-  return Math.abs(f) >= Lv * g ? f : -Tv(n, e, t, r, i, a, g);
+  return Math.abs(f) >= Hv * g ? f : -Xv(n, e, t, r, i, a, g);
 }
-function Av(n, e) {
-  const t = new el([], Nf);
-  return Ov(n, t), Dv(t, e);
+function Vv(n, e) {
+  const t = new nl([], Rf);
+  return $v(n, t), Zv(t, e);
 }
-function Nf(n, e) {
+function Rf(n, e) {
   return n.p.x > e.p.x ? 1 : n.p.x < e.p.x || n.p.x === e.p.x && (n.featureId !== e.featureId || n.ringId !== e.ringId) && n.isLeftEndpoint && !e.isLeftEndpoint ? -1 : n.p.y !== e.p.y ? n.p.y > e.p.y ? 1 : -1 : 1;
 }
-function Rv(n, e) {
+function Wv(n, e) {
   return n.rightSweepEvent.p.x > e.rightSweepEvent.p.x ? 1 : n.rightSweepEvent.p.x < e.rightSweepEvent.p.x ? -1 : n.rightSweepEvent.p.y !== e.rightSweepEvent.p.y ? n.rightSweepEvent.p.y < e.rightSweepEvent.p.y ? 1 : -1 : 1;
 }
-function Ov(n, e) {
+function $v(n, e) {
   if (n.type === "FeatureCollection") {
     const t = n.features;
     for (let r = 0; r < t.length; r++)
-      Ru(t[r], e);
+      Bu(t[r], e);
   } else
-    Ru(n, e);
+    Bu(n, e);
 }
-var Qi = 0, ji = 0, es = 0;
-function Ru(n, e) {
+var es = 0, ts = 0, ns = 0;
+function Bu(n, e) {
   const t = n.type === "Feature" ? n.geometry : n;
   let r = t.coordinates;
   (t.type === "Polygon" || t.type === "MultiLineString") && (r = [r]), t.type === "LineString" && (r = [[r]]);
   for (let i = 0; i < r.length; i++)
     for (let a = 0; a < r[i].length; a++) {
       let l = r[i][a][0], u = null;
-      ji = ji + 1;
+      ts = ts + 1;
       for (let f = 0; f < r[i][a].length - 1; f++) {
         u = r[i][a][f + 1];
-        const g = new Ou(l, Qi, ji, es), d = new Ou(u, Qi, ji, es + 1);
-        g.otherEvent = d, d.otherEvent = g, Nf(g, d) > 0 ? (d.isLeftEndpoint = !0, g.isLeftEndpoint = !1) : (g.isLeftEndpoint = !0, d.isLeftEndpoint = !1), e.push(g), e.push(d), l = u, es = es + 1;
+        const g = new zu(l, es, ts, ns), d = new zu(u, es, ts, ns + 1);
+        g.otherEvent = d, d.otherEvent = g, Rf(g, d) > 0 ? (d.isLeftEndpoint = !0, g.isLeftEndpoint = !1) : (g.isLeftEndpoint = !0, d.isLeftEndpoint = !1), e.push(g), e.push(d), l = u, ns = ns + 1;
       }
     }
-  Qi = Qi + 1;
+  es = es + 1;
 }
-var Ou = class {
+var zu = class {
   constructor(n, e, t, r) {
     this.p = {
       x: n[0],
@@ -4118,17 +4553,17 @@ var Ou = class {
     return [this.p.x, this.p.y];
   }
 };
-function Dv(n, e = !1) {
-  const t = [], r = new el([], Rv);
+function Zv(n, e = !1) {
+  const t = [], r = new nl([], Wv);
   for (; n.length; ) {
     const i = n.pop();
     if (i.isLeftEndpoint) {
-      const a = new Fv(i);
+      const a = new Kv(i);
       for (let l = 0; l < r.data.length; l++) {
         const u = r.data[l];
         if (e && u.leftSweepEvent.featureId === i.featureId)
           continue;
-        const f = Bv(a, u);
+        const f = Jv(a, u);
         f !== !1 && t.push(f);
       }
       r.push(a);
@@ -4136,15 +4571,15 @@ function Dv(n, e = !1) {
   }
   return t;
 }
-var Fv = class {
+var Kv = class {
   /** @param event must have otherEvent non-null */
   constructor(e) {
     this.leftSweepEvent = e, this.rightSweepEvent = e.otherEvent;
   }
 };
-function Bv(n, e) {
+function Jv(n, e) {
   if (n === null || e === null) return !1;
-  const t = n.leftSweepEvent.p.x, r = n.leftSweepEvent.p.y, i = n.rightSweepEvent.p.x, a = n.rightSweepEvent.p.y, l = e.leftSweepEvent.p.x, u = e.leftSweepEvent.p.y, f = e.rightSweepEvent.p.x, g = e.rightSweepEvent.p.y, d = Au(t, r, i, a, l, u), m = Au(t, r, i, a, f, g);
+  const t = n.leftSweepEvent.p.x, r = n.leftSweepEvent.p.y, i = n.rightSweepEvent.p.x, a = n.rightSweepEvent.p.y, l = e.leftSweepEvent.p.x, u = e.leftSweepEvent.p.y, f = e.rightSweepEvent.p.x, g = e.rightSweepEvent.p.y, d = Fu(t, r, i, a, l, u), m = Fu(t, r, i, a, f, g);
   if (d > 0 && m > 0) return !1;
   if (d < 0 && m < 0) return !1;
   if (n.leftSweepEvent.ringId === e.leftSweepEvent.ringId) {
@@ -4163,18 +4598,18 @@ function Bv(n, e) {
   const p = (g - u) * (i - t) - (f - l) * (a - r), y = (f - l) * (r - u) - (g - u) * (t - l), w = (i - t) * (r - u) - (a - r) * (t - l);
   if (p === 0)
     return !1;
-  const b = y / p, M = w / p;
-  if (b >= 0 && b <= 1 && M >= 0 && M <= 1) {
-    const k = t + b * (i - t), S = r + b * (a - r);
-    return [k, S];
+  const b = y / p, k = w / p;
+  if (b >= 0 && b <= 1 && k >= 0 && k <= 1) {
+    const I = t + b * (i - t), S = r + b * (a - r);
+    return [I, S];
   }
   return !1;
 }
-function cn(n, e, t = {}) {
+function hn(n, e, t = {}) {
   const { removeDuplicates: r = !0, ignoreSelfIntersections: i = !0 } = t;
   let a = [];
-  n.type === "FeatureCollection" ? a = a.concat(n.features) : n.type === "Feature" ? a.push(n) : (n.type === "LineString" || n.type === "Polygon" || n.type === "MultiLineString" || n.type === "MultiPolygon") && a.push(Qe(n)), e.type === "FeatureCollection" ? a = a.concat(e.features) : e.type === "Feature" ? a.push(e) : (e.type === "LineString" || e.type === "Polygon" || e.type === "MultiLineString" || e.type === "MultiPolygon") && a.push(Qe(e));
-  const l = Av(
+  n.type === "FeatureCollection" ? a = a.concat(n.features) : n.type === "Feature" ? a.push(n) : (n.type === "LineString" || n.type === "Polygon" || n.type === "MultiLineString" || n.type === "MultiPolygon") && a.push(je(n)), e.type === "FeatureCollection" ? a = a.concat(e.features) : e.type === "Feature" ? a.push(e) : (e.type === "LineString" || e.type === "Polygon" || e.type === "MultiLineString" || e.type === "MultiPolygon") && a.push(je(e));
+  const l = Vv(
     ce(a),
     i
   );
@@ -4189,15 +4624,15 @@ function cn(n, e, t = {}) {
     u = l;
   return ce(u.map((f) => de(f)));
 }
-var zv = Object.defineProperty, Gv = Object.defineProperties, qv = Object.getOwnPropertyDescriptors, Du = Object.getOwnPropertySymbols, Uv = Object.prototype.hasOwnProperty, Hv = Object.prototype.propertyIsEnumerable, Fu = (n, e, t) => e in n ? zv(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t, Yv = (n, e) => {
+var Qv = Object.defineProperty, jv = Object.defineProperties, ep = Object.getOwnPropertyDescriptors, Gu = Object.getOwnPropertySymbols, tp = Object.prototype.hasOwnProperty, np = Object.prototype.propertyIsEnumerable, qu = (n, e, t) => e in n ? Qv(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t, rp = (n, e) => {
   for (var t in e || (e = {}))
-    Uv.call(e, t) && Fu(n, t, e[t]);
-  if (Du)
-    for (var t of Du(e))
-      Hv.call(e, t) && Fu(n, t, e[t]);
+    tp.call(e, t) && qu(n, t, e[t]);
+  if (Gu)
+    for (var t of Gu(e))
+      np.call(e, t) && qu(n, t, e[t]);
   return n;
-}, Xv = (n, e) => Gv(n, qv(e));
-function _n(n, e, t = {}) {
+}, ip = (n, e) => jv(n, ep(e));
+function wn(n, e, t = {}) {
   if (!n || !e)
     throw new Error("lines and inputPoint are required arguments");
   const r = Me(e);
@@ -4215,38 +4650,38 @@ function _n(n, e, t = {}) {
     dist: 1 / 0
     // deprecated properties END
   }), a = 0, l = 0, u = -1;
-  return ot(
+  return at(
     n,
     function(f, g, d) {
       u !== d && (u = d, l = 0);
       const m = me(f);
       for (let p = 0; p < m.length - 1; p++) {
-        const y = de(m[p]), w = Me(y), b = de(m[p + 1]), M = Me(b), k = Ge(y, b, t);
-        let S, N;
-        M[0] === r[0] && M[1] === r[1] ? [S, N] = [M, !0] : w[0] === r[0] && w[1] === r[1] ? [S, N] = [w, !1] : [S, N] = $v(
+        const y = de(m[p]), w = Me(y), b = de(m[p + 1]), k = Me(b), I = qe(y, b, t);
+        let S, P;
+        k[0] === r[0] && k[1] === r[1] ? [S, P] = [k, !0] : w[0] === r[0] && w[1] === r[1] ? [S, P] = [w, !1] : [S, P] = ap(
           w,
-          M,
+          k,
           r
         );
-        const P = Ge(e, S, t);
-        if (P < i.properties.pointDistance) {
-          const A = Ge(y, S, t);
+        const N = qe(e, S, t);
+        if (N < i.properties.pointDistance) {
+          const A = qe(y, S, t);
           i = de(S, {
             lineStringIndex: d,
             // Legacy behaviour where index progresses to next segment # if we
             // went with the end point this iteration.
-            segmentIndex: N ? p + 1 : p,
+            segmentIndex: P ? p + 1 : p,
             totalDistance: a + A,
             lineDistance: l + A,
             segmentDistance: A,
-            pointDistance: P,
+            pointDistance: N,
             // deprecated properties START
             multiFeatureIndex: -1,
             index: -1,
             location: -1,
             dist: 1 / 0
             // deprecated properties END
-          }), i.properties = Xv(Yv({}, i.properties), {
+          }), i.properties = ip(rp({}, i.properties), {
             multiFeatureIndex: i.properties.lineStringIndex,
             index: i.properties.segmentIndex,
             location: i.properties.totalDistance,
@@ -4254,7 +4689,7 @@ function _n(n, e, t = {}) {
             // deprecated properties END
           });
         }
-        a += k, l += k;
+        a += I, l += I;
       }
     }
   ), i;
@@ -4263,57 +4698,57 @@ function Un(n, e) {
   const [t, r, i] = n, [a, l, u] = e;
   return t * a + r * l + i * u;
 }
-function Zr(n, e) {
+function Kr(n, e) {
   const [t, r, i] = n, [a, l, u] = e;
   return [r * u - i * l, i * a - t * u, t * l - r * a];
 }
-function Vv(n) {
+function sp(n) {
   return Math.sqrt(Math.pow(n[0], 2) + Math.pow(n[1], 2) + Math.pow(n[2], 2));
 }
-function Bu(n) {
-  const e = Vv(n);
+function Hu(n) {
+  const e = sp(n);
   return [n[0] / e, n[1] / e, n[2] / e];
 }
-function qo(n) {
-  const e = je(n[1]), t = je(n[0]);
+function Uo(n) {
+  const e = et(n[1]), t = et(n[0]);
   return [
     Math.cos(e) * Math.cos(t),
     Math.cos(e) * Math.sin(t),
     Math.sin(e)
   ];
 }
-function Wv(n) {
-  const [e, t, r] = n, i = Math.min(Math.max(r, -1), 1), a = ln(Math.asin(i));
-  return [ln(Math.atan2(t, e)), a];
+function op(n) {
+  const [e, t, r] = n, i = Math.min(Math.max(r, -1), 1), a = un(Math.asin(i));
+  return [un(Math.atan2(t, e)), a];
 }
-function $v(n, e, t) {
-  const r = qo(n), i = qo(e), a = qo(t), l = Zr(r, i);
+function ap(n, e, t) {
+  const r = Uo(n), i = Uo(e), a = Uo(t), l = Kr(r, i);
   if (l[0] === 0 && l[1] === 0 && l[2] === 0)
     return Un(r, i) > 0 ? [[...e], !0] : [[...t], !1];
-  const u = Zr(l, a);
+  const u = Kr(l, a);
   if (u[0] === 0 && u[1] === 0 && u[2] === 0)
     return [[...e], !0];
-  const f = Zr(u, l), g = Bu(f), d = [-g[0], -g[1], -g[2]], m = Un(a, g) > Un(a, d) ? g : d, p = Bu(l), y = Un(Zr(r, m), p), w = Un(Zr(m, i), p);
-  return y >= 0 && w >= 0 ? [Wv(m), !1] : Un(r, a) > Un(i, a) ? [[...n], !1] : [[...e], !0];
+  const f = Kr(u, l), g = Hu(f), d = [-g[0], -g[1], -g[2]], m = Un(a, g) > Un(a, d) ? g : d, p = Hu(l), y = Un(Kr(r, m), p), w = Un(Kr(m, i), p);
+  return y >= 0 && w >= 0 ? [op(m), !1] : Un(r, a) > Un(i, a) ? [[...n], !1] : [[...e], !0];
 }
-function Tf(n, e) {
+function Of(n, e) {
   if (!n) throw new Error("line is required");
   if (!e) throw new Error("splitter is required");
-  const t = Ct(n), r = Ct(e);
+  const t = St(n), r = St(e);
   if (t !== "LineString") throw new Error("line must be LineString");
   if (r === "FeatureCollection")
     throw new Error("splitter cannot be a FeatureCollection");
   if (r === "GeometryCollection")
     throw new Error("splitter cannot be a GeometryCollection");
-  var i = Pf(e, { precision: 7 });
-  switch (n.type !== "Feature" && (n = Qe(n)), r) {
+  var i = Af(e, { precision: 7 });
+  switch (n.type !== "Feature" && (n = je(n)), r) {
     case "Point":
-      return ma(
+      return pa(
         n,
         i
       );
     case "MultiPoint":
-      return zu(
+      return Uu(
         n,
         i
       );
@@ -4321,9 +4756,9 @@ function Tf(n, e) {
     case "MultiLineString":
     case "Polygon":
     case "MultiPolygon":
-      return zu(
+      return Uu(
         n,
-        cn(
+        hn(
           n,
           i,
           {
@@ -4333,23 +4768,23 @@ function Tf(n, e) {
       );
   }
 }
-function zu(n, e) {
-  var t = [], r = $s();
-  return ot(
+function Uu(n, e) {
+  var t = [], r = Ks();
+  return at(
     e,
     // this cast should be unnecessary (and is wrong, it could contain MultiPoints), but is a workaround for bad flattenEach typings
     function(i) {
       if (t.forEach(function(u, f) {
         u.id = f;
       }), !t.length)
-        t = ma(n, i).features, r.load(ce(t));
+        t = pa(n, i).features, r.load(ce(t));
       else {
         var a = r.search(i);
         if (a.features.length) {
-          var l = Af(i, a);
+          var l = Df(i, a);
           t = t.filter(function(u) {
             return u.id !== l.id;
-          }), r.remove(l), Le(ma(l, i), function(u) {
+          }), r.remove(l), Le(pa(l, i), function(u) {
             t.push(u), r.insert(u);
           });
         }
@@ -4357,52 +4792,52 @@ function zu(n, e) {
     }
   ), ce(t);
 }
-function ma(n, e) {
+function pa(n, e) {
   var t = [], r = me(n)[0], i = me(n)[n.geometry.coordinates.length - 1];
-  if (Uo(r, Me(e)) || Uo(i, Me(e)))
+  if (Yo(r, Me(e)) || Yo(i, Me(e)))
     return ce([n]);
-  var a = $s(), l = wi(n);
+  var a = Ks(), l = Ei(n);
   a.load(l);
   var u = a.search(e);
   if (!u.features.length) return ce([n]);
-  var f = Af(e, u), g = [r], d = Ka(
+  var f = Df(e, u), g = [r], d = Qa(
     l,
     function(m, p, y) {
       var w = me(p)[1], b = Me(e);
-      return y === f.id ? (m.push(b), t.push(ke(m)), Uo(b, w) ? [b] : [b, w]) : (m.push(w), m);
+      return y === f.id ? (m.push(b), t.push(Ie(m)), Yo(b, w) ? [b] : [b, w]) : (m.push(w), m);
     },
     g
   );
-  return d.length > 1 && t.push(ke(d)), ce(t);
+  return d.length > 1 && t.push(Ie(d)), ce(t);
 }
-function Af(n, e) {
+function Df(n, e) {
   if (!e.features.length) throw new Error("lines must contain features");
   if (e.features.length === 1) return e.features[0];
   var t, r = 1 / 0;
   return Le(e, function(i) {
-    var a = _n(i, n), l = a.properties.pointDistance;
+    var a = wn(i, n), l = a.properties.pointDistance;
     l < r && (t = i, r = l);
   }), t;
 }
-function Uo(n, e) {
+function Yo(n, e) {
   return n[0] === e[0] && n[1] === e[1];
 }
-function Rf(n, e) {
-  const t = He(n), r = He(e), i = t.type, a = r.type, l = t.coordinates, u = r.coordinates;
+function Ff(n, e) {
+  const t = Ye(n), r = Ye(e), i = t.type, a = r.type, l = t.coordinates, u = r.coordinates;
   switch (i) {
     case "Point":
       switch (a) {
         case "Point":
-          return tl(l, u);
+          return rl(l, u);
         default:
           throw new Error("feature2 " + a + " geometry not supported");
       }
     case "MultiPoint":
       switch (a) {
         case "Point":
-          return np(t, r);
+          return mp(t, r);
         case "MultiPoint":
-          return rp(t, r);
+          return vp(t, r);
         default:
           throw new Error("feature2 " + a + " geometry not supported");
       }
@@ -4411,9 +4846,9 @@ function Rf(n, e) {
         case "Point":
           return Se(r, t, { ignoreEndVertices: !0 });
         case "LineString":
-          return op(t, r);
+          return _p(t, r);
         case "MultiPoint":
-          return ip(t, r);
+          return pp(t, r);
         default:
           throw new Error("feature2 " + a + " geometry not supported");
       }
@@ -4422,30 +4857,30 @@ function Rf(n, e) {
         case "Point":
           return xe(r, t, { ignoreBoundary: !0 });
         case "LineString":
-          return Df(t, r);
+          return zf(t, r);
         case "Polygon":
-          return Zs(t, r);
+          return Js(t, r);
         case "MultiPoint":
-          return sp(t, r);
+          return yp(t, r);
         case "MultiPolygon":
-          return tp(t, r);
+          return dp(t, r);
         default:
           throw new Error("feature2 " + a + " geometry not supported");
       }
     case "MultiPolygon":
       switch (a) {
         case "Point":
-          return Kv(t, r);
+          return up(t, r);
         case "MultiPoint":
-          return Jv(t, r);
+          return cp(t, r);
         case "LineString":
-          return Qv(t, r);
+          return hp(t, r);
         case "MultiLineString":
-          return jv(t, r);
+          return fp(t, r);
         case "Polygon":
-          return Zv(t, r);
+          return lp(t, r);
         case "MultiPolygon":
-          return ep(t, r);
+          return gp(t, r);
         default:
           throw new Error("feature2 " + a + " geometry not supported");
       }
@@ -4453,16 +4888,16 @@ function Rf(n, e) {
       throw new Error("feature1 " + i + " geometry not supported");
   }
 }
-function Zv(n, e) {
-  const t = qe(e);
+function lp(n, e) {
+  const t = He(e);
   return n.coordinates.some(
-    (r) => Zs({ type: "Polygon", coordinates: r }, e, t)
+    (r) => Js({ type: "Polygon", coordinates: r }, e, t)
   );
 }
-function Kv(n, e) {
+function up(n, e) {
   return xe(e, n, { ignoreBoundary: !0 });
 }
-function Jv(n, e) {
+function cp(n, e) {
   let t = !1;
   for (const r of e.coordinates) {
     if (!xe(r, n))
@@ -4473,18 +4908,18 @@ function Jv(n, e) {
   }
   return t;
 }
-function Qv(n, e) {
+function hp(n, e) {
   return n.coordinates.some(
-    (t) => Df({ type: "Polygon", coordinates: t }, e)
+    (t) => zf({ type: "Polygon", coordinates: t }, e)
   );
 }
-function jv(n, e) {
+function fp(n, e) {
   let t = !1;
   for (const r of e.coordinates) {
     const i = { type: "LineString", coordinates: r };
     let a = "outside";
     for (const l of n.coordinates) {
-      const u = Ff(
+      const u = Gf(
         { type: "Polygon", coordinates: l },
         i
       );
@@ -4500,11 +4935,11 @@ function jv(n, e) {
   }
   return t;
 }
-function ep(n, e) {
+function gp(n, e) {
   for (const t of e.coordinates) {
-    const r = { type: "Polygon", coordinates: t }, i = qe(r);
+    const r = { type: "Polygon", coordinates: t }, i = He(r);
     if (!n.coordinates.some(
-      (l) => Zs(
+      (l) => Js(
         { type: "Polygon", coordinates: l },
         r,
         i
@@ -4514,25 +4949,25 @@ function ep(n, e) {
   }
   return !0;
 }
-function tp(n, e) {
+function dp(n, e) {
   return e.coordinates.every(
-    (t) => Zs(n, { type: "Polygon", coordinates: t })
+    (t) => Js(n, { type: "Polygon", coordinates: t })
   );
 }
-function np(n, e) {
+function mp(n, e) {
   let t, r = !1;
   for (t = 0; t < n.coordinates.length; t++)
-    if (tl(n.coordinates[t], e.coordinates)) {
+    if (rl(n.coordinates[t], e.coordinates)) {
       r = !0;
       break;
     }
   return r;
 }
-function rp(n, e) {
+function vp(n, e) {
   for (const t of e.coordinates) {
     let r = !1;
     for (const i of n.coordinates)
-      if (tl(t, i)) {
+      if (rl(t, i)) {
         r = !0;
         break;
       }
@@ -4541,7 +4976,7 @@ function rp(n, e) {
   }
   return !0;
 }
-function ip(n, e) {
+function pp(n, e) {
   let t = !1;
   for (const r of e.coordinates) {
     if (!Se(r, n))
@@ -4550,7 +4985,7 @@ function ip(n, e) {
   }
   return t;
 }
-function sp(n, e) {
+function yp(n, e) {
   let t = !1;
   for (const r of e.coordinates) {
     if (!xe(r, n))
@@ -4561,7 +4996,7 @@ function sp(n, e) {
   }
   return t;
 }
-function op(n, e) {
+function _p(n, e) {
   let t = !1;
   const r = e.coordinates;
   for (let i = 0; i < r.length; i++) {
@@ -4582,28 +5017,28 @@ function op(n, e) {
   }
   return t;
 }
-function Of(n, e) {
+function Bf(n, e) {
   const t = n.coordinates, r = [];
   for (let i = 0; i < t.length - 1; i++) {
-    const a = ke([t[i], t[i + 1]]), l = Tf(a, Qe(e));
+    const a = Ie([t[i], t[i + 1]]), l = Of(a, je(e));
     l.features.length === 0 ? r.push(a) : r.push(...l.features);
   }
   return ce(r);
 }
-function Df(n, e) {
-  return Ff(n, e) === "interior";
+function zf(n, e) {
+  return Gf(n, e) === "interior";
 }
-function Ff(n, e) {
-  const t = qe(n), r = qe(e);
-  if (!Bf(t, r))
+function Gf(n, e) {
+  const t = He(n), r = He(e);
+  if (!qf(t, r))
     return "outside";
   for (const l of e.coordinates)
     if (!xe(l, n))
       return "outside";
   let i = !1;
-  const a = Of(e, n);
+  const a = Bf(e, n);
   for (const l of a.features) {
-    const u = zf(
+    const u = Hf(
       l.geometry.coordinates[0],
       l.geometry.coordinates[1]
     );
@@ -4613,89 +5048,89 @@ function Ff(n, e) {
   }
   return i ? "interior" : "boundary";
 }
-function Zs(n, e, t) {
+function Js(n, e, t) {
   if (n.type === "Feature" && n.geometry === null || e.type === "Feature" && e.geometry === null)
     return !1;
-  const r = qe(n), i = t ?? qe(e);
-  if (!Bf(r, i))
+  const r = He(n), i = t ?? He(e);
+  if (!qf(r, i))
     return !1;
-  const a = He(n), l = He(e).coordinates;
+  const a = Ye(n), l = Ye(e).coordinates;
   for (const u of l) {
     for (const g of u)
       if (!xe(g, n))
         return !1;
-    const f = Of(
+    const f = Bf(
       { coordinates: u },
       a
     );
     for (const g of f.features) {
-      const d = zf(
+      const d = Hf(
         g.geometry.coordinates[0],
         g.geometry.coordinates[1]
       );
-      if (!xe(d, n) && !up(d, a))
+      if (!xe(d, n) && !Ep(d, a))
         return !1;
     }
   }
   return !0;
 }
-var ap = 1e-6;
-function lp(n, e, t) {
+var wp = 1e-6;
+function xp(n, e, t) {
   const r = t[0] - e[0], i = t[1] - e[1], a = r * r + i * i;
   let l = 0;
   a > 0 && (l = ((n[0] - e[0]) * r + (n[1] - e[1]) * i) / a, l = Math.max(0, Math.min(1, l)));
   const u = e[0] + l * r, f = e[1] + l * i, g = n[0] - u, d = n[1] - f;
   return Math.sqrt(g * g + d * d);
 }
-function up(n, e) {
+function Ep(n, e) {
   return e.coordinates.some((t) => {
     for (let r = 0; r < t.length - 1; r++)
-      if (lp(n, t[r], t[r + 1]) <= ap)
+      if (xp(n, t[r], t[r + 1]) <= wp)
         return !0;
     return !1;
   });
 }
-function Bf(n, e) {
+function qf(n, e) {
   return !(n[0] > e[0] || n[2] < e[2] || n[1] > e[1] || n[3] < e[3]);
 }
-function tl(n, e) {
+function rl(n, e) {
   return n[0] === e[0] && n[1] === e[1];
 }
-function zf(n, e) {
+function Hf(n, e) {
   return [(n[0] + e[0]) / 2, (n[1] + e[1]) / 2];
 }
-function Lr(n, e = {}) {
-  const t = He(n);
+function Nr(n, e = {}) {
+  const t = Ye(n);
   switch (!e.properties && n.type === "Feature" && (e.properties = n.properties), t.type) {
     case "Polygon":
-      return cp(t, e);
+      return bp(t, e);
     case "MultiPolygon":
-      return hp(t, e);
+      return Cp(t, e);
     default:
       throw new Error("invalid poly");
   }
 }
-function cp(n, e = {}) {
-  const r = He(n).coordinates, i = e.properties ? e.properties : n.type === "Feature" ? n.properties : {};
-  return Gf(r, i);
+function bp(n, e = {}) {
+  const r = Ye(n).coordinates, i = e.properties ? e.properties : n.type === "Feature" ? n.properties : {};
+  return Uf(r, i);
 }
-function hp(n, e = {}) {
-  const r = He(n).coordinates, i = e.properties ? e.properties : n.type === "Feature" ? n.properties : {}, a = [];
+function Cp(n, e = {}) {
+  const r = Ye(n).coordinates, i = e.properties ? e.properties : n.type === "Feature" ? n.properties : {}, a = [];
   return r.forEach((l) => {
-    a.push(Gf(l, i));
+    a.push(Uf(l, i));
   }), ce(a);
 }
-function Gf(n, e) {
-  return n.length > 1 ? An(n, e) : ke(n[0], e);
+function Uf(n, e) {
+  return n.length > 1 ? Rn(n, e) : Ie(n[0], e);
 }
-var fp = Object.defineProperty, Fr = (n, e) => fp(n, "name", { value: e, configurable: !0 }), qf = class {
+var Sp = Object.defineProperty, Br = (n, e) => Sp(n, "name", { value: e, configurable: !0 }), Yf = class {
   constructor(e) {
     this.direction = !1, this.compareProperties = !0;
     var t, r, i;
     this.precision = 10 ** -((t = e == null ? void 0 : e.precision) != null ? t : 17), this.direction = (r = e == null ? void 0 : e.direction) != null ? r : !1, this.compareProperties = (i = e == null ? void 0 : e.compareProperties) != null ? i : !0;
   }
   compare(e, t) {
-    if (e.type !== t.type || !ii(e, t))
+    if (e.type !== t.type || !oi(e, t))
       return !1;
     switch (e.type) {
       case "Point":
@@ -4712,7 +5147,7 @@ var fp = Object.defineProperty, Fr = (n, e) => fp(n, "name", { value: e, configu
         return this.compareFeatureCollection(e, t);
       default:
         if (e.type.startsWith("Multi")) {
-          const r = va(e), i = va(
+          const r = ya(e), i = ya(
             t
           );
           return r.every(
@@ -4726,7 +5161,7 @@ var fp = Object.defineProperty, Fr = (n, e) => fp(n, "name", { value: e, configu
     return e.length === t.length && e.every((r, i) => Math.abs(r - t[i]) < this.precision);
   }
   compareLine(e, t, r = 0, i = !1) {
-    if (!ii(e, t))
+    if (!oi(e, t))
       return !1;
     const a = e;
     let l = t;
@@ -4765,36 +5200,36 @@ var fp = Object.defineProperty, Fr = (n, e) => fp(n, "name", { value: e, configu
     return !1;
   }
   compareGeometryCollection(e, t) {
-    return ii(e.geometries, t.geometries) && this.compareBBox(e, t) && e.geometries.every((r, i) => this.compare(r, t.geometries[i]));
+    return oi(e.geometries, t.geometries) && this.compareBBox(e, t) && e.geometries.every((r, i) => this.compare(r, t.geometries[i]));
   }
   compareFeature(e, t) {
-    return e.id === t.id && (this.compareProperties ? rl(e.properties, t.properties) : !0) && this.compareBBox(e, t) && this.compare(e.geometry, t.geometry);
+    return e.id === t.id && (this.compareProperties ? sl(e.properties, t.properties) : !0) && this.compareBBox(e, t) && this.compare(e.geometry, t.geometry);
   }
   compareFeatureCollection(e, t) {
-    return ii(e.features, t.features) && this.compareBBox(e, t) && e.features.every((r, i) => this.compare(r, t.features[i]));
+    return oi(e.features, t.features) && this.compareBBox(e, t) && e.features.every((r, i) => this.compare(r, t.features[i]));
   }
   compareBBox(e, t) {
     return !e.bbox && !t.bbox || (e.bbox && t.bbox ? this.compareCoord(e.bbox, t.bbox) : !1);
   }
 };
-Fr(qf, "GeojsonEquality");
-var gp = qf;
-function ii(n, e) {
+Br(Yf, "GeojsonEquality");
+var Ip = Yf;
+function oi(n, e) {
   return n.coordinates ? n.coordinates.length === e.coordinates.length : n.length === e.length;
 }
-Fr(ii, "sameLength");
-function va(n) {
+Br(oi, "sameLength");
+function ya(n) {
   return n.coordinates.map((e) => ({
     type: n.type.replace("Multi", ""),
     coordinates: e
   }));
 }
-Fr(va, "explode");
-function nl(n, e, t) {
-  return new gp(t).compare(n, e);
+Br(ya, "explode");
+function il(n, e, t) {
+  return new Ip(t).compare(n, e);
 }
-Fr(nl, "geojsonEquality");
-function rl(n, e) {
+Br(il, "geojsonEquality");
+function sl(n, e) {
   if (n === null && e === null)
     return !0;
   if (n === null || e === null)
@@ -4802,33 +5237,33 @@ function rl(n, e) {
   const t = Object.keys(n), r = Object.keys(e);
   if (t.length !== r.length) return !1;
   for (var i of t) {
-    const a = n[i], l = e[i], u = Gu(a) && Gu(l);
-    if (u && !rl(a, l) || !u && a !== l)
+    const a = n[i], l = e[i], u = Yu(a) && Yu(l);
+    if (u && !sl(a, l) || !u && a !== l)
       return !1;
   }
   return !0;
 }
-Fr(rl, "equal");
-var Gu = /* @__PURE__ */ Fr((n) => n != null && typeof n == "object", "isObject");
-function Qn(n, e = {}) {
+Br(sl, "equal");
+var Yu = /* @__PURE__ */ Br((n) => n != null && typeof n == "object", "isObject");
+function jn(n, e = {}) {
   var t = typeof e == "object" ? e.mutate : e;
   if (!n) throw new Error("geojson is required");
-  var r = Ct(n), i = [];
+  var r = St(n), i = [];
   switch (r) {
     case "LineString":
-      i = Ho(n, r);
+      i = Xo(n, r);
       break;
     case "MultiLineString":
     case "Polygon":
       me(n).forEach(function(l) {
-        i.push(Ho(l, r));
+        i.push(Xo(l, r));
       });
       break;
     case "MultiPolygon":
       me(n).forEach(function(l) {
         var u = [];
         l.forEach(function(f) {
-          u.push(Ho(f, r));
+          u.push(Xo(f, r));
         }), i.push(u);
       });
       break;
@@ -4844,70 +5279,70 @@ function Qn(n, e = {}) {
     default:
       throw new Error(r + " geometry not supported");
   }
-  return n.coordinates ? t === !0 ? (n.coordinates = i, n) : { type: r, coordinates: i } : t === !0 ? (n.geometry.coordinates = i, n) : Qe({ type: r, coordinates: i }, n.properties, {
+  return n.coordinates ? t === !0 ? (n.coordinates = i, n) : { type: r, coordinates: i } : t === !0 ? (n.geometry.coordinates = i, n) : je({ type: r, coordinates: i }, n.properties, {
     bbox: n.bbox,
     id: n.id
   });
 }
-function Ho(n, e) {
+function Xo(n, e) {
   const t = me(n);
-  if (t.length === 2 && !qu(t[0], t[1])) return t;
+  if (t.length === 2 && !Xu(t[0], t[1])) return t;
   const r = [];
   let i = 0, a = 1, l = 2;
   for (r.push(t[i]); l < t.length; )
-    Se(t[a], ke([t[i], t[l]])) ? a = l : (r.push(t[a]), i = a, a++, l = a), l++;
+    Se(t[a], Ie([t[i], t[l]])) ? a = l : (r.push(t[a]), i = a, a++, l = a), l++;
   if (r.push(t[a]), e === "Polygon" || e === "MultiPolygon") {
     if (Se(
       r[0],
-      ke([r[1], r[r.length - 2]])
+      Ie([r[1], r[r.length - 2]])
     ) && (r.shift(), r.pop(), r.push(r[0])), r.length < 4)
       throw new Error("invalid polygon, fewer than 4 points");
-    if (!qu(r[0], r[r.length - 1]))
+    if (!Xu(r[0], r[r.length - 1]))
       throw new Error("invalid polygon, first and last points not equal");
   }
   return r;
 }
-function qu(n, e) {
+function Xu(n, e) {
   return n[0] === e[0] && n[1] === e[1];
 }
-function si(n, e, t = {}) {
+function ai(n, e, t = {}) {
   let r = t.precision;
   if (r = r == null || isNaN(r) ? 6 : r, typeof r != "number" || !(r >= 0))
     throw new Error("precision must be a positive number");
-  const i = He(n).type, a = He(e).type;
-  return i !== a ? !1 : nl(Qn(n), Qn(e), {
+  const i = Ye(n).type, a = Ye(e).type;
+  return i !== a ? !1 : il(jn(n), jn(e), {
     precision: r
   });
 }
-function Uf(n, e) {
-  var t = He(n), r = He(e), i = t.type, a = r.type;
+function Xf(n, e) {
+  var t = Ye(n), r = Ye(e), i = t.type, a = r.type;
   switch (i) {
     case "MultiPoint":
       switch (a) {
         case "LineString":
-          return Uu(t, r);
+          return Vu(t, r);
         case "Polygon":
-          return Yu(t, r);
+          return $u(t, r);
         default:
           throw new Error("feature2 " + a + " geometry not supported");
       }
     case "LineString":
       switch (a) {
         case "MultiPoint":
-          return Uu(r, t);
+          return Vu(r, t);
         case "LineString":
-          return dp(t, r);
+          return kp(t, r);
         case "Polygon":
-          return Hu(t, r);
+          return Wu(t, r);
         default:
           throw new Error("feature2 " + a + " geometry not supported");
       }
     case "Polygon":
       switch (a) {
         case "MultiPoint":
-          return Yu(r, t);
+          return $u(r, t);
         case "LineString":
-          return Hu(r, t);
+          return Wu(r, t);
         default:
           throw new Error("feature2 " + a + " geometry not supported");
       }
@@ -4915,11 +5350,11 @@ function Uf(n, e) {
       throw new Error("feature1 " + i + " geometry not supported");
   }
 }
-function Uu(n, e) {
+function Vu(n, e) {
   for (var t = !1, r = !1, i = n.coordinates.length, a = 0; a < i && (!t || !r); a++) {
     for (var l = !1, u = 0; u < e.coordinates.length - 1; u++) {
       var f = !0;
-      if ((u === 0 || u === e.coordinates.length - 2) && (f = !1), mp(
+      if ((u === 0 || u === e.coordinates.length - 2) && (f = !1), Mp(
         e.coordinates[u],
         e.coordinates[u + 1],
         n.coordinates[a],
@@ -4933,43 +5368,43 @@ function Uu(n, e) {
   }
   return t && r;
 }
-function dp(n, e) {
-  const t = cn(n, e);
+function kp(n, e) {
+  const t = hn(n, e);
   if (t.features.length === 0) return !1;
   for (const r of t.features)
-    if (!si(r, de(n.coordinates[0])) && !si(
+    if (!ai(r, de(n.coordinates[0])) && !ai(
       r,
       de(n.coordinates[n.coordinates.length - 1])
-    ) && !si(r, de(e.coordinates[0])) && !si(
+    ) && !ai(r, de(e.coordinates[0])) && !ai(
       r,
       de(e.coordinates[e.coordinates.length - 1])
     ))
       return !0;
   return !1;
 }
-function Hu(n, e) {
-  const t = Lr(e);
-  return cn(n, t).features.length > 0;
+function Wu(n, e) {
+  const t = Nr(e);
+  return hn(n, t).features.length > 0;
 }
-function Yu(n, e) {
+function $u(n, e) {
   var t = !1, r = !1, i = n.coordinates.length;
   for (let a = 0; a < i && (!t || !r); a++)
     xe(de(n.coordinates[a]), e) ? t = !0 : r = !0;
   return r && t;
 }
-function mp(n, e, t, r) {
+function Mp(n, e, t, r) {
   var i = t[0] - n[0], a = t[1] - n[1], l = e[0] - n[0], u = e[1] - n[1], f = i * u - a * l;
   return f !== 0 ? !1 : r ? Math.abs(l) >= Math.abs(u) ? l > 0 ? n[0] <= t[0] && t[0] <= e[0] : e[0] <= t[0] && t[0] <= n[0] : u > 0 ? n[1] <= t[1] && t[1] <= e[1] : e[1] <= t[1] && t[1] <= n[1] : Math.abs(l) >= Math.abs(u) ? l > 0 ? n[0] < t[0] && t[0] < e[0] : e[0] < t[0] && t[0] < n[0] : u > 0 ? n[1] < t[1] && t[1] < e[1] : e[1] < t[1] && t[1] < n[1];
 }
-function il(n, e, {
+function ol(n, e, {
   ignoreSelfIntersections: t = !0
 } = { ignoreSelfIntersections: !0 }) {
   let r = !0;
-  return ot(n, (i) => {
-    ot(e, (a) => {
+  return at(n, (i) => {
+    at(e, (a) => {
       if (r === !1)
         return !1;
-      r = vp(
+      r = Lp(
         i.geometry,
         a.geometry,
         t
@@ -4977,14 +5412,14 @@ function il(n, e, {
     });
   }), r;
 }
-function vp(n, e, t) {
+function Lp(n, e, t) {
   switch (n.type) {
     case "Point":
       switch (e.type) {
         case "Point":
-          return !wp(n.coordinates, e.coordinates);
+          return !Ap(n.coordinates, e.coordinates);
         case "LineString":
-          return !Ps(e, n);
+          return !Ts(e, n);
         case "Polygon":
           return !xe(n, e);
       }
@@ -4992,11 +5427,11 @@ function vp(n, e, t) {
     case "LineString":
       switch (e.type) {
         case "Point":
-          return !Ps(n, e);
+          return !Ts(n, e);
         case "LineString":
-          return !pp(n, e, t);
+          return !Np(n, e, t);
         case "Polygon":
-          return !Xu(e, n, t);
+          return !Zu(e, n, t);
       }
       break;
     case "Polygon":
@@ -5004,16 +5439,16 @@ function vp(n, e, t) {
         case "Point":
           return !xe(e, n);
         case "LineString":
-          return !Xu(n, e, t);
+          return !Zu(n, e, t);
         case "Polygon":
-          return !yp(e, n, t);
+          return !Pp(e, n, t);
       }
   }
   return !1;
 }
-function Ps(n, e) {
+function Ts(n, e) {
   for (let t = 0; t < n.coordinates.length - 1; t++)
-    if (_p(
+    if (Tp(
       n.coordinates[t],
       n.coordinates[t + 1],
       e.coordinates
@@ -5021,57 +5456,57 @@ function Ps(n, e) {
       return !0;
   return !1;
 }
-function pp(n, e, t) {
-  if (cn(n, e, {
+function Np(n, e, t) {
+  if (hn(n, e, {
     ignoreSelfIntersections: t
   }).features.length > 0)
     return !0;
   for (const i of n.coordinates)
-    if (Ps(e, { coordinates: i }))
+    if (Ts(e, { coordinates: i }))
       return !0;
   for (const i of e.coordinates)
-    if (Ps(n, { coordinates: i }))
+    if (Ts(n, { coordinates: i }))
       return !0;
   return !1;
 }
-function Xu(n, e, t) {
+function Zu(n, e, t) {
   for (const i of e.coordinates)
     if (xe(i, n))
       return !0;
-  return cn(e, Lr(n), {
+  return hn(e, Nr(n), {
     ignoreSelfIntersections: t
   }).features.length > 0;
 }
-function yp(n, e, t) {
+function Pp(n, e, t) {
   for (const i of n.coordinates[0])
     if (xe(i, e))
       return !0;
   for (const i of e.coordinates[0])
     if (xe(i, n))
       return !0;
-  return cn(
-    Lr(n),
-    Lr(e),
+  return hn(
+    Nr(n),
+    Nr(e),
     { ignoreSelfIntersections: t }
   ).features.length > 0;
 }
-function _p(n, e, t) {
+function Tp(n, e, t) {
   const r = t[0] - n[0], i = t[1] - n[1], a = e[0] - n[0], l = e[1] - n[1];
   return r * l - i * a !== 0 ? !1 : Math.abs(a) >= Math.abs(l) ? a > 0 ? n[0] <= t[0] && t[0] <= e[0] : e[0] <= t[0] && t[0] <= n[0] : l > 0 ? n[1] <= t[1] && t[1] <= e[1] : e[1] <= t[1] && t[1] <= n[1];
 }
-function wp(n, e) {
+function Ap(n, e) {
   return n[0] === e[0] && n[1] === e[1];
 }
-function Hf(n, e, {
+function Vf(n, e, {
   ignoreSelfIntersections: t = !0
 } = {}) {
-  return !il(n, e, { ignoreSelfIntersections: t });
+  return !ol(n, e, { ignoreSelfIntersections: t });
 }
-var Yf = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {};
-function Di(n) {
+var Wf = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {};
+function Bi(n) {
   return n && n.__esModule && Object.prototype.hasOwnProperty.call(n, "default") ? n.default : n;
 }
-function Xf(n) {
+function $f(n) {
   if (n.__esModule) return n;
   var e = n.default;
   if (typeof e == "function") {
@@ -5090,7 +5525,7 @@ function Xf(n) {
     });
   }), t;
 }
-var xp = function n(e, t) {
+var Rp = function n(e, t) {
   if (e === t) return !0;
   if (e && t && typeof e == "object" && typeof t == "object") {
     if (e.constructor !== t.constructor) return !1;
@@ -5115,21 +5550,21 @@ var xp = function n(e, t) {
   }
   return e !== e && t !== t;
 };
-const oi = /* @__PURE__ */ Di(xp);
-function Vf(n, e, t = {}) {
+const li = /* @__PURE__ */ Bi(Rp);
+function Zf(n, e, t = {}) {
   if (t = t || {}, !Oe(t)) throw new Error("options is invalid");
-  var r = t.tolerance || 0, i = [], a = $s();
-  const l = wi(n);
+  var r = t.tolerance || 0, i = [], a = Ks();
+  const l = Ei(n);
   a.load(l);
   var u;
   let f = [];
-  return on(e, function(g) {
+  return an(e, function(g) {
     var d = !1;
     if (!g)
       return;
     let m = g;
     if (r !== 0) {
-      const p = Ni(r, "kilometers"), y = qe(g);
+      const p = Ai(r, "kilometers"), y = He(g);
       m = [
         y[0] - p,
         y[1] - p,
@@ -5140,34 +5575,34 @@ function Vf(n, e, t = {}) {
     Le(a.search(m), function(p) {
       if (d === !1) {
         var y = me(g).sort(), w = me(p).sort();
-        if (oi(y, w))
-          d = !0, u ? u = Yo(u, g) || u : u = g;
-        else if (r === 0 ? Se(y[0], p) && Se(y[1], p) : _n(p, y[0]).properties.pointDistance <= r && _n(p, y[1]).properties.pointDistance <= r)
-          d = !0, u ? u = Yo(u, g) || u : u = g;
-        else if (r === 0 ? Se(w[0], g) && Se(w[1], g) : _n(g, w[0]).properties.pointDistance <= r && _n(g, w[1]).properties.pointDistance <= r)
+        if (li(y, w))
+          d = !0, u ? u = Vo(u, g) || u : u = g;
+        else if (r === 0 ? Se(y[0], p) && Se(y[1], p) : wn(p, y[0]).properties.pointDistance <= r && wn(p, y[1]).properties.pointDistance <= r)
+          d = !0, u ? u = Vo(u, g) || u : u = g;
+        else if (r === 0 ? Se(w[0], g) && Se(w[1], g) : wn(g, w[0]).properties.pointDistance <= r && wn(g, w[1]).properties.pointDistance <= r)
           if (u) {
-            const b = Yo(u, p);
+            const b = Vo(u, p);
             b ? u = b : f.push(p);
           } else u = p;
       }
     }), d === !1 && u && (i.push(u), f.length && (i = i.concat(f), f = []), u = void 0);
   }), u && i.push(u), ce(i);
 }
-function Yo(n, e) {
+function Vo(n, e) {
   var t = me(e), r = me(n), i = r[0], a = r[r.length - 1], l = n.geometry.coordinates;
-  if (oi(t[0], i)) l.unshift(t[1]);
-  else if (oi(t[0], a)) l.push(t[1]);
-  else if (oi(t[1], i)) l.unshift(t[0]);
-  else if (oi(t[1], a)) l.push(t[0]);
+  if (li(t[0], i)) l.unshift(t[1]);
+  else if (li(t[0], a)) l.push(t[1]);
+  else if (li(t[1], i)) l.unshift(t[0]);
+  else if (li(t[1], a)) l.push(t[0]);
   else return;
   return n;
 }
-function Ep(n, e) {
-  const t = He(n), r = He(e), i = t.type, a = r.type;
+function Op(n, e) {
+  const t = Ye(n), r = Ye(e), i = t.type, a = r.type;
   if (i === "MultiPoint" && a !== "MultiPoint" || (i === "LineString" || i === "MultiLineString") && a !== "LineString" && a !== "MultiLineString" || (i === "Polygon" || i === "MultiPolygon") && a !== "Polygon" && a !== "MultiPolygon")
     throw new Error("features must be of the same type");
   if (i === "Point") throw new Error("Point geometry not supported");
-  if (nl(n, e, { precision: 6 }))
+  if (il(n, e, { precision: 6 }))
     return !1;
   let l = 0;
   switch (i) {
@@ -5181,58 +5616,58 @@ function Ep(n, e) {
       return !1;
     case "LineString":
     case "MultiLineString":
-      on(n, (m) => {
-        on(e, (p) => {
-          Vf(m, p).features.length && l++;
+      an(n, (m) => {
+        an(e, (p) => {
+          Zf(m, p).features.length && l++;
         });
       });
       break;
     case "Polygon":
     case "MultiPolygon":
-      on(n, (m) => {
-        on(e, (p) => {
-          cn(m, p).features.length && l++;
+      an(n, (m) => {
+        an(e, (p) => {
+          hn(m, p).features.length && l++;
         });
       });
       break;
   }
   return l > 0;
 }
-function bp(n, e) {
+function Dp(n, e) {
   if (!n) throw new Error("line1 is required");
   if (!e) throw new Error("line2 is required");
-  var t = Vu(n, "line1");
+  var t = Ku(n, "line1");
   if (t !== "LineString") throw new Error("line1 must be a LineString");
-  var r = Vu(e, "line2");
+  var r = Ku(e, "line2");
   if (r !== "LineString") throw new Error("line2 must be a LineString");
-  for (var i = wi(Qn(n)).features, a = wi(Qn(e)).features, l = 0; l < i.length; l++) {
+  for (var i = Ei(jn(n)).features, a = Ei(jn(e)).features, l = 0; l < i.length; l++) {
     var u = i[l].geometry.coordinates;
     if (!a[l]) break;
     var f = a[l].geometry.coordinates;
-    if (!Cp(u, f)) return !1;
+    if (!Fp(u, f)) return !1;
   }
   return !0;
 }
-function Cp(n, e) {
-  var t = Mr(Jn(n[0], n[1])), r = Mr(Jn(e[0], e[1]));
+function Fp(n, e) {
+  var t = Lr(Qn(n[0], n[1])), r = Lr(Qn(e[0], e[1]));
   return t === r || (r - t) % 180 === 0;
 }
-function Vu(n, e) {
+function Ku(n, e) {
   if (n.geometry && n.geometry.type)
     return n.geometry.type;
   if (n.type) return n.type;
   throw new Error("Invalid GeoJSON object for " + e);
 }
-function Sp(n, e) {
-  var t = He(n), r = He(e), i = t.type, a = r.type;
+function Bp(n, e) {
+  var t = Ye(n), r = Ye(e), i = t.type, a = r.type;
   switch (i) {
     case "Point":
       switch (a) {
         case "LineString":
-          return gt(t, r);
+          return dt(t, r);
         case "MultiLineString":
           for (var l = !1, u = 0; u < r.coordinates.length; u++)
-            gt(t, {
+            dt(t, {
               coordinates: r.coordinates[u]
             }) && (l = !0);
           return l;
@@ -5260,7 +5695,7 @@ function Sp(n, e) {
       switch (a) {
         case "LineString":
           for (var l = !1, f = 0; f < t.coordinates.length; f++)
-            if (l || gt(
+            if (l || dt(
               { coordinates: t.coordinates[f] },
               r
             ) && (l = !0), Se(
@@ -5273,7 +5708,7 @@ function Sp(n, e) {
         case "MultiLineString":
           for (var l = !1, f = 0; f < t.coordinates.length; f++)
             for (var u = 0; u < r.coordinates.length; u++)
-              if (l || gt(
+              if (l || dt(
                 { coordinates: t.coordinates[f] },
                 { coordinates: r.coordinates[u] }
               ) && (l = !0), Se(
@@ -5317,10 +5752,10 @@ function Sp(n, e) {
     case "LineString":
       switch (a) {
         case "Point":
-          return gt(r, t);
+          return dt(r, t);
         case "MultiPoint":
           for (var l = !1, f = 0; f < r.coordinates.length; f++)
-            if (l || gt(
+            if (l || dt(
               { coordinates: r.coordinates[f] },
               t
             ) && (l = !0), Se(
@@ -5332,10 +5767,10 @@ function Sp(n, e) {
           return l;
         case "LineString":
           var g = !1;
-          if (gt(
+          if (dt(
             { coordinates: t.coordinates[0] },
             r
-          ) && (g = !0), gt(
+          ) && (g = !0), dt(
             {
               coordinates: t.coordinates[t.coordinates.length - 1]
             },
@@ -5351,10 +5786,10 @@ function Sp(n, e) {
           return g;
         case "MultiLineString":
           for (var g = !1, f = 0; f < r.coordinates.length; f++) {
-            gt(
+            dt(
               { coordinates: t.coordinates[0] },
               { coordinates: r.coordinates[f] }
-            ) && (g = !0), gt(
+            ) && (g = !0), dt(
               {
                 coordinates: t.coordinates[t.coordinates.length - 1]
               },
@@ -5406,7 +5841,7 @@ function Sp(n, e) {
       switch (a) {
         case "Point":
           for (var f = 0; f < t.coordinates.length; f++)
-            if (gt(r, {
+            if (dt(r, {
               coordinates: t.coordinates[f]
             }))
               return !0;
@@ -5414,7 +5849,7 @@ function Sp(n, e) {
         case "MultiPoint":
           for (var l = !1, f = 0; f < t.coordinates.length; f++)
             for (var u = 0; u < r.coordinates.length; u++)
-              if (l || gt(
+              if (l || dt(
                 { coordinates: r.coordinates[u] },
                 { coordinates: t.coordinates[u] }
               ) && (l = !0), Se(
@@ -5426,10 +5861,10 @@ function Sp(n, e) {
           return l;
         case "LineString":
           for (var g = !1, f = 0; f < t.coordinates.length; f++) {
-            gt(
+            dt(
               { coordinates: t.coordinates[f][0] },
               r
-            ) && (g = !0), gt(
+            ) && (g = !0), dt(
               {
                 coordinates: t.coordinates[f][t.coordinates[f].length - 1]
               },
@@ -5447,10 +5882,10 @@ function Sp(n, e) {
         case "MultiLineString":
           for (var g = !1, f = 0; f < t.coordinates.length; f++)
             for (var u = 0; u < r.coordinates.length; u++) {
-              gt(
+              dt(
                 { coordinates: t.coordinates[f][0] },
                 { coordinates: r.coordinates[u] }
-              ) && (g = !0), gt(
+              ) && (g = !0), dt(
                 {
                   coordinates: t.coordinates[f][t.coordinates[f].length - 1]
                 },
@@ -5675,16 +6110,16 @@ function Sp(n, e) {
       throw new Error("feature1 " + i + " geometry not supported");
   }
 }
-function gt(n, e) {
-  return !!(Wu(e.coordinates[0], n.coordinates) || Wu(
+function dt(n, e) {
+  return !!(Ju(e.coordinates[0], n.coordinates) || Ju(
     e.coordinates[e.coordinates.length - 1],
     n.coordinates
   ));
 }
-function Wu(n, e) {
+function Ju(n, e) {
   return n[0] === e[0] && n[1] === e[1];
 }
-var kp = /* @__PURE__ */ new Set([
+var zp = /* @__PURE__ */ new Set([
   "Point",
   "LineString",
   "MultiLineString",
@@ -5692,9 +6127,9 @@ var kp = /* @__PURE__ */ new Set([
   "Polygon",
   "MultiPolygon"
 ]);
-function Wf(n) {
+function Kf(n) {
   if (!n.type) return !1;
-  const e = He(n), t = e.type, r = e.coordinates;
+  const e = Ye(n), t = e.type, r = e.coordinates;
   switch (t) {
     case "Point":
       return r.length > 1;
@@ -5714,52 +6149,52 @@ function Wf(n) {
       return !0;
     case "Polygon":
       for (var i = 0; i < e.coordinates.length; i++)
-        if (r[i].length < 4 || !$u(r[i]) || Zu(r[i]) || i > 0 && cn(pe([r[0]]), pe([r[i]])).features.length > 1)
+        if (r[i].length < 4 || !Qu(r[i]) || ju(r[i]) || i > 0 && hn(pe([r[0]]), pe([r[i]])).features.length > 1)
           return !1;
       return !0;
     case "MultiPolygon":
       for (var i = 0; i < e.coordinates.length; i++)
         for (var a = e.coordinates[i], l = 0; l < a.length; l++)
-          if (a[l].length < 4 || !$u(a[l]) || Zu(a[l]) || l === 0 && !Ip(a, e.coordinates, i) || l > 0 && cn(pe([a[0]]), pe([a[l]])).features.length > 1)
+          if (a[l].length < 4 || !Qu(a[l]) || ju(a[l]) || l === 0 && !Gp(a, e.coordinates, i) || l > 0 && hn(pe([a[0]]), pe([a[l]])).features.length > 1)
             return !1;
       return !0;
     case "GeometryCollection":
       return e.geometries ? Array.isArray(e.geometries) && e.geometries.length > 0 && e.geometries.every(
-        (u) => kp.has(u.type) && Wf(u)
+        (u) => zp.has(u.type) && Kf(u)
       ) : !1;
     default:
       return !1;
   }
 }
-function $u(n) {
+function Qu(n) {
   return n[0][0] === n[n.length - 1][0] && n[0][1] === n[n.length - 1][1];
 }
-function Zu(n) {
+function ju(n) {
   for (var e = 0; e < n.length - 1; e++)
     for (var t = n[e], r = e + 1; r < n.length - 2; r++) {
       var i = [n[r], n[r + 1]];
-      if (Se(t, ke(i))) return !0;
+      if (Se(t, Ie(i))) return !0;
     }
   return !1;
 }
-function Ip(n, e, t) {
+function Gp(n, e, t) {
   for (var r = pe(n), i = t + 1; i < e.length; i++)
-    if (!il(r, pe(e[i])) && Uf(r, ke(e[i][0])))
+    if (!ol(r, pe(e[i])) && Xf(r, Ie(e[i][0])))
       return !1;
   return !0;
 }
-function sl(n, e) {
-  return Rf(e, n);
+function al(n, e) {
+  return Ff(e, n);
 }
-function Ks(n, e = {}) {
-  const t = qe(n), r = (t[0] + t[2]) / 2, i = (t[1] + t[3]) / 2;
+function Qs(n, e = {}) {
+  const t = He(n), r = (t[0] + t[2]) / 2, i = (t[1] + t[3]) / 2;
   return de([r, i], e.properties, e);
 }
-var $f = { exports: {} };
+var Jf = { exports: {} };
 (function(n, e) {
   (function(t, r) {
     n.exports = r();
-  })(Yf, function() {
+  })(Wf, function() {
     function t(h, s) {
       (s == null || s > h.length) && (s = h.length);
       for (var o = 0, c = Array(s); o < s; o++) c[o] = h[o];
@@ -5788,7 +6223,7 @@ var $f = { exports: {} };
     function l(h, s) {
       for (var o = 0; o < s.length; o++) {
         var c = s[o];
-        c.enumerable = c.enumerable || !1, c.configurable = !0, "value" in c && (c.writable = !0), Object.defineProperty(h, M(c.key), c);
+        c.enumerable = c.enumerable || !1, c.configurable = !0, "value" in c && (c.writable = !0), Object.defineProperty(h, k(c.key), c);
       }
     }
     function u(h, s, o) {
@@ -5797,7 +6232,7 @@ var $f = { exports: {} };
     function f(h, s) {
       var o = typeof Symbol < "u" && h[Symbol.iterator] || h["@@iterator"];
       if (!o) {
-        if (Array.isArray(h) || (o = k(h)) || s) {
+        if (Array.isArray(h) || (o = I(h)) || s) {
           o && (h = o);
           var c = 0, v = function() {
           };
@@ -5810,19 +6245,19 @@ var $f = { exports: {} };
         throw new TypeError(`Invalid attempt to iterate non-iterable instance.
 In order to be iterable, non-array objects must have a [Symbol.iterator]() method.`);
       }
-      var _, E = !0, I = !1;
+      var _, E = !0, M = !1;
       return { s: function() {
         o = o.call(h);
       }, n: function() {
         var R = o.next();
         return E = R.done, R;
       }, e: function(R) {
-        I = !0, _ = R;
+        M = !0, _ = R;
       }, f: function() {
         try {
           E || o.return == null || o.return();
         } finally {
-          if (I) throw _;
+          if (M) throw _;
         }
       } };
     }
@@ -5873,12 +6308,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (Array.isArray(s)) return t(s);
       }(h) || function(s) {
         if (typeof Symbol < "u" && s[Symbol.iterator] != null || s["@@iterator"] != null) return Array.from(s);
-      }(h) || k(h) || function() {
+      }(h) || I(h) || function() {
         throw new TypeError(`Invalid attempt to spread non-iterable instance.
 In order to be iterable, non-array objects must have a [Symbol.iterator]() method.`);
       }();
     }
-    function M(h) {
+    function k(h) {
       var s = function(o, c) {
         if (typeof o != "object" || !o) return o;
         var v = o[Symbol.toPrimitive];
@@ -5891,7 +6326,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       }(h, "string");
       return typeof s == "symbol" ? s : s + "";
     }
-    function k(h, s) {
+    function I(h, s) {
       if (h) {
         if (typeof h == "string") return t(h, s);
         var o = {}.toString.call(h).slice(8, -1);
@@ -5919,7 +6354,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return c.prototype = Object.create(o.prototype, { constructor: { value: c, enumerable: !1, writable: !0, configurable: !0 } }), y(c, o);
       }, S(h);
     }
-    var N = function() {
+    var P = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -5956,8 +6391,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             var o = arguments[0], c = arguments[1];
             this.setQuadrantSegments(o), this.setEndCapStyle(c);
           } else if (arguments.length === 4) {
-            var v = arguments[0], _ = arguments[1], E = arguments[2], I = arguments[3];
-            this.setQuadrantSegments(v), this.setEndCapStyle(_), this.setJoinStyle(E), this.setMitreLimit(I);
+            var v = arguments[0], _ = arguments[1], E = arguments[2], M = arguments[3];
+            this.setQuadrantSegments(v), this.setEndCapStyle(_), this.setJoinStyle(E), this.setMitreLimit(M);
           }
         }
       } }, { key: "bufferDistanceError", value: function(s) {
@@ -5965,8 +6400,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return 1 - Math.cos(o / 2);
       } }]);
     }();
-    N.CAP_ROUND = 1, N.CAP_FLAT = 2, N.CAP_SQUARE = 3, N.JOIN_ROUND = 1, N.JOIN_MITRE = 2, N.JOIN_BEVEL = 3, N.DEFAULT_QUADRANT_SEGMENTS = 8, N.DEFAULT_MITRE_LIMIT = 5, N.DEFAULT_SIMPLIFY_FACTOR = 0.01;
-    var P = function(h) {
+    P.CAP_ROUND = 1, P.CAP_FLAT = 2, P.CAP_SQUARE = 3, P.JOIN_ROUND = 1, P.JOIN_MITRE = 2, P.JOIN_BEVEL = 3, P.DEFAULT_QUADRANT_SEGMENTS = 8, P.DEFAULT_MITRE_LIMIT = 5, P.DEFAULT_SIMPLIFY_FACTOR = 0.01;
+    var N = function(h) {
       function s(o) {
         var c;
         return i(this, s), (c = r(this, s, [o])).name = Object.keys({ Exception: s })[0], c;
@@ -5980,7 +6415,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return i(this, s), (c = r(this, s, [o])).name = Object.keys({ IllegalArgumentException: s })[0], c;
       }
       return m(s, h), u(s);
-    }(P), B = function() {
+    }(N), B = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "filter", value: function(h) {
@@ -5992,7 +6427,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
     }
     function L() {
     }
-    var T, D, z, U, X, O, H, q, V = function() {
+    var T, D, z, q, X, O, U, H, V = function() {
       return u(function h() {
         i(this, h);
       }, null, [{ key: "equalsWithTolerance", value: function(h, s, o) {
@@ -6016,27 +6451,27 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       return Number.isNaN(h);
     }, W.isInfinite = function(h) {
       return !Number.isFinite(h);
-    }, W.MAX_VALUE = Number.MAX_VALUE, W.POSITIVE_INFINITY = Number.POSITIVE_INFINITY, W.NEGATIVE_INFINITY = Number.NEGATIVE_INFINITY, typeof Float64Array == "function" && typeof Int32Array == "function" ? (O = 2146435072, H = new Float64Array(1), q = new Int32Array(H.buffer), W.doubleToLongBits = function(h) {
-      H[0] = h;
-      var s = 0 | q[0], o = 0 | q[1];
+    }, W.MAX_VALUE = Number.MAX_VALUE, W.POSITIVE_INFINITY = Number.POSITIVE_INFINITY, W.NEGATIVE_INFINITY = Number.NEGATIVE_INFINITY, typeof Float64Array == "function" && typeof Int32Array == "function" ? (O = 2146435072, U = new Float64Array(1), H = new Int32Array(U.buffer), W.doubleToLongBits = function(h) {
+      U[0] = h;
+      var s = 0 | H[0], o = 0 | H[1];
       return (o & O) === O && 1048575 & o && s !== 0 && (s = 0, o = 2146959360), new J(o, s);
     }, W.longBitsToDouble = function(h) {
-      return q[0] = h.low, q[1] = h.high, H[0];
-    }) : (T = 1023, D = Math.log2, z = Math.floor, U = Math.pow, X = function() {
+      return H[0] = h.low, H[1] = h.high, U[0];
+    }) : (T = 1023, D = Math.log2, z = Math.floor, q = Math.pow, X = function() {
       for (var h = 53; h > 0; h--) {
-        var s = U(2, h) - 1;
+        var s = q(2, h) - 1;
         if (z(D(s)) + 1 === h) return s;
       }
       return 0;
     }(), W.doubleToLongBits = function(h) {
-      var s, o, c, v, _, E, I, R, G;
+      var s, o, c, v, _, E, M, R, G;
       if (h < 0 || 1 / h === Number.NEGATIVE_INFINITY ? (E = 1 << 31, h = -h) : E = 0, h === 0) return new J(R = E, G = 0);
       if (h === 1 / 0) return new J(R = 2146435072 | E, G = 0);
       if (h != h) return new J(R = 2146959360, G = 0);
-      if (v = 0, G = 0, (s = z(h)) > 1) if (s <= X) (v = z(D(s))) <= 20 ? (G = 0, R = s << 20 - v & 1048575) : (G = s % (o = U(2, c = v - 20)) << 32 - c, R = s / o & 1048575);
+      if (v = 0, G = 0, (s = z(h)) > 1) if (s <= X) (v = z(D(s))) <= 20 ? (G = 0, R = s << 20 - v & 1048575) : (G = s % (o = q(2, c = v - 20)) << 32 - c, R = s / o & 1048575);
       else for (c = s, G = 0; (c = z(o = c / 2)) !== 0; ) v++, G >>>= 1, G |= (1 & R) << 31, R >>>= 1, o !== c && (R |= 524288);
-      if (I = v + T, _ = s === 0, s = h - s, v < 52 && s !== 0) for (c = 0; ; ) {
-        if ((o = 2 * s) >= 1 ? (s = o - 1, _ ? (I--, _ = !1) : (c <<= 1, c |= 1, v++)) : (s = o, _ ? --I == 0 && (v++, _ = !1) : (c <<= 1, v++)), v === 20) R |= c, c = 0;
+      if (M = v + T, _ = s === 0, s = h - s, v < 52 && s !== 0) for (c = 0; ; ) {
+        if ((o = 2 * s) >= 1 ? (s = o - 1, _ ? (M--, _ = !1) : (c <<= 1, c |= 1, v++)) : (s = o, _ ? --M == 0 && (v++, _ = !1) : (c <<= 1, v++)), v === 20) R |= c, c = 0;
         else if (v === 52) {
           G |= c;
           break;
@@ -6046,19 +6481,19 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           break;
         }
       }
-      return R |= I << 20, new J(R |= E, G);
+      return R |= M << 20, new J(R |= E, G);
     }, W.longBitsToDouble = function(h) {
-      var s, o, c, v, _ = h.high, E = h.low, I = _ & 1 << 31 ? -1 : 1;
-      for (c = ((2146435072 & _) >> 20) - T, v = 0, o = 1 << 19, s = 1; s <= 20; s++) _ & o && (v += U(2, -s)), o >>>= 1;
-      for (o = 1 << 31, s = 21; s <= 52; s++) E & o && (v += U(2, -s)), o >>>= 1;
+      var s, o, c, v, _ = h.high, E = h.low, M = _ & 1 << 31 ? -1 : 1;
+      for (c = ((2146435072 & _) >> 20) - T, v = 0, o = 1 << 19, s = 1; s <= 20; s++) _ & o && (v += q(2, -s)), o >>>= 1;
+      for (o = 1 << 31, s = 21; s <= 52; s++) E & o && (v += q(2, -s)), o >>>= 1;
       if (c === -1023) {
-        if (v === 0) return 0 * I;
+        if (v === 0) return 0 * M;
         c = -1022;
       } else {
-        if (c === 1024) return v === 0 ? I / 0 : NaN;
+        if (c === 1024) return v === 0 ? M / 0 : NaN;
         v += 1;
       }
-      return I * v * U(2, c);
+      return M * v * q(2, c);
     });
     var Q = function(h) {
       function s(o) {
@@ -6066,7 +6501,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return i(this, s), (c = r(this, s, [o])).name = Object.keys({ RuntimeException: s })[0], c;
       }
       return m(s, h), u(s);
-    }(P), re = function(h) {
+    }(N), re = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -6206,7 +6641,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "hashCode", value: function(s) {
         return se[0] = s, fe[0] ^ fe[1];
       } }]);
-    }(), Fe = function() {
+    }(), Be = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -6228,7 +6663,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return s < o ? -1 : s > o ? 1 : W.isNaN(s) ? W.isNaN(o) ? 0 : -1 : W.isNaN(o) ? 1 : 0;
       } }]);
     }();
-    Z.DimensionalComparator = Fe, Z.NULL_ORDINATE = W.NaN, Z.X = 0, Z.Y = 1, Z.Z = 2, Z.M = 3;
+    Z.DimensionalComparator = Be, Z.NULL_ORDINATE = W.NaN, Z.X = 0, Z.Y = 1, Z.Z = 2, Z.M = 3;
     var _e = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
@@ -6368,8 +6803,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var c = arguments[0], v = arguments[1];
           this.init(c.x, v.x, c.y, v.y);
         } else if (arguments.length === 4) {
-          var _ = arguments[0], E = arguments[1], I = arguments[2], R = arguments[3];
-          _ < E ? (this._minx = _, this._maxx = E) : (this._minx = E, this._maxx = _), I < R ? (this._miny = I, this._maxy = R) : (this._miny = R, this._maxy = I);
+          var _ = arguments[0], E = arguments[1], M = arguments[2], R = arguments[3];
+          _ < E ? (this._minx = _, this._maxx = E) : (this._minx = E, this._maxx = _), M < R ? (this._miny = M, this._maxy = R) : (this._miny = R, this._maxy = M);
         }
       } }, { key: "getMaxY", value: function() {
         return this._maxy;
@@ -6398,8 +6833,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var c = arguments[0], v = arguments[1];
           this.init(c.x, v.x, c.y, v.y);
         } else if (arguments.length === 4) {
-          var _ = arguments[0], E = arguments[1], I = arguments[2], R = arguments[3];
-          this.init(_, E, I, R);
+          var _ = arguments[0], E = arguments[1], M = arguments[2], R = arguments[3];
+          this.init(_, E, M, R);
         }
       } }, { key: "intersects", value: function() {
         if (arguments.length === 3) {
@@ -6407,8 +6842,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           return c.x >= (s.x < o.x ? s.x : o.x) && c.x <= (s.x > o.x ? s.x : o.x) && c.y >= (s.y < o.y ? s.y : o.y) && c.y <= (s.y > o.y ? s.y : o.y);
         }
         if (arguments.length === 4) {
-          var v = arguments[0], _ = arguments[1], E = arguments[2], I = arguments[3], R = Math.min(E.x, I.x), G = Math.max(E.x, I.x), $ = Math.min(v.x, _.x), K = Math.max(v.x, _.x);
-          return !($ > G) && !(K < R) && (R = Math.min(E.y, I.y), G = Math.max(E.y, I.y), $ = Math.min(v.y, _.y), K = Math.max(v.y, _.y), !($ > G) && !(K < R));
+          var v = arguments[0], _ = arguments[1], E = arguments[2], M = arguments[3], R = Math.min(E.x, M.x), G = Math.max(E.x, M.x), $ = Math.min(v.x, _.x), K = Math.max(v.x, _.x);
+          return !($ > G) && !(K < R) && (R = Math.min(E.y, M.y), G = Math.max(E.y, M.y), $ = Math.min(v.y, _.y), K = Math.max(v.y, _.y), !($ > G) && !(K < R));
         }
       } }]);
     }(), ae = function() {
@@ -6476,8 +6911,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         this._userData = s;
       } }, { key: "compare", value: function(s, o) {
         for (var c = s.iterator(), v = o.iterator(); c.hasNext() && v.hasNext(); ) {
-          var _ = c.next(), E = v.next(), I = _.compareTo(E);
-          if (I !== 0) return I;
+          var _ = c.next(), E = v.next(), M = _.compareTo(E);
+          if (M !== 0) return M;
         }
         return c.hasNext() ? 1 : v.hasNext() ? -1 : 0;
       } }, { key: "hashCode", value: function() {
@@ -6524,7 +6959,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }]);
     }();
     Y.INTERIOR = 0, Y.BOUNDARY = 1, Y.EXTERIOR = 2, Y.NONE = -1;
-    var Ie = function() {
+    var ke = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "add", value: function() {
@@ -6535,28 +6970,28 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "toArray", value: function() {
       } }, { key: "remove", value: function() {
       } }]);
-    }(), Ne = function(h) {
+    }(), Pe = function(h) {
       function s(o) {
         var c;
         return i(this, s), (c = r(this, s, [o])).name = Object.keys({ NoSuchElementException: s })[0], c;
       }
       return m(s, h), u(s);
-    }(P), be = function(h) {
+    }(N), be = function(h) {
       function s(o) {
         var c;
         return i(this, s), (c = r(this, s, [o])).name = Object.keys({ UnsupportedOperationException: s })[0], c;
       }
       return m(s, h), u(s);
-    }(P), xt = function(h) {
+    }(N), Et = function(h) {
       function s() {
         return i(this, s), r(this, s, arguments);
       }
       return m(s, h), u(s, [{ key: "contains", value: function() {
       } }]);
-    }(Ie), mt = function(h) {
+    }(ke), vt = function(h) {
       function s(o) {
         var c;
-        return i(this, s), (c = r(this, s)).map = /* @__PURE__ */ new Map(), o instanceof Ie && c.addAll(o), c;
+        return i(this, s), (c = r(this, s)).map = /* @__PURE__ */ new Map(), o instanceof ke && c.addAll(o), c;
       }
       return m(s, h), u(s, [{ key: "contains", value: function(o) {
         var c = o.hashCode ? o.hashCode() : o;
@@ -6586,17 +7021,17 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "toArray", value: function() {
         return Array.from(this.map.values());
       } }, { key: "iterator", value: function() {
-        return new Zt(this.map);
+        return new Kt(this.map);
       } }, { key: Symbol.iterator, value: function() {
         return this.map;
       } }]);
-    }(xt), Zt = function() {
+    }(Et), Kt = function() {
       return u(function h(s) {
         i(this, h), this.iterator = s.values();
         var o = this.iterator.next(), c = o.done, v = o.value;
         this.done = c, this.value = v;
       }, [{ key: "next", value: function() {
-        if (this.done) throw new Ne();
+        if (this.done) throw new Pe();
         var h = this.value, s = this.iterator.next(), o = s.done, c = s.value;
         return this.done = o, this.value = c, h;
       } }, { key: "hasNext", value: function() {
@@ -6613,19 +7048,19 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }]);
     }();
     ie.ON = 0, ie.LEFT = 1, ie.RIGHT = 2;
-    var Bi = function(h) {
+    var Gi = function(h) {
       function s(o) {
         var c;
         return i(this, s), (c = r(this, s, [o])).name = Object.keys({ EmptyStackException: s })[0], c;
       }
       return m(s, h), u(s);
-    }(P), zi = function(h) {
+    }(N), qi = function(h) {
       function s(o) {
         var c;
         return i(this, s), (c = r(this, s, [o])).name = Object.keys({ IndexOutOfBoundsException: s })[0], c;
       }
       return m(s, h), u(s);
-    }(P), hn = function(h) {
+    }(N), fn = function(h) {
       function s() {
         return i(this, s), r(this, s, arguments);
       }
@@ -6633,7 +7068,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "set", value: function() {
       } }, { key: "isEmpty", value: function() {
       } }]);
-    }(Ie), ho = function(h) {
+    }(ke), go = function(h) {
       function s() {
         var o;
         return i(this, s), (o = r(this, s)).array = [], o;
@@ -6641,15 +7076,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       return m(s, h), u(s, [{ key: "add", value: function(o) {
         return this.array.push(o), !0;
       } }, { key: "get", value: function(o) {
-        if (o < 0 || o >= this.size()) throw new zi();
+        if (o < 0 || o >= this.size()) throw new qi();
         return this.array[o];
       } }, { key: "push", value: function(o) {
         return this.array.push(o), o;
       } }, { key: "pop", value: function() {
-        if (this.array.length === 0) throw new Bi();
+        if (this.array.length === 0) throw new Gi();
         return this.array.pop();
       } }, { key: "peek", value: function() {
-        if (this.array.length === 0) throw new Bi();
+        if (this.array.length === 0) throw new Gi();
         return this.array[this.array.length - 1];
       } }, { key: "empty", value: function() {
         return this.array.length === 0;
@@ -6662,11 +7097,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "toArray", value: function() {
         return this.array.slice();
       } }]);
-    }(hn);
+    }(fn);
     function Ee(h, s) {
       return h.interfaces_ && h.interfaces_.indexOf(s) > -1;
     }
-    var Sn = function() {
+    var In = function() {
       return u(function h(s) {
         i(this, h), this.str = s;
       }, [{ key: "append", value: function(h) {
@@ -6691,7 +7126,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "valueOf", value: function(s) {
         return new h(s);
       } }]);
-    }(), fo = function() {
+    }(), mo = function() {
       return u(function h() {
         i(this, h);
       }, null, [{ key: "isWhitespace", value: function(h) {
@@ -6708,16 +7143,16 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "extractSignificantDigits", value: function(s, o) {
         var c = this.abs(), v = h.magnitude(c._hi), _ = h.TEN.pow(v);
         (c = c.divide(_)).gt(h.TEN) ? (c = c.divide(h.TEN), v += 1) : c.lt(h.ONE) && (c = c.multiply(h.TEN), v -= 1);
-        for (var E = v + 1, I = new Sn(), R = h.MAX_PRINT_DIGITS - 1, G = 0; G <= R; G++) {
-          s && G === E && I.append(".");
+        for (var E = v + 1, M = new In(), R = h.MAX_PRINT_DIGITS - 1, G = 0; G <= R; G++) {
+          s && G === E && M.append(".");
           var $ = Math.trunc(c._hi);
           if ($ < 0) break;
           var K = !1, ne = 0;
-          $ > 9 ? (K = !0, ne = "9") : ne = "0" + $, I.append(ne), c = c.subtract(h.valueOf($)).multiply(h.TEN), K && c.selfAdd(h.TEN);
+          $ > 9 ? (K = !0, ne = "9") : ne = "0" + $, M.append(ne), c = c.subtract(h.valueOf($)).multiply(h.TEN), K && c.selfAdd(h.TEN);
           var le = !0, he = h.magnitude(c._hi);
           if (he < 0 && Math.abs(he) >= R - G && (le = !1), !le) break;
         }
-        return o[0] = v, I.toString();
+        return o[0] = v, M.toString();
       } }, { key: "sqr", value: function() {
         return this.multiply(this);
       } }, { key: "doubleValue", value: function() {
@@ -6762,15 +7197,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             return this.selfDivide(o, 0);
           }
         } else if (arguments.length === 2) {
-          var c, v, _, E, I = arguments[0], R = arguments[1], G = null, $ = null, K = null, ne = null;
-          return _ = this._hi / I, ne = (G = (K = h.SPLIT * _) - (G = K - _)) * ($ = (ne = h.SPLIT * I) - ($ = ne - I)) - (E = _ * I) + G * (v = I - $) + (c = _ - G) * $ + c * v, ne = _ + (K = (this._hi - E - ne + this._lo - _ * R) / I), this._hi = ne, this._lo = _ - ne + K, this;
+          var c, v, _, E, M = arguments[0], R = arguments[1], G = null, $ = null, K = null, ne = null;
+          return _ = this._hi / M, ne = (G = (K = h.SPLIT * _) - (G = K - _)) * ($ = (ne = h.SPLIT * M) - ($ = ne - M)) - (E = _ * M) + G * (v = M - $) + (c = _ - G) * $ + c * v, ne = _ + (K = (this._hi - E - ne + this._lo - _ * R) / M), this._hi = ne, this._lo = _ - ne + K, this;
         }
       } }, { key: "dump", value: function() {
         return "DD<" + this._hi + ", " + this._lo + ">";
       } }, { key: "divide", value: function() {
         if (arguments[0] instanceof h) {
-          var s, o, c, v, _ = arguments[0], E = null, I = null, R = null, G = null;
-          return s = (c = this._hi / _._hi) - (E = (R = h.SPLIT * c) - (E = R - c)), G = E * (I = (G = h.SPLIT * _._hi) - (I = G - _._hi)) - (v = c * _._hi) + E * (o = _._hi - I) + s * I + s * o, new h(G = c + (R = (this._hi - v - G + this._lo - c * _._lo) / _._hi), c - G + R);
+          var s, o, c, v, _ = arguments[0], E = null, M = null, R = null, G = null;
+          return s = (c = this._hi / _._hi) - (E = (R = h.SPLIT * c) - (E = R - c)), G = E * (M = (G = h.SPLIT * _._hi) - (M = G - _._hi)) - (v = c * _._hi) + E * (o = _._hi - M) + s * M + s * o, new h(G = c + (R = (this._hi - v - G + this._lo - c * _._lo) / _._hi), c - G + R);
         }
         if (typeof arguments[0] == "number") {
           var $ = arguments[0];
@@ -6816,14 +7251,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             return this.selfAdd(s._hi, s._lo);
           }
           if (typeof arguments[0] == "number") {
-            var o, c, v, _, E, I = arguments[0], R = null;
-            return R = (v = this._hi + I) - (_ = v - this._hi), c = (E = (R = I - _ + (this._hi - R)) + this._lo) + (v - (o = v + E)), this._hi = o + c, this._lo = c + (o - this._hi), this;
+            var o, c, v, _, E, M = arguments[0], R = null;
+            return R = (v = this._hi + M) - (_ = v - this._hi), c = (E = (R = M - _ + (this._hi - R)) + this._lo) + (v - (o = v + E)), this._hi = o + c, this._lo = c + (o - this._hi), this;
           }
         } else if (arguments.length === 2) {
-          var G, $, K, ne, le = arguments[0], he = arguments[1], ge = null, Ae = null, Pe = null;
-          K = this._hi + le, $ = this._lo + he, Ae = K - (Pe = K - this._hi), ge = $ - (ne = $ - this._lo);
-          var Ue = (G = K + (Pe = (Ae = le - Pe + (this._hi - Ae)) + $)) + (Pe = (ge = he - ne + (this._lo - ge)) + (Pe + (K - G))), at = Pe + (G - Ue);
-          return this._hi = Ue, this._lo = at, this;
+          var G, $, K, ne, le = arguments[0], he = arguments[1], ge = null, Ae = null, Ne = null;
+          K = this._hi + le, $ = this._lo + he, Ae = K - (Ne = K - this._hi), ge = $ - (ne = $ - this._lo);
+          var Ue = (G = K + (Ne = (Ae = le - Ne + (this._hi - Ae)) + $)) + (Ne = (ge = he - ne + (this._lo - ge)) + (Ne + (K - G))), lt = Ne + (G - Ue);
+          return this._hi = Ue, this._lo = lt, this;
         }
       } }, { key: "selfMultiply", value: function() {
         if (arguments.length === 1) {
@@ -6836,9 +7271,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             return this.selfMultiply(o, 0);
           }
         } else if (arguments.length === 2) {
-          var c, v, _ = arguments[0], E = arguments[1], I = null, R = null, G = null, $ = null;
-          I = (G = h.SPLIT * this._hi) - this._hi, $ = h.SPLIT * _, I = G - I, c = this._hi - I, R = $ - _;
-          var K = (G = this._hi * _) + ($ = I * (R = $ - R) - G + I * (v = _ - R) + c * R + c * v + (this._hi * E + this._lo * _)), ne = $ + (I = G - K);
+          var c, v, _ = arguments[0], E = arguments[1], M = null, R = null, G = null, $ = null;
+          M = (G = h.SPLIT * this._hi) - this._hi, $ = h.SPLIT * _, M = G - M, c = this._hi - M, R = $ - _;
+          var K = (G = this._hi * _) + ($ = M * (R = $ - R) - G + M * (v = _ - R) + c * R + c * v + (this._hi * E + this._lo * _)), ne = $ + (M = G - K);
           return this._hi = K, this._lo = ne, this;
         }
       } }, { key: "selfSqr", value: function() {
@@ -6884,10 +7319,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
         return this.isNegative() ? "-" + _ : _;
       } }, { key: "reciprocal", value: function() {
-        var s, o, c, v, _ = null, E = null, I = null, R = null;
-        s = (c = 1 / this._hi) - (_ = (I = h.SPLIT * c) - (_ = I - c)), E = (R = h.SPLIT * this._hi) - this._hi;
-        var G = c + (I = (1 - (v = c * this._hi) - (R = _ * (E = R - E) - v + _ * (o = this._hi - E) + s * E + s * o) - c * this._lo) / this._hi);
-        return new h(G, c - G + I);
+        var s, o, c, v, _ = null, E = null, M = null, R = null;
+        s = (c = 1 / this._hi) - (_ = (M = h.SPLIT * c) - (_ = M - c)), E = (R = h.SPLIT * this._hi) - this._hi;
+        var G = c + (M = (1 - (v = c * this._hi) - (R = _ * (E = R - E) - v + _ * (o = this._hi - E) + s * E + s * o) - c * this._lo) / this._hi);
+        return new h(G, c - G + M);
       } }, { key: "toSciNotation", value: function() {
         if (this.isZero()) return h.SCI_NOT_ZERO;
         var s = this.getSpecialNumberString();
@@ -6959,8 +7394,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           return h.determinant(h.valueOf(s), h.valueOf(o), h.valueOf(c), h.valueOf(v));
         }
         if (arguments[3] instanceof h && arguments[2] instanceof h && arguments[0] instanceof h && arguments[1] instanceof h) {
-          var _ = arguments[1], E = arguments[2], I = arguments[3];
-          return arguments[0].multiply(I).selfSubtract(_.multiply(E));
+          var _ = arguments[1], E = arguments[2], M = arguments[3];
+          return arguments[0].multiply(M).selfSubtract(_.multiply(E));
         }
       } }, { key: "sqr", value: function(s) {
         return h.valueOf(s).selfMultiply(s);
@@ -6973,17 +7408,17 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "sqrt", value: function(s) {
         return h.valueOf(s).sqrt();
       } }, { key: "parse", value: function(s) {
-        for (var o = 0, c = s.length; fo.isWhitespace(s.charAt(o)); ) o++;
+        for (var o = 0, c = s.length; mo.isWhitespace(s.charAt(o)); ) o++;
         var v = !1;
         if (o < c) {
           var _ = s.charAt(o);
           _ !== "-" && _ !== "+" || (o++, _ === "-" && (v = !0));
         }
-        for (var E = new h(), I = 0, R = 0, G = 0, $ = !1; !(o >= c); ) {
+        for (var E = new h(), M = 0, R = 0, G = 0, $ = !1; !(o >= c); ) {
           var K = s.charAt(o);
-          if (o++, fo.isDigit(K)) {
+          if (o++, mo.isDigit(K)) {
             var ne = K - "0";
-            E.selfMultiply(h.TEN), E.selfAdd(ne), I++;
+            E.selfMultiply(h.TEN), E.selfAdd(ne), M++;
           } else {
             if (K !== ".") {
               if (K === "e" || K === "E") {
@@ -6997,19 +7432,19 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
               }
               throw new NumberFormatException("Unexpected character '" + K + "' at position " + o + " in string " + s);
             }
-            R = I, $ = !0;
+            R = M, $ = !0;
           }
         }
         var he = E;
-        $ || (R = I);
-        var ge = I - R - G;
+        $ || (R = M);
+        var ge = M - R - G;
         if (ge === 0) he = E;
         else if (ge > 0) {
           var Ae = h.TEN.pow(ge);
           he = E.divide(Ae);
         } else if (ge < 0) {
-          var Pe = h.TEN.pow(-ge);
-          he = E.multiply(Pe);
+          var Ne = h.TEN.pow(-ge);
+          he = E.multiply(Ne);
         }
         return v ? he.negate() : he;
       } }, { key: "createNaN", value: function() {
@@ -7020,48 +7455,48 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var o = Math.abs(s), c = Math.log(o) / Math.log(10), v = Math.trunc(Math.floor(c));
         return 10 * Math.pow(10, v) <= o && (v += 1), v;
       } }, { key: "stringOfChar", value: function(s, o) {
-        for (var c = new Sn(), v = 0; v < o; v++) c.append(s);
+        for (var c = new In(), v = 0; v < o; v++) c.append(s);
         return c.toString();
       } }]);
     }();
     ye.PI = new ye(3.141592653589793, 12246467991473532e-32), ye.TWO_PI = new ye(6.283185307179586, 24492935982947064e-32), ye.PI_2 = new ye(1.5707963267948966, 6123233995736766e-32), ye.E = new ye(2.718281828459045, 14456468917292502e-32), ye.NaN = new ye(W.NaN, W.NaN), ye.EPS = 123259516440783e-46, ye.SPLIT = 134217729, ye.MAX_PRINT_DIGITS = 32, ye.TEN = ye.valueOf(10), ye.ONE = ye.valueOf(1), ye.SCI_NOT_EXPONENT_CHAR = "E", ye.SCI_NOT_ZERO = "0.0E0";
-    var go = function() {
+    var vo = function() {
       function h() {
         i(this, h);
       }
       return u(h, null, [{ key: "orientationIndex", value: function(s, o, c) {
         var v = h.orientationIndexFilter(s, o, c);
         if (v <= 1) return v;
-        var _ = ye.valueOf(o.x).selfAdd(-s.x), E = ye.valueOf(o.y).selfAdd(-s.y), I = ye.valueOf(c.x).selfAdd(-o.x), R = ye.valueOf(c.y).selfAdd(-o.y);
-        return _.selfMultiply(R).selfSubtract(E.selfMultiply(I)).signum();
+        var _ = ye.valueOf(o.x).selfAdd(-s.x), E = ye.valueOf(o.y).selfAdd(-s.y), M = ye.valueOf(c.x).selfAdd(-o.x), R = ye.valueOf(c.y).selfAdd(-o.y);
+        return _.selfMultiply(R).selfSubtract(E.selfMultiply(M)).signum();
       } }, { key: "signOfDet2x2", value: function() {
         if (arguments[3] instanceof ye && arguments[2] instanceof ye && arguments[0] instanceof ye && arguments[1] instanceof ye) {
           var s = arguments[1], o = arguments[2], c = arguments[3];
           return arguments[0].multiply(c).selfSubtract(s.multiply(o)).signum();
         }
         if (typeof arguments[3] == "number" && typeof arguments[2] == "number" && typeof arguments[0] == "number" && typeof arguments[1] == "number") {
-          var v = arguments[0], _ = arguments[1], E = arguments[2], I = arguments[3], R = ye.valueOf(v), G = ye.valueOf(_), $ = ye.valueOf(E), K = ye.valueOf(I);
+          var v = arguments[0], _ = arguments[1], E = arguments[2], M = arguments[3], R = ye.valueOf(v), G = ye.valueOf(_), $ = ye.valueOf(E), K = ye.valueOf(M);
           return R.multiply(K).selfSubtract(G.multiply($)).signum();
         }
       } }, { key: "intersection", value: function(s, o, c, v) {
-        var _ = new ye(s.y).selfSubtract(o.y), E = new ye(o.x).selfSubtract(s.x), I = new ye(s.x).selfMultiply(o.y).selfSubtract(new ye(o.x).selfMultiply(s.y)), R = new ye(c.y).selfSubtract(v.y), G = new ye(v.x).selfSubtract(c.x), $ = new ye(c.x).selfMultiply(v.y).selfSubtract(new ye(v.x).selfMultiply(c.y)), K = E.multiply($).selfSubtract(G.multiply(I)), ne = R.multiply(I).selfSubtract(_.multiply($)), le = _.multiply(G).selfSubtract(R.multiply(E)), he = K.selfDivide(le).doubleValue(), ge = ne.selfDivide(le).doubleValue();
+        var _ = new ye(s.y).selfSubtract(o.y), E = new ye(o.x).selfSubtract(s.x), M = new ye(s.x).selfMultiply(o.y).selfSubtract(new ye(o.x).selfMultiply(s.y)), R = new ye(c.y).selfSubtract(v.y), G = new ye(v.x).selfSubtract(c.x), $ = new ye(c.x).selfMultiply(v.y).selfSubtract(new ye(v.x).selfMultiply(c.y)), K = E.multiply($).selfSubtract(G.multiply(M)), ne = R.multiply(M).selfSubtract(_.multiply($)), le = _.multiply(G).selfSubtract(R.multiply(E)), he = K.selfDivide(le).doubleValue(), ge = ne.selfDivide(le).doubleValue();
         return W.isNaN(he) || W.isInfinite(he) || W.isNaN(ge) || W.isInfinite(ge) ? null : new Z(he, ge);
       } }, { key: "orientationIndexFilter", value: function(s, o, c) {
-        var v = null, _ = (s.x - c.x) * (o.y - c.y), E = (s.y - c.y) * (o.x - c.x), I = _ - E;
+        var v = null, _ = (s.x - c.x) * (o.y - c.y), E = (s.y - c.y) * (o.x - c.x), M = _ - E;
         if (_ > 0) {
-          if (E <= 0) return h.signum(I);
+          if (E <= 0) return h.signum(M);
           v = _ + E;
         } else {
-          if (!(_ < 0) || E >= 0) return h.signum(I);
+          if (!(_ < 0) || E >= 0) return h.signum(M);
           v = -_ - E;
         }
         var R = h.DP_SAFE_EPSILON * v;
-        return I >= R || -I >= R ? h.signum(I) : 2;
+        return M >= R || -M >= R ? h.signum(M) : 2;
       } }, { key: "signum", value: function(s) {
         return s > 0 ? 1 : s < 0 ? -1 : 0;
       } }]);
     }();
-    go.DP_SAFE_EPSILON = 1e-15;
+    vo.DP_SAFE_EPSILON = 1e-15;
     var Te = function() {
       return u(function h() {
         i(this, h);
@@ -7101,7 +7536,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         i(this, h);
       }
       return u(h, null, [{ key: "index", value: function(s, o, c) {
-        return go.orientationIndex(s, o, c);
+        return vo.orientationIndex(s, o, c);
       } }, { key: "isCCW", value: function() {
         if (arguments[0] instanceof Array) {
           var s = arguments[0], o = s.length - 1;
@@ -7110,15 +7545,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             var E = s[_];
             E.y > c.y && (c = E, v = _);
           }
-          var I = v;
+          var M = v;
           do
-            (I -= 1) < 0 && (I = o);
-          while (s[I].equals2D(c) && I !== v);
+            (M -= 1) < 0 && (M = o);
+          while (s[M].equals2D(c) && M !== v);
           var R = v;
           do
             R = (R + 1) % o;
           while (s[R].equals2D(c) && R !== v);
-          var G = s[I], $ = s[R];
+          var G = s[M], $ = s[R];
           if (G.equals2D(c) || $.equals2D(c) || G.equals2D($)) return !1;
           var K = h.index(G, c, $);
           return K === 0 ? G.x > $.x : K > 0;
@@ -7127,25 +7562,25 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var ne = arguments[0], le = ne.size() - 1;
           if (le < 3) throw new A("Ring has fewer than 4 points, so orientation cannot be determined");
           for (var he = ne.getCoordinate(0), ge = 0, Ae = 1; Ae <= le; Ae++) {
-            var Pe = ne.getCoordinate(Ae);
-            Pe.y > he.y && (he = Pe, ge = Ae);
+            var Ne = ne.getCoordinate(Ae);
+            Ne.y > he.y && (he = Ne, ge = Ae);
           }
-          var Ue = null, at = ge;
+          var Ue = null, lt = ge;
           do
-            (at -= 1) < 0 && (at = le), Ue = ne.getCoordinate(at);
-          while (Ue.equals2D(he) && at !== ge);
-          var ct = null, Gn = ge;
+            (lt -= 1) < 0 && (lt = le), Ue = ne.getCoordinate(lt);
+          while (Ue.equals2D(he) && lt !== ge);
+          var ht = null, qn = ge;
           do
-            Gn = (Gn + 1) % le, ct = ne.getCoordinate(Gn);
-          while (ct.equals2D(he) && Gn !== ge);
-          if (Ue.equals2D(he) || ct.equals2D(he) || Ue.equals2D(ct)) return !1;
-          var Wr = h.index(Ue, he, ct);
-          return Wr === 0 ? Ue.x > ct.x : Wr > 0;
+            qn = (qn + 1) % le, ht = ne.getCoordinate(qn);
+          while (ht.equals2D(he) && qn !== ge);
+          if (Ue.equals2D(he) || ht.equals2D(he) || Ue.equals2D(ht)) return !1;
+          var $r = h.index(Ue, he, ht);
+          return $r === 0 ? Ue.x > ht.x : $r > 0;
         }
       } }]);
     }();
     we.CLOCKWISE = -1, we.RIGHT = we.CLOCKWISE, we.COUNTERCLOCKWISE = 1, we.LEFT = we.COUNTERCLOCKWISE, we.COLLINEAR = 0, we.STRAIGHT = we.COLLINEAR;
-    var Jd = function() {
+    var tm = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "getCoordinate", value: function() {
@@ -7179,7 +7614,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }], [{ key: "constructor_", value: function() {
         this._minIndex = -1, this._minCoord = null, this._minDe = null, this._orientedDe = null;
       } }]);
-    }(), fn = function(h) {
+    }(), gn = function(h) {
       function s(o, c) {
         var v;
         return i(this, s), (v = r(this, s, [c ? o + " [ " + c + " ]" : o])).pt = c ? new Z(c) : void 0, v.name = Object.keys({ TopologyException: s })[0], v;
@@ -7187,7 +7622,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       return m(s, h), u(s, [{ key: "getCoordinate", value: function() {
         return this.pt;
       } }]);
-    }(Q), Qd = function() {
+    }(Q), nm = function() {
       return u(function h() {
         i(this, h), this.array = [];
       }, [{ key: "addLast", value: function(h) {
@@ -7200,10 +7635,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
     }(), ve = function(h) {
       function s(o) {
         var c;
-        return i(this, s), (c = r(this, s)).array = [], o instanceof Ie && c.addAll(o), c;
+        return i(this, s), (c = r(this, s)).array = [], o instanceof ke && c.addAll(o), c;
       }
       return m(s, h), u(s, [{ key: "interfaces_", get: function() {
-        return [hn, Ie];
+        return [fn, ke];
       } }, { key: "ensureCapacity", value: function() {
       } }, { key: "add", value: function(o) {
         return arguments.length === 1 ? this.array.push(o) : this.array.splice(arguments[0], 0, arguments[1]), !0;
@@ -7225,9 +7660,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var v = this.array[o];
         return this.array[o] = c, v;
       } }, { key: "iterator", value: function() {
-        return new jd(this);
+        return new rm(this);
       } }, { key: "get", value: function(o) {
-        if (o < 0 || o >= this.size()) throw new zi();
+        if (o < 0 || o >= this.size()) throw new qi();
         return this.array[o];
       } }, { key: "isEmpty", value: function() {
         return this.array.length === 0;
@@ -7245,11 +7680,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: Symbol.iterator, value: function() {
         return this.array.values();
       } }]);
-    }(hn), jd = function() {
+    }(fn), rm = function() {
       return u(function h(s) {
         i(this, h), this.arrayList = s, this.position = 0;
       }, [{ key: "next", value: function() {
-        if (this.position === this.arrayList.size()) throw new Ne();
+        if (this.position === this.arrayList.size()) throw new Pe();
         return this.arrayList.get(this.position++);
       } }, { key: "hasNext", value: function() {
         return this.position < this.arrayList.size();
@@ -7258,7 +7693,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "remove", value: function() {
         this.arrayList.remove(this.arrayList.get(this.position));
       } }]);
-    }(), em = function() {
+    }(), im = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "clearVisitedEdges", value: function() {
@@ -7274,7 +7709,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             break;
           }
         }
-        if (s === null) throw new fn("unable to find edge to compute depths at " + h.getCoordinate());
+        if (s === null) throw new gn("unable to find edge to compute depths at " + h.getCoordinate());
         h.getEdges().computeDepths(s);
         for (var v = h.getEdges().iterator(); v.hasNext(); ) {
           var _ = v.next();
@@ -7292,15 +7727,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           s.getDepth(ie.RIGHT) >= 1 && s.getDepth(ie.LEFT) <= 0 && !s.isInteriorAreaEdge() && s.setInResult(!0);
         }
       } }, { key: "computeDepths", value: function(h) {
-        var s = new mt(), o = new Qd(), c = h.getNode();
+        var s = new vt(), o = new nm(), c = h.getNode();
         for (o.addLast(c), s.add(c), h.setVisited(!0); !o.isEmpty(); ) {
           var v = o.removeFirst();
           s.add(v), this.computeNodeDepth(v);
           for (var _ = v.getEdges().iterator(); _.hasNext(); ) {
             var E = _.next().getSym();
             if (!E.isVisited()) {
-              var I = E.getNode();
-              s.contains(I) || (o.addLast(I), s.add(I));
+              var M = E.getNode();
+              s.contains(M) || (o.addLast(M), s.add(M));
             }
           }
         }
@@ -7314,7 +7749,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
         return this._env;
       } }, { key: "addReachable", value: function(h) {
-        var s = new ho();
+        var s = new go();
         for (s.add(h); !s.empty(); ) {
           var o = s.pop();
           this.add(o, s);
@@ -7337,16 +7772,16 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "interfaces_", get: function() {
         return [F];
       } }], [{ key: "constructor_", value: function() {
-        this._finder = null, this._dirEdgeList = new ve(), this._nodes = new ve(), this._rightMostCoord = null, this._env = null, this._finder = new Jd();
+        this._finder = null, this._dirEdgeList = new ve(), this._nodes = new ve(), this._rightMostCoord = null, this._env = null, this._finder = new tm();
       } }]);
-    }(), mo = function() {
+    }(), po = function() {
       return u(function h() {
         i(this, h);
       }, null, [{ key: "intersection", value: function(h, s, o, c) {
-        var v = h.x < s.x ? h.x : s.x, _ = h.y < s.y ? h.y : s.y, E = h.x > s.x ? h.x : s.x, I = h.y > s.y ? h.y : s.y, R = o.x < c.x ? o.x : c.x, G = o.y < c.y ? o.y : c.y, $ = o.x > c.x ? o.x : c.x, K = o.y > c.y ? o.y : c.y, ne = ((v > R ? v : R) + (E < $ ? E : $)) / 2, le = ((_ > G ? _ : G) + (I < K ? I : K)) / 2, he = h.x - ne, ge = h.y - le, Ae = s.x - ne, Pe = s.y - le, Ue = o.x - ne, at = o.y - le, ct = c.x - ne, Gn = c.y - le, Wr = ge - Pe, hu = Ae - he, fu = he * Pe - Ae * ge, gu = at - Gn, du = ct - Ue, mu = Ue * Gn - ct * at, vu = Wr * du - gu * hu, No = (hu * mu - du * fu) / vu, To = (gu * fu - Wr * mu) / vu;
-        return W.isNaN(No) || W.isInfinite(No) || W.isNaN(To) || W.isInfinite(To) ? null : new Z(No + ne, To + le);
+        var v = h.x < s.x ? h.x : s.x, _ = h.y < s.y ? h.y : s.y, E = h.x > s.x ? h.x : s.x, M = h.y > s.y ? h.y : s.y, R = o.x < c.x ? o.x : c.x, G = o.y < c.y ? o.y : c.y, $ = o.x > c.x ? o.x : c.x, K = o.y > c.y ? o.y : c.y, ne = ((v > R ? v : R) + (E < $ ? E : $)) / 2, le = ((_ > G ? _ : G) + (M < K ? M : K)) / 2, he = h.x - ne, ge = h.y - le, Ae = s.x - ne, Ne = s.y - le, Ue = o.x - ne, lt = o.y - le, ht = c.x - ne, qn = c.y - le, $r = ge - Ne, gu = Ae - he, du = he * Ne - Ae * ge, mu = lt - qn, vu = ht - Ue, pu = Ue * qn - ht * lt, yu = $r * vu - mu * gu, Ao = (gu * pu - vu * du) / yu, Ro = (mu * du - $r * pu) / yu;
+        return W.isNaN(Ao) || W.isInfinite(Ao) || W.isNaN(Ro) || W.isInfinite(Ro) ? null : new Z(Ao + ne, Ro + le);
       } }]);
-    }(), Tt = function() {
+    }(), At = function() {
       return u(function h() {
         i(this, h);
       }, null, [{ key: "arraycopy", value: function(h, s, o, c, v) {
@@ -7355,7 +7790,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return { "line.separator": `
 ` }[h];
       } }]);
-    }(), zr = function() {
+    }(), Gr = function() {
       function h() {
         i(this, h);
       }
@@ -7382,15 +7817,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           return s > c && (c = s), o > c && (c = o), c;
         }
         if (arguments.length === 4) {
-          var v = arguments[1], _ = arguments[2], E = arguments[3], I = arguments[0];
-          return v > I && (I = v), _ > I && (I = _), E > I && (I = E), I;
+          var v = arguments[1], _ = arguments[2], E = arguments[3], M = arguments[0];
+          return v > M && (M = v), _ > M && (M = _), E > M && (M = E), M;
         }
       } }, { key: "average", value: function(s, o) {
         return (s + o) / 2;
       } }]);
     }();
-    zr.LOG_10 = Math.log(10);
-    var Kt = function() {
+    Gr.LOG_10 = Math.log(10);
+    var Jt = function() {
       function h() {
         i(this, h);
       }
@@ -7402,11 +7837,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var E = (o.x - s.x) * (v.y - c.y) - (o.y - s.y) * (v.x - c.x);
           if (E === 0) _ = !0;
           else {
-            var I = (s.y - c.y) * (v.x - c.x) - (s.x - c.x) * (v.y - c.y), R = ((s.y - c.y) * (o.x - s.x) - (s.x - c.x) * (o.y - s.y)) / E, G = I / E;
+            var M = (s.y - c.y) * (v.x - c.x) - (s.x - c.x) * (v.y - c.y), R = ((s.y - c.y) * (o.x - s.x) - (s.x - c.x) * (o.y - s.y)) / E, G = M / E;
             (G < 0 || G > 1 || R < 0 || R > 1) && (_ = !0);
           }
         } else _ = !0;
-        return _ ? zr.min(h.pointToSegment(s, c, v), h.pointToSegment(o, c, v), h.pointToSegment(c, s, o), h.pointToSegment(v, s, o)) : 0;
+        return _ ? Gr.min(h.pointToSegment(s, c, v), h.pointToSegment(o, c, v), h.pointToSegment(c, s, o), h.pointToSegment(v, s, o)) : 0;
       } }, { key: "pointToSegment", value: function(s, o, c) {
         if (o.x === c.x && o.y === c.y) return s.distance(o);
         var v = (c.x - o.x) * (c.x - o.x) + (c.y - o.y) * (c.y - o.y), _ = ((s.x - o.x) * (c.x - o.x) + (s.y - o.y) * (c.y - o.y)) / v;
@@ -7425,7 +7860,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
         return c;
       } }]);
-    }(), kl = function() {
+    }(), Ml = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "create", value: function() {
@@ -7437,12 +7872,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           }
         }
       } }]);
-    }(), Gi = function() {
+    }(), Hi = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "filter", value: function(h) {
       } }]);
-    }(), tm = function() {
+    }(), sm = function() {
       return u(function h() {
         i(this, h);
       }, null, [{ key: "ofLine", value: function(h) {
@@ -7452,14 +7887,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         h.getCoordinate(0, c);
         for (var v = c.x, _ = c.y, E = 1; E < s; E++) {
           h.getCoordinate(E, c);
-          var I = c.x, R = c.y, G = I - v, $ = R - _;
-          o += Math.sqrt(G * G + $ * $), v = I, _ = R;
+          var M = c.x, R = c.y, G = M - v, $ = R - _;
+          o += Math.sqrt(G * G + $ * $), v = M, _ = R;
         }
         return o;
       } }]);
-    }(), Il = u(function h() {
+    }(), Ll = u(function h() {
       i(this, h);
-    }), Rn = function() {
+    }), On = function() {
       function h() {
         i(this, h);
       }
@@ -7479,17 +7914,17 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             h.scroll(c, _);
           }
         } else if (arguments.length === 3) {
-          var E = arguments[0], I = arguments[1], R = arguments[2];
-          if (I <= 0) return null;
-          for (var G = E.copy(), $ = R ? E.size() - 1 : E.size(), K = 0; K < $; K++) for (var ne = 0; ne < E.getDimension(); ne++) E.setOrdinate(K, ne, G.getOrdinate((I + K) % $, ne));
+          var E = arguments[0], M = arguments[1], R = arguments[2];
+          if (M <= 0) return null;
+          for (var G = E.copy(), $ = R ? E.size() - 1 : E.size(), K = 0; K < $; K++) for (var ne = 0; ne < E.getDimension(); ne++) E.setOrdinate(K, ne, G.getOrdinate((M + K) % $, ne));
           if (R) for (var le = 0; le < E.getDimension(); le++) E.setOrdinate($, le, E.getOrdinate(0, le));
         }
       } }, { key: "isEqual", value: function(s, o) {
         var c = s.size();
         if (c !== o.size()) return !1;
         for (var v = Math.min(s.getDimension(), o.getDimension()), _ = 0; _ < c; _++) for (var E = 0; E < v; E++) {
-          var I = s.getOrdinate(_, E), R = o.getOrdinate(_, E);
-          if (s.getOrdinate(_, E) !== o.getOrdinate(_, E) && (!W.isNaN(I) || !W.isNaN(R))) return !1;
+          var M = s.getOrdinate(_, E), R = o.getOrdinate(_, E);
+          if (s.getOrdinate(_, E) !== o.getOrdinate(_, E) && (!W.isNaN(M) || !W.isNaN(R))) return !1;
         }
         return !0;
       } }, { key: "minCoordinateIndex", value: function() {
@@ -7499,8 +7934,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
         if (arguments.length === 3) {
           for (var o = arguments[0], c = arguments[2], v = -1, _ = null, E = arguments[1]; E <= c; E++) {
-            var I = o.getCoordinate(E);
-            (_ === null || _.compareTo(I) > 0) && (_ = I, v = E);
+            var M = o.getCoordinate(E);
+            (_ === null || _.compareTo(M) > 0) && (_ = M, v = E);
           }
           return v;
         }
@@ -7557,7 +7992,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
         throw new A("Unknown dimension value: " + s);
       } }, { key: "toDimensionValue", value: function(s) {
-        switch (fo.toUpperCase(s)) {
+        switch (mo.toUpperCase(s)) {
           case h.SYM_FALSE:
             return h.FALSE;
           case h.SYM_TRUE:
@@ -7575,19 +8010,19 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }]);
     }();
     oe.P = 0, oe.L = 1, oe.A = 2, oe.FALSE = -1, oe.TRUE = -2, oe.DONTCARE = -3, oe.SYM_FALSE = "F", oe.SYM_TRUE = "T", oe.SYM_DONTCARE = "*", oe.SYM_P = "0", oe.SYM_L = "1", oe.SYM_A = "2";
-    var qi = function() {
+    var Ui = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "filter", value: function(h) {
       } }]);
-    }(), Ui = function() {
+    }(), Yi = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "filter", value: function(h, s) {
       } }, { key: "isDone", value: function() {
       } }, { key: "isGeometryChanged", value: function() {
       } }]);
-    }(), Gr = function(h) {
+    }(), qr = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -7616,7 +8051,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           if (!this._points.getCoordinate(o).equals(this._points.getCoordinate(c))) {
             if (this._points.getCoordinate(o).compareTo(this._points.getCoordinate(c)) > 0) {
               var v = this._points.copy();
-              Rn.reverse(v), this._points = v;
+              On.reverse(v), this._points = v;
             }
             return null;
           }
@@ -7629,7 +8064,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return !this.isEmpty() && this.getCoordinateN(0).equals2D(this.getCoordinateN(this.getNumPoints() - 1));
       } }, { key: "reverseInternal", value: function() {
         var o = this._points.copy();
-        return Rn.reverse(o), this.getFactory().createLineString(o);
+        return On.reverse(o), this.getFactory().createLineString(o);
       } }, { key: "getEndPoint", value: function() {
         return this.isEmpty() ? null : this.getPointN(this.getNumPoints() - 1);
       } }, { key: "getTypeCode", value: function() {
@@ -7637,7 +8072,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "getDimension", value: function() {
         return 1;
       } }, { key: "getLength", value: function() {
-        return tm.ofLine(this._points);
+        return sm.ofLine(this._points);
       } }, { key: "getNumPoints", value: function() {
         return this._points.size();
       } }, { key: "compareToSameClass", value: function() {
@@ -7654,13 +8089,13 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           return arguments[1].compare(this._points, E._points);
         }
       } }, { key: "apply", value: function() {
-        if (Ee(arguments[0], Gi)) for (var o = arguments[0], c = 0; c < this._points.size(); c++) o.filter(this._points.getCoordinate(c));
-        else if (Ee(arguments[0], Ui)) {
+        if (Ee(arguments[0], Hi)) for (var o = arguments[0], c = 0; c < this._points.size(); c++) o.filter(this._points.getCoordinate(c));
+        else if (Ee(arguments[0], Yi)) {
           var v = arguments[0];
           if (this._points.size() === 0) return null;
           for (var _ = 0; _ < this._points.size() && (v.filter(this._points, _), !v.isDone()); _++) ;
           v.isGeometryChanged() && this.geometryChanged();
-        } else Ee(arguments[0], qi) ? arguments[0].filter(this) : Ee(arguments[0], B) && arguments[0].filter(this);
+        } else Ee(arguments[0], Ui) ? arguments[0].filter(this) : Ee(arguments[0], B) && arguments[0].filter(this);
       } }, { key: "getBoundary", value: function() {
         throw new be();
       } }, { key: "isEquivalentClass", value: function(o) {
@@ -7684,7 +8119,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "getPointN", value: function(o) {
         return this.getFactory().createPoint(this._points.getCoordinate(o));
       } }, { key: "interfaces_", get: function() {
-        return [Il];
+        return [Ll];
       } }], [{ key: "constructor_", value: function() {
         if (this._points = null, arguments.length !== 0) {
           if (arguments.length === 2) {
@@ -7693,9 +8128,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           }
         }
       } }]);
-    }(ae), Ml = u(function h() {
+    }(ae), Nl = u(function h() {
       i(this, h);
-    }), vo = function(h) {
+    }), yo = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -7740,15 +8175,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           return arguments[1].compare(this._coordinates, c._coordinates);
         }
       } }, { key: "apply", value: function() {
-        if (Ee(arguments[0], Gi)) {
+        if (Ee(arguments[0], Hi)) {
           var o = arguments[0];
           if (this.isEmpty()) return null;
           o.filter(this.getCoordinate());
-        } else if (Ee(arguments[0], Ui)) {
+        } else if (Ee(arguments[0], Yi)) {
           var c = arguments[0];
           if (this.isEmpty()) return null;
           c.filter(this._coordinates, 0), c.isGeometryChanged() && this.geometryChanged();
-        } else Ee(arguments[0], qi) ? arguments[0].filter(this) : Ee(arguments[0], B) && arguments[0].filter(this);
+        } else Ee(arguments[0], Ui) ? arguments[0].filter(this) : Ee(arguments[0], B) && arguments[0].filter(this);
       } }, { key: "getBoundary", value: function() {
         return this.getFactory().createGeometryCollection();
       } }, { key: "getGeometryType", value: function() {
@@ -7765,13 +8200,13 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "isSimple", value: function() {
         return !0;
       } }, { key: "interfaces_", get: function() {
-        return [Ml];
+        return [Nl];
       } }], [{ key: "constructor_", value: function() {
         this._coordinates = null;
         var o = arguments[0], c = arguments[1];
         ae.constructor_.call(this, c), this.init(o);
       } }]);
-    }(ae), Ll = function() {
+    }(ae), Pl = function() {
       function h() {
         i(this, h);
       }
@@ -7795,17 +8230,17 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           return o / 2;
         }
         if (Ee(arguments[0], Te)) {
-          var I = arguments[0], R = I.size();
+          var M = arguments[0], R = M.size();
           if (R < 3) return 0;
           var G = new Z(), $ = new Z(), K = new Z();
-          I.getCoordinate(0, $), I.getCoordinate(1, K);
+          M.getCoordinate(0, $), M.getCoordinate(1, K);
           var ne = $.x;
           K.x -= ne;
-          for (var le = 0, he = 1; he < R - 1; he++) G.y = $.y, $.x = K.x, $.y = K.y, I.getCoordinate(he + 1, K), K.x -= ne, le += $.x * (G.y - K.y);
+          for (var le = 0, he = 1; he < R - 1; he++) G.y = $.y, $.x = K.x, $.y = K.y, M.getCoordinate(he + 1, K), K.x -= ne, le += $.x * (G.y - K.y);
           return le / 2;
         }
       } }]);
-    }(), On = function() {
+    }(), Dn = function() {
       return u(function h() {
         i(this, h);
       }, null, [{ key: "sort", value: function() {
@@ -7833,11 +8268,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             _.f();
           }
         } else if (arguments.length === 4) {
-          var I = s.slice(arguments[1], arguments[2]);
-          I.sort(function(ne, le) {
+          var M = s.slice(arguments[1], arguments[2]);
+          M.sort(function(ne, le) {
             return h[3].compare(ne, le);
           });
-          var R = s.slice(0, arguments[1]).concat(I, s.slice(arguments[2], s.length));
+          var R = s.slice(0, arguments[1]).concat(M, s.slice(arguments[2], s.length));
           s.splice(0, s.length);
           var G, $ = f(R);
           try {
@@ -7867,9 +8302,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "copyOf", value: function(h, s) {
         return h.slice(0, s);
       } }]);
-    }(), Pl = u(function h() {
+    }(), Tl = u(function h() {
       i(this, h);
-    }), Hi = function(h) {
+    }), Xi = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -7879,12 +8314,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "getCoordinates", value: function() {
         if (this.isEmpty()) return [];
         for (var o = new Array(this.getNumPoints()).fill(null), c = -1, v = this._shell.getCoordinates(), _ = 0; _ < v.length; _++) o[++c] = v[_];
-        for (var E = 0; E < this._holes.length; E++) for (var I = this._holes[E].getCoordinates(), R = 0; R < I.length; R++) o[++c] = I[R];
+        for (var E = 0; E < this._holes.length; E++) for (var M = this._holes[E].getCoordinates(), R = 0; R < M.length; R++) o[++c] = M[R];
         return o;
       } }, { key: "getArea", value: function() {
         var o = 0;
-        o += Ll.ofRing(this._shell.getCoordinateSequence());
-        for (var c = 0; c < this._holes.length; c++) o -= Ll.ofRing(this._holes[c].getCoordinateSequence());
+        o += Pl.ofRing(this._shell.getCoordinateSequence());
+        for (var c = 0; c < this._holes.length; c++) o -= Pl.ofRing(this._holes[c].getCoordinateSequence());
         return o;
       } }, { key: "copyInternal", value: function() {
         for (var o = this._shell.copy(), c = new Array(this._holes.length).fill(null), v = 0; v < this._holes.length; v++) c[v] = this._holes[v].copy();
@@ -7897,10 +8332,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var E = o.getY(v);
           if (E !== c.getMinY() && E !== c.getMaxY()) return !1;
         }
-        for (var I = o.getX(0), R = o.getY(0), G = 1; G <= 4; G++) {
+        for (var M = o.getX(0), R = o.getY(0), G = 1; G <= 4; G++) {
           var $ = o.getX(G), K = o.getY(G);
-          if ($ !== I == (K !== R)) return !1;
-          I = $, R = K;
+          if ($ !== M == (K !== R)) return !1;
+          M = $, R = K;
         }
         return !0;
       } }, { key: "equalsExact", value: function() {
@@ -7909,7 +8344,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           if (!this.isEquivalentClass(o)) return !1;
           var v = o, _ = this._shell, E = v._shell;
           if (!_.equalsExact(E, c) || this._holes.length !== v._holes.length) return !1;
-          for (var I = 0; I < this._holes.length; I++) if (!this._holes[I].equalsExact(v._holes[I], c)) return !1;
+          for (var M = 0; M < this._holes.length; M++) if (!this._holes[M].equalsExact(v._holes[M], c)) return !1;
           return !0;
         }
         return w(s, "equalsExact", this, 1).apply(this, arguments);
@@ -7917,12 +8352,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (arguments.length === 0) {
           this._shell = this.normalized(this._shell, !0);
           for (var o = 0; o < this._holes.length; o++) this._holes[o] = this.normalized(this._holes[o], !1);
-          On.sort(this._holes);
+          Dn.sort(this._holes);
         } else if (arguments.length === 2) {
           var c = arguments[0], v = arguments[1];
           if (c.isEmpty()) return null;
-          var _ = c.getCoordinateSequence(), E = Rn.minCoordinateIndex(_, 0, _.size() - 2);
-          Rn.scroll(_, E, !0), we.isCCW(_) === v && Rn.reverse(_);
+          var _ = c.getCoordinateSequence(), E = On.minCoordinateIndex(_, 0, _.size() - 2);
+          On.scroll(_, E, !0), we.isCCW(_) === v && On.reverse(_);
         }
       } }, { key: "getCoordinate", value: function() {
         return this._shell.getCoordinate();
@@ -7956,7 +8391,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           return c.compareToSameClass(v);
         }
         if (arguments.length === 2) {
-          var _ = arguments[1], E = arguments[0], I = this._shell, R = E._shell, G = I.compareToSameClass(R, _);
+          var _ = arguments[1], E = arguments[0], M = this._shell, R = E._shell, G = M.compareToSameClass(R, _);
           if (G !== 0) return G;
           for (var $ = this.getNumInteriorRing(), K = E.getNumInteriorRing(), ne = 0; ne < $ && ne < K; ) {
             var le = this.getInteriorRingN(ne), he = E.getInteriorRingN(ne), ge = le.compareToSameClass(he, _);
@@ -7966,20 +8401,20 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           return ne < $ ? 1 : ne < K ? -1 : 0;
         }
       } }, { key: "apply", value: function() {
-        if (Ee(arguments[0], Gi)) {
+        if (Ee(arguments[0], Hi)) {
           var o = arguments[0];
           this._shell.apply(o);
           for (var c = 0; c < this._holes.length; c++) this._holes[c].apply(o);
-        } else if (Ee(arguments[0], Ui)) {
+        } else if (Ee(arguments[0], Yi)) {
           var v = arguments[0];
           if (this._shell.apply(v), !v.isDone()) for (var _ = 0; _ < this._holes.length && (this._holes[_].apply(v), !v.isDone()); _++) ;
           v.isGeometryChanged() && this.geometryChanged();
-        } else if (Ee(arguments[0], qi))
+        } else if (Ee(arguments[0], Ui))
           arguments[0].filter(this);
         else if (Ee(arguments[0], B)) {
           var E = arguments[0];
           E.filter(this), this._shell.apply(E);
-          for (var I = 0; I < this._holes.length; I++) this._holes[I].apply(E);
+          for (var M = 0; M < this._holes.length; M++) this._holes[M].apply(E);
         }
       } }, { key: "getBoundary", value: function() {
         if (this.isEmpty()) return this.getFactory().createMultiLineString();
@@ -7996,7 +8431,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "getInteriorRingN", value: function(o) {
         return this._holes[o];
       } }, { key: "interfaces_", get: function() {
-        return [Pl];
+        return [Tl];
       } }], [{ key: "constructor_", value: function() {
         this._shell = null, this._holes = null;
         var o = arguments[0], c = arguments[1], v = arguments[2];
@@ -8004,15 +8439,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (o.isEmpty() && ae.hasNonEmptyElements(c)) throw new A("shell is empty but holes are not");
         this._shell = o, this._holes = c;
       } }]);
-    }(ae), nm = function(h) {
+    }(ae), om = function(h) {
       function s() {
         return i(this, s), r(this, s, arguments);
       }
       return m(s, h), u(s);
-    }(xt), Nl = function(h) {
+    }(Et), Al = function(h) {
       function s(o) {
         var c;
-        return i(this, s), (c = r(this, s)).array = [], o instanceof Ie && c.addAll(o), c;
+        return i(this, s), (c = r(this, s)).array = [], o instanceof ke && c.addAll(o), c;
       }
       return m(s, h), u(s, [{ key: "contains", value: function(o) {
         var c, v = f(this.array);
@@ -8052,20 +8487,20 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "toArray", value: function() {
         return this.array.slice();
       } }, { key: "iterator", value: function() {
-        return new rm(this.array);
+        return new am(this.array);
       } }]);
-    }(nm), rm = function() {
+    }(om), am = function() {
       return u(function h(s) {
         i(this, h), this.array = s, this.position = 0;
       }, [{ key: "next", value: function() {
-        if (this.position === this.array.length) throw new Ne();
+        if (this.position === this.array.length) throw new Pe();
         return this.array[this.position++];
       } }, { key: "hasNext", value: function() {
         return this.position < this.array.length;
       } }, { key: "remove", value: function() {
         throw new be();
       } }]);
-    }(), St = function(h) {
+    }(), It = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -8096,7 +8531,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return w(s, "equalsExact", this, 1).apply(this, arguments);
       } }, { key: "normalize", value: function() {
         for (var o = 0; o < this._geometries.length; o++) this._geometries[o].normalize();
-        On.sort(this._geometries);
+        Dn.sort(this._geometries);
       } }, { key: "getCoordinate", value: function() {
         return this.isEmpty() ? null : this._geometries[0].getCoordinate();
       } }, { key: "getBoundaryDimension", value: function() {
@@ -8120,28 +8555,28 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return this._geometries.length;
       } }, { key: "compareToSameClass", value: function() {
         if (arguments.length === 1) {
-          var o = arguments[0], c = new Nl(On.asList(this._geometries)), v = new Nl(On.asList(o._geometries));
+          var o = arguments[0], c = new Al(Dn.asList(this._geometries)), v = new Al(Dn.asList(o._geometries));
           return this.compare(c, v);
         }
         if (arguments.length === 2) {
-          for (var _ = arguments[1], E = arguments[0], I = this.getNumGeometries(), R = E.getNumGeometries(), G = 0; G < I && G < R; ) {
+          for (var _ = arguments[1], E = arguments[0], M = this.getNumGeometries(), R = E.getNumGeometries(), G = 0; G < M && G < R; ) {
             var $ = this.getGeometryN(G), K = E.getGeometryN(G), ne = $.compareToSameClass(K, _);
             if (ne !== 0) return ne;
             G++;
           }
-          return G < I ? 1 : G < R ? -1 : 0;
+          return G < M ? 1 : G < R ? -1 : 0;
         }
       } }, { key: "apply", value: function() {
-        if (Ee(arguments[0], Gi)) for (var o = arguments[0], c = 0; c < this._geometries.length; c++) this._geometries[c].apply(o);
-        else if (Ee(arguments[0], Ui)) {
+        if (Ee(arguments[0], Hi)) for (var o = arguments[0], c = 0; c < this._geometries.length; c++) this._geometries[c].apply(o);
+        else if (Ee(arguments[0], Yi)) {
           var v = arguments[0];
           if (this._geometries.length === 0) return null;
           for (var _ = 0; _ < this._geometries.length && (this._geometries[_].apply(v), !v.isDone()); _++) ;
           v.isGeometryChanged() && this.geometryChanged();
-        } else if (Ee(arguments[0], qi)) {
+        } else if (Ee(arguments[0], Ui)) {
           var E = arguments[0];
           E.filter(this);
-          for (var I = 0; I < this._geometries.length; I++) this._geometries[I].apply(E);
+          for (var M = 0; M < this._geometries.length; M++) this._geometries[M].apply(E);
         } else if (Ee(arguments[0], B)) {
           var R = arguments[0];
           R.filter(this);
@@ -8163,7 +8598,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           }
         }
       } }]);
-    }(ae), po = function(h) {
+    }(ae), _o = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -8196,12 +8631,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "getGeometryType", value: function() {
         return ae.TYPENAME_MULTIPOINT;
       } }, { key: "interfaces_", get: function() {
-        return [Ml];
+        return [Nl];
       } }], [{ key: "constructor_", value: function() {
         var o = arguments[0], c = arguments[1];
-        St.constructor_.call(this, o, c);
+        It.constructor_.call(this, o, c);
       } }]);
-    }(St), qr = function(h) {
+    }(It), Hr = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -8214,7 +8649,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return !!this.isEmpty() || w(s, "isClosed", this, 1).call(this);
       } }, { key: "reverseInternal", value: function() {
         var o = this._points.copy();
-        return Rn.reverse(o), this.getFactory().createLinearRing(o);
+        return On.reverse(o), this.getFactory().createLinearRing(o);
       } }, { key: "getTypeCode", value: function() {
         return ae.TYPECODE_LINEARRING;
       } }, { key: "validateConstruction", value: function() {
@@ -8224,11 +8659,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return ae.TYPENAME_LINEARRING;
       } }], [{ key: "constructor_", value: function() {
         var o = arguments[0], c = arguments[1];
-        Gr.constructor_.call(this, o, c), this.validateConstruction();
+        qr.constructor_.call(this, o, c), this.validateConstruction();
       } }]);
-    }(Gr);
-    qr.MINIMUM_VALID_SIZE = 4;
-    var Dn = function(h) {
+    }(qr);
+    Hr.MINIMUM_VALID_SIZE = 4;
+    var Fn = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -8278,8 +8713,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
       } }]);
     }(Z);
-    Dn.X = 0, Dn.Y = 1, Dn.Z = -1, Dn.M = -1;
-    var Fn = function(h) {
+    Fn.X = 0, Fn.Y = 1, Fn.Z = -1, Fn.M = -1;
+    var Bn = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -8338,8 +8773,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
       } }]);
     }(Z);
-    Fn.X = 0, Fn.Y = 1, Fn.Z = -1, Fn.M = 2;
-    var yo = function(h) {
+    Bn.X = 0, Bn.Y = 1, Bn.Z = -1, Bn.M = 2;
+    var wo = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -8394,18 +8829,18 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             Z.constructor_.call(this, c), this._m = this.getM();
           }
         } else if (arguments.length === 4) {
-          var v = arguments[0], _ = arguments[1], E = arguments[2], I = arguments[3];
-          Z.constructor_.call(this, v, _, E), this._m = I;
+          var v = arguments[0], _ = arguments[1], E = arguments[2], M = arguments[3];
+          Z.constructor_.call(this, v, _, E), this._m = M;
         }
       } }]);
-    }(Z), Yi = function() {
+    }(Z), Vi = function() {
       function h() {
         i(this, h);
       }
       return u(h, null, [{ key: "measures", value: function(s) {
-        return s instanceof Dn ? 0 : s instanceof Fn || s instanceof yo ? 1 : 0;
+        return s instanceof Fn ? 0 : s instanceof Bn || s instanceof wo ? 1 : 0;
       } }, { key: "dimension", value: function(s) {
-        return s instanceof Dn ? 2 : s instanceof Fn ? 3 : s instanceof yo ? 4 : 3;
+        return s instanceof Fn ? 2 : s instanceof Bn ? 3 : s instanceof wo ? 4 : 3;
       } }, { key: "create", value: function() {
         if (arguments.length === 1) {
           var s = arguments[0];
@@ -8413,7 +8848,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
         if (arguments.length === 2) {
           var o = arguments[0], c = arguments[1];
-          return o === 2 ? new Dn() : o === 3 && c === 0 ? new Z() : o === 3 && c === 1 ? new Fn() : o === 4 && c === 1 ? new yo() : new Z();
+          return o === 2 ? new Fn() : o === 3 && c === 0 ? new Z() : o === 3 && c === 1 ? new Bn() : o === 4 && c === 1 ? new wo() : new Z();
         }
       } }]);
     }(), Ur = function(h) {
@@ -8424,7 +8859,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       return m(s, h), u(s, [{ key: "getCoordinate", value: function(o) {
         return this.get(o);
       } }, { key: "addAll", value: function() {
-        if (arguments.length === 2 && typeof arguments[1] == "boolean" && Ee(arguments[0], Ie)) {
+        if (arguments.length === 2 && typeof arguments[1] == "boolean" && Ee(arguments[0], ke)) {
           for (var o = arguments[1], c = !1, v = arguments[0].iterator(); v.hasNext(); ) this.add(v.next(), o), c = !0;
           return c;
         }
@@ -8454,8 +8889,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             if (!arguments[1] && this.size() >= 1 && this.get(this.size() - 1).equals2D(_)) return null;
             w(s, "add", this, 1).call(this, _);
           } else if (arguments[0] instanceof Object && typeof arguments[1] == "boolean") {
-            var E = arguments[0], I = arguments[1];
-            return this.add(E, I), !0;
+            var E = arguments[0], M = arguments[1];
+            return this.add(E, M), !0;
           }
         } else if (arguments.length === 3) {
           if (typeof arguments[2] == "boolean" && arguments[0] instanceof Array && typeof arguments[1] == "boolean") {
@@ -8474,9 +8909,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             w(s, "add", this, 1).call(this, ne, le);
           }
         } else if (arguments.length === 4) {
-          var ge = arguments[0], Ae = arguments[1], Pe = arguments[2], Ue = arguments[3], at = 1;
-          Pe > Ue && (at = -1);
-          for (var ct = Pe; ct !== Ue; ct += at) this.add(ge[ct], Ae);
+          var ge = arguments[0], Ae = arguments[1], Ne = arguments[2], Ue = arguments[3], lt = 1;
+          Ne > Ue && (lt = -1);
+          for (var ht = Ne; ht !== Ue; ht += lt) this.add(ge[ht], Ae);
           return !0;
         }
       } }, { key: "closeRing", value: function() {
@@ -8497,7 +8932,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }]);
     }(ve);
     Ur.coordArrayType = new Array(0).fill(null);
-    var nt = function() {
+    var it = function() {
       function h() {
         i(this, h);
       }
@@ -8513,7 +8948,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var c = h.indexOf(o, s);
         if (c < 0) return null;
         var v = new Array(s.length).fill(null);
-        Tt.arraycopy(s, c, v, 0, s.length - c), Tt.arraycopy(s, 0, v, s.length - c, c), Tt.arraycopy(v, 0, s, 0, s.length);
+        At.arraycopy(s, c, v, 0, s.length - c), At.arraycopy(s, 0, v, s.length - c, c), At.arraycopy(v, 0, s, 0, s.length);
       } }, { key: "equals", value: function() {
         if (arguments.length === 2) {
           var s = arguments[0], o = arguments[1];
@@ -8526,7 +8961,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var v = arguments[0], _ = arguments[1], E = arguments[2];
           if (v === _) return !0;
           if (v === null || _ === null || v.length !== _.length) return !1;
-          for (var I = 0; I < v.length; I++) if (E.compare(v[I], _[I]) !== 0) return !1;
+          for (var M = 0; M < v.length; M++) if (E.compare(v[M], _[M]) !== 0) return !1;
           return !0;
         }
       } }, { key: "intersection", value: function(s, o) {
@@ -8538,7 +8973,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         try {
           for (v.s(); !(o = v.n()).done; ) {
             var _ = o.value;
-            c = Math.max(c, Yi.measures(_));
+            c = Math.max(c, Vi.measures(_));
           }
         } catch (E) {
           v.e(E);
@@ -8567,7 +9002,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           for (var s = arguments[0], o = new Array(s.length).fill(null), c = 0; c < s.length; c++) o[c] = s[c].copy();
           return o;
         }
-        if (arguments.length === 5) for (var v = arguments[0], _ = arguments[1], E = arguments[2], I = arguments[3], R = arguments[4], G = 0; G < R; G++) E[I + G] = v[_ + G].copy();
+        if (arguments.length === 5) for (var v = arguments[0], _ = arguments[1], E = arguments[2], M = arguments[3], R = arguments[4], G = 0; G < R; G++) E[M + G] = v[_ + G].copy();
       } }, { key: "isEqualReversed", value: function(s, o) {
         for (var c = 0; c < s.length; c++) {
           var v = s[c], _ = o[s.length - c - 1];
@@ -8585,7 +9020,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         try {
           for (v.s(); !(o = v.n()).done; ) {
             var _ = o.value;
-            c = Math.max(c, Yi.dimension(_));
+            c = Math.max(c, Vi.dimension(_));
           }
         } catch (E) {
           v.e(E);
@@ -8615,24 +9050,24 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         for (var o = null, c = 0; c < s.length; c++) (o === null || o.compareTo(s[c]) > 0) && (o = s[c]);
         return o;
       } }, { key: "extract", value: function(s, o, c) {
-        o = zr.clamp(o, 0, s.length);
-        var v = (c = zr.clamp(c, -1, s.length)) - o + 1;
+        o = Gr.clamp(o, 0, s.length);
+        var v = (c = Gr.clamp(c, -1, s.length)) - o + 1;
         c < 0 && (v = 0), o >= s.length && (v = 0), c < o && (v = 0);
         var _ = new Array(v).fill(null);
         if (v === 0) return _;
-        for (var E = 0, I = o; I <= c; I++) _[E++] = s[I];
+        for (var E = 0, M = o; M <= c; M++) _[E++] = s[M];
         return _;
       } }]);
-    }(), im = function() {
+    }(), lm = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "compare", value: function(h, s) {
         var o = h, c = s;
-        return nt.compare(o, c);
+        return it.compare(o, c);
       } }, { key: "interfaces_", get: function() {
         return [j];
       } }]);
-    }(), sm = function() {
+    }(), um = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "compare", value: function(h, s) {
@@ -8640,25 +9075,25 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (o.length < c.length) return -1;
         if (o.length > c.length) return 1;
         if (o.length === 0) return 0;
-        var v = nt.compare(o, c);
-        return nt.isEqualReversed(o, c) ? 0 : v;
+        var v = it.compare(o, c);
+        return it.isEqualReversed(o, c) ? 0 : v;
       } }, { key: "OLDcompare", value: function(h, s) {
         var o = h, c = s;
         if (o.length < c.length) return -1;
         if (o.length > c.length) return 1;
         if (o.length === 0) return 0;
-        for (var v = nt.increasingDirection(o), _ = nt.increasingDirection(c), E = v > 0 ? 0 : o.length - 1, I = _ > 0 ? 0 : o.length - 1, R = 0; R < o.length; R++) {
-          var G = o[E].compareTo(c[I]);
+        for (var v = it.increasingDirection(o), _ = it.increasingDirection(c), E = v > 0 ? 0 : o.length - 1, M = _ > 0 ? 0 : o.length - 1, R = 0; R < o.length; R++) {
+          var G = o[E].compareTo(c[M]);
           if (G !== 0) return G;
-          E += v, I += _;
+          E += v, M += _;
         }
         return 0;
       } }, { key: "interfaces_", get: function() {
         return [j];
       } }]);
     }();
-    nt.ForwardComparator = im, nt.BidirectionalComparator = sm, nt.coordArrayType = new Array(0).fill(null);
-    var Xi = function() {
+    it.ForwardComparator = lm, it.BidirectionalComparator = um, it.coordArrayType = new Array(0).fill(null);
+    var Wi = function() {
       return u(function h(s) {
         i(this, h), this.str = s;
       }, [{ key: "append", value: function(h) {
@@ -8668,7 +9103,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "toString", value: function() {
         return this.str;
       } }]);
-    }(), Hr = function() {
+    }(), Yr = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -8711,7 +9146,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var o = this.createCoordinate();
         return o.setCoordinate(this._coordinates[s]), o;
       } }, { key: "createCoordinate", value: function() {
-        return Yi.create(this.getDimension(), this.getMeasures());
+        return Vi.create(this.getDimension(), this.getMeasures());
       } }, { key: "getDimension", value: function() {
         return this._dimension;
       } }, { key: "getX", value: function(s) {
@@ -8729,7 +9164,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return new h(s, this._dimension, this._measures);
       } }, { key: "toString", value: function() {
         if (this._coordinates.length > 0) {
-          var s = new Xi(17 * this._coordinates.length);
+          var s = new Wi(17 * this._coordinates.length);
           s.append("("), s.append(this._coordinates[0]);
           for (var o = 1; o < this._coordinates.length; o++) s.append(", "), s.append(this._coordinates[o]);
           return s.append(")"), s.toString();
@@ -8745,7 +9180,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (this._dimension = 3, this._measures = 0, this._coordinates = null, arguments.length === 1) {
           if (arguments[0] instanceof Array) {
             var s = arguments[0];
-            h.constructor_.call(this, s, nt.dimension(s), nt.measures(s));
+            h.constructor_.call(this, s, it.dimension(s), it.measures(s));
           } else if (Number.isInteger(arguments[0])) {
             var o = arguments[0];
             this._coordinates = new Array(o).fill(null);
@@ -8758,12 +9193,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           }
         } else if (arguments.length === 2) {
           if (arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
-            var E = arguments[0], I = arguments[1];
-            h.constructor_.call(this, E, I, nt.measures(E));
+            var E = arguments[0], M = arguments[1];
+            h.constructor_.call(this, E, M, it.measures(E));
           } else if (Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
             var R = arguments[0], G = arguments[1];
             this._coordinates = new Array(R).fill(null), this._dimension = G;
-            for (var $ = 0; $ < R; $++) this._coordinates[$] = Yi.create(G);
+            for (var $ = 0; $ < R; $++) this._coordinates[$] = Vi.create(G);
           }
         } else if (arguments.length === 3) {
           if (Number.isInteger(arguments[2]) && arguments[0] instanceof Array && Number.isInteger(arguments[1])) {
@@ -8772,11 +9207,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           } else if (Number.isInteger(arguments[2]) && Number.isInteger(arguments[0]) && Number.isInteger(arguments[1])) {
             var he = arguments[0], ge = arguments[1], Ae = arguments[2];
             this._coordinates = new Array(he).fill(null), this._dimension = ge, this._measures = Ae;
-            for (var Pe = 0; Pe < he; Pe++) this._coordinates[Pe] = this.createCoordinate();
+            for (var Ne = 0; Ne < he; Ne++) this._coordinates[Ne] = this.createCoordinate();
           }
         }
       } }]);
-    }(), _o = function() {
+    }(), xo = function() {
       function h() {
         i(this, h);
       }
@@ -8784,26 +9219,26 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return h.instance();
       } }, { key: "create", value: function() {
         if (arguments.length === 1) {
-          if (arguments[0] instanceof Array) return new Hr(arguments[0]);
-          if (Ee(arguments[0], Te)) return new Hr(arguments[0]);
+          if (arguments[0] instanceof Array) return new Yr(arguments[0]);
+          if (Ee(arguments[0], Te)) return new Yr(arguments[0]);
         } else {
           if (arguments.length === 2) {
             var s = arguments[1];
-            return s > 3 && (s = 3), s < 2 && (s = 2), new Hr(arguments[0], s);
+            return s > 3 && (s = 3), s < 2 && (s = 2), new Yr(arguments[0], s);
           }
           if (arguments.length === 3) {
             var o = arguments[2], c = arguments[1] - o;
-            return o > 1 && (o = 1), c > 3 && (c = 3), c < 2 && (c = 2), new Hr(arguments[0], c + o, o);
+            return o > 1 && (o = 1), c > 3 && (c = 3), c < 2 && (c = 2), new Yr(arguments[0], c + o, o);
           }
         }
       } }, { key: "interfaces_", get: function() {
-        return [kl, L];
+        return [Ml, L];
       } }], [{ key: "instance", value: function() {
         return h.instanceObject;
       } }]);
     }();
-    _o.instanceObject = new _o();
-    var wo = function(h) {
+    xo.instanceObject = new xo();
+    var Eo = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -8831,12 +9266,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "getGeometryType", value: function() {
         return ae.TYPENAME_MULTIPOLYGON;
       } }, { key: "interfaces_", get: function() {
-        return [Pl];
+        return [Tl];
       } }], [{ key: "constructor_", value: function() {
         var o = arguments[0], c = arguments[1];
-        St.constructor_.call(this, o, c);
+        It.constructor_.call(this, o, c);
       } }]);
-    }(St), Tl = function() {
+    }(It), Rl = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "get", value: function() {
@@ -8845,7 +9280,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "values", value: function() {
       } }, { key: "entrySet", value: function() {
       } }]);
-    }(), om = function(h) {
+    }(), cm = function(h) {
       function s() {
         var o;
         return i(this, s), (o = r(this, s)).map = /* @__PURE__ */ new Map(), o;
@@ -8858,14 +9293,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         for (var o = new ve(), c = this.map.values(), v = c.next(); !v.done; ) o.add(v.value), v = c.next();
         return o;
       } }, { key: "entrySet", value: function() {
-        var o = new mt();
+        var o = new vt();
         return this.map.entries().forEach(function(c) {
           return o.add(c);
         }), o;
       } }, { key: "size", value: function() {
         return this.map.size();
       } }]);
-    }(Tl), Yt = function() {
+    }(Rl), Xt = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -8905,7 +9340,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }], [{ key: "constructor_", value: function() {
         if (this._modelType = null, this._scale = null, arguments.length === 0) this._modelType = h.FLOATING;
         else if (arguments.length === 1) {
-          if (arguments[0] instanceof rr) {
+          if (arguments[0] instanceof ir) {
             var s = arguments[0];
             this._modelType = s, s === h.FIXED && this.setScale(1);
           } else if (typeof arguments[0] == "number") {
@@ -8919,7 +9354,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "mostPrecise", value: function(s, o) {
         return s.compareTo(o) >= 0 ? s : o;
       } }]);
-    }(), rr = function() {
+    }(), ir = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -8935,8 +9370,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         this._name = s, h.nameToTypeMap.put(s, this);
       } }]);
     }();
-    rr.nameToTypeMap = new om(), Yt.Type = rr, Yt.FIXED = new rr("FIXED"), Yt.FLOATING = new rr("FLOATING"), Yt.FLOATING_SINGLE = new rr("FLOATING SINGLE"), Yt.maximumPreciseValue = 9007199254740992;
-    var xo = function(h) {
+    ir.nameToTypeMap = new cm(), Xt.Type = ir, Xt.FIXED = new ir("FIXED"), Xt.FLOATING = new ir("FLOATING"), Xt.FLOATING_SINGLE = new ir("FLOATING SINGLE"), Xt.maximumPreciseValue = 9007199254740992;
+    var bo = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -8965,12 +9400,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "getGeometryType", value: function() {
         return ae.TYPENAME_MULTILINESTRING;
       } }, { key: "interfaces_", get: function() {
-        return [Il];
+        return [Ll];
       } }], [{ key: "constructor_", value: function() {
         var o = arguments[0], c = arguments[1];
-        St.constructor_.call(this, o, c);
+        It.constructor_.call(this, o, c);
       } }]);
-    }(St), ir = function() {
+    }(It), sr = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -8996,22 +9431,22 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             var s = arguments[0];
             return this.createLineString(s !== null ? this.getCoordinateSequenceFactory().create(s) : null);
           }
-          if (Ee(arguments[0], Te)) return new Gr(arguments[0], this);
+          if (Ee(arguments[0], Te)) return new qr(arguments[0], this);
         }
       } }, { key: "createMultiLineString", value: function() {
-        return arguments.length === 0 ? new xo(null, this) : arguments.length === 1 ? new xo(arguments[0], this) : void 0;
+        return arguments.length === 0 ? new bo(null, this) : arguments.length === 1 ? new bo(arguments[0], this) : void 0;
       } }, { key: "buildGeometry", value: function(s) {
         for (var o = null, c = !1, v = !1, _ = s.iterator(); _.hasNext(); ) {
-          var E = _.next(), I = E.getTypeCode();
-          o === null && (o = I), I !== o && (c = !0), E instanceof St && (v = !0);
+          var E = _.next(), M = E.getTypeCode();
+          o === null && (o = M), M !== o && (c = !0), E instanceof It && (v = !0);
         }
         if (o === null) return this.createGeometryCollection();
         if (c || v) return this.createGeometryCollection(h.toGeometryArray(s));
         var R = s.iterator().next();
         if (s.size() > 1) {
-          if (R instanceof Hi) return this.createMultiPolygon(h.toPolygonArray(s));
-          if (R instanceof Gr) return this.createMultiLineString(h.toLineStringArray(s));
-          if (R instanceof vo) return this.createMultiPoint(h.toPointArray(s));
+          if (R instanceof Xi) return this.createMultiPolygon(h.toPolygonArray(s));
+          if (R instanceof qr) return this.createMultiLineString(h.toLineStringArray(s));
+          if (R instanceof yo) return this.createMultiPoint(h.toPointArray(s));
           ee.shouldNeverReachHere("Unhandled geometry type: " + R.getGeometryType());
         }
         return R;
@@ -9024,7 +9459,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             var s = arguments[0];
             return this.createPoint(s !== null ? this.getCoordinateSequenceFactory().create([s]) : null);
           }
-          if (Ee(arguments[0], Te)) return new vo(arguments[0], this);
+          if (Ee(arguments[0], Te)) return new yo(arguments[0], this);
         }
       } }, { key: "getCoordinateSequenceFactory", value: function() {
         return this._coordinateSequenceFactory;
@@ -9039,16 +9474,16 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             var o = arguments[0];
             return this.createPolygon(this.createLinearRing(o));
           }
-          if (arguments[0] instanceof qr) {
+          if (arguments[0] instanceof Hr) {
             var c = arguments[0];
             return this.createPolygon(c, null);
           }
         } else if (arguments.length === 2)
-          return new Hi(arguments[0], arguments[1], this);
+          return new Xi(arguments[0], arguments[1], this);
       } }, { key: "getSRID", value: function() {
         return this._SRID;
       } }, { key: "createGeometryCollection", value: function() {
-        return arguments.length === 0 ? new St(null, this) : arguments.length === 1 ? new St(arguments[0], this) : void 0;
+        return arguments.length === 0 ? new It(null, this) : arguments.length === 1 ? new It(arguments[0], this) : void 0;
       } }, { key: "getPrecisionModel", value: function() {
         return this._precisionModel;
       } }, { key: "createLinearRing", value: function() {
@@ -9058,20 +9493,20 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             var s = arguments[0];
             return this.createLinearRing(s !== null ? this.getCoordinateSequenceFactory().create(s) : null);
           }
-          if (Ee(arguments[0], Te)) return new qr(arguments[0], this);
+          if (Ee(arguments[0], Te)) return new Hr(arguments[0], this);
         }
       } }, { key: "createMultiPolygon", value: function() {
-        return arguments.length === 0 ? new wo(null, this) : arguments.length === 1 ? new wo(arguments[0], this) : void 0;
+        return arguments.length === 0 ? new Eo(null, this) : arguments.length === 1 ? new Eo(arguments[0], this) : void 0;
       } }, { key: "createMultiPoint", value: function() {
-        if (arguments.length === 0) return new po(null, this);
+        if (arguments.length === 0) return new _o(null, this);
         if (arguments.length === 1) {
-          if (arguments[0] instanceof Array) return new po(arguments[0], this);
+          if (arguments[0] instanceof Array) return new _o(arguments[0], this);
           if (Ee(arguments[0], Te)) {
             var s = arguments[0];
             if (s === null) return this.createMultiPoint(new Array(0).fill(null));
             for (var o = new Array(s.size()).fill(null), c = 0; c < s.size(); c++) {
               var v = this.getCoordinateSequenceFactory().create(1, s.getDimension(), s.getMeasures());
-              Rn.copy(s, c, v, 0, 1), o[c] = this.createPoint(v);
+              On.copy(s, c, v, 0, 1), o[c] = this.createPoint(v);
             }
             return this.createMultiPoint(o);
           }
@@ -9079,12 +9514,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "interfaces_", get: function() {
         return [L];
       } }], [{ key: "constructor_", value: function() {
-        if (this._precisionModel = null, this._coordinateSequenceFactory = null, this._SRID = null, arguments.length === 0) h.constructor_.call(this, new Yt(), 0);
+        if (this._precisionModel = null, this._coordinateSequenceFactory = null, this._SRID = null, arguments.length === 0) h.constructor_.call(this, new Xt(), 0);
         else if (arguments.length === 1) {
-          if (Ee(arguments[0], kl)) {
+          if (Ee(arguments[0], Ml)) {
             var s = arguments[0];
-            h.constructor_.call(this, new Yt(), 0, s);
-          } else if (arguments[0] instanceof Yt) {
+            h.constructor_.call(this, new Xt(), 0, s);
+          } else if (arguments[0] instanceof Xt) {
             var o = arguments[0];
             h.constructor_.call(this, o, 0, h.getDefaultCoordinateSequenceFactory());
           }
@@ -9092,8 +9527,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var c = arguments[0], v = arguments[1];
           h.constructor_.call(this, c, v, h.getDefaultCoordinateSequenceFactory());
         } else if (arguments.length === 3) {
-          var _ = arguments[0], E = arguments[1], I = arguments[2];
-          this._precisionModel = _, this._coordinateSequenceFactory = I, this._SRID = E;
+          var _ = arguments[0], E = arguments[1], M = arguments[2];
+          this._precisionModel = _, this._coordinateSequenceFactory = M, this._SRID = E;
         }
       } }, { key: "toMultiPolygonArray", value: function(s) {
         var o = new Array(s.size()).fill(null);
@@ -9103,7 +9538,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var o = new Array(s.size()).fill(null);
         return s.toArray(o);
       } }, { key: "getDefaultCoordinateSequenceFactory", value: function() {
-        return _o.instance();
+        return xo.instance();
       } }, { key: "toMultiLineStringArray", value: function(s) {
         var o = new Array(s.size()).fill(null);
         return s.toArray(o);
@@ -9125,9 +9560,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "createPointFromInternalCoord", value: function(s, o) {
         return o.getPrecisionModel().makePrecise(s), o.getFactory().createPoint(s);
       } }]);
-    }(), Eo = "XY", am = "XYZ", lm = "XYM", um = "XYZM", Al = { POINT: "Point", LINE_STRING: "LineString", LINEAR_RING: "LinearRing", POLYGON: "Polygon", MULTI_POINT: "MultiPoint", MULTI_LINE_STRING: "MultiLineString", MULTI_POLYGON: "MultiPolygon", GEOMETRY_COLLECTION: "GeometryCollection", CIRCLE: "Circle" }, Rl = "EMPTY", Vi = 1, gn = 2, In = 3, Ol = 4, sr = 5, cm = 6;
-    for (var hm in Al) Al[hm].toUpperCase();
-    var fm = function() {
+    }(), Co = "XY", hm = "XYZ", fm = "XYM", gm = "XYZM", Ol = { POINT: "Point", LINE_STRING: "LineString", LINEAR_RING: "LinearRing", POLYGON: "Polygon", MULTI_POINT: "MultiPoint", MULTI_LINE_STRING: "MultiLineString", MULTI_POLYGON: "MultiPolygon", GEOMETRY_COLLECTION: "GeometryCollection", CIRCLE: "Circle" }, Dl = "EMPTY", $i = 1, dn = 2, Mn = 3, Fl = 4, or = 5, dm = 6;
+    for (var mm in Ol) Ol[mm].toUpperCase();
+    var vm = function() {
       return u(function h(s) {
         i(this, h), this.wkt = s, this.index_ = -1;
       }, [{ key: "isAlpha_", value: function(h) {
@@ -9141,15 +9576,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return this.wkt.charAt(++this.index_);
       } }, { key: "nextToken", value: function() {
         var h, s = this.nextChar_(), o = this.index_, c = s;
-        if (s == "(") h = gn;
-        else if (s == ",") h = sr;
-        else if (s == ")") h = In;
-        else if (this.isNumeric_(s) || s == "-") h = Ol, c = this.readNumber_();
-        else if (this.isAlpha_(s)) h = Vi, c = this.readText_();
+        if (s == "(") h = dn;
+        else if (s == ",") h = or;
+        else if (s == ")") h = Mn;
+        else if (this.isNumeric_(s) || s == "-") h = Fl, c = this.readNumber_();
+        else if (this.isAlpha_(s)) h = $i, c = this.readText_();
         else {
           if (this.isWhiteSpace_(s)) return this.nextToken();
           if (s !== "") throw new Error("Unexpected character: " + s);
-          h = cm;
+          h = dm;
         }
         return { position: o, value: c, type: h };
       } }, { key: "readNumber_", value: function() {
@@ -9165,9 +9600,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         while (this.isAlpha_(h));
         return this.wkt.substring(s, this.index_--).toUpperCase();
       } }]);
-    }(), gm = function() {
+    }(), pm = function() {
       return u(function h(s, o) {
-        i(this, h), this.lexer_ = s, this.token_, this.layout_ = Eo, this.factory = o;
+        i(this, h), this.lexer_ = s, this.token_, this.layout_ = Co, this.factory = o;
       }, [{ key: "consume_", value: function() {
         this.token_ = this.lexer_.nextToken();
       } }, { key: "isTokenType", value: function(h) {
@@ -9178,79 +9613,79 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "parse", value: function() {
         return this.consume_(), this.parseGeometry_();
       } }, { key: "parseGeometryLayout_", value: function() {
-        var h = Eo, s = this.token_;
-        if (this.isTokenType(Vi)) {
+        var h = Co, s = this.token_;
+        if (this.isTokenType($i)) {
           var o = s.value;
-          o === "Z" ? h = am : o === "M" ? h = lm : o === "ZM" && (h = um), h !== Eo && this.consume_();
+          o === "Z" ? h = hm : o === "M" ? h = fm : o === "ZM" && (h = gm), h !== Co && this.consume_();
         }
         return h;
       } }, { key: "parseGeometryCollectionText_", value: function() {
-        if (this.match(gn)) {
+        if (this.match(dn)) {
           var h = [];
           do
             h.push(this.parseGeometry_());
-          while (this.match(sr));
-          if (this.match(In)) return h;
+          while (this.match(or));
+          if (this.match(Mn)) return h;
         } else if (this.isEmptyGeometry_()) return [];
         throw new Error(this.formatErrorMessage_());
       } }, { key: "parsePointText_", value: function() {
-        if (this.match(gn)) {
+        if (this.match(dn)) {
           var h = this.parsePoint_();
-          if (this.match(In)) return h;
+          if (this.match(Mn)) return h;
         } else if (this.isEmptyGeometry_()) return null;
         throw new Error(this.formatErrorMessage_());
       } }, { key: "parseLineStringText_", value: function() {
-        if (this.match(gn)) {
+        if (this.match(dn)) {
           var h = this.parsePointList_();
-          if (this.match(In)) return h;
+          if (this.match(Mn)) return h;
         } else if (this.isEmptyGeometry_()) return [];
         throw new Error(this.formatErrorMessage_());
       } }, { key: "parsePolygonText_", value: function() {
-        if (this.match(gn)) {
+        if (this.match(dn)) {
           var h = this.parseLineStringTextList_();
-          if (this.match(In)) return h;
+          if (this.match(Mn)) return h;
         } else if (this.isEmptyGeometry_()) return [];
         throw new Error(this.formatErrorMessage_());
       } }, { key: "parseMultiPointText_", value: function() {
         var h;
-        if (this.match(gn)) {
-          if (h = this.token_.type == gn ? this.parsePointTextList_() : this.parsePointList_(), this.match(In)) return h;
+        if (this.match(dn)) {
+          if (h = this.token_.type == dn ? this.parsePointTextList_() : this.parsePointList_(), this.match(Mn)) return h;
         } else if (this.isEmptyGeometry_()) return [];
         throw new Error(this.formatErrorMessage_());
       } }, { key: "parseMultiLineStringText_", value: function() {
-        if (this.match(gn)) {
+        if (this.match(dn)) {
           var h = this.parseLineStringTextList_();
-          if (this.match(In)) return h;
+          if (this.match(Mn)) return h;
         } else if (this.isEmptyGeometry_()) return [];
         throw new Error(this.formatErrorMessage_());
       } }, { key: "parseMultiPolygonText_", value: function() {
-        if (this.match(gn)) {
+        if (this.match(dn)) {
           var h = this.parsePolygonTextList_();
-          if (this.match(In)) return h;
+          if (this.match(Mn)) return h;
         } else if (this.isEmptyGeometry_()) return [];
         throw new Error(this.formatErrorMessage_());
       } }, { key: "parsePoint_", value: function() {
         for (var h = [], s = this.layout_.length, o = 0; o < s; ++o) {
           var c = this.token_;
-          if (!this.match(Ol)) break;
+          if (!this.match(Fl)) break;
           h.push(c.value);
         }
         if (h.length == s) return h;
         throw new Error(this.formatErrorMessage_());
       } }, { key: "parsePointList_", value: function() {
-        for (var h = [this.parsePoint_()]; this.match(sr); ) h.push(this.parsePoint_());
+        for (var h = [this.parsePoint_()]; this.match(or); ) h.push(this.parsePoint_());
         return h;
       } }, { key: "parsePointTextList_", value: function() {
-        for (var h = [this.parsePointText_()]; this.match(sr); ) h.push(this.parsePointText_());
+        for (var h = [this.parsePointText_()]; this.match(or); ) h.push(this.parsePointText_());
         return h;
       } }, { key: "parseLineStringTextList_", value: function() {
-        for (var h = [this.parseLineStringText_()]; this.match(sr); ) h.push(this.parseLineStringText_());
+        for (var h = [this.parseLineStringText_()]; this.match(or); ) h.push(this.parseLineStringText_());
         return h;
       } }, { key: "parsePolygonTextList_", value: function() {
-        for (var h = [this.parsePolygonText_()]; this.match(sr); ) h.push(this.parsePolygonText_());
+        for (var h = [this.parsePolygonText_()]; this.match(or); ) h.push(this.parsePolygonText_());
         return h;
       } }, { key: "isEmptyGeometry_", value: function() {
-        var h = this.isTokenType(Vi) && this.token_.value == Rl;
+        var h = this.isTokenType($i) && this.token_.value == Dl;
         return h && this.consume_(), h;
       } }, { key: "formatErrorMessage_", value: function() {
         return "Unexpected `" + this.token_.value + "` at position " + this.token_.position + " in `" + this.lexer_.wkt + "`";
@@ -9258,12 +9693,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var h = this.factory, s = function(ge) {
           return a(Z, b(ge));
         }, o = function(ge) {
-          var Ae = ge.map(function(Pe) {
-            return h.createLinearRing(Pe.map(s));
+          var Ae = ge.map(function(Ne) {
+            return h.createLinearRing(Ne.map(s));
           });
           return Ae.length > 1 ? h.createPolygon(Ae[0], Ae.slice(1)) : h.createPolygon(Ae[0]);
         }, c = this.token_;
-        if (this.match(Vi)) {
+        if (this.match($i)) {
           var v = c.value;
           if (this.layout_ = this.parseGeometryLayout_(), v == "GEOMETRYCOLLECTION") {
             var _ = this.parseGeometryCollectionText_();
@@ -9274,8 +9709,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
               var E = this.parsePointText_();
               return E ? h.createPoint(a(Z, b(E))) : h.createPoint();
             case "LINESTRING":
-              var I = this.parseLineStringText_().map(s);
-              return h.createLineString(I);
+              var M = this.parseLineStringText_().map(s);
+              return h.createLineString(M);
             case "LINEARRING":
               var R = this.parseLineStringText_().map(s);
               return h.createLinearRing(R);
@@ -9306,39 +9741,39 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         throw new Error(this.formatErrorMessage_());
       } }]);
     }();
-    function Dl(h) {
+    function Bl(h) {
       if (h.isEmpty()) return "";
       var s = h.getCoordinate(), o = [s.x, s.y];
       return s.z === void 0 || Number.isNaN(s.z) || o.push(s.z), s.m === void 0 || Number.isNaN(s.m) || o.push(s.m), o.join(" ");
     }
-    function Yr(h) {
+    function Xr(h) {
       for (var s = h.getCoordinates().map(function(_) {
         var E = [_.x, _.y];
         return _.z === void 0 || Number.isNaN(_.z) || E.push(_.z), _.m === void 0 || Number.isNaN(_.m) || E.push(_.m), E;
       }), o = [], c = 0, v = s.length; c < v; ++c) o.push(s[c].join(" "));
       return o.join(", ");
     }
-    function Fl(h) {
+    function zl(h) {
       var s = [];
-      s.push("(" + Yr(h.getExteriorRing()) + ")");
-      for (var o = 0, c = h.getNumInteriorRing(); o < c; ++o) s.push("(" + Yr(h.getInteriorRingN(o)) + ")");
+      s.push("(" + Xr(h.getExteriorRing()) + ")");
+      for (var o = 0, c = h.getNumInteriorRing(); o < c; ++o) s.push("(" + Xr(h.getInteriorRingN(o)) + ")");
       return s.join(", ");
     }
-    var dm = { Point: Dl, LineString: Yr, LinearRing: Yr, Polygon: Fl, MultiPoint: function(h) {
-      for (var s = [], o = 0, c = h.getNumGeometries(); o < c; ++o) s.push("(" + Dl(h.getGeometryN(o)) + ")");
+    var ym = { Point: Bl, LineString: Xr, LinearRing: Xr, Polygon: zl, MultiPoint: function(h) {
+      for (var s = [], o = 0, c = h.getNumGeometries(); o < c; ++o) s.push("(" + Bl(h.getGeometryN(o)) + ")");
       return s.join(", ");
     }, MultiLineString: function(h) {
-      for (var s = [], o = 0, c = h.getNumGeometries(); o < c; ++o) s.push("(" + Yr(h.getGeometryN(o)) + ")");
+      for (var s = [], o = 0, c = h.getNumGeometries(); o < c; ++o) s.push("(" + Xr(h.getGeometryN(o)) + ")");
       return s.join(", ");
     }, MultiPolygon: function(h) {
-      for (var s = [], o = 0, c = h.getNumGeometries(); o < c; ++o) s.push("(" + Fl(h.getGeometryN(o)) + ")");
+      for (var s = [], o = 0, c = h.getNumGeometries(); o < c; ++o) s.push("(" + zl(h.getGeometryN(o)) + ")");
       return s.join(", ");
     }, GeometryCollection: function(h) {
-      for (var s = [], o = 0, c = h.getNumGeometries(); o < c; ++o) s.push(Bl(h.getGeometryN(o)));
+      for (var s = [], o = 0, c = h.getNumGeometries(); o < c; ++o) s.push(Gl(h.getGeometryN(o)));
       return s.join(", ");
     } };
-    function Bl(h) {
-      var s = h.getGeometryType(), o = dm[s];
+    function Gl(h) {
+      var s = h.getGeometryType(), o = ym[s];
       s = s.toUpperCase();
       var c = function(v) {
         var _ = "";
@@ -9346,34 +9781,34 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var E = v.getCoordinate();
         return E.z === void 0 || Number.isNaN(E.z) || (_ += "Z"), E.m === void 0 || Number.isNaN(E.m) || (_ += "M"), _;
       }(h);
-      return c.length > 0 && (s += " " + c), h.isEmpty() ? s + " " + Rl : s + " (" + o(h) + ")";
+      return c.length > 0 && (s += " " + c), h.isEmpty() ? s + " " + Dl : s + " (" + o(h) + ")";
     }
-    var mm = function() {
+    var _m = function() {
       return u(function h(s) {
-        i(this, h), this.geometryFactory = s || new ir(), this.precisionModel = this.geometryFactory.getPrecisionModel();
+        i(this, h), this.geometryFactory = s || new sr(), this.precisionModel = this.geometryFactory.getPrecisionModel();
       }, [{ key: "read", value: function(h) {
-        var s = new fm(h);
-        return new gm(s, this.geometryFactory).parse();
+        var s = new vm(h);
+        return new pm(s, this.geometryFactory).parse();
       } }, { key: "write", value: function(h) {
-        return Bl(h);
+        return Gl(h);
       } }]);
-    }(), bo = function() {
+    }(), So = function() {
       return u(function h(s) {
-        i(this, h), this.parser = new mm(s);
+        i(this, h), this.parser = new _m(s);
       }, [{ key: "write", value: function(h) {
         return this.parser.write(h);
       } }], [{ key: "toLineString", value: function(h, s) {
         if (arguments.length !== 2) throw new Error("Not implemented");
         return "LINESTRING ( " + h.x + " " + h.y + ", " + s.x + " " + s.y + " )";
       } }]);
-    }(), We = function() {
+    }(), $e = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
       return u(h, [{ key: "getIndexAlongSegment", value: function(s, o) {
         return this.computeIntLineIndex(), this._intLineIndex[s][o];
       } }, { key: "getTopologySummary", value: function() {
-        var s = new Xi();
+        var s = new Wi();
         return this.isEndPoint() && s.append(" endpoint"), this._isProper && s.append(" proper"), this.isCollinear() && s.append(" collinear"), s.toString();
       } }, { key: "computeIntersection", value: function(s, o, c, v) {
         this._inputLines[0][0] = s, this._inputLines[0][1] = o, this._inputLines[1][0] = c, this._inputLines[1][1] = v, this._result = this.computeIntersect(s, o, c, v);
@@ -9408,7 +9843,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "isCollinear", value: function() {
         return this._result === h.COLLINEAR_INTERSECTION;
       } }, { key: "toString", value: function() {
-        return bo.toLineString(this._inputLines[0][0], this._inputLines[0][1]) + " - " + bo.toLineString(this._inputLines[1][0], this._inputLines[1][1]) + this.getTopologySummary();
+        return So.toLineString(this._inputLines[0][0], this._inputLines[0][1]) + " - " + So.toLineString(this._inputLines[1][0], this._inputLines[1][1]) + this.getTopologySummary();
       } }, { key: "getEndpoint", value: function(s, o) {
         return this._inputLines[s][o];
       } }, { key: "isIntersection", value: function(s) {
@@ -9425,8 +9860,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (s.equals(o)) E = 0;
         else if (s.equals(c)) E = v > _ ? v : _;
         else {
-          var I = Math.abs(s.x - o.x), R = Math.abs(s.y - o.y);
-          (E = v > _ ? I : R) !== 0 || s.equals(o) || (E = Math.max(I, R));
+          var M = Math.abs(s.x - o.x), R = Math.abs(s.y - o.y);
+          (E = v > _ ? M : R) !== 0 || s.equals(o) || (E = Math.max(M, R));
         }
         return ee.isTrue(!(E === 0 && !s.equals(o)), "Bad distance calculation"), E;
       } }, { key: "nonRobustComputeEdgeDistance", value: function(s, o, c) {
@@ -9434,8 +9869,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return ee.isTrue(!(E === 0 && !s.equals(o)), "Invalid distance calculation"), E;
       } }]);
     }();
-    We.DONT_INTERSECT = 0, We.DO_INTERSECT = 1, We.COLLINEAR = 2, We.NO_INTERSECTION = 0, We.POINT_INTERSECTION = 1, We.COLLINEAR_INTERSECTION = 2;
-    var Bn = function(h) {
+    $e.DONT_INTERSECT = 0, $e.DO_INTERSECT = 1, $e.COLLINEAR = 2, $e.NO_INTERSECTION = 0, $e.POINT_INTERSECTION = 1, $e.COLLINEAR_INTERSECTION = 2;
+    var zn = function(h) {
       function s() {
         return i(this, s), r(this, s);
       }
@@ -9445,31 +9880,31 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "computeIntersection", value: function() {
         if (arguments.length !== 3) return w(s, "computeIntersection", this, 1).apply(this, arguments);
         var o = arguments[0], c = arguments[1], v = arguments[2];
-        if (this._isProper = !1, _e.intersects(c, v, o) && we.index(c, v, o) === 0 && we.index(v, c, o) === 0) return this._isProper = !0, (o.equals(c) || o.equals(v)) && (this._isProper = !1), this._result = We.POINT_INTERSECTION, null;
-        this._result = We.NO_INTERSECTION;
+        if (this._isProper = !1, _e.intersects(c, v, o) && we.index(c, v, o) === 0 && we.index(v, c, o) === 0) return this._isProper = !0, (o.equals(c) || o.equals(v)) && (this._isProper = !1), this._result = $e.POINT_INTERSECTION, null;
+        this._result = $e.NO_INTERSECTION;
       } }, { key: "intersection", value: function(o, c, v, _) {
         var E = this.intersectionSafe(o, c, v, _);
         return this.isInSegmentEnvelopes(E) || (E = new Z(s.nearestEndpoint(o, c, v, _))), this._precisionModel !== null && this._precisionModel.makePrecise(E), E;
       } }, { key: "checkDD", value: function(o, c, v, _, E) {
-        var I = go.intersection(o, c, v, _), R = this.isInSegmentEnvelopes(I);
-        Tt.out.println("DD in env = " + R + "  --------------------- " + I), E.distance(I) > 1e-4 && Tt.out.println("Distance = " + E.distance(I));
+        var M = vo.intersection(o, c, v, _), R = this.isInSegmentEnvelopes(M);
+        At.out.println("DD in env = " + R + "  --------------------- " + M), E.distance(M) > 1e-4 && At.out.println("Distance = " + E.distance(M));
       } }, { key: "intersectionSafe", value: function(o, c, v, _) {
-        var E = mo.intersection(o, c, v, _);
+        var E = po.intersection(o, c, v, _);
         return E === null && (E = s.nearestEndpoint(o, c, v, _)), E;
       } }, { key: "computeCollinearIntersection", value: function(o, c, v, _) {
-        var E = _e.intersects(o, c, v), I = _e.intersects(o, c, _), R = _e.intersects(v, _, o), G = _e.intersects(v, _, c);
-        return E && I ? (this._intPt[0] = v, this._intPt[1] = _, We.COLLINEAR_INTERSECTION) : R && G ? (this._intPt[0] = o, this._intPt[1] = c, We.COLLINEAR_INTERSECTION) : E && R ? (this._intPt[0] = v, this._intPt[1] = o, !v.equals(o) || I || G ? We.COLLINEAR_INTERSECTION : We.POINT_INTERSECTION) : E && G ? (this._intPt[0] = v, this._intPt[1] = c, !v.equals(c) || I || R ? We.COLLINEAR_INTERSECTION : We.POINT_INTERSECTION) : I && R ? (this._intPt[0] = _, this._intPt[1] = o, !_.equals(o) || E || G ? We.COLLINEAR_INTERSECTION : We.POINT_INTERSECTION) : I && G ? (this._intPt[0] = _, this._intPt[1] = c, !_.equals(c) || E || R ? We.COLLINEAR_INTERSECTION : We.POINT_INTERSECTION) : We.NO_INTERSECTION;
+        var E = _e.intersects(o, c, v), M = _e.intersects(o, c, _), R = _e.intersects(v, _, o), G = _e.intersects(v, _, c);
+        return E && M ? (this._intPt[0] = v, this._intPt[1] = _, $e.COLLINEAR_INTERSECTION) : R && G ? (this._intPt[0] = o, this._intPt[1] = c, $e.COLLINEAR_INTERSECTION) : E && R ? (this._intPt[0] = v, this._intPt[1] = o, !v.equals(o) || M || G ? $e.COLLINEAR_INTERSECTION : $e.POINT_INTERSECTION) : E && G ? (this._intPt[0] = v, this._intPt[1] = c, !v.equals(c) || M || R ? $e.COLLINEAR_INTERSECTION : $e.POINT_INTERSECTION) : M && R ? (this._intPt[0] = _, this._intPt[1] = o, !_.equals(o) || E || G ? $e.COLLINEAR_INTERSECTION : $e.POINT_INTERSECTION) : M && G ? (this._intPt[0] = _, this._intPt[1] = c, !_.equals(c) || E || R ? $e.COLLINEAR_INTERSECTION : $e.POINT_INTERSECTION) : $e.NO_INTERSECTION;
       } }, { key: "computeIntersect", value: function(o, c, v, _) {
-        if (this._isProper = !1, !_e.intersects(o, c, v, _)) return We.NO_INTERSECTION;
-        var E = we.index(o, c, v), I = we.index(o, c, _);
-        if (E > 0 && I > 0 || E < 0 && I < 0) return We.NO_INTERSECTION;
+        if (this._isProper = !1, !_e.intersects(o, c, v, _)) return $e.NO_INTERSECTION;
+        var E = we.index(o, c, v), M = we.index(o, c, _);
+        if (E > 0 && M > 0 || E < 0 && M < 0) return $e.NO_INTERSECTION;
         var R = we.index(v, _, o), G = we.index(v, _, c);
-        return R > 0 && G > 0 || R < 0 && G < 0 ? We.NO_INTERSECTION : E === 0 && I === 0 && R === 0 && G === 0 ? this.computeCollinearIntersection(o, c, v, _) : (E === 0 || I === 0 || R === 0 || G === 0 ? (this._isProper = !1, o.equals2D(v) || o.equals2D(_) ? this._intPt[0] = o : c.equals2D(v) || c.equals2D(_) ? this._intPt[0] = c : E === 0 ? this._intPt[0] = new Z(v) : I === 0 ? this._intPt[0] = new Z(_) : R === 0 ? this._intPt[0] = new Z(o) : G === 0 && (this._intPt[0] = new Z(c))) : (this._isProper = !0, this._intPt[0] = this.intersection(o, c, v, _)), We.POINT_INTERSECTION);
+        return R > 0 && G > 0 || R < 0 && G < 0 ? $e.NO_INTERSECTION : E === 0 && M === 0 && R === 0 && G === 0 ? this.computeCollinearIntersection(o, c, v, _) : (E === 0 || M === 0 || R === 0 || G === 0 ? (this._isProper = !1, o.equals2D(v) || o.equals2D(_) ? this._intPt[0] = o : c.equals2D(v) || c.equals2D(_) ? this._intPt[0] = c : E === 0 ? this._intPt[0] = new Z(v) : M === 0 ? this._intPt[0] = new Z(_) : R === 0 ? this._intPt[0] = new Z(o) : G === 0 && (this._intPt[0] = new Z(c))) : (this._isProper = !0, this._intPt[0] = this.intersection(o, c, v, _)), $e.POINT_INTERSECTION);
       } }], [{ key: "nearestEndpoint", value: function(o, c, v, _) {
-        var E = o, I = Kt.pointToSegment(o, v, _), R = Kt.pointToSegment(c, v, _);
-        return R < I && (I = R, E = c), (R = Kt.pointToSegment(v, o, c)) < I && (I = R, E = v), (R = Kt.pointToSegment(_, o, c)) < I && (I = R, E = _), E;
+        var E = o, M = Jt.pointToSegment(o, v, _), R = Jt.pointToSegment(c, v, _);
+        return R < M && (M = R, E = c), (R = Jt.pointToSegment(v, o, c)) < M && (M = R, E = v), (R = Jt.pointToSegment(_, o, c)) < M && (M = R, E = _), E;
       } }]);
-    }(We), vm = function() {
+    }($e), wm = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -9501,35 +9936,35 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           return o.getLocation();
         }
         if (arguments[0] instanceof Z && arguments[1] instanceof Array) {
-          for (var E = arguments[1], I = new h(arguments[0]), R = 1; R < E.length; R++) {
+          for (var E = arguments[1], M = new h(arguments[0]), R = 1; R < E.length; R++) {
             var G = E[R], $ = E[R - 1];
-            if (I.countSegment(G, $), I.isOnSegment()) return I.getLocation();
+            if (M.countSegment(G, $), M.isOnSegment()) return M.getLocation();
           }
-          return I.getLocation();
+          return M.getLocation();
         }
       } }]);
-    }(), Co = function() {
+    }(), Io = function() {
       function h() {
         i(this, h);
       }
       return u(h, null, [{ key: "isOnLine", value: function() {
         if (arguments[0] instanceof Z && Ee(arguments[1], Te)) {
-          for (var s = arguments[0], o = arguments[1], c = new Bn(), v = new Z(), _ = new Z(), E = o.size(), I = 1; I < E; I++) if (o.getCoordinate(I - 1, v), o.getCoordinate(I, _), c.computeIntersection(s, v, _), c.hasIntersection()) return !0;
+          for (var s = arguments[0], o = arguments[1], c = new zn(), v = new Z(), _ = new Z(), E = o.size(), M = 1; M < E; M++) if (o.getCoordinate(M - 1, v), o.getCoordinate(M, _), c.computeIntersection(s, v, _), c.hasIntersection()) return !0;
           return !1;
         }
         if (arguments[0] instanceof Z && arguments[1] instanceof Array) {
-          for (var R = arguments[0], G = arguments[1], $ = new Bn(), K = 1; K < G.length; K++) {
+          for (var R = arguments[0], G = arguments[1], $ = new zn(), K = 1; K < G.length; K++) {
             var ne = G[K - 1], le = G[K];
             if ($.computeIntersection(R, ne, le), $.hasIntersection()) return !0;
           }
           return !1;
         }
       } }, { key: "locateInRing", value: function(s, o) {
-        return vm.locatePointInRing(s, o);
+        return wm.locatePointInRing(s, o);
       } }, { key: "isInRing", value: function(s, o) {
         return h.locateInRing(s, o) !== Y.EXTERIOR;
       } }]);
-    }(), At = function() {
+    }(), Rt = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -9555,7 +9990,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var s = this.location[ie.LEFT];
         this.location[ie.LEFT] = this.location[ie.RIGHT], this.location[ie.RIGHT] = s;
       } }, { key: "toString", value: function() {
-        var s = new Sn();
+        var s = new In();
         return this.location.length > 1 && s.append(Y.toLocationSymbol(this.location[ie.LEFT])), s.append(Y.toLocationSymbol(this.location[ie.ON])), this.location.length > 1 && s.append(Y.toLocationSymbol(this.location[ie.RIGHT])), s.toString();
       } }, { key: "setLocations", value: function(s, o, c) {
         this.location[ie.ON] = s, this.location[ie.LEFT] = o, this.location[ie.RIGHT] = c;
@@ -9594,11 +10029,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             if (this.init(c.location.length), c !== null) for (var v = 0; v < this.location.length; v++) this.location[v] = c.location[v];
           }
         } else if (arguments.length === 3) {
-          var _ = arguments[0], E = arguments[1], I = arguments[2];
-          this.init(3), this.location[ie.ON] = _, this.location[ie.LEFT] = E, this.location[ie.RIGHT] = I;
+          var _ = arguments[0], E = arguments[1], M = arguments[2];
+          this.init(3), this.location[ie.ON] = _, this.location[ie.LEFT] = E, this.location[ie.RIGHT] = M;
         }
       } }]);
-    }(), Rt = function() {
+    }(), Ot = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -9620,7 +10055,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "isLine", value: function(s) {
         return this.elt[s].isLine();
       } }, { key: "merge", value: function(s) {
-        for (var o = 0; o < 2; o++) this.elt[o] === null && s.elt[o] !== null ? this.elt[o] = new At(s.elt[o]) : this.elt[o].merge(s.elt[o]);
+        for (var o = 0; o < 2; o++) this.elt[o] === null && s.elt[o] !== null ? this.elt[o] = new Rt(s.elt[o]) : this.elt[o].merge(s.elt[o]);
       } }, { key: "flip", value: function() {
         this.elt[0].flip(), this.elt[1].flip();
       } }, { key: "getLocation", value: function() {
@@ -9633,7 +10068,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           return this.elt[o].get(c);
         }
       } }, { key: "toString", value: function() {
-        var s = new Sn();
+        var s = new In();
         return this.elt[0] !== null && (s.append("A:"), s.append(this.elt[0].toString())), this.elt[1] !== null && (s.append(" B:"), s.append(this.elt[1].toString())), s.toString();
       } }, { key: "isArea", value: function() {
         if (arguments.length === 0) return this.elt[0].isArea() || this.elt[1].isArea();
@@ -9656,31 +10091,31 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "allPositionsEqual", value: function(s, o) {
         return this.elt[s].allPositionsEqual(o);
       } }, { key: "toLine", value: function(s) {
-        this.elt[s].isArea() && (this.elt[s] = new At(this.elt[s].location[0]));
+        this.elt[s].isArea() && (this.elt[s] = new Rt(this.elt[s].location[0]));
       } }], [{ key: "constructor_", value: function() {
         if (this.elt = new Array(2).fill(null), arguments.length === 1) {
           if (Number.isInteger(arguments[0])) {
             var s = arguments[0];
-            this.elt[0] = new At(s), this.elt[1] = new At(s);
+            this.elt[0] = new Rt(s), this.elt[1] = new Rt(s);
           } else if (arguments[0] instanceof h) {
             var o = arguments[0];
-            this.elt[0] = new At(o.elt[0]), this.elt[1] = new At(o.elt[1]);
+            this.elt[0] = new Rt(o.elt[0]), this.elt[1] = new Rt(o.elt[1]);
           }
         } else if (arguments.length === 2) {
           var c = arguments[0], v = arguments[1];
-          this.elt[0] = new At(Y.NONE), this.elt[1] = new At(Y.NONE), this.elt[c].setLocation(v);
+          this.elt[0] = new Rt(Y.NONE), this.elt[1] = new Rt(Y.NONE), this.elt[c].setLocation(v);
         } else if (arguments.length === 3) {
-          var _ = arguments[0], E = arguments[1], I = arguments[2];
-          this.elt[0] = new At(_, E, I), this.elt[1] = new At(_, E, I);
+          var _ = arguments[0], E = arguments[1], M = arguments[2];
+          this.elt[0] = new Rt(_, E, M), this.elt[1] = new Rt(_, E, M);
         } else if (arguments.length === 4) {
           var R = arguments[0], G = arguments[1], $ = arguments[2], K = arguments[3];
-          this.elt[0] = new At(Y.NONE, Y.NONE, Y.NONE), this.elt[1] = new At(Y.NONE, Y.NONE, Y.NONE), this.elt[R].setLocations(G, $, K);
+          this.elt[0] = new Rt(Y.NONE, Y.NONE, Y.NONE), this.elt[1] = new Rt(Y.NONE, Y.NONE, Y.NONE), this.elt[R].setLocations(G, $, K);
         }
       } }, { key: "toLineLabel", value: function(s) {
         for (var o = new h(Y.NONE), c = 0; c < 2; c++) o.setLocation(c, s.getLocation(c));
         return o;
       } }]);
-    }(), Wi = function() {
+    }(), Zi = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "computeRing", value: function() {
@@ -9693,8 +10128,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         this._startDe = h;
         var s = h, o = !0;
         do {
-          if (s === null) throw new fn("Found null DirectedEdge");
-          if (s.getEdgeRing() === this) throw new fn("Directed Edge visited twice during ring-building at " + s.getCoordinate());
+          if (s === null) throw new gn("Found null DirectedEdge");
+          if (s.getEdgeRing() === this) throw new gn("Directed Edge visited twice during ring-building at " + s.getCoordinate());
           this._edges.add(s);
           var c = s.getLabel();
           ee.isTrue(c.isArea()), this.mergeLabel(c), this.addPoints(s.getEdge(), s.isForward(), o), o = !1, this.setEdgeRing(s, this), s = this.getNext(s);
@@ -9720,7 +10155,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         } else {
           var E = c.length - 2;
           o && (E = c.length - 1);
-          for (var I = E; I >= 0; I--) this._pts.add(c[I]);
+          for (var M = E; M >= 0; M--) this._pts.add(c[M]);
         }
       } }, { key: "isHole", value: function() {
         return this._isHole;
@@ -9731,7 +10166,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         while (h !== this._startDe);
       } }, { key: "containsPoint", value: function(h) {
         var s = this.getLinearRing();
-        if (!s.getEnvelopeInternal().contains(h) || !Co.isInRing(h, s.getCoordinates())) return !1;
+        if (!s.getEnvelopeInternal().contains(h) || !Io.isInRing(h, s.getCoordinates())) return !1;
         for (var o = this._holes.iterator(); o.hasNext(); )
           if (o.next().containsPoint(h)) return !1;
         return !0;
@@ -9762,14 +10197,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         for (var s = new Array(this._holes.size()).fill(null), o = 0; o < this._holes.size(); o++) s[o] = this._holes.get(o).getLinearRing();
         return h.createPolygon(this.getLinearRing(), s);
       } }], [{ key: "constructor_", value: function() {
-        if (this._startDe = null, this._maxNodeDegree = -1, this._edges = new ve(), this._pts = new ve(), this._label = new Rt(Y.NONE), this._ring = null, this._isHole = null, this._shell = null, this._holes = new ve(), this._geometryFactory = null, arguments.length !== 0) {
+        if (this._startDe = null, this._maxNodeDegree = -1, this._edges = new ve(), this._pts = new ve(), this._label = new Ot(Y.NONE), this._ring = null, this._isHole = null, this._shell = null, this._holes = new ve(), this._geometryFactory = null, arguments.length !== 0) {
           if (arguments.length === 2) {
             var h = arguments[0], s = arguments[1];
             this._geometryFactory = s, this.computePoints(h), this.computeRing();
           }
         }
       } }]);
-    }(), pm = function(h) {
+    }(), xm = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -9780,9 +10215,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return o.getNextMin();
       } }], [{ key: "constructor_", value: function() {
         var o = arguments[0], c = arguments[1];
-        Wi.constructor_.call(this, o, c);
+        Zi.constructor_.call(this, o, c);
       } }]);
-    }(Wi), ym = function(h) {
+    }(Zi), Em = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -9791,7 +10226,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var o = new ve(), c = this._startDe;
         do {
           if (c.getMinEdgeRing() === null) {
-            var v = new pm(c, this._geometryFactory);
+            var v = new xm(c, this._geometryFactory);
             o.add(v);
           }
           c = c.getNext();
@@ -9808,9 +10243,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return o.getNext();
       } }], [{ key: "constructor_", value: function() {
         var o = arguments[0], c = arguments[1];
-        Wi.constructor_.call(this, o, c);
+        Zi.constructor_.call(this, o, c);
       } }]);
-    }(Wi), zl = function() {
+    }(Zi), ql = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "setVisited", value: function(h) {
@@ -9841,7 +10276,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           }
         }
       } }]);
-    }(), $i = function(h) {
+    }(), Ki = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -9867,14 +10302,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "setLabel", value: function() {
         if (arguments.length !== 2 || !Number.isInteger(arguments[1]) || !Number.isInteger(arguments[0])) return w(s, "setLabel", this, 1).apply(this, arguments);
         var o = arguments[0], c = arguments[1];
-        this._label === null ? this._label = new Rt(o, c) : this._label.setLocation(o, c);
+        this._label === null ? this._label = new Ot(o, c) : this._label.setLocation(o, c);
       } }, { key: "getEdges", value: function() {
         return this._edges;
       } }, { key: "mergeLabel", value: function() {
         if (arguments[0] instanceof s) {
           var o = arguments[0];
           this.mergeLabel(o._label);
-        } else if (arguments[0] instanceof Rt) for (var c = arguments[0], v = 0; v < 2; v++) {
+        } else if (arguments[0] instanceof Ot) for (var c = arguments[0], v = 0; v < 2; v++) {
           var _ = this.computeMergedLocation(c, v);
           this._label.getLocation(v) === Y.NONE && this._label.setLocation(v, _);
         }
@@ -9897,30 +10332,30 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }], [{ key: "constructor_", value: function() {
         this._coord = null, this._edges = null;
         var o = arguments[0], c = arguments[1];
-        this._coord = o, this._edges = c, this._label = new Rt(0, Y.NONE);
+        this._coord = o, this._edges = c, this._label = new Ot(0, Y.NONE);
       } }]);
-    }(zl), _m = function(h) {
+    }(ql), bm = function(h) {
       function s() {
         return i(this, s), r(this, s, arguments);
       }
       return m(s, h), u(s);
-    }(Tl);
-    function Gl(h) {
+    }(Rl);
+    function Hl(h) {
       return h == null ? 0 : h.color;
     }
     function De(h) {
       return h == null ? null : h.parent;
     }
-    function Jt(h, s) {
+    function Qt(h, s) {
       h !== null && (h.color = s);
     }
-    function So(h) {
+    function ko(h) {
       return h == null ? null : h.left;
     }
-    function ql(h) {
+    function Ul(h) {
       return h == null ? null : h.right;
     }
-    var Xr = function(h) {
+    var Vr = function(h) {
       function s() {
         var o;
         return i(this, s), (o = r(this, s)).root_ = null, o.size_ = 0, o;
@@ -9946,8 +10381,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           if (v = E, (_ = o.compareTo(E.key)) < 0) E = E.left;
           else {
             if (!(_ > 0)) {
-              var I = E.value;
-              return E.value = c, I;
+              var M = E.value;
+              return E.value = c, M;
             }
             E = E.right;
           }
@@ -9960,14 +10395,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return _ < 0 ? v.left = R : v.right = R, this.fixAfterInsertion(R), this.size_++, null;
       } }, { key: "fixAfterInsertion", value: function(o) {
         var c;
-        for (o.color = 1; o != null && o !== this.root_ && o.parent.color === 1; ) De(o) === So(De(De(o))) ? Gl(c = ql(De(De(o)))) === 1 ? (Jt(De(o), 0), Jt(c, 0), Jt(De(De(o)), 1), o = De(De(o))) : (o === ql(De(o)) && (o = De(o), this.rotateLeft(o)), Jt(De(o), 0), Jt(De(De(o)), 1), this.rotateRight(De(De(o)))) : Gl(c = So(De(De(o)))) === 1 ? (Jt(De(o), 0), Jt(c, 0), Jt(De(De(o)), 1), o = De(De(o))) : (o === So(De(o)) && (o = De(o), this.rotateRight(o)), Jt(De(o), 0), Jt(De(De(o)), 1), this.rotateLeft(De(De(o))));
+        for (o.color = 1; o != null && o !== this.root_ && o.parent.color === 1; ) De(o) === ko(De(De(o))) ? Hl(c = Ul(De(De(o)))) === 1 ? (Qt(De(o), 0), Qt(c, 0), Qt(De(De(o)), 1), o = De(De(o))) : (o === Ul(De(o)) && (o = De(o), this.rotateLeft(o)), Qt(De(o), 0), Qt(De(De(o)), 1), this.rotateRight(De(De(o)))) : Hl(c = ko(De(De(o)))) === 1 ? (Qt(De(o), 0), Qt(c, 0), Qt(De(De(o)), 1), o = De(De(o))) : (o === ko(De(o)) && (o = De(o), this.rotateRight(o)), Qt(De(o), 0), Qt(De(De(o)), 1), this.rotateLeft(De(De(o))));
         this.root_.color = 0;
       } }, { key: "values", value: function() {
         var o = new ve(), c = this.getFirstEntry();
         if (c !== null) for (o.add(c.value); (c = s.successor(c)) !== null; ) o.add(c.value);
         return o;
       } }, { key: "entrySet", value: function() {
-        var o = new mt(), c = this.getFirstEntry();
+        var o = new vt(), c = this.getFirstEntry();
         if (c !== null) for (o.add(c); (c = s.successor(c)) !== null; ) o.add(c);
         return o;
       } }, { key: "rotateLeft", value: function(o) {
@@ -10007,7 +10442,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         for (var v = o; c !== null && v === c.right; ) v = c, c = c.parent;
         return c;
       } }]);
-    }(_m), Ul = function() {
+    }(bm), Yl = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "find", value: function(h) {
@@ -10017,7 +10452,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var h = arguments[0], s = this.nodeMap.get(h);
           return s === null && (s = this.nodeFact.createNode(h), this.nodeMap.put(h, s)), s;
         }
-        if (arguments[0] instanceof $i) {
+        if (arguments[0] instanceof Ki) {
           var o = arguments[0], c = this.nodeMap.get(o.getCoordinate());
           return c === null ? (this.nodeMap.put(o.getCoordinate(), o), o) : (c.mergeLabel(o), c);
         }
@@ -10038,11 +10473,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var s = h.getCoordinate();
         this.addNode(s).add(h);
       } }], [{ key: "constructor_", value: function() {
-        this.nodeMap = new Xr(), this.nodeFact = null;
+        this.nodeMap = new Vr(), this.nodeFact = null;
         var h = arguments[0];
         this.nodeFact = h;
       } }]);
-    }(), vt = function() {
+    }(), pt = function() {
       function h() {
         i(this, h);
       }
@@ -10070,8 +10505,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
       } }]);
     }();
-    vt.NE = 0, vt.NW = 1, vt.SW = 2, vt.SE = 3;
-    var Hl = function() {
+    pt.NE = 0, pt.NW = 1, pt.SW = 2, pt.SE = 3;
+    var Xl = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -10106,7 +10541,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return "  " + o.substring(c + 1) + ": " + this._p0 + " - " + this._p1 + " " + this._quadrant + ":" + s + "   " + this._label;
       } }, { key: "computeLabel", value: function(s) {
       } }, { key: "init", value: function(s, o) {
-        this._p0 = s, this._p1 = o, this._dx = o.x - s.x, this._dy = o.y - s.y, this._quadrant = vt.quadrant(this._dx, this._dy), ee.isTrue(!(this._dx === 0 && this._dy === 0), "EdgeEnd with identical endpoints found");
+        this._p0 = s, this._p1 = o, this._dx = o.x - s.x, this._dy = o.y - s.y, this._quadrant = pt.quadrant(this._dx, this._dy), ee.isTrue(!(this._dx === 0 && this._dy === 0), "EdgeEnd with identical endpoints found");
       } }, { key: "interfaces_", get: function() {
         return [F];
       } }], [{ key: "constructor_", value: function() {
@@ -10117,11 +10552,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var o = arguments[0], c = arguments[1], v = arguments[2];
           h.constructor_.call(this, o, c, v, null);
         } else if (arguments.length === 4) {
-          var _ = arguments[0], E = arguments[1], I = arguments[2], R = arguments[3];
-          h.constructor_.call(this, _), this.init(E, I), this._label = R;
+          var _ = arguments[0], E = arguments[1], M = arguments[2], R = arguments[3];
+          h.constructor_.call(this, _), this.init(E, M), this._label = R;
         }
       } }]);
-    }(), ko = function(h) {
+    }(), Mo = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -10133,11 +10568,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "setVisited", value: function(o) {
         this._isVisited = o;
       } }, { key: "computeDirectedLabel", value: function() {
-        this._label = new Rt(this._edge.getLabel()), this._isForward || this._label.flip();
+        this._label = new Ot(this._edge.getLabel()), this._isForward || this._label.flip();
       } }, { key: "getNext", value: function() {
         return this._next;
       } }, { key: "setDepth", value: function(o, c) {
-        if (this._depth[o] !== -999 && this._depth[o] !== c) throw new fn("assigned depths do not match", this.getCoordinate());
+        if (this._depth[o] !== -999 && this._depth[o] !== c) throw new gn("assigned depths do not match", this.getCoordinate());
         this._depth[o] = c;
       } }, { key: "isInteriorAreaEdge", value: function() {
         for (var o = !0, c = 0; c < 2; c++) this._label.isArea(c) && this._label.getLocation(c, ie.LEFT) === Y.INTERIOR && this._label.getLocation(c, ie.RIGHT) === Y.INTERIOR || (o = !1);
@@ -10177,8 +10612,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         this._isForward || (v = -v);
         var _ = 1;
         o === ie.LEFT && (_ = -1);
-        var E = ie.opposite(o), I = c + v * _;
-        this.setDepth(o, c), this.setDepth(E, I);
+        var E = ie.opposite(o), M = c + v * _;
+        this.setDepth(o, c), this.setDepth(E, M);
       } }, { key: "getEdgeRing", value: function() {
         return this._edgeRing;
       } }, { key: "isInResult", value: function() {
@@ -10190,7 +10625,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }], [{ key: "constructor_", value: function() {
         this._isForward = null, this._isInResult = !1, this._isVisited = !1, this._sym = null, this._next = null, this._nextMin = null, this._edgeRing = null, this._minEdgeRing = null, this._depth = [0, -999, -999];
         var o = arguments[0], c = arguments[1];
-        if (Hl.constructor_.call(this, o), this._isForward = c, c) this.init(o.getCoordinate(0), o.getCoordinate(1));
+        if (Xl.constructor_.call(this, o), this._isForward = c, c) this.init(o.getCoordinate(0), o.getCoordinate(1));
         else {
           var v = o.getNumPoints() - 1;
           this.init(o.getCoordinate(v), o.getCoordinate(v - 1));
@@ -10199,13 +10634,13 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "depthFactor", value: function(o, c) {
         return o === Y.EXTERIOR && c === Y.INTERIOR ? 1 : o === Y.INTERIOR && c === Y.EXTERIOR ? -1 : 0;
       } }]);
-    }(Hl), Yl = function() {
+    }(Xl), Vl = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "createNode", value: function(h) {
-        return new $i(h, null);
+        return new Ki(h, null);
       } }]);
-    }(), Xl = function() {
+    }(), Wl = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "printEdges", value: function(h) {
@@ -10218,7 +10653,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "find", value: function(h) {
         return this._nodes.find(h);
       } }, { key: "addNode", value: function() {
-        if (arguments[0] instanceof $i) {
+        if (arguments[0] instanceof Ki) {
           var h = arguments[0];
           return this._nodes.addNode(h);
         }
@@ -10232,7 +10667,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         for (var h = this._nodes.iterator(); h.hasNext(); )
           h.next().getEdges().linkResultDirectedEdges();
       } }, { key: "debugPrintln", value: function(h) {
-        Tt.out.println(h);
+        At.out.println(h);
       } }, { key: "isBoundaryNode", value: function(h, s) {
         var o = this._nodes.find(s);
         if (o === null) return !1;
@@ -10242,11 +10677,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         for (var h = this._nodes.iterator(); h.hasNext(); )
           h.next().getEdges().linkAllDirectedEdges();
       } }, { key: "matchInSameDirection", value: function(h, s, o, c) {
-        return !!h.equals(o) && we.index(h, s, c) === we.COLLINEAR && vt.quadrant(h, s) === vt.quadrant(o, c);
+        return !!h.equals(o) && we.index(h, s, c) === we.COLLINEAR && pt.quadrant(h, s) === pt.quadrant(o, c);
       } }, { key: "getEdgeEnds", value: function() {
         return this._edgeEndList;
       } }, { key: "debugPrint", value: function(h) {
-        Tt.out.print(h);
+        At.out.print(h);
       } }, { key: "getEdgeIterator", value: function() {
         return this._edges.iterator();
       } }, { key: "findEdgeInSameDirection", value: function(h, s) {
@@ -10267,7 +10702,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         for (var s = h.iterator(); s.hasNext(); ) {
           var o = s.next();
           this._edges.add(o);
-          var c = new ko(o, !0), v = new ko(o, !1);
+          var c = new Mo(o, !0), v = new Mo(o, !1);
           c.setSym(v), v.setSym(c), this.add(c), this.add(v);
         }
       } }, { key: "add", value: function(h) {
@@ -10281,16 +10716,16 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
         return null;
       } }], [{ key: "constructor_", value: function() {
-        if (this._edges = new ve(), this._nodes = null, this._edgeEndList = new ve(), arguments.length === 0) this._nodes = new Ul(new Yl());
+        if (this._edges = new ve(), this._nodes = null, this._edgeEndList = new ve(), arguments.length === 0) this._nodes = new Yl(new Vl());
         else if (arguments.length === 1) {
           var h = arguments[0];
-          this._nodes = new Ul(h);
+          this._nodes = new Yl(h);
         }
       } }, { key: "linkResultDirectedEdges", value: function(h) {
         for (var s = h.iterator(); s.hasNext(); )
           s.next().getEdges().linkResultDirectedEdges();
       } }]);
-    }(), wm = function() {
+    }(), Cm = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -10310,7 +10745,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var v = c.next();
           if (v.getShell() === null) {
             var _ = h.findEdgeRingContaining(v, s);
-            if (_ === null) throw new fn("unable to assign hole to a shell", v.getCoordinate(0));
+            if (_ === null) throw new gn("unable to assign hole to a shell", v.getCoordinate(0));
             v.setShell(_);
           }
         }
@@ -10319,8 +10754,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var E = _.next();
           if (E.getMaxNodeDegree() > 2) {
             E.linkDirectedEdgesForMinimalEdgeRings();
-            var I = E.buildMinimalRings(), R = this.findShell(I);
-            R !== null ? (this.placePolygonHoles(R, I), o.add(R)) : c.addAll(I);
+            var M = E.buildMinimalRings(), R = this.findShell(M);
+            R !== null ? (this.placePolygonHoles(R, M), o.add(R)) : c.addAll(M);
           } else v.add(E);
         }
         return v;
@@ -10328,7 +10763,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         for (var o = new ve(), c = s.iterator(); c.hasNext(); ) {
           var v = c.next();
           if (v.isInResult() && v.getLabel().isArea() && v.getEdgeRing() === null) {
-            var _ = new ym(v, this._geometryFactory);
+            var _ = new Em(v, this._geometryFactory);
             o.add(_), _.setInResult();
           }
         }
@@ -10352,7 +10787,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           this.add(s.getEdgeEnds(), s.getNodes());
         } else if (arguments.length === 2) {
           var o = arguments[0], c = arguments[1];
-          Xl.linkResultDirectedEdges(c);
+          Wl.linkResultDirectedEdges(c);
           var v = this.buildMaximalEdgeRings(o), _ = new ve(), E = this.buildMinimalEdgeRings(v, this._shellList, _);
           this.sortShellsAndHoles(E, this._shellList, _), this.placeFreeHoles(this._shellList, _);
         }
@@ -10361,22 +10796,22 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var s = arguments[0];
         this._geometryFactory = s;
       } }, { key: "findEdgeRingContaining", value: function(s, o) {
-        for (var c = s.getLinearRing(), v = c.getEnvelopeInternal(), _ = c.getCoordinateN(0), E = null, I = null, R = o.iterator(); R.hasNext(); ) {
+        for (var c = s.getLinearRing(), v = c.getEnvelopeInternal(), _ = c.getCoordinateN(0), E = null, M = null, R = o.iterator(); R.hasNext(); ) {
           var G = R.next(), $ = G.getLinearRing(), K = $.getEnvelopeInternal();
           if (!K.equals(v) && K.contains(v)) {
-            _ = nt.ptNotInList(c.getCoordinates(), $.getCoordinates());
+            _ = it.ptNotInList(c.getCoordinates(), $.getCoordinates());
             var ne = !1;
-            Co.isInRing(_, $.getCoordinates()) && (ne = !0), ne && (E === null || I.contains(K)) && (I = (E = G).getLinearRing().getEnvelopeInternal());
+            Io.isInRing(_, $.getCoordinates()) && (ne = !0), ne && (E === null || M.contains(K)) && (M = (E = G).getLinearRing().getEnvelopeInternal());
           }
         }
         return E;
       } }]);
-    }(), Vl = function() {
+    }(), $l = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "getBounds", value: function() {
       } }]);
-    }(), dn = function() {
+    }(), mn = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "getItem", value: function() {
@@ -10384,13 +10819,13 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "getBounds", value: function() {
         return this._bounds;
       } }, { key: "interfaces_", get: function() {
-        return [Vl, L];
+        return [$l, L];
       } }], [{ key: "constructor_", value: function() {
         this._bounds = null, this._item = null;
         var h = arguments[0], s = arguments[1];
         this._bounds = h, this._item = s;
       } }]);
-    }(), Zi = function() {
+    }(), Ji = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "poll", value: function() {
@@ -10416,14 +10851,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }], [{ key: "constructor_", value: function() {
         this._size = null, this._items = null, this._size = 0, this._items = new ve(), this._items.add(null);
       } }]);
-    }(), xm = function() {
+    }(), Sm = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "insert", value: function(h, s) {
       } }, { key: "remove", value: function(h, s) {
       } }, { key: "query", value: function() {
       } }]);
-    }(), Ot = function() {
+    }(), Dt = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "getLevel", value: function() {
@@ -10439,7 +10874,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "getBounds", value: function() {
         return this._bounds === null && (this._bounds = this.computeBounds()), this._bounds;
       } }, { key: "interfaces_", get: function() {
-        return [Vl, L];
+        return [$l, L];
       } }], [{ key: "constructor_", value: function() {
         if (this._childBoundables = new ve(), this._bounds = null, this._level = null, arguments.length !== 0) {
           if (arguments.length === 1) {
@@ -10448,26 +10883,26 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           }
         }
       } }]);
-    }(), or = { reverseOrder: function() {
+    }(), ar = { reverseOrder: function() {
       return { compare: function(h, s) {
         return s.compareTo(h);
       } };
     }, min: function(h) {
-      return or.sort(h), h.get(0);
+      return ar.sort(h), h.get(0);
     }, sort: function(h, s) {
       var o = h.toArray();
-      s ? On.sort(o, s) : On.sort(o);
+      s ? Dn.sort(o, s) : Dn.sort(o);
       for (var c = h.iterator(), v = 0, _ = o.length; v < _; v++) c.next(), c.set(o[v]);
     }, singletonList: function(h) {
       var s = new ve();
       return s.add(h), s;
-    } }, Em = function() {
+    } }, Im = function() {
       function h() {
         i(this, h);
       }
-      return u(h, null, [{ key: "maxDistance", value: function(s, o, c, v, _, E, I, R) {
+      return u(h, null, [{ key: "maxDistance", value: function(s, o, c, v, _, E, M, R) {
         var G = h.distance(s, o, _, E);
-        return G = Math.max(G, h.distance(s, o, I, R)), G = Math.max(G, h.distance(c, v, _, E)), G = Math.max(G, h.distance(c, v, I, R));
+        return G = Math.max(G, h.distance(s, o, M, R)), G = Math.max(G, h.distance(c, v, _, E)), G = Math.max(G, h.distance(c, v, M, R));
       } }, { key: "distance", value: function(s, o, c, v) {
         var _ = c - s, E = v - o;
         return Math.sqrt(_ * _ + E * E);
@@ -10475,15 +10910,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var c = Math.min(s.getMinX(), o.getMinX()), v = Math.min(s.getMinY(), o.getMinY()), _ = Math.max(s.getMaxX(), o.getMaxX()), E = Math.max(s.getMaxY(), o.getMaxY());
         return h.distance(c, v, _, E);
       } }, { key: "minMaxDistance", value: function(s, o) {
-        var c = s.getMinX(), v = s.getMinY(), _ = s.getMaxX(), E = s.getMaxY(), I = o.getMinX(), R = o.getMinY(), G = o.getMaxX(), $ = o.getMaxY(), K = h.maxDistance(c, v, c, E, I, R, I, $);
-        return K = Math.min(K, h.maxDistance(c, v, c, E, I, R, G, R)), K = Math.min(K, h.maxDistance(c, v, c, E, G, $, I, $)), K = Math.min(K, h.maxDistance(c, v, c, E, G, $, G, R)), K = Math.min(K, h.maxDistance(c, v, _, v, I, R, I, $)), K = Math.min(K, h.maxDistance(c, v, _, v, I, R, G, R)), K = Math.min(K, h.maxDistance(c, v, _, v, G, $, I, $)), K = Math.min(K, h.maxDistance(c, v, _, v, G, $, G, R)), K = Math.min(K, h.maxDistance(_, E, c, E, I, R, I, $)), K = Math.min(K, h.maxDistance(_, E, c, E, I, R, G, R)), K = Math.min(K, h.maxDistance(_, E, c, E, G, $, I, $)), K = Math.min(K, h.maxDistance(_, E, c, E, G, $, G, R)), K = Math.min(K, h.maxDistance(_, E, _, v, I, R, I, $)), K = Math.min(K, h.maxDistance(_, E, _, v, I, R, G, R)), K = Math.min(K, h.maxDistance(_, E, _, v, G, $, I, $)), K = Math.min(K, h.maxDistance(_, E, _, v, G, $, G, R));
+        var c = s.getMinX(), v = s.getMinY(), _ = s.getMaxX(), E = s.getMaxY(), M = o.getMinX(), R = o.getMinY(), G = o.getMaxX(), $ = o.getMaxY(), K = h.maxDistance(c, v, c, E, M, R, M, $);
+        return K = Math.min(K, h.maxDistance(c, v, c, E, M, R, G, R)), K = Math.min(K, h.maxDistance(c, v, c, E, G, $, M, $)), K = Math.min(K, h.maxDistance(c, v, c, E, G, $, G, R)), K = Math.min(K, h.maxDistance(c, v, _, v, M, R, M, $)), K = Math.min(K, h.maxDistance(c, v, _, v, M, R, G, R)), K = Math.min(K, h.maxDistance(c, v, _, v, G, $, M, $)), K = Math.min(K, h.maxDistance(c, v, _, v, G, $, G, R)), K = Math.min(K, h.maxDistance(_, E, c, E, M, R, M, $)), K = Math.min(K, h.maxDistance(_, E, c, E, M, R, G, R)), K = Math.min(K, h.maxDistance(_, E, c, E, G, $, M, $)), K = Math.min(K, h.maxDistance(_, E, c, E, G, $, G, R)), K = Math.min(K, h.maxDistance(_, E, _, v, M, R, M, $)), K = Math.min(K, h.maxDistance(_, E, _, v, M, R, G, R)), K = Math.min(K, h.maxDistance(_, E, _, v, G, $, M, $)), K = Math.min(K, h.maxDistance(_, E, _, v, G, $, G, R));
       } }]);
-    }(), ar = function() {
+    }(), lr = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
       return u(h, [{ key: "maximumDistance", value: function() {
-        return Em.maximumDistance(this._boundable1.getBounds(), this._boundable2.getBounds());
+        return Im.maximumDistance(this._boundable1.getBounds(), this._boundable2.getBounds());
       } }, { key: "expandToQueue", value: function(s, o) {
         var c = h.isComposite(this._boundable1), v = h.isComposite(this._boundable2);
         if (c && v) return h.area(this._boundable1) > h.area(this._boundable2) ? (this.expand(this._boundable1, this._boundable2, !1, s, o), null) : (this.expand(this._boundable2, this._boundable1, !0, s, o), null);
@@ -10497,8 +10932,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return this._distance < o._distance ? -1 : this._distance > o._distance ? 1 : 0;
       } }, { key: "expand", value: function(s, o, c, v, _) {
         for (var E = s.getChildBoundables().iterator(); E.hasNext(); ) {
-          var I = E.next(), R = null;
-          (R = c ? new h(o, I, this._itemDistance) : new h(I, o, this._itemDistance)).getDistance() < _ && v.add(R);
+          var M = E.next(), R = null;
+          (R = c ? new h(o, M, this._itemDistance) : new h(M, o, this._itemDistance)).getDistance() < _ && v.add(R);
         }
       } }, { key: "getBoundable", value: function(s) {
         return s === 0 ? this._boundable1 : this._boundable2;
@@ -10515,25 +10950,25 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "area", value: function(s) {
         return s.getBounds().getArea();
       } }, { key: "isComposite", value: function(s) {
-        return s instanceof Ot;
+        return s instanceof Dt;
       } }]);
-    }(), Wl = function() {
+    }(), Zl = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "visitItem", value: function(h) {
       } }]);
-    }(), lr = function() {
+    }(), ur = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
       return u(h, [{ key: "queryInternal", value: function() {
-        if (Ee(arguments[2], Wl) && arguments[0] instanceof Object && arguments[1] instanceof Ot) for (var s = arguments[0], o = arguments[2], c = arguments[1].getChildBoundables(), v = 0; v < c.size(); v++) {
+        if (Ee(arguments[2], Zl) && arguments[0] instanceof Object && arguments[1] instanceof Dt) for (var s = arguments[0], o = arguments[2], c = arguments[1].getChildBoundables(), v = 0; v < c.size(); v++) {
           var _ = c.get(v);
-          this.getIntersectsOp().intersects(_.getBounds(), s) && (_ instanceof Ot ? this.queryInternal(s, _, o) : _ instanceof dn ? o.visitItem(_.getItem()) : ee.shouldNeverReachHere());
+          this.getIntersectsOp().intersects(_.getBounds(), s) && (_ instanceof Dt ? this.queryInternal(s, _, o) : _ instanceof mn ? o.visitItem(_.getItem()) : ee.shouldNeverReachHere());
         }
-        else if (Ee(arguments[2], hn) && arguments[0] instanceof Object && arguments[1] instanceof Ot) for (var E = arguments[0], I = arguments[2], R = arguments[1].getChildBoundables(), G = 0; G < R.size(); G++) {
+        else if (Ee(arguments[2], fn) && arguments[0] instanceof Object && arguments[1] instanceof Dt) for (var E = arguments[0], M = arguments[2], R = arguments[1].getChildBoundables(), G = 0; G < R.size(); G++) {
           var $ = R.get(G);
-          this.getIntersectsOp().intersects($.getBounds(), E) && ($ instanceof Ot ? this.queryInternal(E, $, I) : $ instanceof dn ? I.add($.getItem()) : ee.shouldNeverReachHere());
+          this.getIntersectsOp().intersects($.getBounds(), E) && ($ instanceof Dt ? this.queryInternal(E, $, M) : $ instanceof mn ? M.add($.getItem()) : ee.shouldNeverReachHere());
         }
       } }, { key: "getNodeCapacity", value: function() {
         return this._nodeCapacity;
@@ -10544,14 +10979,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (arguments.length === 1) {
           for (var s = 0, o = arguments[0].getChildBoundables().iterator(); o.hasNext(); ) {
             var c = o.next();
-            c instanceof Ot ? s += this.size(c) : c instanceof dn && (s += 1);
+            c instanceof Dt ? s += this.size(c) : c instanceof mn && (s += 1);
           }
           return s;
         }
       } }, { key: "removeItem", value: function(s, o) {
         for (var c = null, v = s.getChildBoundables().iterator(); v.hasNext(); ) {
           var _ = v.next();
-          _ instanceof dn && _.getItem() === o && (c = _);
+          _ instanceof mn && _.getItem() === o && (c = _);
         }
         return c !== null && (s.getChildBoundables().remove(c), !0);
       } }, { key: "itemsTree", value: function() {
@@ -10563,15 +10998,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (arguments.length === 1) {
           for (var o = arguments[0], c = new ve(), v = o.getChildBoundables().iterator(); v.hasNext(); ) {
             var _ = v.next();
-            if (_ instanceof Ot) {
+            if (_ instanceof Dt) {
               var E = this.itemsTree(_);
               E !== null && c.add(E);
-            } else _ instanceof dn ? c.add(_.getItem()) : ee.shouldNeverReachHere();
+            } else _ instanceof mn ? c.add(_.getItem()) : ee.shouldNeverReachHere();
           }
           return c.size() <= 0 ? null : c;
         }
       } }, { key: "insert", value: function(s, o) {
-        ee.isTrue(!this._built, "Cannot insert items into an STR packed R-tree after it has been built."), this._itemBoundables.add(new dn(s, o));
+        ee.isTrue(!this._built, "Cannot insert items into an STR packed R-tree after it has been built."), this._itemBoundables.add(new mn(s, o));
       } }, { key: "boundablesAtLevel", value: function() {
         if (arguments.length === 1) {
           var s = arguments[0], o = new ve();
@@ -10581,8 +11016,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var c = arguments[0], v = arguments[1], _ = arguments[2];
           if (ee.isTrue(c > -2), v.getLevel() === c) return _.add(v), null;
           for (var E = v.getChildBoundables().iterator(); E.hasNext(); ) {
-            var I = E.next();
-            I instanceof Ot ? this.boundablesAtLevel(c, I, _) : (ee.isTrue(I instanceof dn), c === -1 && _.add(I));
+            var M = E.next();
+            M instanceof Dt ? this.boundablesAtLevel(c, M, _) : (ee.isTrue(M instanceof mn), c === -1 && _.add(M));
           }
           return null;
         }
@@ -10611,14 +11046,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (arguments.length === 3) {
           var c = arguments[0], v = arguments[1], _ = arguments[2], E = this.removeItem(v, _);
           if (E) return !0;
-          for (var I = null, R = v.getChildBoundables().iterator(); R.hasNext(); ) {
+          for (var M = null, R = v.getChildBoundables().iterator(); R.hasNext(); ) {
             var G = R.next();
-            if (this.getIntersectsOp().intersects(G.getBounds(), c) && G instanceof Ot && (E = this.remove(c, G, _))) {
-              I = G;
+            if (this.getIntersectsOp().intersects(G.getBounds(), c) && G instanceof Dt && (E = this.remove(c, G, _))) {
+              M = G;
               break;
             }
           }
-          return I !== null && I.getChildBoundables().isEmpty() && v.getChildBoundables().remove(I), E;
+          return M !== null && M.getChildBoundables().isEmpty() && v.getChildBoundables().remove(M), E;
         }
       } }, { key: "createHigherLevels", value: function(s, o) {
         ee.isTrue(!s.isEmpty());
@@ -10629,7 +11064,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (arguments.length === 1) {
           for (var s = 0, o = arguments[0].getChildBoundables().iterator(); o.hasNext(); ) {
             var c = o.next();
-            if (c instanceof Ot) {
+            if (c instanceof Dt) {
               var v = this.depth(c);
               v > s && (s = v);
             }
@@ -10641,7 +11076,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var c = new ve();
         c.add(this.createNode(o));
         var v = new ve(s);
-        or.sort(v, this.getComparator());
+        ar.sort(v, this.getComparator());
         for (var _ = v.iterator(); _.hasNext(); ) {
           var E = _.next();
           this.lastNode(c).getChildBoundables().size() === this.getNodeCapacity() && c.add(this.createNode(o)), this.lastNode(c).addChildBoundable(E);
@@ -10661,14 +11096,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return s > o ? 1 : s < o ? -1 : 0;
       } }]);
     }();
-    lr.IntersectsOp = function() {
-    }, lr.DEFAULT_NODE_CAPACITY = 10;
-    var bm = function() {
+    ur.IntersectsOp = function() {
+    }, ur.DEFAULT_NODE_CAPACITY = 10;
+    var km = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "distance", value: function(h, s) {
       } }]);
-    }(), Qt = function(h) {
+    }(), jt = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -10683,17 +11118,17 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           return this.nearestNeighbourK(o, W.POSITIVE_INFINITY, c);
         }
         if (arguments.length === 3) {
-          var v = arguments[0], _ = arguments[2], E = arguments[1], I = new Zi();
-          I.add(v);
-          for (var R = new Zi(); !I.isEmpty() && E >= 0; ) {
-            var G = I.poll(), $ = G.getDistance();
+          var v = arguments[0], _ = arguments[2], E = arguments[1], M = new Ji();
+          M.add(v);
+          for (var R = new Ji(); !M.isEmpty() && E >= 0; ) {
+            var G = M.poll(), $ = G.getDistance();
             if ($ >= E) break;
-            G.isLeaves() ? R.size() < _ ? R.add(G) : (R.peek().getDistance() > $ && (R.poll(), R.add(G)), E = R.peek().getDistance()) : G.expandToQueue(I, E);
+            G.isLeaves() ? R.size() < _ ? R.add(G) : (R.peek().getDistance() > $ && (R.poll(), R.add(G)), E = R.peek().getDistance()) : G.expandToQueue(M, E);
           }
           return s.getItems(R);
         }
       } }, { key: "createNode", value: function(o) {
-        return new $l(o);
+        return new Kl(o);
       } }, { key: "size", value: function() {
         return arguments.length === 0 ? w(s, "size", this, 1).call(this) : w(s, "size", this, 1).apply(this, arguments);
       } }, { key: "insert", value: function() {
@@ -10704,11 +11139,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "getIntersectsOp", value: function() {
         return s.intersectsOp;
       } }, { key: "verticalSlices", value: function(o, c) {
-        for (var v = Math.trunc(Math.ceil(o.size() / c)), _ = new Array(c).fill(null), E = o.iterator(), I = 0; I < c; I++) {
-          _[I] = new ve();
+        for (var v = Math.trunc(Math.ceil(o.size() / c)), _ = new Array(c).fill(null), E = o.iterator(), M = 0; M < c; M++) {
+          _[M] = new ve();
           for (var R = 0; E.hasNext() && R < v; ) {
             var G = E.next();
-            _[I].add(G), R++;
+            _[M].add(G), R++;
           }
         }
         return _;
@@ -10736,23 +11171,23 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "createParentBoundables", value: function(o, c) {
         ee.isTrue(!o.isEmpty());
         var v = Math.trunc(Math.ceil(o.size() / this.getNodeCapacity())), _ = new ve(o);
-        or.sort(_, s.xComparator);
+        ar.sort(_, s.xComparator);
         var E = this.verticalSlices(_, Math.trunc(Math.ceil(Math.sqrt(v))));
         return this.createParentBoundablesFromVerticalSlices(E, c);
       } }, { key: "nearestNeighbour", value: function() {
         if (arguments.length === 1) {
-          if (Ee(arguments[0], bm)) {
+          if (Ee(arguments[0], km)) {
             var o = arguments[0];
             if (this.isEmpty()) return null;
-            var c = new ar(this.getRoot(), this.getRoot(), o);
+            var c = new lr(this.getRoot(), this.getRoot(), o);
             return this.nearestNeighbour(c);
           }
-          if (arguments[0] instanceof ar) {
-            var v = arguments[0], _ = W.POSITIVE_INFINITY, E = null, I = new Zi();
-            for (I.add(v); !I.isEmpty() && _ > 0; ) {
-              var R = I.poll(), G = R.getDistance();
+          if (arguments[0] instanceof lr) {
+            var v = arguments[0], _ = W.POSITIVE_INFINITY, E = null, M = new Ji();
+            for (M.add(v); !M.isEmpty() && _ > 0; ) {
+              var R = M.poll(), G = R.getDistance();
               if (G >= _) break;
-              R.isLeaves() ? (_ = G, E = R) : R.expandToQueue(I, _);
+              R.isLeaves() ? (_ = G, E = R) : R.expandToQueue(M, _);
             }
             return E === null ? null : [E.getBoundable(0).getItem(), E.getBoundable(1).getItem()];
           }
@@ -10760,42 +11195,42 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           if (arguments.length === 2) {
             var $ = arguments[0], K = arguments[1];
             if (this.isEmpty() || $.isEmpty()) return null;
-            var ne = new ar(this.getRoot(), $.getRoot(), K);
+            var ne = new lr(this.getRoot(), $.getRoot(), K);
             return this.nearestNeighbour(ne);
           }
           if (arguments.length === 3) {
-            var le = arguments[2], he = new dn(arguments[0], arguments[1]), ge = new ar(this.getRoot(), he, le);
+            var le = arguments[2], he = new mn(arguments[0], arguments[1]), ge = new lr(this.getRoot(), he, le);
             return this.nearestNeighbour(ge)[0];
           }
           if (arguments.length === 4) {
-            var Ae = arguments[2], Pe = arguments[3], Ue = new dn(arguments[0], arguments[1]), at = new ar(this.getRoot(), Ue, Ae);
-            return this.nearestNeighbourK(at, Pe);
+            var Ae = arguments[2], Ne = arguments[3], Ue = new mn(arguments[0], arguments[1]), lt = new lr(this.getRoot(), Ue, Ae);
+            return this.nearestNeighbourK(lt, Ne);
           }
         }
       } }, { key: "isWithinDistance", value: function() {
         if (arguments.length === 2) {
-          var o = arguments[0], c = arguments[1], v = W.POSITIVE_INFINITY, _ = new Zi();
+          var o = arguments[0], c = arguments[1], v = W.POSITIVE_INFINITY, _ = new Ji();
           for (_.add(o); !_.isEmpty(); ) {
-            var E = _.poll(), I = E.getDistance();
-            if (I > c) return !1;
+            var E = _.poll(), M = E.getDistance();
+            if (M > c) return !1;
             if (E.maximumDistance() <= c) return !0;
             if (E.isLeaves()) {
-              if ((v = I) <= c) return !0;
+              if ((v = M) <= c) return !0;
             } else E.expandToQueue(_, v);
           }
           return !1;
         }
         if (arguments.length === 3) {
-          var R = arguments[0], G = arguments[1], $ = arguments[2], K = new ar(this.getRoot(), R.getRoot(), G);
+          var R = arguments[0], G = arguments[1], $ = arguments[2], K = new lr(this.getRoot(), R.getRoot(), G);
           return this.isWithinDistance(K, $);
         }
       } }, { key: "interfaces_", get: function() {
-        return [xm, L];
+        return [Sm, L];
       } }], [{ key: "constructor_", value: function() {
         if (arguments.length === 0) s.constructor_.call(this, s.DEFAULT_NODE_CAPACITY);
         else if (arguments.length === 1) {
           var o = arguments[0];
-          lr.constructor_.call(this, o);
+          ur.constructor_.call(this, o);
         }
       } }, { key: "centreX", value: function(o) {
         return s.avg(o.getMinX(), o.getMaxX());
@@ -10810,7 +11245,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "centreY", value: function(o) {
         return s.avg(o.getMinY(), o.getMaxY());
       } }]);
-    }(lr), $l = function(h) {
+    }(ur), Kl = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -10823,26 +11258,26 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return o;
       } }], [{ key: "constructor_", value: function() {
         var o = arguments[0];
-        Ot.constructor_.call(this, o);
+        Dt.constructor_.call(this, o);
       } }]);
-    }(Ot);
-    Qt.STRtreeNode = $l, Qt.xComparator = new (function() {
+    }(Dt);
+    jt.STRtreeNode = Kl, jt.xComparator = new (function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "interfaces_", get: function() {
         return [j];
       } }, { key: "compare", value: function(h, s) {
-        return lr.compareDoubles(Qt.centreX(h.getBounds()), Qt.centreX(s.getBounds()));
+        return ur.compareDoubles(jt.centreX(h.getBounds()), jt.centreX(s.getBounds()));
       } }]);
-    }())(), Qt.yComparator = new (function() {
+    }())(), jt.yComparator = new (function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "interfaces_", get: function() {
         return [j];
       } }, { key: "compare", value: function(h, s) {
-        return lr.compareDoubles(Qt.centreY(h.getBounds()), Qt.centreY(s.getBounds()));
+        return ur.compareDoubles(jt.centreY(h.getBounds()), jt.centreY(s.getBounds()));
       } }]);
-    }())(), Qt.intersectsOp = new (function() {
+    }())(), jt.intersectsOp = new (function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "interfaces_", get: function() {
@@ -10850,8 +11285,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "intersects", value: function(h, s) {
         return h.intersects(s);
       } }]);
-    }())(), Qt.DEFAULT_NODE_CAPACITY = 10;
-    var Cm = function() {
+    }())(), jt.DEFAULT_NODE_CAPACITY = 10;
+    var Mm = function() {
       function h() {
         i(this, h);
       }
@@ -10882,7 +11317,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "compareValue", value: function(s, o) {
         return s < 0 ? -1 : s > 0 ? 1 : o < 0 ? -1 : o > 0 ? 1 : 0;
       } }]);
-    }(), Sm = function() {
+    }(), Lm = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "getCoordinate", value: function() {
@@ -10891,7 +11326,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         h.print(this.coord), h.print(" seg # = " + this.segmentIndex);
       } }, { key: "compareTo", value: function(h) {
         var s = h;
-        return this.segmentIndex < s.segmentIndex ? -1 : this.segmentIndex > s.segmentIndex ? 1 : this.coord.equals2D(s.coord) ? 0 : this._isInterior ? s._isInterior ? Cm.compare(this._segmentOctant, this.coord, s.coord) : 1 : -1;
+        return this.segmentIndex < s.segmentIndex ? -1 : this.segmentIndex > s.segmentIndex ? 1 : this.coord.equals2D(s.coord) ? 0 : this._isInterior ? s._isInterior ? Mm.compare(this._segmentOctant, this.coord, s.coord) : 1 : -1;
       } }, { key: "isEndPoint", value: function(h) {
         return this.segmentIndex === 0 && !this._isInterior || this.segmentIndex === h;
       } }, { key: "toString", value: function() {
@@ -10905,14 +11340,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var h = arguments[0], s = arguments[1], o = arguments[2], c = arguments[3];
         this._segString = h, this.coord = new Z(s), this.segmentIndex = o, this._segmentOctant = c, this._isInterior = !s.equals2D(h.getCoordinate(o));
       } }]);
-    }(), km = function() {
+    }(), Nm = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "hasNext", value: function() {
       } }, { key: "next", value: function() {
       } }, { key: "remove", value: function() {
       } }]);
-    }(), Im = function() {
+    }(), Pm = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "getSplitCoordinates", value: function() {
@@ -10937,7 +11372,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         v || o--;
         var _ = new Array(o).fill(null), E = 0;
         _[E++] = new Z(h.coord);
-        for (var I = h.segmentIndex + 1; I <= s.segmentIndex; I++) _[E++] = this._edge.getCoordinate(I);
+        for (var M = h.segmentIndex + 1; M <= s.segmentIndex; M++) _[E++] = this._edge.getCoordinate(M);
         return v && (_[E] = new Z(s.coord)), _;
       } }, { key: "print", value: function(h) {
         h.println("Intersections:");
@@ -10977,9 +11412,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         this.add(this._edge.getCoordinate(0), 0), this.add(this._edge.getCoordinate(h), h);
       } }, { key: "createSplitEdge", value: function(h, s) {
         var o = this.createSplitEdgePts(h, s);
-        return new zn(o, this._edge.getData());
+        return new Gn(o, this._edge.getData());
       } }, { key: "add", value: function(h, s) {
-        var o = new Sm(this._edge, h, s, this._edge.getSegmentOctant(s)), c = this._nodeMap.get(o);
+        var o = new Lm(this._edge, h, s, this._edge.getSegmentOctant(s)), c = this._nodeMap.get(o);
         return c !== null ? (ee.isTrue(c.coord.equals2D(h), "Found equal nodes with different coordinates"), c) : (this._nodeMap.put(o, o), o);
       } }, { key: "checkSplitEdgesCorrectness", value: function(h) {
         var s = this._edge.getCoordinates(), o = h.get(0).getCoordinate(0);
@@ -10987,11 +11422,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var c = h.get(h.size() - 1).getCoordinates(), v = c[c.length - 1];
         if (!v.equals2D(s[s.length - 1])) throw new Q("bad split edge end point at " + v);
       } }], [{ key: "constructor_", value: function() {
-        this._nodeMap = new Xr(), this._edge = null;
+        this._nodeMap = new Vr(), this._edge = null;
         var h = arguments[0];
         this._edge = h;
       } }]);
-    }(), Mm = function() {
+    }(), Tm = function() {
       function h() {
         i(this, h);
       }
@@ -11003,12 +11438,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           return s >= 0 ? o >= 0 ? c >= v ? 0 : 1 : c >= v ? 7 : 6 : o >= 0 ? c >= v ? 3 : 2 : c >= v ? 4 : 5;
         }
         if (arguments[0] instanceof Z && arguments[1] instanceof Z) {
-          var _ = arguments[0], E = arguments[1], I = E.x - _.x, R = E.y - _.y;
-          if (I === 0 && R === 0) throw new A("Cannot compute the octant for two identical points " + _);
-          return h.octant(I, R);
+          var _ = arguments[0], E = arguments[1], M = E.x - _.x, R = E.y - _.y;
+          if (M === 0 && R === 0) throw new A("Cannot compute the octant for two identical points " + _);
+          return h.octant(M, R);
         }
       } }]);
-    }(), Lm = function() {
+    }(), Am = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "getCoordinates", value: function() {
@@ -11018,14 +11453,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "setData", value: function(h) {
       } }, { key: "getData", value: function() {
       } }]);
-    }(), Pm = function() {
+    }(), Rm = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "addIntersection", value: function(h, s) {
       } }, { key: "interfaces_", get: function() {
-        return [Lm];
+        return [Am];
       } }]);
-    }(), zn = function() {
+    }(), Gn = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -11042,7 +11477,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "setData", value: function(s) {
         this._data = s;
       } }, { key: "safeOctant", value: function(s, o) {
-        return s.equals2D(o) ? 0 : Mm.octant(s, o);
+        return s.equals2D(o) ? 0 : Tm.octant(s, o);
       } }, { key: "getData", value: function() {
         return this._data;
       } }, { key: "addIntersection", value: function() {
@@ -11054,7 +11489,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           this.addIntersection(_, c);
         }
       } }, { key: "toString", value: function() {
-        return bo.toLineString(new Hr(this._pts));
+        return So.toLineString(new Yr(this._pts));
       } }, { key: "getNodeList", value: function() {
         return this._nodeList;
       } }, { key: "addIntersectionNode", value: function(s, o) {
@@ -11067,9 +11502,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "addIntersections", value: function(s, o, c) {
         for (var v = 0; v < s.getIntersectionNum(); v++) this.addIntersection(s, o, c, v);
       } }, { key: "interfaces_", get: function() {
-        return [Pm];
+        return [Rm];
       } }], [{ key: "constructor_", value: function() {
-        this._nodeList = new Im(this), this._pts = null, this._data = null;
+        this._nodeList = new Pm(this), this._pts = null, this._data = null;
         var s = arguments[0], o = arguments[1];
         this._pts = s, this._data = o;
       } }, { key: "getNodedSubstrings", value: function() {
@@ -11104,7 +11539,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var o = s;
         return this.p0.equals(o.p0) && this.p1.equals(o.p1);
       } }, { key: "intersection", value: function(s) {
-        var o = new Bn();
+        var o = new zn();
         return o.computeIntersection(this.p0, this.p1, s.p0, s.p1), o.hasIntersection() ? o.getIntersection(0) : null;
       } }, { key: "project", value: function() {
         if (arguments[0] instanceof Z) {
@@ -11116,10 +11551,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (arguments[0] instanceof h) {
           var v = arguments[0], _ = this.projectionFactor(v.p0), E = this.projectionFactor(v.p1);
           if (_ >= 1 && E >= 1 || _ <= 0 && E <= 0) return null;
-          var I = this.project(v.p0);
-          _ < 0 && (I = this.p0), _ > 1 && (I = this.p1);
+          var M = this.project(v.p0);
+          _ < 0 && (M = this.p0), _ > 1 && (M = this.p1);
           var R = this.project(v.p1);
-          return E < 0 && (R = this.p0), E > 1 && (R = this.p1), new h(I, R);
+          return E < 0 && (R = this.p0), E > 1 && (R = this.p1), new h(M, R);
         }
       } }, { key: "normalize", value: function() {
         this.p1.compareTo(this.p0) < 0 && this.reverse();
@@ -11128,7 +11563,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "getCoordinate", value: function(s) {
         return s === 0 ? this.p0 : this.p1;
       } }, { key: "distancePerpendicular", value: function(s) {
-        return Kt.pointToLinePerpendicular(s, this.p0, this.p1);
+        return Jt.pointToLinePerpendicular(s, this.p0, this.p1);
       } }, { key: "minY", value: function() {
         return Math.min(this.p0.y, this.p1.y);
       } }, { key: "midPoint", value: function() {
@@ -11143,8 +11578,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (o !== null) return [o, o];
         var c = new Array(2).fill(null), v = W.MAX_VALUE, _ = null, E = this.closestPoint(s.p0);
         v = E.distance(s.p0), c[0] = E, c[1] = s.p0;
-        var I = this.closestPoint(s.p1);
-        (_ = I.distance(s.p1)) < v && (v = _, c[0] = I, c[1] = s.p1);
+        var M = this.closestPoint(s.p1);
+        (_ = M.distance(s.p1)) < v && (v = _, c[0] = M, c[1] = s.p1);
         var R = s.closestPoint(this.p0);
         (_ = R.distance(this.p0)) < v && (v = _, c[0] = this.p0, c[1] = R);
         var G = s.closestPoint(this.p1);
@@ -11165,14 +11600,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "equalsTopo", value: function(s) {
         return this.p0.equals(s.p0) && this.p1.equals(s.p1) || this.p0.equals(s.p1) && this.p1.equals(s.p0);
       } }, { key: "lineIntersection", value: function(s) {
-        return mo.intersection(this.p0, this.p1, s.p0, s.p1);
+        return po.intersection(this.p0, this.p1, s.p0, s.p1);
       } }, { key: "maxY", value: function() {
         return Math.max(this.p0.y, this.p1.y);
       } }, { key: "pointAlongOffset", value: function(s, o) {
-        var c = this.p0.x + s * (this.p1.x - this.p0.x), v = this.p0.y + s * (this.p1.y - this.p0.y), _ = this.p1.x - this.p0.x, E = this.p1.y - this.p0.y, I = Math.sqrt(_ * _ + E * E), R = 0, G = 0;
+        var c = this.p0.x + s * (this.p1.x - this.p0.x), v = this.p0.y + s * (this.p1.y - this.p0.y), _ = this.p1.x - this.p0.x, E = this.p1.y - this.p0.y, M = Math.sqrt(_ * _ + E * E), R = 0, G = 0;
         if (o !== 0) {
-          if (I <= 0) throw new IllegalStateException("Cannot compute offset from zero-length line segment");
-          R = o * _ / I, G = o * E / I;
+          if (M <= 0) throw new IllegalStateException("Cannot compute offset from zero-length line segment");
+          R = o * _ / M, G = o * E / M;
         }
         return new Z(c - G, v + R);
       } }, { key: "setCoordinates", value: function() {
@@ -11191,16 +11626,16 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "isHorizontal", value: function() {
         return this.p0.y === this.p1.y;
       } }, { key: "reflect", value: function(s) {
-        var o = this.p1.getY() - this.p0.getY(), c = this.p0.getX() - this.p1.getX(), v = this.p0.getY() * (this.p1.getX() - this.p0.getX()) - this.p0.getX() * (this.p1.getY() - this.p0.getY()), _ = o * o + c * c, E = o * o - c * c, I = s.getX(), R = s.getY();
-        return new Z((-E * I - 2 * o * c * R - 2 * o * v) / _, (E * R - 2 * o * c * I - 2 * c * v) / _);
+        var o = this.p1.getY() - this.p0.getY(), c = this.p0.getX() - this.p1.getX(), v = this.p0.getY() * (this.p1.getX() - this.p0.getX()) - this.p0.getX() * (this.p1.getY() - this.p0.getY()), _ = o * o + c * c, E = o * o - c * c, M = s.getX(), R = s.getY();
+        return new Z((-E * M - 2 * o * c * R - 2 * o * v) / _, (E * R - 2 * o * c * M - 2 * c * v) / _);
       } }, { key: "distance", value: function() {
         if (arguments[0] instanceof h) {
           var s = arguments[0];
-          return Kt.segmentToSegment(this.p0, this.p1, s.p0, s.p1);
+          return Jt.segmentToSegment(this.p0, this.p1, s.p0, s.p1);
         }
         if (arguments[0] instanceof Z) {
           var o = arguments[0];
-          return Kt.pointToSegment(o, this.p0, this.p1);
+          return Jt.pointToSegment(o, this.p0, this.p1);
         }
       } }, { key: "pointAlong", value: function(s) {
         var o = new Z();
@@ -11221,13 +11656,13 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var o = arguments[0], c = arguments[1];
           this.p0 = o, this.p1 = c;
         } else if (arguments.length === 4) {
-          var v = arguments[0], _ = arguments[1], E = arguments[2], I = arguments[3];
-          h.constructor_.call(this, new Z(v, _), new Z(E, I));
+          var v = arguments[0], _ = arguments[1], E = arguments[2], M = arguments[3];
+          h.constructor_.call(this, new Z(v, _), new Z(E, M));
         }
       } }, { key: "midPoint", value: function(s, o) {
         return new Z((s.x + o.x) / 2, (s.y + o.y) / 2);
       } }]);
-    }(), Nm = function() {
+    }(), Om = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "overlap", value: function() {
@@ -11240,7 +11675,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }], [{ key: "constructor_", value: function() {
         this._overlapSeg1 = new kt(), this._overlapSeg2 = new kt();
       } }]);
-    }(), Zl = function() {
+    }(), Jl = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "getLineSegment", value: function(h, s) {
@@ -11259,11 +11694,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var h = arguments[0], s = arguments[1];
           this.computeOverlaps(this._start, this._end, h, h._start, h._end, s);
         } else if (arguments.length === 6) {
-          var o = arguments[0], c = arguments[1], v = arguments[2], _ = arguments[3], E = arguments[4], I = arguments[5];
-          if (c - o == 1 && E - _ == 1) return I.overlap(this, o, v, _), null;
+          var o = arguments[0], c = arguments[1], v = arguments[2], _ = arguments[3], E = arguments[4], M = arguments[5];
+          if (c - o == 1 && E - _ == 1) return M.overlap(this, o, v, _), null;
           if (!this.overlaps(o, c, v, _, E)) return null;
           var R = Math.trunc((o + c) / 2), G = Math.trunc((_ + E) / 2);
-          o < R && (_ < G && this.computeOverlaps(o, R, v, _, G, I), G < E && this.computeOverlaps(o, R, v, G, E, I)), R < c && (_ < G && this.computeOverlaps(R, c, v, _, G, I), G < E && this.computeOverlaps(R, c, v, G, E, I));
+          o < R && (_ < G && this.computeOverlaps(o, R, v, _, G, M), G < E && this.computeOverlaps(o, R, v, G, E, M)), R < c && (_ < G && this.computeOverlaps(R, c, v, _, G, M), G < E && this.computeOverlaps(R, c, v, G, E, M));
         }
       } }, { key: "setId", value: function(h) {
         this._id = h;
@@ -11290,14 +11725,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var h = arguments[0], s = arguments[1], o = arguments[2], c = arguments[3];
         this._pts = h, this._start = s, this._end = o, this._context = c;
       } }]);
-    }(), Tm = function() {
+    }(), Dm = function() {
       function h() {
         i(this, h);
       }
       return u(h, null, [{ key: "findChainEnd", value: function(s, o) {
         for (var c = o; c < s.length - 1 && s[c].equals2D(s[c + 1]); ) c++;
         if (c >= s.length - 1) return s.length - 1;
-        for (var v = vt.quadrant(s[c], s[c + 1]), _ = o + 1; _ < s.length && !(!s[_ - 1].equals2D(s[_]) && vt.quadrant(s[_ - 1], s[_]) !== v); )
+        for (var v = pt.quadrant(s[c], s[c + 1]), _ = o + 1; _ < s.length && !(!s[_ - 1].equals2D(s[_]) && pt.quadrant(s[_ - 1], s[_]) !== v); )
           _++;
         return _ - 1;
       } }, { key: "getChains", value: function() {
@@ -11308,25 +11743,25 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (arguments.length === 2) {
           var o = arguments[0], c = arguments[1], v = new ve(), _ = 0;
           do {
-            var E = h.findChainEnd(o, _), I = new Zl(o, _, E, c);
-            v.add(I), _ = E;
+            var E = h.findChainEnd(o, _), M = new Jl(o, _, E, c);
+            v.add(M), _ = E;
           } while (_ < o.length - 1);
           return v;
         }
       } }]);
-    }(), Io = function() {
+    }(), Lo = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "computeNodes", value: function(h) {
       } }, { key: "getNodedSubstrings", value: function() {
       } }]);
-    }(), Kl = function() {
+    }(), Ql = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "setSegmentIntersector", value: function(h) {
         this._segInt = h;
       } }, { key: "interfaces_", get: function() {
-        return [Io];
+        return [Lo];
       } }], [{ key: "constructor_", value: function() {
         if (this._segInt = null, arguments.length !== 0) {
           if (arguments.length === 1) {
@@ -11335,7 +11770,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           }
         }
       } }]);
-    }(), Mo = function(h) {
+    }(), No = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -11343,11 +11778,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       return m(s, h), u(s, [{ key: "getMonotoneChains", value: function() {
         return this._monoChains;
       } }, { key: "getNodedSubstrings", value: function() {
-        return zn.getNodedSubstrings(this._nodedSegStrings);
+        return Gn.getNodedSubstrings(this._nodedSegStrings);
       } }, { key: "getIndex", value: function() {
         return this._index;
       } }, { key: "add", value: function(o) {
-        for (var c = Tm.getChains(o.getCoordinates(), o).iterator(); c.hasNext(); ) {
+        for (var c = Dm.getChains(o.getCoordinates(), o).iterator(); c.hasNext(); ) {
           var v = c.next();
           v.setId(this._idCounter++), this._index.insert(v.getEnvelope(), v), this._monoChains.add(v);
         }
@@ -11356,19 +11791,19 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         for (var c = o.iterator(); c.hasNext(); ) this.add(c.next());
         this.intersectChains();
       } }, { key: "intersectChains", value: function() {
-        for (var o = new Jl(this._segInt), c = this._monoChains.iterator(); c.hasNext(); ) for (var v = c.next(), _ = this._index.query(v.getEnvelope()).iterator(); _.hasNext(); ) {
+        for (var o = new jl(this._segInt), c = this._monoChains.iterator(); c.hasNext(); ) for (var v = c.next(), _ = this._index.query(v.getEnvelope()).iterator(); _.hasNext(); ) {
           var E = _.next();
           if (E.getId() > v.getId() && (v.computeOverlaps(E, o), this._nOverlaps++), this._segInt.isDone()) return null;
         }
       } }], [{ key: "constructor_", value: function() {
-        if (this._monoChains = new ve(), this._index = new Qt(), this._idCounter = 0, this._nodedSegStrings = null, this._nOverlaps = 0, arguments.length !== 0) {
+        if (this._monoChains = new ve(), this._index = new jt(), this._idCounter = 0, this._nodedSegStrings = null, this._nOverlaps = 0, arguments.length !== 0) {
           if (arguments.length === 1) {
             var o = arguments[0];
-            Kl.constructor_.call(this, o);
+            Ql.constructor_.call(this, o);
           }
         }
       } }]);
-    }(Kl), Jl = function(h) {
+    }(Ql), jl = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -11382,15 +11817,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var o = arguments[0];
         this._si = o;
       } }]);
-    }(Nm);
-    Mo.SegmentOverlapAction = Jl;
-    var Xt = function() {
+    }(Om);
+    No.SegmentOverlapAction = jl;
+    var Vt = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
       return u(h, [{ key: "isDeletable", value: function(s, o, c, v) {
-        var _ = this._inputLine[s], E = this._inputLine[o], I = this._inputLine[c];
-        return !!this.isConcave(_, E, I) && !!this.isShallow(_, E, I, v) && this.isShallowSampled(_, E, s, c, v);
+        var _ = this._inputLine[s], E = this._inputLine[o], M = this._inputLine[c];
+        return !!this.isConcave(_, E, M) && !!this.isShallow(_, E, M, v) && this.isShallowSampled(_, E, s, c, v);
       } }, { key: "deleteShallowConcavities", value: function() {
         for (var s = 1, o = this.findNextNonDeletedIndex(s), c = this.findNextNonDeletedIndex(o), v = !1; c < this._inputLine.length; ) {
           var _ = !1;
@@ -11398,11 +11833,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
         return v;
       } }, { key: "isShallowConcavity", value: function(s, o, c, v) {
-        return we.index(s, o, c) === this._angleOrientation && Kt.pointToSegment(o, s, c) < v;
+        return we.index(s, o, c) === this._angleOrientation && Jt.pointToSegment(o, s, c) < v;
       } }, { key: "isShallowSampled", value: function(s, o, c, v, _) {
         var E = Math.trunc((v - c) / h.NUM_PTS_TO_CHECK);
         E <= 0 && (E = 1);
-        for (var I = c; I < v; I += E) if (!this.isShallow(s, o, this._inputLine[I], _)) return !1;
+        for (var M = c; M < v; M += E) if (!this.isShallow(s, o, this._inputLine[M], _)) return !1;
         return !0;
       } }, { key: "isConcave", value: function(s, o, c) {
         var v = we.index(s, o, c) === this._angleOrientation;
@@ -11418,7 +11853,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         for (var o = s + 1; o < this._inputLine.length && this._isDeleted[o] === h.DELETE; ) o++;
         return o;
       } }, { key: "isShallow", value: function(s, o, c, v) {
-        return Kt.pointToSegment(o, s, c) < v;
+        return Jt.pointToSegment(o, s, c) < v;
       } }, { key: "collapseLine", value: function() {
         for (var s = new Ur(), o = 0; o < this._inputLine.length; o++) this._isDeleted[o] !== h.DELETE && s.add(this._inputLine[o]);
         return s.toCoordinateArray();
@@ -11430,8 +11865,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return new h(s).simplify(o);
       } }]);
     }();
-    Xt.INIT = 0, Xt.DELETE = 1, Xt.KEEP = 1, Xt.NUM_PTS_TO_CHECK = 10;
-    var Ql = function() {
+    Vt.INIT = 0, Vt.DELETE = 1, Vt.KEEP = 1, Vt.NUM_PTS_TO_CHECK = 10;
+    var eu = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -11452,7 +11887,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var o = this._ptList.get(this._ptList.size() - 1);
         return s.distance(o) < this._minimimVertexDistance;
       } }, { key: "toString", value: function() {
-        return new ir().createLineString(this.getCoordinates()).toString();
+        return new sr().createLineString(this.getCoordinates()).toString();
       } }, { key: "closeRing", value: function() {
         if (this._ptList.size() < 1) return null;
         var s = new Z(this._ptList.get(0)), o = this._ptList.get(this._ptList.size() - 1);
@@ -11464,8 +11899,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         this._ptList = null, this._precisionModel = null, this._minimimVertexDistance = 0, this._ptList = new ve();
       } }]);
     }();
-    Ql.COORDINATE_ARRAY_TYPE = new Array(0).fill(null);
-    var It = function() {
+    eu.COORDINATE_ARRAY_TYPE = new Array(0).fill(null);
+    var Mt = function() {
       function h() {
         i(this, h);
       }
@@ -11518,8 +11953,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return _ <= -Math.PI ? _ + h.PI_TIMES_2 : _ > Math.PI ? _ - h.PI_TIMES_2 : _;
       } }]);
     }();
-    It.PI_TIMES_2 = 2 * Math.PI, It.PI_OVER_2 = Math.PI / 2, It.PI_OVER_4 = Math.PI / 4, It.COUNTERCLOCKWISE = we.COUNTERCLOCKWISE, It.CLOCKWISE = we.CLOCKWISE, It.NONE = we.COLLINEAR;
-    var Vr = function() {
+    Mt.PI_TIMES_2 = 2 * Math.PI, Mt.PI_OVER_2 = Math.PI / 2, Mt.PI_OVER_4 = Math.PI / 4, Mt.COUNTERCLOCKWISE = we.COUNTERCLOCKWISE, Mt.CLOCKWISE = we.CLOCKWISE, Mt.NONE = we.COLLINEAR;
+    var Wr = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -11532,15 +11967,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         this.computeOffsetSegment(c, ie.LEFT, this._distance, v);
         var _ = new kt();
         this.computeOffsetSegment(c, ie.RIGHT, this._distance, _);
-        var E = o.x - s.x, I = o.y - s.y, R = Math.atan2(I, E);
+        var E = o.x - s.x, M = o.y - s.y, R = Math.atan2(M, E);
         switch (this._bufParams.getEndCapStyle()) {
-          case N.CAP_ROUND:
+          case P.CAP_ROUND:
             this._segList.addPt(v.p1), this.addDirectedFillet(o, R + Math.PI / 2, R - Math.PI / 2, we.CLOCKWISE, this._distance), this._segList.addPt(_.p1);
             break;
-          case N.CAP_FLAT:
+          case P.CAP_FLAT:
             this._segList.addPt(v.p1), this._segList.addPt(_.p1);
             break;
-          case N.CAP_SQUARE:
+          case P.CAP_SQUARE:
             var G = new Z();
             G.x = Math.abs(this._distance) * Math.cos(R), G.y = Math.abs(this._distance) * Math.sin(R);
             var $ = new Z(v.p1.x + G.x, v.p1.y + G.y), K = new Z(_.p1.x + G.x, _.p1.y + G.y);
@@ -11549,12 +11984,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "getCoordinates", value: function() {
         return this._segList.getCoordinates();
       } }, { key: "addMitreJoin", value: function(s, o, c, v) {
-        var _ = mo.intersection(o.p0, o.p1, c.p0, c.p1);
+        var _ = po.intersection(o.p0, o.p1, c.p0, c.p1);
         if (_ !== null && (v <= 0 ? 1 : _.distance(s) / Math.abs(v)) <= this._bufParams.getMitreLimit()) return this._segList.addPt(_), null;
         this.addLimitedMitreJoin(o, c, v, this._bufParams.getMitreLimit());
       } }, { key: "addOutsideTurn", value: function(s, o) {
         if (this._offset0.p1.distance(this._offset1.p0) < this._distance * h.OFFSET_SEGMENT_SEPARATION_FACTOR) return this._segList.addPt(this._offset0.p1), null;
-        this._bufParams.getJoinStyle() === N.JOIN_MITRE ? this.addMitreJoin(this._s1, this._offset0, this._offset1, this._distance) : this._bufParams.getJoinStyle() === N.JOIN_BEVEL ? this.addBevelJoin(this._offset0, this._offset1) : (o && this._segList.addPt(this._offset0.p1), this.addCornerFillet(this._s1, this._offset0.p1, this._offset1.p0, s, this._distance), this._segList.addPt(this._offset1.p0));
+        this._bufParams.getJoinStyle() === P.JOIN_MITRE ? this.addMitreJoin(this._s1, this._offset0, this._offset1, this._distance) : this._bufParams.getJoinStyle() === P.JOIN_BEVEL ? this.addBevelJoin(this._offset0, this._offset1) : (o && this._segList.addPt(this._offset0.p1), this.addCornerFillet(this._s1, this._offset0.p1, this._offset1.p0, s, this._distance), this._segList.addPt(this._offset1.p0));
       } }, { key: "createSquare", value: function(s) {
         this._segList.addPt(new Z(s.x + this._distance, s.y + this._distance)), this._segList.addPt(new Z(s.x + this._distance, s.y - this._distance)), this._segList.addPt(new Z(s.x - this._distance, s.y - this._distance)), this._segList.addPt(new Z(s.x - this._distance, s.y + this._distance)), this._segList.closeRing();
       } }, { key: "addSegments", value: function(s, o) {
@@ -11562,24 +11997,24 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "addFirstSegment", value: function() {
         this._segList.addPt(this._offset1.p0);
       } }, { key: "addCornerFillet", value: function(s, o, c, v, _) {
-        var E = o.x - s.x, I = o.y - s.y, R = Math.atan2(I, E), G = c.x - s.x, $ = c.y - s.y, K = Math.atan2($, G);
+        var E = o.x - s.x, M = o.y - s.y, R = Math.atan2(M, E), G = c.x - s.x, $ = c.y - s.y, K = Math.atan2($, G);
         v === we.CLOCKWISE ? R <= K && (R += 2 * Math.PI) : R >= K && (R -= 2 * Math.PI), this._segList.addPt(o), this.addDirectedFillet(s, R, K, v, _), this._segList.addPt(c);
       } }, { key: "addLastSegment", value: function() {
         this._segList.addPt(this._offset1.p1);
       } }, { key: "initSideSegments", value: function(s, o, c) {
         this._s1 = s, this._s2 = o, this._side = c, this._seg1.setCoordinates(s, o), this.computeOffsetSegment(this._seg1, c, this._distance, this._offset1);
       } }, { key: "addLimitedMitreJoin", value: function(s, o, c, v) {
-        var _ = this._seg0.p1, E = It.angle(_, this._seg0.p0), I = It.angleBetweenOriented(this._seg0.p0, _, this._seg1.p1) / 2, R = It.normalize(E + I), G = It.normalize(R + Math.PI), $ = v * c, K = c - $ * Math.abs(Math.sin(I)), ne = _.x + $ * Math.cos(G), le = _.y + $ * Math.sin(G), he = new Z(ne, le), ge = new kt(_, he), Ae = ge.pointAlongOffset(1, K), Pe = ge.pointAlongOffset(1, -K);
-        this._side === ie.LEFT ? (this._segList.addPt(Ae), this._segList.addPt(Pe)) : (this._segList.addPt(Pe), this._segList.addPt(Ae));
+        var _ = this._seg0.p1, E = Mt.angle(_, this._seg0.p0), M = Mt.angleBetweenOriented(this._seg0.p0, _, this._seg1.p1) / 2, R = Mt.normalize(E + M), G = Mt.normalize(R + Math.PI), $ = v * c, K = c - $ * Math.abs(Math.sin(M)), ne = _.x + $ * Math.cos(G), le = _.y + $ * Math.sin(G), he = new Z(ne, le), ge = new kt(_, he), Ae = ge.pointAlongOffset(1, K), Ne = ge.pointAlongOffset(1, -K);
+        this._side === ie.LEFT ? (this._segList.addPt(Ae), this._segList.addPt(Ne)) : (this._segList.addPt(Ne), this._segList.addPt(Ae));
       } }, { key: "addDirectedFillet", value: function(s, o, c, v, _) {
-        var E = v === we.CLOCKWISE ? -1 : 1, I = Math.abs(o - c), R = Math.trunc(I / this._filletAngleQuantum + 0.5);
+        var E = v === we.CLOCKWISE ? -1 : 1, M = Math.abs(o - c), R = Math.trunc(M / this._filletAngleQuantum + 0.5);
         if (R < 1) return null;
-        for (var G = I / R, $ = new Z(), K = 0; K < R; K++) {
+        for (var G = M / R, $ = new Z(), K = 0; K < R; K++) {
           var ne = o + E * K * G;
           $.x = s.x + _ * Math.cos(ne), $.y = s.y + _ * Math.sin(ne), this._segList.addPt($);
         }
       } }, { key: "computeOffsetSegment", value: function(s, o, c, v) {
-        var _ = o === ie.LEFT ? 1 : -1, E = s.p1.x - s.p0.x, I = s.p1.y - s.p0.y, R = Math.sqrt(E * E + I * I), G = _ * c * E / R, $ = _ * c * I / R;
+        var _ = o === ie.LEFT ? 1 : -1, E = s.p1.x - s.p0.x, M = s.p1.y - s.p0.y, R = Math.sqrt(E * E + M * M), G = _ * c * E / R, $ = _ * c * M / R;
         v.p0.x = s.p0.x - $, v.p0.y = s.p0.y + G, v.p1.x = s.p1.x - $, v.p1.y = s.p1.y + G;
       } }, { key: "addInsideTurn", value: function(s, o) {
         if (this._li.computeIntersection(this._offset0.p0, this._offset0.p1, this._offset1.p0, this._offset1.p1), this._li.hasIntersection()) this._segList.addPt(this._li.getIntersection(0));
@@ -11599,9 +12034,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "addBevelJoin", value: function(s, o) {
         this._segList.addPt(s.p1), this._segList.addPt(o.p0);
       } }, { key: "init", value: function(s) {
-        this._distance = s, this._maxCurveSegmentError = s * (1 - Math.cos(this._filletAngleQuantum / 2)), this._segList = new Ql(), this._segList.setPrecisionModel(this._precisionModel), this._segList.setMinimumVertexDistance(s * h.CURVE_VERTEX_SNAP_DISTANCE_FACTOR);
+        this._distance = s, this._maxCurveSegmentError = s * (1 - Math.cos(this._filletAngleQuantum / 2)), this._segList = new eu(), this._segList.setPrecisionModel(this._precisionModel), this._segList.setMinimumVertexDistance(s * h.CURVE_VERTEX_SNAP_DISTANCE_FACTOR);
       } }, { key: "addCollinear", value: function(s) {
-        this._li.computeIntersection(this._s0, this._s1, this._s1, this._s2), this._li.getIntersectionNum() >= 2 && (this._bufParams.getJoinStyle() === N.JOIN_BEVEL || this._bufParams.getJoinStyle() === N.JOIN_MITRE ? (s && this._segList.addPt(this._offset0.p1), this._segList.addPt(this._offset1.p0)) : this.addCornerFillet(this._s1, this._offset0.p1, this._offset1.p0, we.CLOCKWISE, this._distance));
+        this._li.computeIntersection(this._s0, this._s1, this._s1, this._s2), this._li.getIntersectionNum() >= 2 && (this._bufParams.getJoinStyle() === P.JOIN_BEVEL || this._bufParams.getJoinStyle() === P.JOIN_MITRE ? (s && this._segList.addPt(this._offset0.p1), this._segList.addPt(this._offset1.p0)) : this.addCornerFillet(this._s1, this._offset0.p1, this._offset1.p0, we.CLOCKWISE, this._distance));
       } }, { key: "closeRing", value: function() {
         this._segList.closeRing();
       } }, { key: "hasNarrowConcaveAngle", value: function() {
@@ -11609,11 +12044,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }], [{ key: "constructor_", value: function() {
         this._maxCurveSegmentError = 0, this._filletAngleQuantum = null, this._closingSegLengthFactor = 1, this._segList = null, this._distance = 0, this._precisionModel = null, this._bufParams = null, this._li = null, this._s0 = null, this._s1 = null, this._s2 = null, this._seg0 = new kt(), this._seg1 = new kt(), this._offset0 = new kt(), this._offset1 = new kt(), this._side = 0, this._hasNarrowConcaveAngle = !1;
         var s = arguments[0], o = arguments[1], c = arguments[2];
-        this._precisionModel = s, this._bufParams = o, this._li = new Bn(), this._filletAngleQuantum = Math.PI / 2 / o.getQuadrantSegments(), o.getQuadrantSegments() >= 8 && o.getJoinStyle() === N.JOIN_ROUND && (this._closingSegLengthFactor = h.MAX_CLOSING_SEG_LEN_FACTOR), this.init(c);
+        this._precisionModel = s, this._bufParams = o, this._li = new zn(), this._filletAngleQuantum = Math.PI / 2 / o.getQuadrantSegments(), o.getQuadrantSegments() >= 8 && o.getJoinStyle() === P.JOIN_ROUND && (this._closingSegLengthFactor = h.MAX_CLOSING_SEG_LEN_FACTOR), this.init(c);
       } }]);
     }();
-    Vr.OFFSET_SEGMENT_SEPARATION_FACTOR = 1e-3, Vr.INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR = 1e-3, Vr.CURVE_VERTEX_SNAP_DISTANCE_FACTOR = 1e-6, Vr.MAX_CLOSING_SEG_LEN_FACTOR = 80;
-    var Am = function() {
+    Wr.OFFSET_SEGMENT_SEPARATION_FACTOR = 1e-3, Wr.INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR = 1e-3, Wr.CURVE_VERTEX_SNAP_DISTANCE_FACTOR = 1e-6, Wr.MAX_CLOSING_SEG_LEN_FACTOR = 80;
+    var Fm = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -11622,17 +12057,17 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var c = o < 0, v = Math.abs(o), _ = this.getSegGen(v);
         s.length <= 1 ? this.computePointCurve(s[0], _) : this.computeOffsetCurve(s, c, _);
         var E = _.getCoordinates();
-        return c && nt.reverse(E), E;
+        return c && it.reverse(E), E;
       } }, { key: "computeSingleSidedBufferCurve", value: function(s, o, c) {
         var v = this.simplifyTolerance(this._distance);
         if (o) {
           c.addSegments(s, !0);
-          var _ = Xt.simplify(s, -v), E = _.length - 1;
+          var _ = Vt.simplify(s, -v), E = _.length - 1;
           c.initSideSegments(_[E], _[E - 1], ie.LEFT), c.addFirstSegment();
-          for (var I = E - 2; I >= 0; I--) c.addNextSegment(_[I], !0);
+          for (var M = E - 2; M >= 0; M--) c.addNextSegment(_[M], !0);
         } else {
           c.addSegments(s, !1);
-          var R = Xt.simplify(s, v), G = R.length - 1;
+          var R = Vt.simplify(s, v), G = R.length - 1;
           c.initSideSegments(R[0], R[1], ie.LEFT), c.addFirstSegment();
           for (var $ = 2; $ <= G; $++) c.addNextSegment(R[$], !0);
         }
@@ -11640,28 +12075,28 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "computeRingBufferCurve", value: function(s, o, c) {
         var v = this.simplifyTolerance(this._distance);
         o === ie.RIGHT && (v = -v);
-        var _ = Xt.simplify(s, v), E = _.length - 1;
+        var _ = Vt.simplify(s, v), E = _.length - 1;
         c.initSideSegments(_[E - 1], _[0], o);
-        for (var I = 1; I <= E; I++) {
-          var R = I !== 1;
-          c.addNextSegment(_[I], R);
+        for (var M = 1; M <= E; M++) {
+          var R = M !== 1;
+          c.addNextSegment(_[M], R);
         }
         c.closeRing();
       } }, { key: "computeLineBufferCurve", value: function(s, o) {
-        var c = this.simplifyTolerance(this._distance), v = Xt.simplify(s, c), _ = v.length - 1;
+        var c = this.simplifyTolerance(this._distance), v = Vt.simplify(s, c), _ = v.length - 1;
         o.initSideSegments(v[0], v[1], ie.LEFT);
         for (var E = 2; E <= _; E++) o.addNextSegment(v[E], !0);
         o.addLastSegment(), o.addLineEndCap(v[_ - 1], v[_]);
-        var I = Xt.simplify(s, -c), R = I.length - 1;
-        o.initSideSegments(I[R], I[R - 1], ie.LEFT);
-        for (var G = R - 2; G >= 0; G--) o.addNextSegment(I[G], !0);
-        o.addLastSegment(), o.addLineEndCap(I[1], I[0]), o.closeRing();
+        var M = Vt.simplify(s, -c), R = M.length - 1;
+        o.initSideSegments(M[R], M[R - 1], ie.LEFT);
+        for (var G = R - 2; G >= 0; G--) o.addNextSegment(M[G], !0);
+        o.addLastSegment(), o.addLineEndCap(M[1], M[0]), o.closeRing();
       } }, { key: "computePointCurve", value: function(s, o) {
         switch (this._bufParams.getEndCapStyle()) {
-          case N.CAP_ROUND:
+          case P.CAP_ROUND:
             o.createCircle(s);
             break;
-          case N.CAP_SQUARE:
+          case P.CAP_SQUARE:
             o.createSquare(s);
         }
       } }, { key: "getLineCurve", value: function(s, o) {
@@ -11685,11 +12120,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "computeOffsetCurve", value: function(s, o, c) {
         var v = this.simplifyTolerance(this._distance);
         if (o) {
-          var _ = Xt.simplify(s, -v), E = _.length - 1;
+          var _ = Vt.simplify(s, -v), E = _.length - 1;
           c.initSideSegments(_[E], _[E - 1], ie.LEFT), c.addFirstSegment();
-          for (var I = E - 2; I >= 0; I--) c.addNextSegment(_[I], !0);
+          for (var M = E - 2; M >= 0; M--) c.addNextSegment(_[M], !0);
         } else {
-          var R = Xt.simplify(s, v), G = R.length - 1;
+          var R = Vt.simplify(s, v), G = R.length - 1;
           c.initSideSegments(R[0], R[1], ie.LEFT), c.addFirstSegment();
           for (var $ = 2; $ <= G; $++) c.addNextSegment(R[$], !0);
         }
@@ -11697,7 +12132,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "isLineOffsetEmpty", value: function(s) {
         return s === 0 || s < 0 && !this._bufParams.isSingleSided();
       } }, { key: "getSegGen", value: function(s) {
-        return new Vr(this._precisionModel, this._bufParams, s);
+        return new Wr(this._precisionModel, this._bufParams, s);
       } }], [{ key: "constructor_", value: function() {
         this._distance = 0, this._precisionModel = null, this._bufParams = null;
         var s = arguments[0], o = arguments[1];
@@ -11706,7 +12141,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         for (var o = new Array(s.length).fill(null), c = 0; c < o.length; c++) o[c] = new Z(s[c]);
         return o;
       } }]);
-    }(), jl = function() {
+    }(), tu = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "findStabbedSegments", value: function() {
@@ -11718,28 +12153,28 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           return s;
         }
         if (arguments.length === 3) {
-          if (Ee(arguments[2], hn) && arguments[0] instanceof Z && arguments[1] instanceof ko) {
-            for (var _ = arguments[0], E = arguments[1], I = arguments[2], R = E.getEdge().getCoordinates(), G = 0; G < R.length - 1; G++)
+          if (Ee(arguments[2], fn) && arguments[0] instanceof Z && arguments[1] instanceof Mo) {
+            for (var _ = arguments[0], E = arguments[1], M = arguments[2], R = E.getEdge().getCoordinates(), G = 0; G < R.length - 1; G++)
               if (this._seg.p0 = R[G], this._seg.p1 = R[G + 1], this._seg.p0.y > this._seg.p1.y && this._seg.reverse(), !(Math.max(this._seg.p0.x, this._seg.p1.x) < _.x || this._seg.isHorizontal() || _.y < this._seg.p0.y || _.y > this._seg.p1.y || we.index(this._seg.p0, this._seg.p1, _) === we.RIGHT)) {
                 var $ = E.getDepth(ie.LEFT);
                 this._seg.p0.equals(R[G]) || ($ = E.getDepth(ie.RIGHT));
-                var K = new eu(this._seg, $);
-                I.add(K);
+                var K = new nu(this._seg, $);
+                M.add(K);
               }
-          } else if (Ee(arguments[2], hn) && arguments[0] instanceof Z && Ee(arguments[1], hn)) for (var ne = arguments[0], le = arguments[2], he = arguments[1].iterator(); he.hasNext(); ) {
+          } else if (Ee(arguments[2], fn) && arguments[0] instanceof Z && Ee(arguments[1], fn)) for (var ne = arguments[0], le = arguments[2], he = arguments[1].iterator(); he.hasNext(); ) {
             var ge = he.next();
             ge.isForward() && this.findStabbedSegments(ne, ge, le);
           }
         }
       } }, { key: "getDepth", value: function(h) {
         var s = this.findStabbedSegments(h);
-        return s.size() === 0 ? 0 : or.min(s)._leftDepth;
+        return s.size() === 0 ? 0 : ar.min(s)._leftDepth;
       } }], [{ key: "constructor_", value: function() {
         this._subgraphs = null, this._seg = new kt();
         var h = arguments[0];
         this._subgraphs = h;
       } }]);
-    }(), eu = function() {
+    }(), nu = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "compareTo", value: function(h) {
@@ -11761,26 +12196,26 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         this._upwardSeg = new kt(h), this._leftDepth = s;
       } }]);
     }();
-    jl.DepthSegment = eu;
-    var tu = function(h) {
+    tu.DepthSegment = nu;
+    var ru = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
       }
       return m(s, h), u(s, null, [{ key: "constructor_", value: function() {
-        P.constructor_.call(this, "Projective point not representable on the Cartesian plane.");
+        N.constructor_.call(this, "Projective point not representable on the Cartesian plane.");
       } }]);
-    }(P), Lo = function() {
+    }(N), Po = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
       return u(h, [{ key: "getY", value: function() {
         var s = this.y / this.w;
-        if (W.isNaN(s) || W.isInfinite(s)) throw new tu();
+        if (W.isNaN(s) || W.isInfinite(s)) throw new ru();
         return s;
       } }, { key: "getX", value: function() {
         var s = this.x / this.w;
-        if (W.isNaN(s) || W.isInfinite(s)) throw new tu();
+        if (W.isNaN(s) || W.isInfinite(s)) throw new ru();
         return s;
       } }, { key: "getCoordinate", value: function() {
         var s = new Z();
@@ -11798,18 +12233,18 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             var v = arguments[0], _ = arguments[1];
             this.x = v.y * _.w - _.y * v.w, this.y = _.x * v.w - v.x * _.w, this.w = v.x * _.y - _.x * v.y;
           } else if (arguments[0] instanceof Z && arguments[1] instanceof Z) {
-            var E = arguments[0], I = arguments[1];
-            this.x = E.y - I.y, this.y = I.x - E.x, this.w = E.x * I.y - I.x * E.y;
+            var E = arguments[0], M = arguments[1];
+            this.x = E.y - M.y, this.y = M.x - E.x, this.w = E.x * M.y - M.x * E.y;
           }
         } else if (arguments.length === 3) {
           var R = arguments[0], G = arguments[1], $ = arguments[2];
           this.x = R, this.y = G, this.w = $;
         } else if (arguments.length === 4) {
-          var K = arguments[0], ne = arguments[1], le = arguments[2], he = arguments[3], ge = K.y - ne.y, Ae = ne.x - K.x, Pe = K.x * ne.y - ne.x * K.y, Ue = le.y - he.y, at = he.x - le.x, ct = le.x * he.y - he.x * le.y;
-          this.x = Ae * ct - at * Pe, this.y = Ue * Pe - ge * ct, this.w = ge * at - Ue * Ae;
+          var K = arguments[0], ne = arguments[1], le = arguments[2], he = arguments[3], ge = K.y - ne.y, Ae = ne.x - K.x, Ne = K.x * ne.y - ne.x * K.y, Ue = le.y - he.y, lt = he.x - le.x, ht = le.x * he.y - he.x * le.y;
+          this.x = Ae * ht - lt * Ne, this.y = Ue * Ne - ge * ht, this.w = ge * lt - Ue * Ae;
         }
       } }]);
-    }(), Rm = function() {
+    }(), Bm = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -11843,44 +12278,44 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "det", value: function(s, o, c, v) {
         return s * v - o * c;
       } }, { key: "interpolateZ", value: function(s, o, c, v) {
-        var _ = o.x, E = o.y, I = c.x - _, R = v.x - _, G = c.y - E, $ = v.y - E, K = I * $ - R * G, ne = s.x - _, le = s.y - E, he = ($ * ne - R * le) / K, ge = (-G * ne + I * le) / K;
+        var _ = o.x, E = o.y, M = c.x - _, R = v.x - _, G = c.y - E, $ = v.y - E, K = M * $ - R * G, ne = s.x - _, le = s.y - E, he = ($ * ne - R * le) / K, ge = (-G * ne + M * le) / K;
         return o.getZ() + he * (c.getZ() - o.getZ()) + ge * (v.getZ() - o.getZ());
       } }, { key: "longestSideLength", value: function(s, o, c) {
-        var v = s.distance(o), _ = o.distance(c), E = c.distance(s), I = v;
-        return _ > I && (I = _), E > I && (I = E), I;
+        var v = s.distance(o), _ = o.distance(c), E = c.distance(s), M = v;
+        return _ > M && (M = _), E > M && (M = E), M;
       } }, { key: "circumcentreDD", value: function(s, o, c) {
-        var v = ye.valueOf(s.x).subtract(c.x), _ = ye.valueOf(s.y).subtract(c.y), E = ye.valueOf(o.x).subtract(c.x), I = ye.valueOf(o.y).subtract(c.y), R = ye.determinant(v, _, E, I).multiply(2), G = v.sqr().add(_.sqr()), $ = E.sqr().add(I.sqr()), K = ye.determinant(_, G, I, $), ne = ye.determinant(v, G, E, $), le = ye.valueOf(c.x).subtract(K.divide(R)).doubleValue(), he = ye.valueOf(c.y).add(ne.divide(R)).doubleValue();
+        var v = ye.valueOf(s.x).subtract(c.x), _ = ye.valueOf(s.y).subtract(c.y), E = ye.valueOf(o.x).subtract(c.x), M = ye.valueOf(o.y).subtract(c.y), R = ye.determinant(v, _, E, M).multiply(2), G = v.sqr().add(_.sqr()), $ = E.sqr().add(M.sqr()), K = ye.determinant(_, G, M, $), ne = ye.determinant(v, G, E, $), le = ye.valueOf(c.x).subtract(K.divide(R)).doubleValue(), he = ye.valueOf(c.y).add(ne.divide(R)).doubleValue();
         return new Z(le, he);
       } }, { key: "isAcute", value: function(s, o, c) {
-        return !!It.isAcute(s, o, c) && !!It.isAcute(o, c, s) && !!It.isAcute(c, s, o);
+        return !!Mt.isAcute(s, o, c) && !!Mt.isAcute(o, c, s) && !!Mt.isAcute(c, s, o);
       } }, { key: "circumcentre", value: function(s, o, c) {
-        var v = c.x, _ = c.y, E = s.x - v, I = s.y - _, R = o.x - v, G = o.y - _, $ = 2 * h.det(E, I, R, G), K = h.det(I, E * E + I * I, G, R * R + G * G), ne = h.det(E, E * E + I * I, R, R * R + G * G);
+        var v = c.x, _ = c.y, E = s.x - v, M = s.y - _, R = o.x - v, G = o.y - _, $ = 2 * h.det(E, M, R, G), K = h.det(M, E * E + M * M, G, R * R + G * G), ne = h.det(E, E * E + M * M, R, R * R + G * G);
         return new Z(v - K / $, _ + ne / $);
       } }, { key: "perpendicularBisector", value: function(s, o) {
-        var c = o.x - s.x, v = o.y - s.y, _ = new Lo(s.x + c / 2, s.y + v / 2, 1), E = new Lo(s.x - v + c / 2, s.y + c + v / 2, 1);
-        return new Lo(_, E);
+        var c = o.x - s.x, v = o.y - s.y, _ = new Po(s.x + c / 2, s.y + v / 2, 1), E = new Po(s.x - v + c / 2, s.y + c + v / 2, 1);
+        return new Po(_, E);
       } }, { key: "angleBisector", value: function(s, o, c) {
-        var v = o.distance(s), _ = v / (v + o.distance(c)), E = c.x - s.x, I = c.y - s.y;
-        return new Z(s.x + _ * E, s.y + _ * I);
+        var v = o.distance(s), _ = v / (v + o.distance(c)), E = c.x - s.x, M = c.y - s.y;
+        return new Z(s.x + _ * E, s.y + _ * M);
       } }, { key: "area3D", value: function(s, o, c) {
-        var v = o.x - s.x, _ = o.y - s.y, E = o.getZ() - s.getZ(), I = c.x - s.x, R = c.y - s.y, G = c.getZ() - s.getZ(), $ = _ * G - E * R, K = E * I - v * G, ne = v * R - _ * I, le = $ * $ + K * K + ne * ne, he = Math.sqrt(le) / 2;
+        var v = o.x - s.x, _ = o.y - s.y, E = o.getZ() - s.getZ(), M = c.x - s.x, R = c.y - s.y, G = c.getZ() - s.getZ(), $ = _ * G - E * R, K = E * M - v * G, ne = v * R - _ * M, le = $ * $ + K * K + ne * ne, he = Math.sqrt(le) / 2;
         return he;
       } }, { key: "centroid", value: function(s, o, c) {
         var v = (s.x + o.x + c.x) / 3, _ = (s.y + o.y + c.y) / 3;
         return new Z(v, _);
       } }, { key: "inCentre", value: function(s, o, c) {
-        var v = o.distance(c), _ = s.distance(c), E = s.distance(o), I = v + _ + E, R = (v * s.x + _ * o.x + E * c.x) / I, G = (v * s.y + _ * o.y + E * c.y) / I;
+        var v = o.distance(c), _ = s.distance(c), E = s.distance(o), M = v + _ + E, R = (v * s.x + _ * o.x + E * c.x) / M, G = (v * s.y + _ * o.y + E * c.y) / M;
         return new Z(R, G);
       } }]);
-    }(), Om = function() {
+    }(), zm = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "addRingSide", value: function(h, s, o, c, v) {
-        if (s === 0 && h.length < qr.MINIMUM_VALID_SIZE) return null;
+        if (s === 0 && h.length < Hr.MINIMUM_VALID_SIZE) return null;
         var _ = c, E = v;
-        h.length >= qr.MINIMUM_VALID_SIZE && we.isCCW(h) && (_ = v, E = c, o = ie.opposite(o));
-        var I = this._curveBuilder.getRingCurve(h, o, s);
-        this.addCurve(I, _, E);
+        h.length >= Hr.MINIMUM_VALID_SIZE && we.isCCW(h) && (_ = v, E = c, o = ie.opposite(o));
+        var M = this._curveBuilder.getRingCurve(h, o, s);
+        this.addCurve(M, _, E);
       } }, { key: "addRingBothSides", value: function(h, s) {
         this.addRingSide(h, s, ie.LEFT, Y.EXTERIOR, Y.INTERIOR), this.addRingSide(h, s, ie.RIGHT, Y.INTERIOR, Y.EXTERIOR);
       } }, { key: "addPoint", value: function(h) {
@@ -11890,40 +12325,40 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "addPolygon", value: function(h) {
         var s = this._distance, o = ie.LEFT;
         this._distance < 0 && (s = -this._distance, o = ie.RIGHT);
-        var c = h.getExteriorRing(), v = nt.removeRepeatedPoints(c.getCoordinates());
+        var c = h.getExteriorRing(), v = it.removeRepeatedPoints(c.getCoordinates());
         if (this._distance < 0 && this.isErodedCompletely(c, this._distance) || this._distance <= 0 && v.length < 3) return null;
         this.addRingSide(v, s, o, Y.EXTERIOR, Y.INTERIOR);
         for (var _ = 0; _ < h.getNumInteriorRing(); _++) {
-          var E = h.getInteriorRingN(_), I = nt.removeRepeatedPoints(E.getCoordinates());
-          this._distance > 0 && this.isErodedCompletely(E, -this._distance) || this.addRingSide(I, s, ie.opposite(o), Y.INTERIOR, Y.EXTERIOR);
+          var E = h.getInteriorRingN(_), M = it.removeRepeatedPoints(E.getCoordinates());
+          this._distance > 0 && this.isErodedCompletely(E, -this._distance) || this.addRingSide(M, s, ie.opposite(o), Y.INTERIOR, Y.EXTERIOR);
         }
       } }, { key: "isTriangleErodedCompletely", value: function(h, s) {
-        var o = new Rm(h[0], h[1], h[2]), c = o.inCentre();
-        return Kt.pointToSegment(c, o.p0, o.p1) < Math.abs(s);
+        var o = new Bm(h[0], h[1], h[2]), c = o.inCentre();
+        return Jt.pointToSegment(c, o.p0, o.p1) < Math.abs(s);
       } }, { key: "addLineString", value: function(h) {
         if (this._curveBuilder.isLineOffsetEmpty(this._distance)) return null;
-        var s = nt.removeRepeatedPoints(h.getCoordinates());
-        if (nt.isRing(s) && !this._curveBuilder.getBufferParameters().isSingleSided()) this.addRingBothSides(s, this._distance);
+        var s = it.removeRepeatedPoints(h.getCoordinates());
+        if (it.isRing(s) && !this._curveBuilder.getBufferParameters().isSingleSided()) this.addRingBothSides(s, this._distance);
         else {
           var o = this._curveBuilder.getLineCurve(s, this._distance);
           this.addCurve(o, Y.EXTERIOR, Y.INTERIOR);
         }
       } }, { key: "addCurve", value: function(h, s, o) {
         if (h === null || h.length < 2) return null;
-        var c = new zn(h, new Rt(0, Y.BOUNDARY, s, o));
+        var c = new Gn(h, new Ot(0, Y.BOUNDARY, s, o));
         this._curveList.add(c);
       } }, { key: "getCurves", value: function() {
         return this.add(this._inputGeom), this._curveList;
       } }, { key: "add", value: function(h) {
         if (h.isEmpty()) return null;
-        if (h instanceof Hi) this.addPolygon(h);
-        else if (h instanceof Gr) this.addLineString(h);
-        else if (h instanceof vo) this.addPoint(h);
-        else if (h instanceof po) this.addCollection(h);
-        else if (h instanceof xo) this.addCollection(h);
-        else if (h instanceof wo) this.addCollection(h);
+        if (h instanceof Xi) this.addPolygon(h);
+        else if (h instanceof qr) this.addLineString(h);
+        else if (h instanceof yo) this.addPoint(h);
+        else if (h instanceof _o) this.addCollection(h);
+        else if (h instanceof bo) this.addCollection(h);
+        else if (h instanceof Eo) this.addCollection(h);
         else {
-          if (!(h instanceof St)) throw new be(h.getGeometryType());
+          if (!(h instanceof It)) throw new be(h.getGeometryType());
           this.addCollection(h);
         }
       } }, { key: "isErodedCompletely", value: function(h, s) {
@@ -11942,12 +12377,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var h = arguments[0], s = arguments[1], o = arguments[2];
         this._inputGeom = h, this._distance = s, this._curveBuilder = o;
       } }]);
-    }(), Dm = function() {
+    }(), Gm = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "locate", value: function(h) {
       } }]);
-    }(), Fm = function() {
+    }(), qm = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -11957,9 +12392,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           if (this._subcollectionIterator.hasNext()) return this._subcollectionIterator.next();
           this._subcollectionIterator = null;
         }
-        if (this._index >= this._max) throw new Ne();
+        if (this._index >= this._max) throw new Pe();
         var s = this._parent.getGeometryN(this._index++);
-        return s instanceof St ? (this._subcollectionIterator = new h(s), this._subcollectionIterator.next()) : s;
+        return s instanceof It ? (this._subcollectionIterator = new h(s), this._subcollectionIterator.next()) : s;
       } }, { key: "remove", value: function() {
         throw new be(this.getClass().getName());
       } }, { key: "hasNext", value: function() {
@@ -11970,22 +12405,22 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
         return !(this._index >= this._max);
       } }, { key: "interfaces_", get: function() {
-        return [km];
+        return [Nm];
       } }], [{ key: "constructor_", value: function() {
         this._parent = null, this._atStart = null, this._max = null, this._index = null, this._subcollectionIterator = null;
         var s = arguments[0];
         this._parent = s, this._atStart = !0, this._index = 0, this._max = s.getNumGeometries();
       } }, { key: "isAtomic", value: function(s) {
-        return !(s instanceof St);
+        return !(s instanceof It);
       } }]);
-    }(), Bm = function() {
+    }(), Hm = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
       return u(h, [{ key: "locate", value: function(s) {
         return h.locate(s, this._geom);
       } }, { key: "interfaces_", get: function() {
-        return [Dm];
+        return [Gm];
       } }], [{ key: "constructor_", value: function() {
         this._geom = null;
         var s = arguments[0];
@@ -11995,18 +12430,18 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var c = o.getExteriorRing(), v = h.locatePointInRing(s, c);
         if (v !== Y.INTERIOR) return v;
         for (var _ = 0; _ < o.getNumInteriorRing(); _++) {
-          var E = o.getInteriorRingN(_), I = h.locatePointInRing(s, E);
-          if (I === Y.BOUNDARY) return Y.BOUNDARY;
-          if (I === Y.INTERIOR) return Y.EXTERIOR;
+          var E = o.getInteriorRingN(_), M = h.locatePointInRing(s, E);
+          if (M === Y.BOUNDARY) return Y.BOUNDARY;
+          if (M === Y.INTERIOR) return Y.EXTERIOR;
         }
         return Y.INTERIOR;
       } }, { key: "locatePointInRing", value: function(s, o) {
-        return o.getEnvelopeInternal().intersects(s) ? Co.locateInRing(s, o.getCoordinates()) : Y.EXTERIOR;
+        return o.getEnvelopeInternal().intersects(s) ? Io.locateInRing(s, o.getCoordinates()) : Y.EXTERIOR;
       } }, { key: "containsPointInPolygon", value: function(s, o) {
         return Y.EXTERIOR !== h.locatePointInPolygon(s, o);
       } }, { key: "locateInGeometry", value: function(s, o) {
-        if (o instanceof Hi) return h.locatePointInPolygon(s, o);
-        if (o instanceof St) for (var c = new Fm(o); c.hasNext(); ) {
+        if (o instanceof Xi) return h.locatePointInPolygon(s, o);
+        if (o instanceof It) for (var c = new qm(o); c.hasNext(); ) {
           var v = c.next();
           if (v !== o) {
             var _ = h.locateInGeometry(s, v);
@@ -12019,7 +12454,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "locate", value: function(s, o) {
         return o.isEmpty() ? Y.EXTERIOR : o.getEnvelopeInternal().intersects(s) ? h.locateInGeometry(s, o) : Y.EXTERIOR;
       } }]);
-    }(), zm = function() {
+    }(), Um = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "getNextCW", value: function(h) {
@@ -12033,20 +12468,20 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
         if (s === Y.NONE) return null;
         for (var v = s, _ = this.iterator(); _.hasNext(); ) {
-          var E = _.next(), I = E.getLabel();
-          if (I.getLocation(h, ie.ON) === Y.NONE && I.setLocation(h, ie.ON, v), I.isArea(h)) {
-            var R = I.getLocation(h, ie.LEFT), G = I.getLocation(h, ie.RIGHT);
+          var E = _.next(), M = E.getLabel();
+          if (M.getLocation(h, ie.ON) === Y.NONE && M.setLocation(h, ie.ON, v), M.isArea(h)) {
+            var R = M.getLocation(h, ie.LEFT), G = M.getLocation(h, ie.RIGHT);
             if (G !== Y.NONE) {
-              if (G !== v) throw new fn("side location conflict", E.getCoordinate());
+              if (G !== v) throw new gn("side location conflict", E.getCoordinate());
               R === Y.NONE && ee.shouldNeverReachHere("found single null side (at " + E.getCoordinate() + ")"), v = R;
-            } else ee.isTrue(I.getLocation(h, ie.LEFT) === Y.NONE, "found single null side"), I.setLocation(h, ie.RIGHT, v), I.setLocation(h, ie.LEFT, v);
+            } else ee.isTrue(M.getLocation(h, ie.LEFT) === Y.NONE, "found single null side"), M.setLocation(h, ie.RIGHT, v), M.setLocation(h, ie.LEFT, v);
           }
         }
       } }, { key: "getCoordinate", value: function() {
         var h = this.iterator();
         return h.hasNext() ? h.next().getCoordinate() : null;
       } }, { key: "print", value: function(h) {
-        Tt.out.println("EdgeEndStar:   " + this.getCoordinate());
+        At.out.println("EdgeEndStar:   " + this.getCoordinate());
         for (var s = this.iterator(); s.hasNext(); )
           s.next().print(h);
       } }, { key: "isAreaLabelsConsistent", value: function(h) {
@@ -12059,9 +12494,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         for (var v = c, _ = this.iterator(); _.hasNext(); ) {
           var E = _.next().getLabel();
           ee.isTrue(E.isArea(h), "Found non-area edge");
-          var I = E.getLocation(h, ie.LEFT), R = E.getLocation(h, ie.RIGHT);
-          if (I === R || R !== v) return !1;
-          v = I;
+          var M = E.getLocation(h, ie.LEFT), R = E.getLocation(h, ie.RIGHT);
+          if (M === R || R !== v) return !1;
+          v = M;
         }
         return !0;
       } }, { key: "findIndex", value: function(h) {
@@ -12074,9 +12509,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "getEdges", value: function() {
         return this._edgeList === null && (this._edgeList = new ve(this._edgeMap.values())), this._edgeList;
       } }, { key: "getLocation", value: function(h, s, o) {
-        return this._ptInAreaLocation[h] === Y.NONE && (this._ptInAreaLocation[h] = Bm.locate(s, o[h].getGeometry())), this._ptInAreaLocation[h];
+        return this._ptInAreaLocation[h] === Y.NONE && (this._ptInAreaLocation[h] = Hm.locate(s, o[h].getGeometry())), this._ptInAreaLocation[h];
       } }, { key: "toString", value: function() {
-        var h = new Sn();
+        var h = new In();
         h.append("EdgeEndStar:   " + this.getCoordinate()), h.append(`
 `);
         for (var s = this.iterator(); s.hasNext(); ) {
@@ -12091,23 +12526,23 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "computeLabelling", value: function(h) {
         this.computeEdgeEndLabels(h[0].getBoundaryNodeRule()), this.propagateSideLabels(0), this.propagateSideLabels(1);
         for (var s = [!1, !1], o = this.iterator(); o.hasNext(); ) for (var c = o.next().getLabel(), v = 0; v < 2; v++) c.isLine(v) && c.getLocation(v) === Y.BOUNDARY && (s[v] = !0);
-        for (var _ = this.iterator(); _.hasNext(); ) for (var E = _.next(), I = E.getLabel(), R = 0; R < 2; R++) if (I.isAnyNull(R)) {
+        for (var _ = this.iterator(); _.hasNext(); ) for (var E = _.next(), M = E.getLabel(), R = 0; R < 2; R++) if (M.isAnyNull(R)) {
           var G = Y.NONE;
           if (s[R]) G = Y.EXTERIOR;
           else {
             var $ = E.getCoordinate();
             G = this.getLocation(R, $, h);
           }
-          I.setAllLocationsIfNull(R, G);
+          M.setAllLocationsIfNull(R, G);
         }
       } }, { key: "getDegree", value: function() {
         return this._edgeMap.size();
       } }, { key: "insertEdgeEnd", value: function(h, s) {
         this._edgeMap.put(h, s), this._edgeList = null;
       } }], [{ key: "constructor_", value: function() {
-        this._edgeMap = new Xr(), this._edgeList = null, this._ptInAreaLocation = [Y.NONE, Y.NONE];
+        this._edgeMap = new Vr(), this._edgeList = null, this._ptInAreaLocation = [Y.NONE, Y.NONE];
       } }]);
-    }(), Gm = function(h) {
+    }(), Ym = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -12115,11 +12550,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       return m(s, h), u(s, [{ key: "linkResultDirectedEdges", value: function() {
         this.getResultAreaEdges();
         for (var o = null, c = null, v = this._SCANNING_FOR_INCOMING, _ = 0; _ < this._resultAreaEdgeList.size(); _++) {
-          var E = this._resultAreaEdgeList.get(_), I = E.getSym();
+          var E = this._resultAreaEdgeList.get(_), M = E.getSym();
           if (E.getLabel().isArea()) switch (o === null && E.isInResult() && (o = E), v) {
             case this._SCANNING_FOR_INCOMING:
-              if (!I.isInResult()) continue;
-              c = I, v = this._LINKING_TO_OUTGOING;
+              if (!M.isInResult()) continue;
+              c = M, v = this._LINKING_TO_OUTGOING;
               break;
             case this._LINKING_TO_OUTGOING:
               if (!E.isInResult()) continue;
@@ -12127,7 +12562,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           }
         }
         if (v === this._LINKING_TO_OUTGOING) {
-          if (o === null) throw new fn("no outgoing dirEdge found", this.getCoordinate());
+          if (o === null) throw new gn("no outgoing dirEdge found", this.getCoordinate());
           ee.isTrue(o.isInResult(), "unable to link last incoming dirEdge"), c.setNext(o);
         }
       } }, { key: "insert", value: function(o) {
@@ -12138,10 +12573,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (c < 1) return null;
         var v = o.get(0);
         if (c === 1) return v;
-        var _ = o.get(c - 1), E = v.getQuadrant(), I = _.getQuadrant();
-        return vt.isNorthern(E) && vt.isNorthern(I) ? v : vt.isNorthern(E) || vt.isNorthern(I) ? v.getDy() !== 0 ? v : _.getDy() !== 0 ? _ : (ee.shouldNeverReachHere("found two horizontal edges incident on node"), null) : _;
+        var _ = o.get(c - 1), E = v.getQuadrant(), M = _.getQuadrant();
+        return pt.isNorthern(E) && pt.isNorthern(M) ? v : pt.isNorthern(E) || pt.isNorthern(M) ? v.getDy() !== 0 ? v : _.getDy() !== 0 ? _ : (ee.shouldNeverReachHere("found two horizontal edges incident on node"), null) : _;
       } }, { key: "print", value: function(o) {
-        Tt.out.println("DirectedEdgeStar: " + this.getCoordinate());
+        At.out.println("DirectedEdgeStar: " + this.getCoordinate());
         for (var c = this.iterator(); c.hasNext(); ) {
           var v = c.next();
           o.print("out "), v.print(o), o.println(), o.print("in "), v.getSym().print(o), o.println();
@@ -12169,9 +12604,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "computeDepths", value: function() {
         if (arguments.length === 1) {
           var o = arguments[0], c = this.findIndex(o), v = o.getDepth(ie.LEFT), _ = o.getDepth(ie.RIGHT), E = this.computeDepths(c + 1, this._edgeList.size(), v);
-          if (this.computeDepths(0, c, E) !== _) throw new fn("depth mismatch at " + o.getCoordinate());
+          if (this.computeDepths(0, c, E) !== _) throw new gn("depth mismatch at " + o.getCoordinate());
         } else if (arguments.length === 3) {
-          for (var I = arguments[1], R = arguments[2], G = arguments[0]; G < I; G++) {
+          for (var M = arguments[1], R = arguments[2], G = arguments[0]; G < M; G++) {
             var $ = this._edgeList.get(G);
             $.setEdgeDepths(ie.RIGHT, R), R = $.getDepth(ie.LEFT);
           }
@@ -12184,15 +12619,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
       } }, { key: "linkMinimalDirectedEdges", value: function(o) {
         for (var c = null, v = null, _ = this._SCANNING_FOR_INCOMING, E = this._resultAreaEdgeList.size() - 1; E >= 0; E--) {
-          var I = this._resultAreaEdgeList.get(E), R = I.getSym();
-          switch (c === null && I.getEdgeRing() === o && (c = I), _) {
+          var M = this._resultAreaEdgeList.get(E), R = M.getSym();
+          switch (c === null && M.getEdgeRing() === o && (c = M), _) {
             case this._SCANNING_FOR_INCOMING:
               if (R.getEdgeRing() !== o) continue;
               v = R, _ = this._LINKING_TO_OUTGOING;
               break;
             case this._LINKING_TO_OUTGOING:
-              if (I.getEdgeRing() !== o) continue;
-              v.setNextMin(I), _ = this._SCANNING_FOR_INCOMING;
+              if (M.getEdgeRing() !== o) continue;
+              v.setNextMin(M), _ = this._SCANNING_FOR_INCOMING;
           }
         }
         _ === this._LINKING_TO_OUTGOING && (ee.isTrue(c !== null, "found null for first outgoing dirEdge"), ee.isTrue(c.getEdgeRing() === o, "unable to link last incoming dirEdge"), v.setNextMin(c));
@@ -12224,12 +12659,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           }
         }
         if (o === Y.NONE) return null;
-        for (var E = o, I = this.iterator(); I.hasNext(); ) {
-          var R = I.next(), G = R.getSym();
+        for (var E = o, M = this.iterator(); M.hasNext(); ) {
+          var R = M.next(), G = R.getSym();
           R.isLineEdge() ? R.getEdge().setCovered(E === Y.INTERIOR) : (R.isInResult() && (E = Y.EXTERIOR), G.isInResult() && (E = Y.INTERIOR));
         }
       } }, { key: "computeLabelling", value: function(o) {
-        w(s, "computeLabelling", this, 1).call(this, o), this._label = new Rt(Y.NONE);
+        w(s, "computeLabelling", this, 1).call(this, o), this._label = new Ot(Y.NONE);
         for (var c = this.iterator(); c.hasNext(); ) for (var v = c.next().getEdge().getLabel(), _ = 0; _ < 2; _++) {
           var E = v.getLocation(_);
           E !== Y.INTERIOR && E !== Y.BOUNDARY || this._label.setLocation(_, Y.INTERIOR);
@@ -12237,14 +12672,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }], [{ key: "constructor_", value: function() {
         this._resultAreaEdgeList = null, this._label = null, this._SCANNING_FOR_INCOMING = 1, this._LINKING_TO_OUTGOING = 2;
       } }]);
-    }(zm), qm = function(h) {
+    }(Um), Xm = function(h) {
       function s() {
         return i(this, s), r(this, s);
       }
       return m(s, h), u(s, [{ key: "createNode", value: function(o) {
-        return new $i(o, new Gm());
+        return new Ki(o, new Ym());
       } }]);
-    }(Yl), nu = function() {
+    }(Vl), iu = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -12258,18 +12693,18 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var s = arguments[0];
         this._pts = s, this._orientation = h.orientation(s);
       } }, { key: "orientation", value: function(s) {
-        return nt.increasingDirection(s) === 1;
+        return it.increasingDirection(s) === 1;
       } }, { key: "compareOriented", value: function(s, o, c, v) {
-        for (var _ = o ? 1 : -1, E = v ? 1 : -1, I = o ? s.length : -1, R = v ? c.length : -1, G = o ? 0 : s.length - 1, $ = v ? 0 : c.length - 1; ; ) {
+        for (var _ = o ? 1 : -1, E = v ? 1 : -1, M = o ? s.length : -1, R = v ? c.length : -1, G = o ? 0 : s.length - 1, $ = v ? 0 : c.length - 1; ; ) {
           var K = s[G].compareTo(c[$]);
           if (K !== 0) return K;
-          var ne = (G += _) === I, le = ($ += E) === R;
+          var ne = (G += _) === M, le = ($ += E) === R;
           if (ne && !le) return -1;
           if (!ne && le) return 1;
           if (ne && le) return 0;
         }
       } }]);
-    }(), Um = function() {
+    }(), Vm = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "print", value: function(h) {
@@ -12293,22 +12728,22 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "get", value: function(h) {
         return this._edges.get(h);
       } }, { key: "findEqualEdge", value: function(h) {
-        var s = new nu(h.getCoordinates());
+        var s = new iu(h.getCoordinates());
         return this._ocaMap.get(s);
       } }, { key: "add", value: function(h) {
         this._edges.add(h);
-        var s = new nu(h.getCoordinates());
+        var s = new iu(h.getCoordinates());
         this._ocaMap.put(s, h);
       } }], [{ key: "constructor_", value: function() {
-        this._edges = new ve(), this._ocaMap = new Xr();
+        this._edges = new ve(), this._ocaMap = new Vr();
       } }]);
-    }(), ru = function() {
+    }(), su = function() {
       return u(function h() {
         i(this, h);
       }, [{ key: "processIntersections", value: function(h, s, o, c) {
       } }, { key: "isDone", value: function() {
       } }]);
-    }(), Hm = function() {
+    }(), Wm = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -12332,8 +12767,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "processIntersections", value: function(s, o, c, v) {
         if (s === c && o === v) return null;
         this.numTests++;
-        var _ = s.getCoordinates()[o], E = s.getCoordinates()[o + 1], I = c.getCoordinates()[v], R = c.getCoordinates()[v + 1];
-        this._li.computeIntersection(_, E, I, R), this._li.hasIntersection() && (this.numIntersections++, this._li.isInteriorIntersection() && (this.numInteriorIntersections++, this._hasInterior = !0), this.isTrivialIntersection(s, o, c, v) || (this._hasIntersection = !0, s.addIntersections(this._li, o, 0), c.addIntersections(this._li, v, 1), this._li.isProper() && (this.numProperIntersections++, this._hasProper = !0, this._hasProperInterior = !0)));
+        var _ = s.getCoordinates()[o], E = s.getCoordinates()[o + 1], M = c.getCoordinates()[v], R = c.getCoordinates()[v + 1];
+        this._li.computeIntersection(_, E, M, R), this._li.hasIntersection() && (this.numIntersections++, this._li.isInteriorIntersection() && (this.numInteriorIntersections++, this._hasInterior = !0), this.isTrivialIntersection(s, o, c, v) || (this._hasIntersection = !0, s.addIntersections(this._li, o, 0), c.addIntersections(this._li, v, 1), this._li.isProper() && (this.numProperIntersections++, this._hasProper = !0, this._hasProperInterior = !0)));
       } }, { key: "hasIntersection", value: function() {
         return this._hasIntersection;
       } }, { key: "isDone", value: function() {
@@ -12341,7 +12776,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "hasInteriorIntersection", value: function() {
         return this._hasInterior;
       } }, { key: "interfaces_", get: function() {
-        return [ru];
+        return [su];
       } }], [{ key: "constructor_", value: function() {
         this._hasIntersection = !1, this._hasProper = !1, this._hasProperInterior = !1, this._hasInterior = !1, this._properIntersectionPoint = null, this._li = null, this._isSelfIntersection = null, this.numIntersections = 0, this.numInteriorIntersections = 0, this.numProperIntersections = 0, this.numTests = 0;
         var s = arguments[0];
@@ -12349,7 +12784,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "isAdjacentSegments", value: function(s, o) {
         return Math.abs(s - o) === 1;
       } }]);
-    }(), Ym = function() {
+    }(), $m = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "getSegmentIndex", value: function() {
@@ -12376,7 +12811,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var h = arguments[0], s = arguments[1], o = arguments[2];
         this.coord = new Z(h), this.segmentIndex = s, this.dist = o;
       } }]);
-    }(), Xm = function() {
+    }(), Zm = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "print", value: function(h) {
@@ -12399,21 +12834,21 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         v || o--;
         var _ = new Array(o).fill(null), E = 0;
         _[E++] = new Z(h.coord);
-        for (var I = h.segmentIndex + 1; I <= s.segmentIndex; I++) _[E++] = this.edge.pts[I];
-        return v && (_[E] = s.coord), new su(_, new Rt(this.edge._label));
+        for (var M = h.segmentIndex + 1; M <= s.segmentIndex; M++) _[E++] = this.edge.pts[M];
+        return v && (_[E] = s.coord), new au(_, new Ot(this.edge._label));
       } }, { key: "add", value: function(h, s, o) {
-        var c = new Ym(h, s, o), v = this._nodeMap.get(c);
+        var c = new $m(h, s, o), v = this._nodeMap.get(c);
         return v !== null ? v : (this._nodeMap.put(c, c), c);
       } }, { key: "isIntersection", value: function(h) {
         for (var s = this.iterator(); s.hasNext(); )
           if (s.next().coord.equals(h)) return !0;
         return !1;
       } }], [{ key: "constructor_", value: function() {
-        this._nodeMap = new Xr(), this.edge = null;
+        this._nodeMap = new Vr(), this.edge = null;
         var h = arguments[0];
         this.edge = h;
       } }]);
-    }(), Vm = function() {
+    }(), Km = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -12429,8 +12864,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           this._matrix[c][v] = oe.toDimensionValue(s.charAt(o));
         }
         else if (arguments.length === 3) {
-          var _ = arguments[0], E = arguments[1], I = arguments[2];
-          this._matrix[_][E] = I;
+          var _ = arguments[0], E = arguments[1], M = arguments[2];
+          this._matrix[_][E] = M;
         }
       } }, { key: "isContains", value: function() {
         return h.isTrue(this._matrix[Y.INTERIOR][Y.INTERIOR]) && this._matrix[Y.EXTERIOR][Y.INTERIOR] === oe.FALSE && this._matrix[Y.EXTERIOR][Y.BOUNDARY] === oe.FALSE;
@@ -12440,8 +12875,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           this.setAtLeast(c, v, oe.toDimensionValue(s.charAt(o)));
         }
         else if (arguments.length === 3) {
-          var _ = arguments[0], E = arguments[1], I = arguments[2];
-          this._matrix[_][E] < I && (this._matrix[_][E] = I);
+          var _ = arguments[0], E = arguments[1], M = arguments[2];
+          this._matrix[_][E] < M && (this._matrix[_][E] = M);
         }
       } }, { key: "setAtLeastIfValid", value: function(s, o, c) {
         s >= 0 && o >= 0 && this.setAtLeast(s, o, c);
@@ -12454,7 +12889,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "isEquals", value: function(s, o) {
         return s === o && h.isTrue(this._matrix[Y.INTERIOR][Y.INTERIOR]) && this._matrix[Y.INTERIOR][Y.EXTERIOR] === oe.FALSE && this._matrix[Y.BOUNDARY][Y.EXTERIOR] === oe.FALSE && this._matrix[Y.EXTERIOR][Y.INTERIOR] === oe.FALSE && this._matrix[Y.EXTERIOR][Y.BOUNDARY] === oe.FALSE;
       } }, { key: "toString", value: function() {
-        for (var s = new Xi("123456789"), o = 0; o < 3; o++) for (var c = 0; c < 3; c++) s.setCharAt(3 * o + c, oe.toDimensionSymbol(this._matrix[o][c]));
+        for (var s = new Wi("123456789"), o = 0; o < 3; o++) for (var c = 0; c < 3; c++) s.setCharAt(3 * o + c, oe.toDimensionSymbol(this._matrix[o][c]));
         return s.toString();
       } }, { key: "setAll", value: function(s) {
         for (var o = 0; o < 3; o++) for (var c = 0; c < 3; c++) this._matrix[o][c] = s;
@@ -12500,21 +12935,21 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "isTrue", value: function(s) {
         return s >= 0 || s === oe.TRUE;
       } }]);
-    }(), Wm = function() {
+    }(), Jm = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
       return u(h, [{ key: "size", value: function() {
         return this._size;
       } }, { key: "addAll", value: function(s) {
-        return s === null || s.length === 0 ? null : (this.ensureCapacity(this._size + s.length), Tt.arraycopy(s, 0, this._data, this._size, s.length), void (this._size += s.length));
+        return s === null || s.length === 0 ? null : (this.ensureCapacity(this._size + s.length), At.arraycopy(s, 0, this._data, this._size, s.length), void (this._size += s.length));
       } }, { key: "ensureCapacity", value: function(s) {
         if (s <= this._data.length) return null;
         var o = Math.max(s, 2 * this._data.length);
-        this._data = On.copyOf(this._data, o);
+        this._data = Dn.copyOf(this._data, o);
       } }, { key: "toArray", value: function() {
         var s = new Array(this._size).fill(null);
-        return Tt.arraycopy(this._data, 0, s, 0, this._size), s;
+        return At.arraycopy(this._data, 0, s, 0, this._size), s;
       } }, { key: "add", value: function(s) {
         this.ensureCapacity(this._size + 1), this._data[this._size] = s, ++this._size;
       } }], [{ key: "constructor_", value: function() {
@@ -12524,12 +12959,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           this._data = new Array(s).fill(null);
         }
       } }]);
-    }(), $m = function() {
+    }(), Qm = function() {
       function h() {
         i(this, h);
       }
       return u(h, [{ key: "getChainStartIndices", value: function(s) {
-        var o = 0, c = new Wm(Math.trunc(s.length / 2));
+        var o = 0, c = new Jm(Math.trunc(s.length / 2));
         c.add(o);
         do {
           var v = this.findChainEnd(s, o);
@@ -12537,7 +12972,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         } while (o < s.length - 1);
         return c.toArray();
       } }, { key: "findChainEnd", value: function(s, o) {
-        for (var c = vt.quadrant(s[o], s[o + 1]), v = o + 1; v < s.length && vt.quadrant(s[v - 1], s[v]) === c; )
+        for (var c = pt.quadrant(s[o], s[o + 1]), v = o + 1; v < s.length && pt.quadrant(s[v - 1], s[v]) === c; )
           v++;
         return v - 1;
       } }, { key: "OLDgetChainStartIndices", value: function(s) {
@@ -12552,7 +12987,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         for (var o = new Array(s.size()).fill(null), c = 0; c < o.length; c++) o[c] = s.get(c).intValue();
         return o;
       } }]);
-    }(), Zm = function() {
+    }(), jm = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "getCoordinates", value: function() {
@@ -12568,11 +13003,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var h = arguments[0], s = arguments[1], o = arguments[2], c = arguments[3];
           this.computeIntersectsForChain(this.startIndex[h], this.startIndex[h + 1], s, s.startIndex[o], s.startIndex[o + 1], c);
         } else if (arguments.length === 6) {
-          var v = arguments[0], _ = arguments[1], E = arguments[2], I = arguments[3], R = arguments[4], G = arguments[5];
-          if (_ - v == 1 && R - I == 1) return G.addIntersections(this.e, v, E.e, I), null;
-          if (!this.overlaps(v, _, E, I, R)) return null;
-          var $ = Math.trunc((v + _) / 2), K = Math.trunc((I + R) / 2);
-          v < $ && (I < K && this.computeIntersectsForChain(v, $, E, I, K, G), K < R && this.computeIntersectsForChain(v, $, E, K, R, G)), $ < _ && (I < K && this.computeIntersectsForChain($, _, E, I, K, G), K < R && this.computeIntersectsForChain($, _, E, K, R, G));
+          var v = arguments[0], _ = arguments[1], E = arguments[2], M = arguments[3], R = arguments[4], G = arguments[5];
+          if (_ - v == 1 && R - M == 1) return G.addIntersections(this.e, v, E.e, M), null;
+          if (!this.overlaps(v, _, E, M, R)) return null;
+          var $ = Math.trunc((v + _) / 2), K = Math.trunc((M + R) / 2);
+          v < $ && (M < K && this.computeIntersectsForChain(v, $, E, M, K, G), K < R && this.computeIntersectsForChain(v, $, E, K, R, G)), $ < _ && (M < K && this.computeIntersectsForChain($, _, E, M, K, G), K < R && this.computeIntersectsForChain($, _, E, K, R, G));
         }
       } }, { key: "overlaps", value: function(h, s, o, c, v) {
         return _e.intersects(this.pts[h], this.pts[s], o.pts[c], o.pts[v]);
@@ -12584,10 +13019,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         this.e = null, this.pts = null, this.startIndex = null;
         var h = arguments[0];
         this.e = h, this.pts = h.getCoordinates();
-        var s = new $m();
+        var s = new Qm();
         this.startIndex = s.getChainStartIndices(this.pts);
       } }]);
-    }(), iu = function() {
+    }(), ou = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -12641,8 +13076,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return s === Y.EXTERIOR ? 0 : s === Y.INTERIOR ? 1 : h.NULL_VALUE;
       } }]);
     }();
-    iu.NULL_VALUE = -1;
-    var su = function(h) {
+    ou.NULL_VALUE = -1;
+    var au = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -12651,7 +13086,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return this._depth;
       } }, { key: "getCollapsedEdge", value: function() {
         var o = new Array(2).fill(null);
-        return o[0] = this.pts[0], o[1] = this.pts[1], new s(o, Rt.toLineLabel(this._label));
+        return o[0] = this.pts[0], o[1] = this.pts[1], new s(o, Ot.toLineLabel(this._label));
       } }, { key: "isIsolated", value: function() {
         return this._isIsolated;
       } }, { key: "getCoordinates", value: function() {
@@ -12664,7 +13099,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (!(o instanceof s)) return !1;
         var c = o;
         if (this.pts.length !== c.pts.length) return !1;
-        for (var v = !0, _ = !0, E = this.pts.length, I = 0; I < this.pts.length; I++) if (this.pts[I].equals2D(c.pts[I]) || (v = !1), this.pts[I].equals2D(c.pts[--E]) || (_ = !1), !v && !_) return !1;
+        for (var v = !0, _ = !0, E = this.pts.length, M = 0; M < this.pts.length; M++) if (this.pts[M].equals2D(c.pts[M]) || (v = !1), this.pts[M].equals2D(c.pts[--E]) || (_ = !1), !v && !_) return !1;
         return !0;
       } }, { key: "getCoordinate", value: function() {
         if (arguments.length === 0) return this.pts.length > 0 ? this.pts[0] : null;
@@ -12693,7 +13128,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         for (var c = this.pts.length - 1; c >= 0; c--) o.print(this.pts[c] + " ");
         o.println("");
       } }, { key: "getMonotoneChainEdge", value: function() {
-        return this._mce === null && (this._mce = new Zm(this)), this._mce;
+        return this._mce === null && (this._mce = new jm(this)), this._mce;
       } }, { key: "getEnvelope", value: function() {
         if (this._env === null) {
           this._env = new _e();
@@ -12701,14 +13136,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
         return this._env;
       } }, { key: "addIntersection", value: function(o, c, v, _) {
-        var E = new Z(o.getIntersection(_)), I = c, R = o.getEdgeDistance(v, _), G = I + 1;
+        var E = new Z(o.getIntersection(_)), M = c, R = o.getEdgeDistance(v, _), G = M + 1;
         if (G < this.pts.length) {
           var $ = this.pts[G];
-          E.equals2D($) && (I = G, R = 0);
+          E.equals2D($) && (M = G, R = 0);
         }
-        this.eiList.add(E, I, R);
+        this.eiList.add(E, M, R);
       } }, { key: "toString", value: function() {
-        var o = new Xi();
+        var o = new Wi();
         o.append("edge " + this._name + ": "), o.append("LINESTRING (");
         for (var c = 0; c < this.pts.length; c++) c > 0 && o.append(","), o.append(this.pts[c].x + " " + this.pts[c].y);
         return o.append(")  " + this._label + " " + this._depthDelta), o.toString();
@@ -12723,7 +13158,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "addIntersections", value: function(o, c, v) {
         for (var _ = 0; _ < o.getIntersectionNum(); _++) this.addIntersection(o, c, v, _);
       } }], [{ key: "constructor_", value: function() {
-        if (this.pts = null, this._env = null, this.eiList = new Xm(this), this._name = null, this._mce = null, this._isIsolated = !0, this._depth = new iu(), this._depthDelta = 0, arguments.length === 1) {
+        if (this.pts = null, this._env = null, this.eiList = new Zm(this), this._name = null, this._mce = null, this._isIsolated = !0, this._depth = new ou(), this._depthDelta = 0, arguments.length === 1) {
           var o = arguments[0];
           s.constructor_.call(this, o, null);
         } else if (arguments.length === 2) {
@@ -12731,11 +13166,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           this.pts = c, this._label = v;
         }
       } }, { key: "updateIM", value: function() {
-        if (!(arguments.length === 2 && arguments[1] instanceof Vm && arguments[0] instanceof Rt)) return w(s, "updateIM", this).apply(this, arguments);
+        if (!(arguments.length === 2 && arguments[1] instanceof Km && arguments[0] instanceof Ot)) return w(s, "updateIM", this).apply(this, arguments);
         var o = arguments[0], c = arguments[1];
         c.setAtLeastIfValid(o.getLocation(0, ie.ON), o.getLocation(1, ie.ON), 1), o.isArea() && (c.setAtLeastIfValid(o.getLocation(0, ie.LEFT), o.getLocation(1, ie.LEFT), 2), c.setAtLeastIfValid(o.getLocation(0, ie.RIGHT), o.getLocation(1, ie.RIGHT), 2));
       } }]);
-    }(zl), ou = function() {
+    }(ql), lu = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -12745,39 +13180,39 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var o = this._edgeList.findEqualEdge(s);
         if (o !== null) {
           var c = o.getLabel(), v = s.getLabel();
-          o.isPointwiseEqual(s) || (v = new Rt(s.getLabel())).flip(), c.merge(v);
+          o.isPointwiseEqual(s) || (v = new Ot(s.getLabel())).flip(), c.merge(v);
           var _ = h.depthDelta(v), E = o.getDepthDelta() + _;
           o.setDepthDelta(E);
         } else this._edgeList.add(s), s.setDepthDelta(h.depthDelta(s.getLabel()));
       } }, { key: "buildSubgraphs", value: function(s, o) {
         for (var c = new ve(), v = s.iterator(); v.hasNext(); ) {
-          var _ = v.next(), E = _.getRightmostCoordinate(), I = new jl(c).getDepth(E);
-          _.computeDepth(I), _.findResultEdges(), c.add(_), o.add(_.getDirectedEdges(), _.getNodes());
+          var _ = v.next(), E = _.getRightmostCoordinate(), M = new tu(c).getDepth(E);
+          _.computeDepth(M), _.findResultEdges(), c.add(_), o.add(_.getDirectedEdges(), _.getNodes());
         }
       } }, { key: "createSubgraphs", value: function(s) {
         for (var o = new ve(), c = s.getNodes().iterator(); c.hasNext(); ) {
           var v = c.next();
           if (!v.isVisited()) {
-            var _ = new em();
+            var _ = new im();
             _.create(v), o.add(_);
           }
         }
-        return or.sort(o, or.reverseOrder()), o;
+        return ar.sort(o, ar.reverseOrder()), o;
       } }, { key: "createEmptyResultGeometry", value: function() {
         return this._geomFact.createPolygon();
       } }, { key: "getNoder", value: function(s) {
         if (this._workingNoder !== null) return this._workingNoder;
-        var o = new Mo(), c = new Bn();
-        return c.setPrecisionModel(s), o.setSegmentIntersector(new Hm(c)), o;
+        var o = new No(), c = new zn();
+        return c.setPrecisionModel(s), o.setSegmentIntersector(new Wm(c)), o;
       } }, { key: "buffer", value: function(s, o) {
         var c = this._workingPrecisionModel;
         c === null && (c = s.getPrecisionModel()), this._geomFact = s.getFactory();
-        var v = new Am(c, this._bufParams), _ = new Om(s, o, v).getCurves();
+        var v = new Fm(c, this._bufParams), _ = new zm(s, o, v).getCurves();
         if (_.size() <= 0) return this.createEmptyResultGeometry();
-        this.computeNodedEdges(_, c), this._graph = new Xl(new qm()), this._graph.addEdges(this._edgeList.getEdges());
-        var E = this.createSubgraphs(this._graph), I = new wm(this._geomFact);
-        this.buildSubgraphs(E, I);
-        var R = I.getPolygons();
+        this.computeNodedEdges(_, c), this._graph = new Wl(new Xm()), this._graph.addEdges(this._edgeList.getEdges());
+        var E = this.createSubgraphs(this._graph), M = new Cm(this._geomFact);
+        this.buildSubgraphs(E, M);
+        var R = M.getPolygons();
         return R.size() <= 0 ? this.createEmptyResultGeometry() : this._geomFact.buildGeometry(R);
       } }, { key: "computeNodedEdges", value: function(s, o) {
         var c = this.getNoder(o);
@@ -12785,50 +13220,50 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         for (var v = c.getNodedSubstrings().iterator(); v.hasNext(); ) {
           var _ = v.next(), E = _.getCoordinates();
           if (E.length !== 2 || !E[0].equals2D(E[1])) {
-            var I = _.getData(), R = new su(_.getCoordinates(), new Rt(I));
+            var M = _.getData(), R = new au(_.getCoordinates(), new Ot(M));
             this.insertUniqueEdge(R);
           }
         }
       } }, { key: "setNoder", value: function(s) {
         this._workingNoder = s;
       } }], [{ key: "constructor_", value: function() {
-        this._bufParams = null, this._workingPrecisionModel = null, this._workingNoder = null, this._geomFact = null, this._graph = null, this._edgeList = new Um();
+        this._bufParams = null, this._workingPrecisionModel = null, this._workingNoder = null, this._geomFact = null, this._graph = null, this._edgeList = new Vm();
         var s = arguments[0];
         this._bufParams = s;
       } }, { key: "depthDelta", value: function(s) {
         var o = s.getLocation(0, ie.LEFT), c = s.getLocation(0, ie.RIGHT);
         return o === Y.INTERIOR && c === Y.EXTERIOR ? 1 : o === Y.EXTERIOR && c === Y.INTERIOR ? -1 : 0;
       } }, { key: "convertSegStrings", value: function(s) {
-        for (var o = new ir(), c = new ve(); s.hasNext(); ) {
+        for (var o = new sr(), c = new ve(); s.hasNext(); ) {
           var v = s.next(), _ = o.createLineString(v.getCoordinates());
           c.add(_);
         }
         return o.buildGeometry(c);
       } }]);
-    }(), Km = function() {
+    }(), e0 = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
       return u(h, [{ key: "rescale", value: function() {
-        if (Ee(arguments[0], Ie)) for (var s = arguments[0].iterator(); s.hasNext(); ) {
+        if (Ee(arguments[0], ke)) for (var s = arguments[0].iterator(); s.hasNext(); ) {
           var o = s.next();
           this.rescale(o.getCoordinates());
         }
         else if (arguments[0] instanceof Array) {
           for (var c = arguments[0], v = 0; v < c.length; v++) c[v].x = c[v].x / this._scaleFactor + this._offsetX, c[v].y = c[v].y / this._scaleFactor + this._offsetY;
-          c.length === 2 && c[0].equals2D(c[1]) && Tt.out.println(c);
+          c.length === 2 && c[0].equals2D(c[1]) && At.out.println(c);
         }
       } }, { key: "scale", value: function() {
-        if (Ee(arguments[0], Ie)) {
+        if (Ee(arguments[0], ke)) {
           for (var s = arguments[0], o = new ve(s.size()), c = s.iterator(); c.hasNext(); ) {
             var v = c.next();
-            o.add(new zn(this.scale(v.getCoordinates()), v.getData()));
+            o.add(new Gn(this.scale(v.getCoordinates()), v.getData()));
           }
           return o;
         }
         if (arguments[0] instanceof Array) {
-          for (var _ = arguments[0], E = new Array(_.length).fill(null), I = 0; I < _.length; I++) E[I] = new Z(Math.round((_[I].x - this._offsetX) * this._scaleFactor), Math.round((_[I].y - this._offsetY) * this._scaleFactor), _[I].getZ());
-          return nt.removeRepeatedPoints(E);
+          for (var _ = arguments[0], E = new Array(_.length).fill(null), M = 0; M < _.length; M++) E[M] = new Z(Math.round((_[M].x - this._offsetX) * this._scaleFactor), Math.round((_[M].y - this._offsetY) * this._scaleFactor), _[M].getZ());
+          return it.removeRepeatedPoints(E);
         }
       } }, { key: "isIntegerPrecision", value: function() {
         return this._scaleFactor === 1;
@@ -12839,7 +13274,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var o = s;
         this._isScaled && (o = this.scale(s)), this._noder.computeNodes(o);
       } }, { key: "interfaces_", get: function() {
-        return [Io];
+        return [Lo];
       } }], [{ key: "constructor_", value: function() {
         if (this._noder = null, this._scaleFactor = null, this._offsetX = null, this._offsetY = null, this._isScaled = !1, arguments.length === 2) {
           var s = arguments[0], o = arguments[1];
@@ -12849,7 +13284,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           this._noder = c, this._scaleFactor = v, this._isScaled = !this.isIntegerPrecision();
         }
       } }]);
-    }(), au = function() {
+    }(), uu = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
@@ -12866,12 +13301,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var v = c.next();
           this.checkInteriorIntersections(o, v);
         }
-        else if (arguments.length === 2) for (var _ = arguments[0], E = arguments[1], I = _.getCoordinates(), R = E.getCoordinates(), G = 0; G < I.length - 1; G++) for (var $ = 0; $ < R.length - 1; $++) this.checkInteriorIntersections(_, G, E, $);
+        else if (arguments.length === 2) for (var _ = arguments[0], E = arguments[1], M = _.getCoordinates(), R = E.getCoordinates(), G = 0; G < M.length - 1; G++) for (var $ = 0; $ < R.length - 1; $++) this.checkInteriorIntersections(_, G, E, $);
         else if (arguments.length === 4) {
           var K = arguments[0], ne = arguments[1], le = arguments[2], he = arguments[3];
           if (K === le && ne === he) return null;
-          var ge = K.getCoordinates()[ne], Ae = K.getCoordinates()[ne + 1], Pe = le.getCoordinates()[he], Ue = le.getCoordinates()[he + 1];
-          if (this._li.computeIntersection(ge, Ae, Pe, Ue), this._li.hasIntersection() && (this._li.isProper() || this.hasInteriorIntersection(this._li, ge, Ae) || this.hasInteriorIntersection(this._li, Pe, Ue))) throw new Q("found non-noded intersection at " + ge + "-" + Ae + " and " + Pe + "-" + Ue);
+          var ge = K.getCoordinates()[ne], Ae = K.getCoordinates()[ne + 1], Ne = le.getCoordinates()[he], Ue = le.getCoordinates()[he + 1];
+          if (this._li.computeIntersection(ge, Ae, Ne, Ue), this._li.hasIntersection() && (this._li.isProper() || this.hasInteriorIntersection(this._li, ge, Ae) || this.hasInteriorIntersection(this._li, Ne, Ue))) throw new Q("found non-noded intersection at " + ge + "-" + Ae + " and " + Ne + "-" + Ue);
         }
       } }, { key: "checkValid", value: function() {
         this.checkEndPtVertexIntersections(), this.checkInteriorIntersections(), this.checkCollapses();
@@ -12890,21 +13325,21 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "checkCollapse", value: function(s, o, c) {
         if (s.equals(c)) throw new Q("found non-noded collapse at " + h.fact.createLineString([s, o, c]));
       } }], [{ key: "constructor_", value: function() {
-        this._li = new Bn(), this._segStrings = null;
+        this._li = new zn(), this._segStrings = null;
         var s = arguments[0];
         this._segStrings = s;
       } }]);
     }();
-    au.fact = new ir();
-    var Po = function() {
+    uu.fact = new sr();
+    var To = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
       return u(h, [{ key: "intersectsScaled", value: function(s, o) {
-        var c = Math.min(s.x, o.x), v = Math.max(s.x, o.x), _ = Math.min(s.y, o.y), E = Math.max(s.y, o.y), I = this._maxx < c || this._minx > v || this._maxy < _ || this._miny > E;
-        if (I) return !1;
+        var c = Math.min(s.x, o.x), v = Math.max(s.x, o.x), _ = Math.min(s.y, o.y), E = Math.max(s.y, o.y), M = this._maxx < c || this._minx > v || this._maxy < _ || this._miny > E;
+        if (M) return !1;
         var R = this.intersectsToleranceSquare(s, o);
-        return ee.isTrue(!(I && R), "Found bad envelope test"), R;
+        return ee.isTrue(!(M && R), "Found bad envelope test"), R;
       } }, { key: "initCorners", value: function(s) {
         var o = 0.5;
         this._minx = s.x - o, this._maxx = s.x + o, this._miny = s.y - o, this._maxy = s.y + o, this._corner[0] = new Z(this._maxx, this._maxy), this._corner[1] = new Z(this._minx, this._maxy), this._corner[2] = new Z(this._minx, this._miny), this._corner[3] = new Z(this._maxx, this._miny);
@@ -12937,8 +13372,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         o !== 1 && (this._pt = new Z(this.scale(s.x), this.scale(s.y)), this._p0Scaled = new Z(), this._p1Scaled = new Z()), this.initCorners(this._pt);
       } }]);
     }();
-    Po.SAFE_ENV_EXPANSION_FACTOR = 0.75;
-    var Jm = function() {
+    To.SAFE_ENV_EXPANSION_FACTOR = 0.75;
+    var t0 = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "select", value: function() {
@@ -12951,7 +13386,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }], [{ key: "constructor_", value: function() {
         this.selectedSegment = new kt();
       } }]);
-    }(), lu = function() {
+    }(), cu = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "snap", value: function() {
@@ -12960,12 +13395,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           return this.snap(h, null, -1);
         }
         if (arguments.length === 3) {
-          var s = arguments[0], o = arguments[1], c = arguments[2], v = s.getSafeEnvelope(), _ = new uu(s, o, c);
+          var s = arguments[0], o = arguments[1], c = arguments[2], v = s.getSafeEnvelope(), _ = new hu(s, o, c);
           return this._index.query(v, new (function() {
             return u(function E() {
               i(this, E);
             }, [{ key: "interfaces_", get: function() {
-              return [Wl];
+              return [Zl];
             } }, { key: "visitItem", value: function(E) {
               E.select(v, _);
             } }]);
@@ -12976,7 +13411,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var h = arguments[0];
         this._index = h;
       } }]);
-    }(), uu = function(h) {
+    }(), hu = function(h) {
       function s() {
         var o;
         return i(this, s), o = r(this, s), s.constructor_.apply(o, arguments), o;
@@ -12984,7 +13419,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       return m(s, h), u(s, [{ key: "isNodeAdded", value: function() {
         return this._isNodeAdded;
       } }, { key: "select", value: function() {
-        if (!(arguments.length === 2 && Number.isInteger(arguments[1]) && arguments[0] instanceof Zl)) return w(s, "select", this, 1).apply(this, arguments);
+        if (!(arguments.length === 2 && Number.isInteger(arguments[1]) && arguments[0] instanceof Jl)) return w(s, "select", this, 1).apply(this, arguments);
         var o = arguments[1], c = arguments[0].getContext();
         if (this._parentEdge === c && (o === this._hotPixelVertexIndex || o + 1 === this._hotPixelVertexIndex)) return null;
         this._isNodeAdded |= this._hotPixel.addSnappedNode(c, o);
@@ -12993,15 +13428,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         var o = arguments[0], c = arguments[1], v = arguments[2];
         this._hotPixel = o, this._parentEdge = c, this._hotPixelVertexIndex = v;
       } }]);
-    }(Jm);
-    lu.HotPixelSnapAction = uu;
-    var Qm = function() {
+    }(t0);
+    cu.HotPixelSnapAction = hu;
+    var n0 = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "processIntersections", value: function(h, s, o, c) {
         if (h === o && s === c) return null;
-        var v = h.getCoordinates()[s], _ = h.getCoordinates()[s + 1], E = o.getCoordinates()[c], I = o.getCoordinates()[c + 1];
-        if (this._li.computeIntersection(v, _, E, I), this._li.hasIntersection() && this._li.isInteriorIntersection()) {
+        var v = h.getCoordinates()[s], _ = h.getCoordinates()[s + 1], E = o.getCoordinates()[c], M = o.getCoordinates()[c + 1];
+        if (this._li.computeIntersection(v, _, E, M), this._li.hasIntersection() && this._li.isInteriorIntersection()) {
           for (var R = 0; R < this._li.getIntersectionNum(); R++) this._interiorIntersections.add(this._li.getIntersection(R));
           h.addIntersections(this._li, s, 0), o.addIntersections(this._li, c, 1);
         }
@@ -13010,60 +13445,60 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "getInteriorIntersections", value: function() {
         return this._interiorIntersections;
       } }, { key: "interfaces_", get: function() {
-        return [ru];
+        return [su];
       } }], [{ key: "constructor_", value: function() {
         this._li = null, this._interiorIntersections = null;
         var h = arguments[0];
         this._li = h, this._interiorIntersections = new ve();
       } }]);
-    }(), jm = function() {
+    }(), r0 = function() {
       return u(function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }, [{ key: "checkCorrectness", value: function(h) {
-        var s = zn.getNodedSubstrings(h), o = new au(s);
+        var s = Gn.getNodedSubstrings(h), o = new uu(s);
         try {
           o.checkValid();
         } catch (c) {
-          if (!(c instanceof P)) throw c;
+          if (!(c instanceof N)) throw c;
           c.printStackTrace();
         }
       } }, { key: "getNodedSubstrings", value: function() {
-        return zn.getNodedSubstrings(this._nodedSegStrings);
+        return Gn.getNodedSubstrings(this._nodedSegStrings);
       } }, { key: "snapRound", value: function(h, s) {
         var o = this.findInteriorIntersections(h, s);
         this.computeIntersectionSnaps(o), this.computeVertexSnaps(h);
       } }, { key: "findInteriorIntersections", value: function(h, s) {
-        var o = new Qm(s);
+        var o = new n0(s);
         return this._noder.setSegmentIntersector(o), this._noder.computeNodes(h), o.getInteriorIntersections();
       } }, { key: "computeVertexSnaps", value: function() {
-        if (Ee(arguments[0], Ie)) for (var h = arguments[0].iterator(); h.hasNext(); ) {
+        if (Ee(arguments[0], ke)) for (var h = arguments[0].iterator(); h.hasNext(); ) {
           var s = h.next();
           this.computeVertexSnaps(s);
         }
-        else if (arguments[0] instanceof zn) for (var o = arguments[0], c = o.getCoordinates(), v = 0; v < c.length; v++) {
-          var _ = new Po(c[v], this._scaleFactor, this._li);
+        else if (arguments[0] instanceof Gn) for (var o = arguments[0], c = o.getCoordinates(), v = 0; v < c.length; v++) {
+          var _ = new To(c[v], this._scaleFactor, this._li);
           this._pointSnapper.snap(_, o, v) && o.addIntersection(c[v], v);
         }
       } }, { key: "computeNodes", value: function(h) {
-        this._nodedSegStrings = h, this._noder = new Mo(), this._pointSnapper = new lu(this._noder.getIndex()), this.snapRound(h, this._li);
+        this._nodedSegStrings = h, this._noder = new No(), this._pointSnapper = new cu(this._noder.getIndex()), this.snapRound(h, this._li);
       } }, { key: "computeIntersectionSnaps", value: function(h) {
         for (var s = h.iterator(); s.hasNext(); ) {
-          var o = s.next(), c = new Po(o, this._scaleFactor, this._li);
+          var o = s.next(), c = new To(o, this._scaleFactor, this._li);
           this._pointSnapper.snap(c);
         }
       } }, { key: "interfaces_", get: function() {
-        return [Io];
+        return [Lo];
       } }], [{ key: "constructor_", value: function() {
         this._pm = null, this._li = null, this._scaleFactor = null, this._noder = null, this._pointSnapper = null, this._nodedSegStrings = null;
         var h = arguments[0];
-        this._pm = h, this._li = new Bn(), this._li.setPrecisionModel(h), this._scaleFactor = h.getScale();
+        this._pm = h, this._li = new zn(), this._li.setPrecisionModel(h), this._scaleFactor = h.getScale();
       } }]);
-    }(), ur = function() {
+    }(), cr = function() {
       function h() {
         i(this, h), h.constructor_.apply(this, arguments);
       }
       return u(h, [{ key: "bufferFixedPrecision", value: function(s) {
-        var o = new Km(new jm(new Yt(1)), s.getScale()), c = new ou(this._bufParams);
+        var o = new e0(new r0(new Xt(1)), s.getScale()), c = new lu(this._bufParams);
         c.setWorkingPrecisionModel(s), c.setNoder(o), this._resultGeometry = c.buffer(this._argGeom, this._distance);
       } }, { key: "bufferReducedPrecision", value: function() {
         if (arguments.length === 0) {
@@ -13071,7 +13506,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             try {
               this.bufferReducedPrecision(s);
             } catch (_) {
-              if (!(_ instanceof fn)) throw _;
+              if (!(_ instanceof gn)) throw _;
               this._saveException = _;
             }
             if (this._resultGeometry !== null) return null;
@@ -13079,18 +13514,18 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           throw this._saveException;
         }
         if (arguments.length === 1) {
-          var o = arguments[0], c = h.precisionScaleFactor(this._argGeom, this._distance, o), v = new Yt(c);
+          var o = arguments[0], c = h.precisionScaleFactor(this._argGeom, this._distance, o), v = new Xt(c);
           this.bufferFixedPrecision(v);
         }
       } }, { key: "computeGeometry", value: function() {
         if (this.bufferOriginalPrecision(), this._resultGeometry !== null) return null;
         var s = this._argGeom.getFactory().getPrecisionModel();
-        s.getType() === Yt.FIXED ? this.bufferFixedPrecision(s) : this.bufferReducedPrecision();
+        s.getType() === Xt.FIXED ? this.bufferFixedPrecision(s) : this.bufferReducedPrecision();
       } }, { key: "setQuadrantSegments", value: function(s) {
         this._bufParams.setQuadrantSegments(s);
       } }, { key: "bufferOriginalPrecision", value: function() {
         try {
-          var s = new ou(this._bufParams);
+          var s = new lu(this._bufParams);
           this._resultGeometry = s.buffer(this._argGeom, this._distance);
         } catch (o) {
           if (!(o instanceof Q)) throw o;
@@ -13101,7 +13536,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       } }, { key: "setEndCapStyle", value: function(s) {
         this._bufParams.setEndCapStyle(s);
       } }], [{ key: "constructor_", value: function() {
-        if (this._argGeom = null, this._distance = null, this._bufParams = new N(), this._resultGeometry = null, this._saveException = null, arguments.length === 1) {
+        if (this._argGeom = null, this._distance = null, this._bufParams = new P(), this._resultGeometry = null, this._saveException = null, arguments.length === 1) {
           var s = arguments[0];
           this._argGeom = s;
         } else if (arguments.length === 2) {
@@ -13118,41 +13553,41 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             var o = arguments[1], c = arguments[2], v = new h(arguments[0]);
             return v.setQuadrantSegments(c), v.getResultGeometry(o);
           }
-          if (arguments[2] instanceof N && arguments[0] instanceof ae && typeof arguments[1] == "number") {
+          if (arguments[2] instanceof P && arguments[0] instanceof ae && typeof arguments[1] == "number") {
             var _ = arguments[1];
             return new h(arguments[0], arguments[2]).getResultGeometry(_);
           }
         } else if (arguments.length === 4) {
-          var E = arguments[1], I = arguments[2], R = arguments[3], G = new h(arguments[0]);
-          return G.setQuadrantSegments(I), G.setEndCapStyle(R), G.getResultGeometry(E);
+          var E = arguments[1], M = arguments[2], R = arguments[3], G = new h(arguments[0]);
+          return G.setQuadrantSegments(M), G.setEndCapStyle(R), G.getResultGeometry(E);
         }
       } }, { key: "precisionScaleFactor", value: function(s, o, c) {
-        var v = s.getEnvelopeInternal(), _ = zr.max(Math.abs(v.getMaxX()), Math.abs(v.getMaxY()), Math.abs(v.getMinX()), Math.abs(v.getMinY())) + 2 * (o > 0 ? o : 0), E = c - Math.trunc(Math.log(_) / Math.log(10) + 1);
+        var v = s.getEnvelopeInternal(), _ = Gr.max(Math.abs(v.getMaxX()), Math.abs(v.getMaxY()), Math.abs(v.getMinX()), Math.abs(v.getMinY())) + 2 * (o > 0 ? o : 0), E = c - Math.trunc(Math.log(_) / Math.log(10) + 1);
         return Math.pow(10, E);
       } }]);
     }();
-    ur.CAP_ROUND = N.CAP_ROUND, ur.CAP_BUTT = N.CAP_FLAT, ur.CAP_FLAT = N.CAP_FLAT, ur.CAP_SQUARE = N.CAP_SQUARE, ur.MAX_PRECISION_DIGITS = 12;
-    var e0 = ["Point", "MultiPoint", "LineString", "MultiLineString", "Polygon", "MultiPolygon"], cu = function() {
+    cr.CAP_ROUND = P.CAP_ROUND, cr.CAP_BUTT = P.CAP_FLAT, cr.CAP_FLAT = P.CAP_FLAT, cr.CAP_SQUARE = P.CAP_SQUARE, cr.MAX_PRECISION_DIGITS = 12;
+    var i0 = ["Point", "MultiPoint", "LineString", "MultiLineString", "Polygon", "MultiPolygon"], fu = function() {
       return u(function h(s) {
-        i(this, h), this.geometryFactory = s || new ir();
+        i(this, h), this.geometryFactory = s || new sr();
       }, [{ key: "read", value: function(h) {
         var s, o = (s = typeof h == "string" ? JSON.parse(h) : h).type;
-        if (!Dt[o]) throw new Error("Unknown GeoJSON type: " + s.type);
-        return e0.indexOf(o) !== -1 ? Dt[o].call(this, s.coordinates) : o === "GeometryCollection" ? Dt[o].call(this, s.geometries) : Dt[o].call(this, s);
+        if (!Ft[o]) throw new Error("Unknown GeoJSON type: " + s.type);
+        return i0.indexOf(o) !== -1 ? Ft[o].call(this, s.coordinates) : o === "GeometryCollection" ? Ft[o].call(this, s.geometries) : Ft[o].call(this, s);
       } }, { key: "write", value: function(h) {
         var s = h.getGeometryType();
-        if (!jt[s]) throw new Error("Geometry is not supported");
-        return jt[s].call(this, h);
+        if (!en[s]) throw new Error("Geometry is not supported");
+        return en[s].call(this, h);
       } }]);
-    }(), Dt = { Feature: function(h) {
+    }(), Ft = { Feature: function(h) {
       var s = {};
       for (var o in h) s[o] = h[o];
       if (h.geometry) {
         var c = h.geometry.type;
-        if (!Dt[c]) throw new Error("Unknown GeoJSON type: " + h.type);
+        if (!Ft[c]) throw new Error("Unknown GeoJSON type: " + h.type);
         s.geometry = this.read(h.geometry);
       }
-      return h.bbox && (s.bbox = Dt.bbox.call(this, h.bbox)), s;
+      return h.bbox && (s.bbox = Ft.bbox.call(this, h.bbox)), s;
     }, FeatureCollection: function(h) {
       var s = {};
       if (h.features) {
@@ -13172,24 +13607,24 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       var s = a(Z, b(h));
       return this.geometryFactory.createPoint(s);
     }, MultiPoint: function(h) {
-      for (var s = [], o = 0; o < h.length; ++o) s.push(Dt.Point.call(this, h[o]));
+      for (var s = [], o = 0; o < h.length; ++o) s.push(Ft.Point.call(this, h[o]));
       return this.geometryFactory.createMultiPoint(s);
     }, LineString: function(h) {
-      var s = Dt.coordinates.call(this, h);
+      var s = Ft.coordinates.call(this, h);
       return this.geometryFactory.createLineString(s);
     }, MultiLineString: function(h) {
-      for (var s = [], o = 0; o < h.length; ++o) s.push(Dt.LineString.call(this, h[o]));
+      for (var s = [], o = 0; o < h.length; ++o) s.push(Ft.LineString.call(this, h[o]));
       return this.geometryFactory.createMultiLineString(s);
     }, Polygon: function(h) {
-      for (var s = Dt.coordinates.call(this, h[0]), o = this.geometryFactory.createLinearRing(s), c = [], v = 1; v < h.length; ++v) {
-        var _ = h[v], E = Dt.coordinates.call(this, _), I = this.geometryFactory.createLinearRing(E);
-        c.push(I);
+      for (var s = Ft.coordinates.call(this, h[0]), o = this.geometryFactory.createLinearRing(s), c = [], v = 1; v < h.length; ++v) {
+        var _ = h[v], E = Ft.coordinates.call(this, _), M = this.geometryFactory.createLinearRing(E);
+        c.push(M);
       }
       return this.geometryFactory.createPolygon(o, c);
     }, MultiPolygon: function(h) {
       for (var s = [], o = 0; o < h.length; ++o) {
         var c = h[o];
-        s.push(Dt.Polygon.call(this, c));
+        s.push(Ft.Polygon.call(this, c));
       }
       return this.geometryFactory.createMultiPolygon(s);
     }, GeometryCollection: function(h) {
@@ -13198,68 +13633,68 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         s.push(this.read(c));
       }
       return this.geometryFactory.createGeometryCollection(s);
-    } }, jt = { coordinate: function(h) {
+    } }, en = { coordinate: function(h) {
       var s = [h.x, h.y];
       return h.z && s.push(h.z), h.m && s.push(h.m), s;
     }, Point: function(h) {
-      return { type: "Point", coordinates: jt.coordinate.call(this, h.getCoordinate()) };
+      return { type: "Point", coordinates: en.coordinate.call(this, h.getCoordinate()) };
     }, MultiPoint: function(h) {
       for (var s = [], o = 0; o < h._geometries.length; ++o) {
-        var c = h._geometries[o], v = jt.Point.call(this, c);
+        var c = h._geometries[o], v = en.Point.call(this, c);
         s.push(v.coordinates);
       }
       return { type: "MultiPoint", coordinates: s };
     }, LineString: function(h) {
       for (var s = [], o = h.getCoordinates(), c = 0; c < o.length; ++c) {
         var v = o[c];
-        s.push(jt.coordinate.call(this, v));
+        s.push(en.coordinate.call(this, v));
       }
       return { type: "LineString", coordinates: s };
     }, MultiLineString: function(h) {
       for (var s = [], o = 0; o < h._geometries.length; ++o) {
-        var c = h._geometries[o], v = jt.LineString.call(this, c);
+        var c = h._geometries[o], v = en.LineString.call(this, c);
         s.push(v.coordinates);
       }
       return { type: "MultiLineString", coordinates: s };
     }, Polygon: function(h) {
-      var s = [], o = jt.LineString.call(this, h._shell);
+      var s = [], o = en.LineString.call(this, h._shell);
       s.push(o.coordinates);
       for (var c = 0; c < h._holes.length; ++c) {
-        var v = h._holes[c], _ = jt.LineString.call(this, v);
+        var v = h._holes[c], _ = en.LineString.call(this, v);
         s.push(_.coordinates);
       }
       return { type: "Polygon", coordinates: s };
     }, MultiPolygon: function(h) {
       for (var s = [], o = 0; o < h._geometries.length; ++o) {
-        var c = h._geometries[o], v = jt.Polygon.call(this, c);
+        var c = h._geometries[o], v = en.Polygon.call(this, c);
         s.push(v.coordinates);
       }
       return { type: "MultiPolygon", coordinates: s };
     }, GeometryCollection: function(h) {
       for (var s = [], o = 0; o < h._geometries.length; ++o) {
         var c = h._geometries[o], v = c.getGeometryType();
-        s.push(jt[v].call(this, c));
+        s.push(en[v].call(this, c));
       }
       return { type: "GeometryCollection", geometries: s };
     } };
-    return { BufferOp: ur, GeoJSONReader: function() {
+    return { BufferOp: cr, GeoJSONReader: function() {
       return u(function h(s) {
-        i(this, h), this.parser = new cu(s || new ir());
+        i(this, h), this.parser = new fu(s || new sr());
       }, [{ key: "read", value: function(h) {
         return this.parser.read(h);
       } }]);
     }(), GeoJSONWriter: function() {
       return u(function h() {
-        i(this, h), this.parser = new cu(this.geometryFactory);
+        i(this, h), this.parser = new fu(this.geometryFactory);
       }, [{ key: "write", value: function(h) {
         return this.parser.write(h);
       } }]);
     }() };
   });
-})($f);
-var Mp = $f.exports;
-const Lp = /* @__PURE__ */ Di(Mp);
-class Pp {
+})(Jf);
+var qp = Jf.exports;
+const Hp = /* @__PURE__ */ Bi(qp);
+class Up {
   constructor() {
     this._partials = new Float64Array(32), this._n = 0;
   }
@@ -13283,35 +13718,35 @@ class Pp {
     return l;
   }
 }
-function* Np(n) {
+function* Yp(n) {
   for (const e of n)
     yield* e;
 }
-function Zf(n) {
-  return Array.from(Np(n));
+function Qf(n) {
+  return Array.from(Yp(n));
 }
-var Ye = 1e-6, Re = Math.PI, qt = Re / 2, Ku = Re / 4, $t = Re * 2, mn = 180 / Re, Pt = Re / 180, et = Math.abs, Tp = Math.atan, Pr = Math.atan2, Ze = Math.cos, Xe = Math.sin, Ap = Math.sign || function(n) {
+var Xe = 1e-6, Re = Math.PI, Ht = Re / 2, ec = Re / 4, Zt = Re * 2, vn = 180 / Re, Pt = Re / 180, tt = Math.abs, Xp = Math.atan, Pr = Math.atan2, Ke = Math.cos, Ve = Math.sin, Vp = Math.sign || function(n) {
   return n > 0 ? 1 : n < 0 ? -1 : 0;
-}, Fi = Math.sqrt;
-function Kf(n) {
+}, zi = Math.sqrt;
+function jf(n) {
   return n > 1 ? 0 : n < -1 ? Re : Math.acos(n);
 }
-function Nr(n) {
-  return n > 1 ? qt : n < -1 ? -qt : Math.asin(n);
+function Tr(n) {
+  return n > 1 ? Ht : n < -1 ? -Ht : Math.asin(n);
 }
-function ai() {
+function ui() {
 }
-function Ns(n, e) {
-  n && Qu.hasOwnProperty(n.type) && Qu[n.type](n, e);
+function As(n, e) {
+  n && nc.hasOwnProperty(n.type) && nc[n.type](n, e);
 }
-var Ju = {
+var tc = {
   Feature: function(n, e) {
-    Ns(n.geometry, e);
+    As(n.geometry, e);
   },
   FeatureCollection: function(n, e) {
-    for (var t = n.features, r = -1, i = t.length; ++r < i; ) Ns(t[r].geometry, e);
+    for (var t = n.features, r = -1, i = t.length; ++r < i; ) As(t[r].geometry, e);
   }
-}, Qu = {
+}, nc = {
   Sphere: function(n, e) {
     e.sphere();
   },
@@ -13322,58 +13757,58 @@ var Ju = {
     for (var t = n.coordinates, r = -1, i = t.length; ++r < i; ) n = t[r], e.point(n[0], n[1], n[2]);
   },
   LineString: function(n, e) {
-    pa(n.coordinates, e, 0);
+    _a(n.coordinates, e, 0);
   },
   MultiLineString: function(n, e) {
-    for (var t = n.coordinates, r = -1, i = t.length; ++r < i; ) pa(t[r], e, 0);
+    for (var t = n.coordinates, r = -1, i = t.length; ++r < i; ) _a(t[r], e, 0);
   },
   Polygon: function(n, e) {
-    ju(n.coordinates, e);
+    rc(n.coordinates, e);
   },
   MultiPolygon: function(n, e) {
-    for (var t = n.coordinates, r = -1, i = t.length; ++r < i; ) ju(t[r], e);
+    for (var t = n.coordinates, r = -1, i = t.length; ++r < i; ) rc(t[r], e);
   },
   GeometryCollection: function(n, e) {
-    for (var t = n.geometries, r = -1, i = t.length; ++r < i; ) Ns(t[r], e);
+    for (var t = n.geometries, r = -1, i = t.length; ++r < i; ) As(t[r], e);
   }
 };
-function pa(n, e, t) {
+function _a(n, e, t) {
   var r = -1, i = n.length - t, a;
   for (e.lineStart(); ++r < i; ) a = n[r], e.point(a[0], a[1], a[2]);
   e.lineEnd();
 }
-function ju(n, e) {
+function rc(n, e) {
   var t = -1, r = n.length;
-  for (e.polygonStart(); ++t < r; ) pa(n[t], e, 1);
+  for (e.polygonStart(); ++t < r; ) _a(n[t], e, 1);
   e.polygonEnd();
 }
-function Rp(n, e) {
-  n && Ju.hasOwnProperty(n.type) ? Ju[n.type](n, e) : Ns(n, e);
+function Wp(n, e) {
+  n && tc.hasOwnProperty(n.type) ? tc[n.type](n, e) : As(n, e);
 }
-function ya(n) {
-  return [Pr(n[1], n[0]), Nr(n[2])];
+function wa(n) {
+  return [Pr(n[1], n[0]), Tr(n[2])];
 }
-function Tr(n) {
-  var e = n[0], t = n[1], r = Ze(t);
-  return [r * Ze(e), r * Xe(e), Xe(t)];
+function Ar(n) {
+  var e = n[0], t = n[1], r = Ke(t);
+  return [r * Ke(e), r * Ve(e), Ve(t)];
 }
-function ts(n, e) {
+function rs(n, e) {
   return n[0] * e[0] + n[1] * e[1] + n[2] * e[2];
 }
-function Ts(n, e) {
+function Rs(n, e) {
   return [n[1] * e[2] - n[2] * e[1], n[2] * e[0] - n[0] * e[2], n[0] * e[1] - n[1] * e[0]];
 }
-function Xo(n, e) {
+function Wo(n, e) {
   n[0] += e[0], n[1] += e[1], n[2] += e[2];
 }
-function ns(n, e) {
+function is(n, e) {
   return [n[0] * e, n[1] * e, n[2] * e];
 }
-function _a(n) {
-  var e = Fi(n[0] * n[0] + n[1] * n[1] + n[2] * n[2]);
+function xa(n) {
+  var e = zi(n[0] * n[0] + n[1] * n[1] + n[2] * n[2]);
   n[0] /= e, n[1] /= e, n[2] /= e;
 }
-function wa(n, e) {
+function Ea(n, e) {
   function t(r, i) {
     return r = n(r, i), e(r[0], r[1]);
   }
@@ -13381,53 +13816,53 @@ function wa(n, e) {
     return r = e.invert(r, i), r && n.invert(r[0], r[1]);
   }), t;
 }
-function xa(n, e) {
-  return [et(n) > Re ? n + Math.round(-n / $t) * $t : n, e];
+function ba(n, e) {
+  return [tt(n) > Re ? n + Math.round(-n / Zt) * Zt : n, e];
 }
-xa.invert = xa;
-function Op(n, e, t) {
-  return (n %= $t) ? e || t ? wa(tc(n), nc(e, t)) : tc(n) : e || t ? nc(e, t) : xa;
+ba.invert = ba;
+function $p(n, e, t) {
+  return (n %= Zt) ? e || t ? Ea(sc(n), oc(e, t)) : sc(n) : e || t ? oc(e, t) : ba;
 }
-function ec(n) {
+function ic(n) {
   return function(e, t) {
-    return e += n, [e > Re ? e - $t : e < -Re ? e + $t : e, t];
+    return e += n, [e > Re ? e - Zt : e < -Re ? e + Zt : e, t];
   };
 }
-function tc(n) {
-  var e = ec(n);
-  return e.invert = ec(-n), e;
+function sc(n) {
+  var e = ic(n);
+  return e.invert = ic(-n), e;
 }
-function nc(n, e) {
-  var t = Ze(n), r = Xe(n), i = Ze(e), a = Xe(e);
+function oc(n, e) {
+  var t = Ke(n), r = Ve(n), i = Ke(e), a = Ve(e);
   function l(u, f) {
-    var g = Ze(f), d = Ze(u) * g, m = Xe(u) * g, p = Xe(f), y = p * t + d * r;
+    var g = Ke(f), d = Ke(u) * g, m = Ve(u) * g, p = Ve(f), y = p * t + d * r;
     return [
       Pr(m * i - y * a, d * t - p * r),
-      Nr(y * i + m * a)
+      Tr(y * i + m * a)
     ];
   }
   return l.invert = function(u, f) {
-    var g = Ze(f), d = Ze(u) * g, m = Xe(u) * g, p = Xe(f), y = p * i - m * a;
+    var g = Ke(f), d = Ke(u) * g, m = Ve(u) * g, p = Ve(f), y = p * i - m * a;
     return [
       Pr(m * i + p * a, d * t + y * r),
-      Nr(y * t - d * r)
+      Tr(y * t - d * r)
     ];
   }, l;
 }
-function Dp(n, e, t, r, i, a) {
+function Zp(n, e, t, r, i, a) {
   if (t) {
-    var l = Ze(e), u = Xe(e), f = r * t;
-    i == null ? (i = e + r * $t, a = e - f / 2) : (i = rc(l, i), a = rc(l, a), (r > 0 ? i < a : i > a) && (i += r * $t));
+    var l = Ke(e), u = Ve(e), f = r * t;
+    i == null ? (i = e + r * Zt, a = e - f / 2) : (i = ac(l, i), a = ac(l, a), (r > 0 ? i < a : i > a) && (i += r * Zt));
     for (var g, d = i; r > 0 ? d > a : d < a; d -= f)
-      g = ya([l, -u * Ze(d), -u * Xe(d)]), n.point(g[0], g[1]);
+      g = wa([l, -u * Ke(d), -u * Ve(d)]), n.point(g[0], g[1]);
   }
 }
-function rc(n, e) {
-  e = Tr(e), e[0] -= n, _a(e);
-  var t = Kf(-e[1]);
-  return ((-e[2] < 0 ? -t : t) + $t - Ye) % $t;
+function ac(n, e) {
+  e = Ar(e), e[0] -= n, xa(e);
+  var t = jf(-e[1]);
+  return ((-e[2] < 0 ? -t : t) + Zt - Xe) % Zt;
 }
-function Jf() {
+function eg() {
   var n = [], e;
   return {
     point: function(t, r, i) {
@@ -13436,7 +13871,7 @@ function Jf() {
     lineStart: function() {
       n.push(e = []);
     },
-    lineEnd: ai,
+    lineEnd: ui,
     rejoin: function() {
       n.length > 1 && n.push(n.pop().concat(n.shift()));
     },
@@ -13446,29 +13881,29 @@ function Jf() {
     }
   };
 }
-function ws(n, e) {
-  return et(n[0] - e[0]) < Ye && et(n[1] - e[1]) < Ye;
+function Es(n, e) {
+  return tt(n[0] - e[0]) < Xe && tt(n[1] - e[1]) < Xe;
 }
-function rs(n, e, t, r) {
+function ss(n, e, t, r) {
   this.x = n, this.z = e, this.o = t, this.e = r, this.v = !1, this.n = this.p = null;
 }
-function Qf(n, e, t, r, i) {
+function tg(n, e, t, r, i) {
   var a = [], l = [], u, f;
   if (n.forEach(function(w) {
     if (!((b = w.length - 1) <= 0)) {
-      var b, M = w[0], k = w[b], S;
-      if (ws(M, k)) {
-        if (!M[2] && !k[2]) {
-          for (i.lineStart(), u = 0; u < b; ++u) i.point((M = w[u])[0], M[1]);
+      var b, k = w[0], I = w[b], S;
+      if (Es(k, I)) {
+        if (!k[2] && !I[2]) {
+          for (i.lineStart(), u = 0; u < b; ++u) i.point((k = w[u])[0], k[1]);
           i.lineEnd();
           return;
         }
-        k[0] += 2 * Ye;
+        I[0] += 2 * Xe;
       }
-      a.push(S = new rs(M, w, null, !0)), l.push(S.o = new rs(M, null, S, !1)), a.push(S = new rs(k, w, null, !1)), l.push(S.o = new rs(k, null, S, !0));
+      a.push(S = new ss(k, w, null, !0)), l.push(S.o = new ss(k, null, S, !1)), a.push(S = new ss(I, w, null, !1)), l.push(S.o = new ss(I, null, S, !0));
     }
   }), !!a.length) {
-    for (l.sort(e), ic(a), ic(l), u = 0, f = l.length; u < f; ++u)
+    for (l.sort(e), lc(a), lc(l), u = 0, f = l.length; u < f; ++u)
       l[u].e = t = !t;
     for (var g = a[0], d, m; ; ) {
       for (var p = g, y = !0; p.v; ) if ((p = p.n) === g) return;
@@ -13493,110 +13928,110 @@ function Qf(n, e, t, r, i) {
     }
   }
 }
-function ic(n) {
+function lc(n) {
   if (e = n.length) {
     for (var e, t = 0, r = n[0], i; ++t < e; )
       r.n = i = n[t], i.p = r, r = i;
     r.n = i = n[0], i.p = r;
   }
 }
-function Vo(n) {
-  return et(n[0]) <= Re ? n[0] : Ap(n[0]) * ((et(n[0]) + Re) % $t - Re);
+function $o(n) {
+  return tt(n[0]) <= Re ? n[0] : Vp(n[0]) * ((tt(n[0]) + Re) % Zt - Re);
 }
-function Fp(n, e) {
-  var t = Vo(e), r = e[1], i = Xe(r), a = [Xe(t), -Ze(t), 0], l = 0, u = 0, f = new Pp();
-  i === 1 ? r = qt + Ye : i === -1 && (r = -qt - Ye);
+function Kp(n, e) {
+  var t = $o(e), r = e[1], i = Ve(r), a = [Ve(t), -Ke(t), 0], l = 0, u = 0, f = new Up();
+  i === 1 ? r = Ht + Xe : i === -1 && (r = -Ht - Xe);
   for (var g = 0, d = n.length; g < d; ++g)
     if (p = (m = n[g]).length)
-      for (var m, p, y = m[p - 1], w = Vo(y), b = y[1] / 2 + Ku, M = Xe(b), k = Ze(b), S = 0; S < p; ++S, w = P, M = B, k = F, y = N) {
-        var N = m[S], P = Vo(N), A = N[1] / 2 + Ku, B = Xe(A), F = Ze(A), C = P - w, L = C >= 0 ? 1 : -1, T = L * C, D = T > Re, z = M * B;
-        if (f.add(Pr(z * L * Xe(T), k * F + z * Ze(T))), l += D ? C + L * $t : C, D ^ w >= t ^ P >= t) {
-          var U = Ts(Tr(y), Tr(N));
-          _a(U);
-          var X = Ts(a, U);
-          _a(X);
-          var O = (D ^ C >= 0 ? -1 : 1) * Nr(X[2]);
-          (r > O || r === O && (U[0] || U[1])) && (u += D ^ C >= 0 ? 1 : -1);
+      for (var m, p, y = m[p - 1], w = $o(y), b = y[1] / 2 + ec, k = Ve(b), I = Ke(b), S = 0; S < p; ++S, w = N, k = B, I = F, y = P) {
+        var P = m[S], N = $o(P), A = P[1] / 2 + ec, B = Ve(A), F = Ke(A), C = N - w, L = C >= 0 ? 1 : -1, T = L * C, D = T > Re, z = k * B;
+        if (f.add(Pr(z * L * Ve(T), I * F + z * Ke(T))), l += D ? C + L * Zt : C, D ^ w >= t ^ N >= t) {
+          var q = Rs(Ar(y), Ar(P));
+          xa(q);
+          var X = Rs(a, q);
+          xa(X);
+          var O = (D ^ C >= 0 ? -1 : 1) * Tr(X[2]);
+          (r > O || r === O && (q[0] || q[1])) && (u += D ^ C >= 0 ? 1 : -1);
         }
       }
-  return (l < -Ye || l < Ye && f < -1e-12) ^ u & 1;
+  return (l < -Xe || l < Xe && f < -1e-12) ^ u & 1;
 }
-function jf(n, e, t, r) {
+function ng(n, e, t, r) {
   return function(i) {
-    var a = e(i), l = Jf(), u = e(l), f = !1, g, d, m, p = {
+    var a = e(i), l = eg(), u = e(l), f = !1, g, d, m, p = {
       point: y,
       lineStart: b,
-      lineEnd: M,
+      lineEnd: k,
       polygonStart: function() {
-        p.point = k, p.lineStart = S, p.lineEnd = N, d = [], g = [];
+        p.point = I, p.lineStart = S, p.lineEnd = P, d = [], g = [];
       },
       polygonEnd: function() {
-        p.point = y, p.lineStart = b, p.lineEnd = M, d = Zf(d);
-        var P = Fp(g, r);
-        d.length ? (f || (i.polygonStart(), f = !0), Qf(d, zp, P, t, i)) : P && (f || (i.polygonStart(), f = !0), i.lineStart(), t(null, null, 1, i), i.lineEnd()), f && (i.polygonEnd(), f = !1), d = g = null;
+        p.point = y, p.lineStart = b, p.lineEnd = k, d = Qf(d);
+        var N = Kp(g, r);
+        d.length ? (f || (i.polygonStart(), f = !0), tg(d, Qp, N, t, i)) : N && (f || (i.polygonStart(), f = !0), i.lineStart(), t(null, null, 1, i), i.lineEnd()), f && (i.polygonEnd(), f = !1), d = g = null;
       },
       sphere: function() {
         i.polygonStart(), i.lineStart(), t(null, null, 1, i), i.lineEnd(), i.polygonEnd();
       }
     };
-    function y(P, A) {
-      n(P, A) && i.point(P, A);
+    function y(N, A) {
+      n(N, A) && i.point(N, A);
     }
-    function w(P, A) {
-      a.point(P, A);
+    function w(N, A) {
+      a.point(N, A);
     }
     function b() {
       p.point = w, a.lineStart();
     }
-    function M() {
+    function k() {
       p.point = y, a.lineEnd();
     }
-    function k(P, A) {
-      m.push([P, A]), u.point(P, A);
+    function I(N, A) {
+      m.push([N, A]), u.point(N, A);
     }
     function S() {
       u.lineStart(), m = [];
     }
-    function N() {
-      k(m[0][0], m[0][1]), u.lineEnd();
-      var P = u.clean(), A = l.result(), B, F = A.length, C, L, T;
+    function P() {
+      I(m[0][0], m[0][1]), u.lineEnd();
+      var N = u.clean(), A = l.result(), B, F = A.length, C, L, T;
       if (m.pop(), g.push(m), m = null, !!F) {
-        if (P & 1) {
+        if (N & 1) {
           if (L = A[0], (C = L.length - 1) > 0) {
             for (f || (i.polygonStart(), f = !0), i.lineStart(), B = 0; B < C; ++B) i.point((T = L[B])[0], T[1]);
             i.lineEnd();
           }
           return;
         }
-        F > 1 && P & 2 && A.push(A.pop().concat(A.shift())), d.push(A.filter(Bp));
+        F > 1 && N & 2 && A.push(A.pop().concat(A.shift())), d.push(A.filter(Jp));
       }
     }
     return p;
   };
 }
-function Bp(n) {
+function Jp(n) {
   return n.length > 1;
 }
-function zp(n, e) {
-  return ((n = n.x)[0] < 0 ? n[1] - qt - Ye : qt - n[1]) - ((e = e.x)[0] < 0 ? e[1] - qt - Ye : qt - e[1]);
+function Qp(n, e) {
+  return ((n = n.x)[0] < 0 ? n[1] - Ht - Xe : Ht - n[1]) - ((e = e.x)[0] < 0 ? e[1] - Ht - Xe : Ht - e[1]);
 }
-const sc = jf(
+const uc = ng(
   function() {
     return !0;
   },
-  Gp,
-  Up,
-  [-Re, -qt]
+  jp,
+  ty,
+  [-Re, -Ht]
 );
-function Gp(n) {
+function jp(n) {
   var e = NaN, t = NaN, r = NaN, i;
   return {
     lineStart: function() {
       n.lineStart(), i = 1;
     },
     point: function(a, l) {
-      var u = a > 0 ? Re : -Re, f = et(a - e);
-      et(f - Re) < Ye ? (n.point(e, t = (t + l) / 2 > 0 ? qt : -qt), n.point(r, t), n.lineEnd(), n.lineStart(), n.point(u, t), n.point(a, t), i = 0) : r !== u && f >= Re && (et(e - r) < Ye && (e -= r * Ye), et(a - u) < Ye && (a -= u * Ye), t = qp(e, t, a, l), n.point(r, t), n.lineEnd(), n.lineStart(), n.point(u, t), i = 0), n.point(e = a, t = l), r = u;
+      var u = a > 0 ? Re : -Re, f = tt(a - e);
+      tt(f - Re) < Xe ? (n.point(e, t = (t + l) / 2 > 0 ? Ht : -Ht), n.point(r, t), n.lineEnd(), n.lineStart(), n.point(u, t), n.point(a, t), i = 0) : r !== u && f >= Re && (tt(e - r) < Xe && (e -= r * Xe), tt(a - u) < Xe && (a -= u * Xe), t = ey(e, t, a, l), n.point(r, t), n.lineEnd(), n.lineStart(), n.point(u, t), i = 0), n.point(e = a, t = l), r = u;
     },
     lineEnd: function() {
       n.lineEnd(), e = t = NaN;
@@ -13606,27 +14041,27 @@ function Gp(n) {
     }
   };
 }
-function qp(n, e, t, r) {
-  var i, a, l = Xe(n - t);
-  return et(l) > Ye ? Tp((Xe(e) * (a = Ze(r)) * Xe(t) - Xe(r) * (i = Ze(e)) * Xe(n)) / (i * a * l)) : (e + r) / 2;
+function ey(n, e, t, r) {
+  var i, a, l = Ve(n - t);
+  return tt(l) > Xe ? Xp((Ve(e) * (a = Ke(r)) * Ve(t) - Ve(r) * (i = Ke(e)) * Ve(n)) / (i * a * l)) : (e + r) / 2;
 }
-function Up(n, e, t, r) {
+function ty(n, e, t, r) {
   var i;
   if (n == null)
-    i = t * qt, r.point(-Re, i), r.point(0, i), r.point(Re, i), r.point(Re, 0), r.point(Re, -i), r.point(0, -i), r.point(-Re, -i), r.point(-Re, 0), r.point(-Re, i);
-  else if (et(n[0] - e[0]) > Ye) {
+    i = t * Ht, r.point(-Re, i), r.point(0, i), r.point(Re, i), r.point(Re, 0), r.point(Re, -i), r.point(0, -i), r.point(-Re, -i), r.point(-Re, 0), r.point(-Re, i);
+  else if (tt(n[0] - e[0]) > Xe) {
     var a = n[0] < e[0] ? Re : -Re;
     i = t * a / 2, r.point(-a, i), r.point(0, i), r.point(a, i);
   } else
     r.point(e[0], e[1]);
 }
-function Hp(n) {
-  var e = Ze(n), t = 6 * Pt, r = e > 0, i = et(e) > Ye;
+function ny(n) {
+  var e = Ke(n), t = 6 * Pt, r = e > 0, i = tt(e) > Xe;
   function a(d, m, p, y) {
-    Dp(y, n, t, p, d, m);
+    Zp(y, n, t, p, d, m);
   }
   function l(d, m) {
-    return Ze(d) * Ze(m) > e;
+    return Ke(d) * Ke(m) > e;
   }
   function u(d) {
     var m, p, y, w, b;
@@ -13634,15 +14069,15 @@ function Hp(n) {
       lineStart: function() {
         w = y = !1, b = 1;
       },
-      point: function(M, k) {
-        var S = [M, k], N, P = l(M, k), A = r ? P ? 0 : g(M, k) : P ? g(M + (M < 0 ? Re : -Re), k) : 0;
-        if (!m && (w = y = P) && d.lineStart(), P !== y && (N = f(m, S), (!N || ws(m, N) || ws(S, N)) && (S[2] = 1)), P !== y)
-          b = 0, P ? (d.lineStart(), N = f(S, m), d.point(N[0], N[1])) : (N = f(m, S), d.point(N[0], N[1], 2), d.lineEnd()), m = N;
-        else if (i && m && r ^ P) {
+      point: function(k, I) {
+        var S = [k, I], P, N = l(k, I), A = r ? N ? 0 : g(k, I) : N ? g(k + (k < 0 ? Re : -Re), I) : 0;
+        if (!m && (w = y = N) && d.lineStart(), N !== y && (P = f(m, S), (!P || Es(m, P) || Es(S, P)) && (S[2] = 1)), N !== y)
+          b = 0, N ? (d.lineStart(), P = f(S, m), d.point(P[0], P[1])) : (P = f(m, S), d.point(P[0], P[1], 2), d.lineEnd()), m = P;
+        else if (i && m && r ^ N) {
           var B;
           !(A & p) && (B = f(S, m, !0)) && (b = 0, r ? (d.lineStart(), d.point(B[0][0], B[0][1]), d.point(B[1][0], B[1][1]), d.lineEnd()) : (d.point(B[1][0], B[1][1]), d.lineEnd(), d.lineStart(), d.point(B[0][0], B[0][1], 3)));
         }
-        P && (!m || !ws(m, S)) && d.point(S[0], S[1]), m = S, y = P, p = A;
+        N && (!m || !Es(m, S)) && d.point(S[0], S[1]), m = S, y = N, p = A;
       },
       lineEnd: function() {
         y && d.lineEnd(), m = null;
@@ -13655,20 +14090,20 @@ function Hp(n) {
     };
   }
   function f(d, m, p) {
-    var y = Tr(d), w = Tr(m), b = [1, 0, 0], M = Ts(y, w), k = ts(M, M), S = M[0], N = k - S * S;
-    if (!N) return !p && d;
-    var P = e * k / N, A = -e * S / N, B = Ts(b, M), F = ns(b, P), C = ns(M, A);
-    Xo(F, C);
-    var L = B, T = ts(F, L), D = ts(L, L), z = T * T - D * (ts(F, F) - 1);
+    var y = Ar(d), w = Ar(m), b = [1, 0, 0], k = Rs(y, w), I = rs(k, k), S = k[0], P = I - S * S;
+    if (!P) return !p && d;
+    var N = e * I / P, A = -e * S / P, B = Rs(b, k), F = is(b, N), C = is(k, A);
+    Wo(F, C);
+    var L = B, T = rs(F, L), D = rs(L, L), z = T * T - D * (rs(F, F) - 1);
     if (!(z < 0)) {
-      var U = Fi(z), X = ns(L, (-T - U) / D);
-      if (Xo(X, F), X = ya(X), !p) return X;
-      var O = d[0], H = m[0], q = d[1], V = m[1], J;
-      H < O && (J = O, O = H, H = J);
-      var W = H - O, j = et(W - Re) < Ye, Q = j || W < Ye;
-      if (!j && V < q && (J = q, q = V, V = J), Q ? j ? q + V > 0 ^ X[1] < (et(X[0] - O) < Ye ? q : V) : q <= X[1] && X[1] <= V : W > Re ^ (O <= X[0] && X[0] <= H)) {
-        var re = ns(L, (-T + U) / D);
-        return Xo(re, F), [X, ya(re)];
+      var q = zi(z), X = is(L, (-T - q) / D);
+      if (Wo(X, F), X = wa(X), !p) return X;
+      var O = d[0], U = m[0], H = d[1], V = m[1], J;
+      U < O && (J = O, O = U, U = J);
+      var W = U - O, j = tt(W - Re) < Xe, Q = j || W < Xe;
+      if (!j && V < H && (J = H, H = V, V = J), Q ? j ? H + V > 0 ^ X[1] < (tt(X[0] - O) < Xe ? H : V) : H <= X[1] && X[1] <= V : W > Re ^ (O <= X[0] && X[0] <= U)) {
+        var re = is(L, (-T + q) / D);
+        return Wo(re, F), [X, wa(re)];
       }
     }
   }
@@ -13676,9 +14111,9 @@ function Hp(n) {
     var p = r ? n : Re - n, y = 0;
     return d < -p ? y |= 1 : d > p && (y |= 2), m < -p ? y |= 4 : m > p && (y |= 8), y;
   }
-  return jf(l, u, a, r ? [0, -n] : [-Re, n - Re]);
+  return ng(l, u, a, r ? [0, -n] : [-Re, n - Re]);
 }
-function Yp(n, e, t, r, i, a) {
+function ry(n, e, t, r, i, a) {
   var l = n[0], u = n[1], f = e[0], g = e[1], d = 0, m = 1, p = f - l, y = g - u, w;
   if (w = t - l, !(!p && w > 0)) {
     if (w /= p, p < 0) {
@@ -13718,8 +14153,8 @@ function Yp(n, e, t, r, i, a) {
     }
   }
 }
-var li = 1e9, is = -li;
-function Xp(n, e, t, r) {
+var ci = 1e9, os = -ci;
+function iy(n, e, t, r) {
   function i(g, d) {
     return n <= g && g <= t && e <= d && d <= r;
   }
@@ -13733,7 +14168,7 @@ function Xp(n, e, t, r) {
       p.point(d[0], d[1]);
   }
   function l(g, d) {
-    return et(g[0] - n) < Ye ? d > 0 ? 0 : 3 : et(g[0] - t) < Ye ? d > 0 ? 2 : 1 : et(g[1] - e) < Ye ? d > 0 ? 1 : 0 : d > 0 ? 3 : 2;
+    return tt(g[0] - n) < Xe ? d > 0 ? 0 : 3 : tt(g[0] - t) < Xe ? d > 0 ? 2 : 1 : tt(g[1] - e) < Xe ? d > 0 ? 1 : 0 : d > 0 ? 3 : 2;
   }
   function u(g, d) {
     return f(g.x, d.x);
@@ -13743,19 +14178,19 @@ function Xp(n, e, t, r) {
     return m !== p ? m - p : m === 0 ? d[1] - g[1] : m === 1 ? g[0] - d[0] : m === 2 ? g[1] - d[1] : d[0] - g[0];
   }
   return function(g) {
-    var d = g, m = Jf(), p, y, w, b, M, k, S, N, P, A, B, F = {
+    var d = g, m = eg(), p, y, w, b, k, I, S, P, N, A, B, F = {
       point: C,
       lineStart: z,
-      lineEnd: U,
+      lineEnd: q,
       polygonStart: T,
       polygonEnd: D
     };
-    function C(O, H) {
-      i(O, H) && d.point(O, H);
+    function C(O, U) {
+      i(O, U) && d.point(O, U);
     }
     function L() {
-      for (var O = 0, H = 0, q = y.length; H < q; ++H)
-        for (var V = y[H], J = 1, W = V.length, j = V[0], Q, re, ee = j[0], te = j[1]; J < W; ++J)
+      for (var O = 0, U = 0, H = y.length; U < H; ++U)
+        for (var V = y[U], J = 1, W = V.length, j = V[0], Q, re, ee = j[0], te = j[1]; J < W; ++J)
           Q = ee, re = te, j = V[J], ee = j[0], te = j[1], re <= r ? te > r && (ee - Q) * (r - re) > (te - re) * (n - Q) && ++O : te <= r && (ee - Q) * (r - re) < (te - re) * (n - Q) && --O;
       return O;
     }
@@ -13763,55 +14198,55 @@ function Xp(n, e, t, r) {
       d = m, p = [], y = [], B = !0;
     }
     function D() {
-      var O = L(), H = B && O, q = (p = Zf(p)).length;
-      (H || q) && (g.polygonStart(), H && (g.lineStart(), a(null, null, 1, g), g.lineEnd()), q && Qf(p, u, O, a, g), g.polygonEnd()), d = g, p = y = w = null;
+      var O = L(), U = B && O, H = (p = Qf(p)).length;
+      (U || H) && (g.polygonStart(), U && (g.lineStart(), a(null, null, 1, g), g.lineEnd()), H && tg(p, u, O, a, g), g.polygonEnd()), d = g, p = y = w = null;
     }
     function z() {
-      F.point = X, y && y.push(w = []), A = !0, P = !1, S = N = NaN;
+      F.point = X, y && y.push(w = []), A = !0, N = !1, S = P = NaN;
     }
-    function U() {
-      p && (X(b, M), k && P && m.rejoin(), p.push(m.result())), F.point = C, P && d.lineEnd();
+    function q() {
+      p && (X(b, k), I && N && m.rejoin(), p.push(m.result())), F.point = C, N && d.lineEnd();
     }
-    function X(O, H) {
-      var q = i(O, H);
-      if (y && w.push([O, H]), A)
-        b = O, M = H, k = q, A = !1, q && (d.lineStart(), d.point(O, H));
-      else if (q && P) d.point(O, H);
+    function X(O, U) {
+      var H = i(O, U);
+      if (y && w.push([O, U]), A)
+        b = O, k = U, I = H, A = !1, H && (d.lineStart(), d.point(O, U));
+      else if (H && N) d.point(O, U);
       else {
-        var V = [S = Math.max(is, Math.min(li, S)), N = Math.max(is, Math.min(li, N))], J = [O = Math.max(is, Math.min(li, O)), H = Math.max(is, Math.min(li, H))];
-        Yp(V, J, n, e, t, r) ? (P || (d.lineStart(), d.point(V[0], V[1])), d.point(J[0], J[1]), q || d.lineEnd(), B = !1) : q && (d.lineStart(), d.point(O, H), B = !1);
+        var V = [S = Math.max(os, Math.min(ci, S)), P = Math.max(os, Math.min(ci, P))], J = [O = Math.max(os, Math.min(ci, O)), U = Math.max(os, Math.min(ci, U))];
+        ry(V, J, n, e, t, r) ? (N || (d.lineStart(), d.point(V[0], V[1])), d.point(J[0], J[1]), H || d.lineEnd(), B = !1) : H && (d.lineStart(), d.point(O, U), B = !1);
       }
-      S = O, N = H, P = q;
+      S = O, P = U, N = H;
     }
     return F;
   };
 }
-const oc = (n) => n;
-var Ar = 1 / 0, As = Ar, xi = -Ar, Rs = xi, ac = {
-  point: Vp,
-  lineStart: ai,
-  lineEnd: ai,
-  polygonStart: ai,
-  polygonEnd: ai,
+const cc = (n) => n;
+var Rr = 1 / 0, Os = Rr, bi = -Rr, Ds = bi, hc = {
+  point: sy,
+  lineStart: ui,
+  lineEnd: ui,
+  polygonStart: ui,
+  polygonEnd: ui,
   result: function() {
-    var n = [[Ar, As], [xi, Rs]];
-    return xi = Rs = -(As = Ar = 1 / 0), n;
+    var n = [[Rr, Os], [bi, Ds]];
+    return bi = Ds = -(Os = Rr = 1 / 0), n;
   }
 };
-function Vp(n, e) {
-  n < Ar && (Ar = n), n > xi && (xi = n), e < As && (As = e), e > Rs && (Rs = e);
+function sy(n, e) {
+  n < Rr && (Rr = n), n > bi && (bi = n), e < Os && (Os = e), e > Ds && (Ds = e);
 }
-function ol(n) {
+function ll(n) {
   return function(e) {
-    var t = new Ea();
+    var t = new Ca();
     for (var r in n) t[r] = n[r];
     return t.stream = e, t;
   };
 }
-function Ea() {
+function Ca() {
 }
-Ea.prototype = {
-  constructor: Ea,
+Ca.prototype = {
+  constructor: Ca,
   point: function(n, e) {
     this.stream.point(n, e);
   },
@@ -13831,101 +14266,101 @@ Ea.prototype = {
     this.stream.polygonEnd();
   }
 };
-function al(n, e, t) {
+function ul(n, e, t) {
   var r = n.clipExtent && n.clipExtent();
-  return n.scale(150).translate([0, 0]), r != null && n.clipExtent(null), Rp(t, n.stream(ac)), e(ac.result()), r != null && n.clipExtent(r), n;
+  return n.scale(150).translate([0, 0]), r != null && n.clipExtent(null), Wp(t, n.stream(hc)), e(hc.result()), r != null && n.clipExtent(r), n;
 }
-function eg(n, e, t) {
-  return al(n, function(r) {
+function rg(n, e, t) {
+  return ul(n, function(r) {
     var i = e[1][0] - e[0][0], a = e[1][1] - e[0][1], l = Math.min(i / (r[1][0] - r[0][0]), a / (r[1][1] - r[0][1])), u = +e[0][0] + (i - l * (r[1][0] + r[0][0])) / 2, f = +e[0][1] + (a - l * (r[1][1] + r[0][1])) / 2;
     n.scale(150 * l).translate([u, f]);
   }, t);
 }
-function Wp(n, e, t) {
-  return eg(n, [[0, 0], e], t);
+function oy(n, e, t) {
+  return rg(n, [[0, 0], e], t);
 }
-function $p(n, e, t) {
-  return al(n, function(r) {
+function ay(n, e, t) {
+  return ul(n, function(r) {
     var i = +e, a = i / (r[1][0] - r[0][0]), l = (i - a * (r[1][0] + r[0][0])) / 2, u = -a * r[0][1];
     n.scale(150 * a).translate([l, u]);
   }, t);
 }
-function Zp(n, e, t) {
-  return al(n, function(r) {
+function ly(n, e, t) {
+  return ul(n, function(r) {
     var i = +e, a = i / (r[1][1] - r[0][1]), l = -a * r[0][0], u = (i - a * (r[1][1] + r[0][1])) / 2;
     n.scale(150 * a).translate([l, u]);
   }, t);
 }
-var lc = 16, Kp = Ze(30 * Pt);
-function uc(n, e) {
-  return +e ? Qp(n, e) : Jp(n);
+var fc = 16, uy = Ke(30 * Pt);
+function gc(n, e) {
+  return +e ? hy(n, e) : cy(n);
 }
-function Jp(n) {
-  return ol({
+function cy(n) {
+  return ll({
     point: function(e, t) {
       e = n(e, t), this.stream.point(e[0], e[1]);
     }
   });
 }
-function Qp(n, e) {
-  function t(r, i, a, l, u, f, g, d, m, p, y, w, b, M) {
-    var k = g - r, S = d - i, N = k * k + S * S;
-    if (N > 4 * e && b--) {
-      var P = l + p, A = u + y, B = f + w, F = Fi(P * P + A * A + B * B), C = Nr(B /= F), L = et(et(B) - 1) < Ye || et(a - m) < Ye ? (a + m) / 2 : Pr(A, P), T = n(L, C), D = T[0], z = T[1], U = D - r, X = z - i, O = S * U - k * X;
-      (O * O / N > e || et((k * U + S * X) / N - 0.5) > 0.3 || l * p + u * y + f * w < Kp) && (t(r, i, a, l, u, f, D, z, L, P /= F, A /= F, B, b, M), M.point(D, z), t(D, z, L, P, A, B, g, d, m, p, y, w, b, M));
+function hy(n, e) {
+  function t(r, i, a, l, u, f, g, d, m, p, y, w, b, k) {
+    var I = g - r, S = d - i, P = I * I + S * S;
+    if (P > 4 * e && b--) {
+      var N = l + p, A = u + y, B = f + w, F = zi(N * N + A * A + B * B), C = Tr(B /= F), L = tt(tt(B) - 1) < Xe || tt(a - m) < Xe ? (a + m) / 2 : Pr(A, N), T = n(L, C), D = T[0], z = T[1], q = D - r, X = z - i, O = S * q - I * X;
+      (O * O / P > e || tt((I * q + S * X) / P - 0.5) > 0.3 || l * p + u * y + f * w < uy) && (t(r, i, a, l, u, f, D, z, L, N /= F, A /= F, B, b, k), k.point(D, z), t(D, z, L, N, A, B, g, d, m, p, y, w, b, k));
     }
   }
   return function(r) {
-    var i, a, l, u, f, g, d, m, p, y, w, b, M = {
-      point: k,
+    var i, a, l, u, f, g, d, m, p, y, w, b, k = {
+      point: I,
       lineStart: S,
-      lineEnd: P,
+      lineEnd: N,
       polygonStart: function() {
-        r.polygonStart(), M.lineStart = A;
+        r.polygonStart(), k.lineStart = A;
       },
       polygonEnd: function() {
-        r.polygonEnd(), M.lineStart = S;
+        r.polygonEnd(), k.lineStart = S;
       }
     };
-    function k(C, L) {
+    function I(C, L) {
       C = n(C, L), r.point(C[0], C[1]);
     }
     function S() {
-      m = NaN, M.point = N, r.lineStart();
+      m = NaN, k.point = P, r.lineStart();
     }
-    function N(C, L) {
-      var T = Tr([C, L]), D = n(C, L);
-      t(m, p, d, y, w, b, m = D[0], p = D[1], d = C, y = T[0], w = T[1], b = T[2], lc, r), r.point(m, p);
+    function P(C, L) {
+      var T = Ar([C, L]), D = n(C, L);
+      t(m, p, d, y, w, b, m = D[0], p = D[1], d = C, y = T[0], w = T[1], b = T[2], fc, r), r.point(m, p);
     }
-    function P() {
-      M.point = k, r.lineEnd();
+    function N() {
+      k.point = I, r.lineEnd();
     }
     function A() {
-      S(), M.point = B, M.lineEnd = F;
+      S(), k.point = B, k.lineEnd = F;
     }
     function B(C, L) {
-      N(i = C, L), a = m, l = p, u = y, f = w, g = b, M.point = N;
+      P(i = C, L), a = m, l = p, u = y, f = w, g = b, k.point = P;
     }
     function F() {
-      t(m, p, d, y, w, b, a, l, i, u, f, g, lc, r), M.lineEnd = P, P();
+      t(m, p, d, y, w, b, a, l, i, u, f, g, fc, r), k.lineEnd = N, N();
     }
-    return M;
+    return k;
   };
 }
-var jp = ol({
+var fy = ll({
   point: function(n, e) {
     this.stream.point(n * Pt, e * Pt);
   }
 });
-function ey(n) {
-  return ol({
+function gy(n) {
+  return ll({
     point: function(e, t) {
       var r = n(e, t);
       return this.stream.point(r[0], r[1]);
     }
   });
 }
-function ty(n, e, t, r, i) {
+function dy(n, e, t, r, i) {
   function a(l, u) {
     return l *= r, u *= i, [e + n * l, t - n * u];
   }
@@ -13933,104 +14368,104 @@ function ty(n, e, t, r, i) {
     return [(l - e) / n * r, (t - u) / n * i];
   }, a;
 }
-function cc(n, e, t, r, i, a) {
-  if (!a) return ty(n, e, t, r, i);
-  var l = Ze(a), u = Xe(a), f = l * n, g = u * n, d = l / n, m = u / n, p = (u * t - l * e) / n, y = (u * e + l * t) / n;
-  function w(b, M) {
-    return b *= r, M *= i, [f * b - g * M + e, t - g * b - f * M];
+function dc(n, e, t, r, i, a) {
+  if (!a) return dy(n, e, t, r, i);
+  var l = Ke(a), u = Ve(a), f = l * n, g = u * n, d = l / n, m = u / n, p = (u * t - l * e) / n, y = (u * e + l * t) / n;
+  function w(b, k) {
+    return b *= r, k *= i, [f * b - g * k + e, t - g * b - f * k];
   }
-  return w.invert = function(b, M) {
-    return [r * (d * b - m * M + p), i * (y - m * b - d * M)];
+  return w.invert = function(b, k) {
+    return [r * (d * b - m * k + p), i * (y - m * b - d * k)];
   }, w;
 }
-function ny(n) {
-  return ry(function() {
+function my(n) {
+  return vy(function() {
     return n;
   })();
 }
-function ry(n) {
-  var e, t = 150, r = 480, i = 250, a = 0, l = 0, u = 0, f = 0, g = 0, d, m = 0, p = 1, y = 1, w = null, b = sc, M = null, k, S, N, P = oc, A = 0.5, B, F, C, L, T;
+function vy(n) {
+  var e, t = 150, r = 480, i = 250, a = 0, l = 0, u = 0, f = 0, g = 0, d, m = 0, p = 1, y = 1, w = null, b = uc, k = null, I, S, P, N = cc, A = 0.5, B, F, C, L, T;
   function D(O) {
     return C(O[0] * Pt, O[1] * Pt);
   }
   function z(O) {
-    return O = C.invert(O[0], O[1]), O && [O[0] * mn, O[1] * mn];
+    return O = C.invert(O[0], O[1]), O && [O[0] * vn, O[1] * vn];
   }
   D.stream = function(O) {
-    return L && T === O ? L : L = jp(ey(d)(b(B(P(T = O)))));
+    return L && T === O ? L : L = fy(gy(d)(b(B(N(T = O)))));
   }, D.preclip = function(O) {
     return arguments.length ? (b = O, w = void 0, X()) : b;
   }, D.postclip = function(O) {
-    return arguments.length ? (P = O, M = k = S = N = null, X()) : P;
+    return arguments.length ? (N = O, k = I = S = P = null, X()) : N;
   }, D.clipAngle = function(O) {
-    return arguments.length ? (b = +O ? Hp(w = O * Pt) : (w = null, sc), X()) : w * mn;
+    return arguments.length ? (b = +O ? ny(w = O * Pt) : (w = null, uc), X()) : w * vn;
   }, D.clipExtent = function(O) {
-    return arguments.length ? (P = O == null ? (M = k = S = N = null, oc) : Xp(M = +O[0][0], k = +O[0][1], S = +O[1][0], N = +O[1][1]), X()) : M == null ? null : [[M, k], [S, N]];
+    return arguments.length ? (N = O == null ? (k = I = S = P = null, cc) : iy(k = +O[0][0], I = +O[0][1], S = +O[1][0], P = +O[1][1]), X()) : k == null ? null : [[k, I], [S, P]];
   }, D.scale = function(O) {
-    return arguments.length ? (t = +O, U()) : t;
+    return arguments.length ? (t = +O, q()) : t;
   }, D.translate = function(O) {
-    return arguments.length ? (r = +O[0], i = +O[1], U()) : [r, i];
+    return arguments.length ? (r = +O[0], i = +O[1], q()) : [r, i];
   }, D.center = function(O) {
-    return arguments.length ? (a = O[0] % 360 * Pt, l = O[1] % 360 * Pt, U()) : [a * mn, l * mn];
+    return arguments.length ? (a = O[0] % 360 * Pt, l = O[1] % 360 * Pt, q()) : [a * vn, l * vn];
   }, D.rotate = function(O) {
-    return arguments.length ? (u = O[0] % 360 * Pt, f = O[1] % 360 * Pt, g = O.length > 2 ? O[2] % 360 * Pt : 0, U()) : [u * mn, f * mn, g * mn];
+    return arguments.length ? (u = O[0] % 360 * Pt, f = O[1] % 360 * Pt, g = O.length > 2 ? O[2] % 360 * Pt : 0, q()) : [u * vn, f * vn, g * vn];
   }, D.angle = function(O) {
-    return arguments.length ? (m = O % 360 * Pt, U()) : m * mn;
+    return arguments.length ? (m = O % 360 * Pt, q()) : m * vn;
   }, D.reflectX = function(O) {
-    return arguments.length ? (p = O ? -1 : 1, U()) : p < 0;
+    return arguments.length ? (p = O ? -1 : 1, q()) : p < 0;
   }, D.reflectY = function(O) {
-    return arguments.length ? (y = O ? -1 : 1, U()) : y < 0;
+    return arguments.length ? (y = O ? -1 : 1, q()) : y < 0;
   }, D.precision = function(O) {
-    return arguments.length ? (B = uc(F, A = O * O), X()) : Fi(A);
-  }, D.fitExtent = function(O, H) {
-    return eg(D, O, H);
-  }, D.fitSize = function(O, H) {
-    return Wp(D, O, H);
-  }, D.fitWidth = function(O, H) {
-    return $p(D, O, H);
-  }, D.fitHeight = function(O, H) {
-    return Zp(D, O, H);
+    return arguments.length ? (B = gc(F, A = O * O), X()) : zi(A);
+  }, D.fitExtent = function(O, U) {
+    return rg(D, O, U);
+  }, D.fitSize = function(O, U) {
+    return oy(D, O, U);
+  }, D.fitWidth = function(O, U) {
+    return ay(D, O, U);
+  }, D.fitHeight = function(O, U) {
+    return ly(D, O, U);
   };
-  function U() {
-    var O = cc(t, 0, 0, p, y, m).apply(null, e(a, l)), H = cc(t, r - O[0], i - O[1], p, y, m);
-    return d = Op(u, f, g), F = wa(e, H), C = wa(d, F), B = uc(F, A), X();
+  function q() {
+    var O = dc(t, 0, 0, p, y, m).apply(null, e(a, l)), U = dc(t, r - O[0], i - O[1], p, y, m);
+    return d = $p(u, f, g), F = Ea(e, U), C = Ea(d, F), B = gc(F, A), X();
   }
   function X() {
     return L = T = null, D;
   }
   return function() {
-    return e = n.apply(this, arguments), D.invert = e.invert && z, U();
+    return e = n.apply(this, arguments), D.invert = e.invert && z, q();
   };
 }
-function iy(n) {
+function py(n) {
   return function(e, t) {
-    var r = Ze(e), i = Ze(t), a = n(r * i);
+    var r = Ke(e), i = Ke(t), a = n(r * i);
     return a === 1 / 0 ? [2, 0] : [
-      a * i * Xe(e),
-      a * Xe(t)
+      a * i * Ve(e),
+      a * Ve(t)
     ];
   };
 }
-function sy(n) {
+function yy(n) {
   return function(e, t) {
-    var r = Fi(e * e + t * t), i = n(r), a = Xe(i), l = Ze(i);
+    var r = zi(e * e + t * t), i = n(r), a = Ve(i), l = Ke(i);
     return [
       Pr(e * a, r * l),
-      Nr(r && t * a / r)
+      Tr(r && t * a / r)
     ];
   };
 }
-var tg = iy(function(n) {
-  return (n = Kf(n)) && n / Xe(n);
+var ig = py(function(n) {
+  return (n = jf(n)) && n / Ve(n);
 });
-tg.invert = sy(function(n) {
+ig.invert = yy(function(n) {
   return n;
 });
-function oy() {
-  return ny(tg).scale(79.4188).clipAngle(180 - 1e-3);
+function _y() {
+  return my(ig).scale(79.4188).clipAngle(180 - 1e-3);
 }
-var { BufferOp: ay, GeoJSONReader: ly, GeoJSONWriter: uy } = Lp;
-function cy(n, e, t) {
+var { BufferOp: wy, GeoJSONReader: xy, GeoJSONWriter: Ey } = Hp;
+function by(n, e, t) {
   t = t || {};
   var r = t.units || "kilometers", i = t.steps || 8;
   if (!n) throw new Error("geojson is required");
@@ -14041,74 +14476,74 @@ function cy(n, e, t) {
   var a = [];
   switch (n.type) {
     case "GeometryCollection":
-      return ut(n, function(l) {
-        var u = xs(l, e, r, i);
+      return ct(n, function(l) {
+        var u = bs(l, e, r, i);
         u && a.push(u);
       }), ce(a);
     case "FeatureCollection":
       return Le(n, function(l) {
-        var u = xs(l, e, r, i);
+        var u = bs(l, e, r, i);
         u && Le(u, function(f) {
           f && a.push(f);
         });
       }), ce(a);
   }
-  return xs(n, e, r, i);
+  return bs(n, e, r, i);
 }
-function xs(n, e, t, r) {
+function bs(n, e, t, r) {
   var i = n.properties || {}, a = n.type === "Feature" ? n.geometry : n;
   if (a.type === "GeometryCollection") {
     var l = [];
-    return ut(n, function(b) {
-      var M = xs(b, e, t, r);
-      M && l.push(M);
+    return ct(n, function(b) {
+      var k = bs(b, e, t, r);
+      k && l.push(k);
     }), ce(l);
   }
-  var u = hy(a), f = {
+  var u = Cy(a), f = {
     type: a.type,
-    coordinates: rg(a.coordinates, u)
-  }, g = new ly(), d = g.read(f), m = Pi(Or(e, t), "meters"), p = ay.bufferOp(d, m, r), y = new uy();
-  if (p = y.write(p), !ng(p.coordinates)) {
+    coordinates: og(a.coordinates, u)
+  }, g = new xy(), d = g.read(f), m = Ti(Dr(e, t), "meters"), p = wy.bufferOp(d, m, r), y = new Ey();
+  if (p = y.write(p), !sg(p.coordinates)) {
     var w = {
       type: p.type,
-      coordinates: ig(p.coordinates, u)
+      coordinates: ag(p.coordinates, u)
     };
-    return Qe(w, i);
+    return je(w, i);
   }
 }
-function ng(n) {
-  return Array.isArray(n[0]) ? ng(n[0]) : isNaN(n[0]);
+function sg(n) {
+  return Array.isArray(n[0]) ? sg(n[0]) : isNaN(n[0]);
 }
-function rg(n, e) {
+function og(n, e) {
   return typeof n[0] != "object" ? e(n) : n.map(function(t) {
-    return rg(t, e);
+    return og(t, e);
   });
 }
-function ig(n, e) {
+function ag(n, e) {
   return typeof n[0] != "object" ? e.invert(n) : n.map(function(t) {
-    return ig(t, e);
+    return ag(t, e);
   });
 }
-function hy(n) {
-  var e = Ks(n).geometry.coordinates, t = [-e[0], -e[1]];
-  return oy().rotate(t).scale(Be);
+function Cy(n) {
+  var e = Qs(n).geometry.coordinates, t = [-e[0], -e[1]];
+  return _y().rotate(t).scale(ze);
 }
-function ll(n, e = {}) {
+function cl(n, e = {}) {
   let t = 0, r = 0, i = 0;
-  return ut(n, function(a, l, u) {
+  return ct(n, function(a, l, u) {
     let f = e.weight ? u == null ? void 0 : u[e.weight] : void 0;
-    if (f = f ?? 1, !tt(f))
+    if (f = f ?? 1, !nt(f))
       throw new Error(
         "weight value must be a number for feature index " + l
       );
-    f = Number(f), f > 0 && Ve(a, function(g) {
+    f = Number(f), f > 0 && We(a, function(g) {
       t += g[0] * f, r += g[1] * f, i += f;
     });
   }), de([t / i, r / i], e.properties, e);
 }
 function Ut(n, e = {}) {
   let t = 0, r = 0, i = 0;
-  return Ve(
+  return We(
     n,
     function(a) {
       t += a[0], r += a[1], i++;
@@ -14116,11 +14551,11 @@ function Ut(n, e = {}) {
     !0
   ), de([t / i, r / i], e.properties);
 }
-function fy(n, e = {}) {
+function Sy(n, e = {}) {
   if (e = e || {}, !Oe(e)) throw new Error("options is invalid");
   var t = e.counter || 10;
-  if (!tt(t)) throw new Error("counter must be a number");
-  var r = e.weight, i = ll(n, { weight: e.weight }), a = ce([]);
+  if (!nt(t)) throw new Error("counter must be a number");
+  var r = e.weight, i = cl(n, { weight: e.weight }), a = ce([]);
   Le(n, function(u) {
     var f;
     a.features.push(
@@ -14133,7 +14568,7 @@ function fy(n, e = {}) {
     tolerance: e.tolerance,
     medianCandidates: []
   };
-  return sg(
+  return lg(
     i.geometry.coordinates,
     [0, 0],
     a,
@@ -14141,23 +14576,23 @@ function fy(n, e = {}) {
     t
   );
 }
-function sg(n, e, t, r, i) {
+function lg(n, e, t, r, i) {
   var a = r.tolerance || 1e-3, l = 0, u = 0, f = 0, g = 0;
   if (Le(t, function(p) {
     var y, w = (y = p.properties) == null ? void 0 : y.weight, b = w ?? 1;
-    if (b = Number(b), !tt(b)) throw new Error("weight value must be a number");
+    if (b = Number(b), !nt(b)) throw new Error("weight value must be a number");
     if (b > 0) {
       g += 1;
-      var M = b * Ge(p, n);
-      M === 0 && (M = 1);
-      var k = b / M;
-      l += p.geometry.coordinates[0] * k, u += p.geometry.coordinates[1] * k, f += k;
+      var k = b * qe(p, n);
+      k === 0 && (k = 1);
+      var I = b / k;
+      l += p.geometry.coordinates[0] * I, u += p.geometry.coordinates[1] * I, f += I;
     }
   }), g < 1) throw new Error("no features to measure");
   var d = l / f, m = u / f;
   return g === 1 || i === 0 || Math.abs(d - e[0]) < a && Math.abs(m - e[1]) < a ? de([d, m], {
     medianCandidates: r.medianCandidates
-  }) : (r.medianCandidates.push([d, m]), sg(
+  }) : (r.medianCandidates.push([d, m]), lg(
     [d, m],
     n,
     t,
@@ -14165,9 +14600,9 @@ function sg(n, e, t, r, i) {
     i - 1
   ));
 }
-var ul = { exports: {} };
-const gy = /* @__PURE__ */ Xf(_v), dy = /* @__PURE__ */ Xf(kv);
-var Js = { exports: {} }, my = function(e, t, r, i) {
+var hl = { exports: {} };
+const Iy = /* @__PURE__ */ $f(Tv), ky = /* @__PURE__ */ $f(zv);
+var js = { exports: {} }, My = function(e, t, r, i) {
   var a = e[0], l = e[1], u = !1;
   r === void 0 && (r = 0), i === void 0 && (i = t.length);
   for (var f = (i - r) / 2, g = 0, d = f - 1; g < f; d = g++) {
@@ -14175,7 +14610,7 @@ var Js = { exports: {} }, my = function(e, t, r, i) {
     b && (u = !u);
   }
   return u;
-}, vy = function(e, t, r, i) {
+}, Ly = function(e, t, r, i) {
   var a = e[0], l = e[1], u = !1;
   r === void 0 && (r = 0), i === void 0 && (i = t.length);
   for (var f = i - r, g = 0, d = f - 1; g < f; d = g++) {
@@ -14183,65 +14618,65 @@ var Js = { exports: {} }, my = function(e, t, r, i) {
     b && (u = !u);
   }
   return u;
-}, og = my, ag = vy;
-Js.exports = function(e, t, r, i) {
-  return t.length > 0 && Array.isArray(t[0]) ? ag(e, t, r, i) : og(e, t, r, i);
+}, ug = My, cg = Ly;
+js.exports = function(e, t, r, i) {
+  return t.length > 0 && Array.isArray(t[0]) ? cg(e, t, r, i) : ug(e, t, r, i);
 };
-Js.exports.nested = ag;
-Js.exports.flat = og;
-var py = Js.exports, ba = { exports: {} };
+js.exports.nested = cg;
+js.exports.flat = ug;
+var Ny = js.exports, Sa = { exports: {} };
 (function(n, e) {
   (function(t, r) {
     r(e);
-  })(Yf, function(t) {
+  })(Wf, function(t) {
     const i = 33306690738754706e-32;
-    function a(b, M, k, S, N) {
-      let P, A, B, F, C = M[0], L = S[0], T = 0, D = 0;
-      L > C == L > -C ? (P = C, C = M[++T]) : (P = L, L = S[++D]);
+    function a(b, k, I, S, P) {
+      let N, A, B, F, C = k[0], L = S[0], T = 0, D = 0;
+      L > C == L > -C ? (N = C, C = k[++T]) : (N = L, L = S[++D]);
       let z = 0;
-      if (T < b && D < k) for (L > C == L > -C ? (B = P - ((A = C + P) - C), C = M[++T]) : (B = P - ((A = L + P) - L), L = S[++D]), P = A, B !== 0 && (N[z++] = B); T < b && D < k; ) L > C == L > -C ? (B = P - ((A = P + C) - (F = A - P)) + (C - F), C = M[++T]) : (B = P - ((A = P + L) - (F = A - P)) + (L - F), L = S[++D]), P = A, B !== 0 && (N[z++] = B);
-      for (; T < b; ) B = P - ((A = P + C) - (F = A - P)) + (C - F), C = M[++T], P = A, B !== 0 && (N[z++] = B);
-      for (; D < k; ) B = P - ((A = P + L) - (F = A - P)) + (L - F), L = S[++D], P = A, B !== 0 && (N[z++] = B);
-      return P === 0 && z !== 0 || (N[z++] = P), z;
+      if (T < b && D < I) for (L > C == L > -C ? (B = N - ((A = C + N) - C), C = k[++T]) : (B = N - ((A = L + N) - L), L = S[++D]), N = A, B !== 0 && (P[z++] = B); T < b && D < I; ) L > C == L > -C ? (B = N - ((A = N + C) - (F = A - N)) + (C - F), C = k[++T]) : (B = N - ((A = N + L) - (F = A - N)) + (L - F), L = S[++D]), N = A, B !== 0 && (P[z++] = B);
+      for (; T < b; ) B = N - ((A = N + C) - (F = A - N)) + (C - F), C = k[++T], N = A, B !== 0 && (P[z++] = B);
+      for (; D < I; ) B = N - ((A = N + L) - (F = A - N)) + (L - F), L = S[++D], N = A, B !== 0 && (P[z++] = B);
+      return N === 0 && z !== 0 || (P[z++] = N), z;
     }
     function l(b) {
       return new Float64Array(b);
     }
     const u = 33306690738754716e-32, f = 22204460492503146e-32, g = 11093356479670487e-47, d = l(4), m = l(8), p = l(12), y = l(16), w = l(4);
-    t.orient2d = function(b, M, k, S, N, P) {
-      const A = (M - P) * (k - N), B = (b - N) * (S - P), F = A - B;
+    t.orient2d = function(b, k, I, S, P, N) {
+      const A = (k - N) * (I - P), B = (b - P) * (S - N), F = A - B;
       if (A === 0 || B === 0 || A > 0 != B > 0) return F;
       const C = Math.abs(A + B);
-      return Math.abs(F) >= u * C ? F : -function(L, T, D, z, U, X, O) {
-        let H, q, V, J, W, j, Q, re, ee, te, se, fe, Z, Fe, _e, ae, Y, Ie;
-        const Ne = L - U, be = D - U, xt = T - X, mt = z - X;
-        W = (_e = (re = Ne - (Q = (j = 134217729 * Ne) - (j - Ne))) * (te = mt - (ee = (j = 134217729 * mt) - (j - mt))) - ((Fe = Ne * mt) - Q * ee - re * ee - Q * te)) - (se = _e - (Y = (re = xt - (Q = (j = 134217729 * xt) - (j - xt))) * (te = be - (ee = (j = 134217729 * be) - (j - be))) - ((ae = xt * be) - Q * ee - re * ee - Q * te))), d[0] = _e - (se + W) + (W - Y), W = (Z = Fe - ((fe = Fe + se) - (W = fe - Fe)) + (se - W)) - (se = Z - ae), d[1] = Z - (se + W) + (W - ae), W = (Ie = fe + se) - fe, d[2] = fe - (Ie - W) + (se - W), d[3] = Ie;
-        let Zt = function(ho, Ee) {
-          let Sn = Ee[0];
-          for (let kn = 1; kn < ho; kn++) Sn += Ee[kn];
-          return Sn;
+      return Math.abs(F) >= u * C ? F : -function(L, T, D, z, q, X, O) {
+        let U, H, V, J, W, j, Q, re, ee, te, se, fe, Z, Be, _e, ae, Y, ke;
+        const Pe = L - q, be = D - q, Et = T - X, vt = z - X;
+        W = (_e = (re = Pe - (Q = (j = 134217729 * Pe) - (j - Pe))) * (te = vt - (ee = (j = 134217729 * vt) - (j - vt))) - ((Be = Pe * vt) - Q * ee - re * ee - Q * te)) - (se = _e - (Y = (re = Et - (Q = (j = 134217729 * Et) - (j - Et))) * (te = be - (ee = (j = 134217729 * be) - (j - be))) - ((ae = Et * be) - Q * ee - re * ee - Q * te))), d[0] = _e - (se + W) + (W - Y), W = (Z = Be - ((fe = Be + se) - (W = fe - Be)) + (se - W)) - (se = Z - ae), d[1] = Z - (se + W) + (W - ae), W = (ke = fe + se) - fe, d[2] = fe - (ke - W) + (se - W), d[3] = ke;
+        let Kt = function(go, Ee) {
+          let In = Ee[0];
+          for (let kn = 1; kn < go; kn++) In += Ee[kn];
+          return In;
         }(4, d), ie = f * O;
-        if (Zt >= ie || -Zt >= ie || (H = L - (Ne + (W = L - Ne)) + (W - U), V = D - (be + (W = D - be)) + (W - U), q = T - (xt + (W = T - xt)) + (W - X), J = z - (mt + (W = z - mt)) + (W - X), H === 0 && q === 0 && V === 0 && J === 0) || (ie = g * O + i * Math.abs(Zt), (Zt += Ne * J + mt * H - (xt * V + be * q)) >= ie || -Zt >= ie)) return Zt;
-        W = (_e = (re = H - (Q = (j = 134217729 * H) - (j - H))) * (te = mt - (ee = (j = 134217729 * mt) - (j - mt))) - ((Fe = H * mt) - Q * ee - re * ee - Q * te)) - (se = _e - (Y = (re = q - (Q = (j = 134217729 * q) - (j - q))) * (te = be - (ee = (j = 134217729 * be) - (j - be))) - ((ae = q * be) - Q * ee - re * ee - Q * te))), w[0] = _e - (se + W) + (W - Y), W = (Z = Fe - ((fe = Fe + se) - (W = fe - Fe)) + (se - W)) - (se = Z - ae), w[1] = Z - (se + W) + (W - ae), W = (Ie = fe + se) - fe, w[2] = fe - (Ie - W) + (se - W), w[3] = Ie;
-        const Bi = a(4, d, 4, w, m);
-        W = (_e = (re = Ne - (Q = (j = 134217729 * Ne) - (j - Ne))) * (te = J - (ee = (j = 134217729 * J) - (j - J))) - ((Fe = Ne * J) - Q * ee - re * ee - Q * te)) - (se = _e - (Y = (re = xt - (Q = (j = 134217729 * xt) - (j - xt))) * (te = V - (ee = (j = 134217729 * V) - (j - V))) - ((ae = xt * V) - Q * ee - re * ee - Q * te))), w[0] = _e - (se + W) + (W - Y), W = (Z = Fe - ((fe = Fe + se) - (W = fe - Fe)) + (se - W)) - (se = Z - ae), w[1] = Z - (se + W) + (W - ae), W = (Ie = fe + se) - fe, w[2] = fe - (Ie - W) + (se - W), w[3] = Ie;
-        const zi = a(Bi, m, 4, w, p);
-        W = (_e = (re = H - (Q = (j = 134217729 * H) - (j - H))) * (te = J - (ee = (j = 134217729 * J) - (j - J))) - ((Fe = H * J) - Q * ee - re * ee - Q * te)) - (se = _e - (Y = (re = q - (Q = (j = 134217729 * q) - (j - q))) * (te = V - (ee = (j = 134217729 * V) - (j - V))) - ((ae = q * V) - Q * ee - re * ee - Q * te))), w[0] = _e - (se + W) + (W - Y), W = (Z = Fe - ((fe = Fe + se) - (W = fe - Fe)) + (se - W)) - (se = Z - ae), w[1] = Z - (se + W) + (W - ae), W = (Ie = fe + se) - fe, w[2] = fe - (Ie - W) + (se - W), w[3] = Ie;
-        const hn = a(zi, p, 4, w, y);
-        return y[hn - 1];
-      }(b, M, k, S, N, P, C);
-    }, t.orient2dfast = function(b, M, k, S, N, P) {
-      return (M - P) * (k - N) - (b - N) * (S - P);
+        if (Kt >= ie || -Kt >= ie || (U = L - (Pe + (W = L - Pe)) + (W - q), V = D - (be + (W = D - be)) + (W - q), H = T - (Et + (W = T - Et)) + (W - X), J = z - (vt + (W = z - vt)) + (W - X), U === 0 && H === 0 && V === 0 && J === 0) || (ie = g * O + i * Math.abs(Kt), (Kt += Pe * J + vt * U - (Et * V + be * H)) >= ie || -Kt >= ie)) return Kt;
+        W = (_e = (re = U - (Q = (j = 134217729 * U) - (j - U))) * (te = vt - (ee = (j = 134217729 * vt) - (j - vt))) - ((Be = U * vt) - Q * ee - re * ee - Q * te)) - (se = _e - (Y = (re = H - (Q = (j = 134217729 * H) - (j - H))) * (te = be - (ee = (j = 134217729 * be) - (j - be))) - ((ae = H * be) - Q * ee - re * ee - Q * te))), w[0] = _e - (se + W) + (W - Y), W = (Z = Be - ((fe = Be + se) - (W = fe - Be)) + (se - W)) - (se = Z - ae), w[1] = Z - (se + W) + (W - ae), W = (ke = fe + se) - fe, w[2] = fe - (ke - W) + (se - W), w[3] = ke;
+        const Gi = a(4, d, 4, w, m);
+        W = (_e = (re = Pe - (Q = (j = 134217729 * Pe) - (j - Pe))) * (te = J - (ee = (j = 134217729 * J) - (j - J))) - ((Be = Pe * J) - Q * ee - re * ee - Q * te)) - (se = _e - (Y = (re = Et - (Q = (j = 134217729 * Et) - (j - Et))) * (te = V - (ee = (j = 134217729 * V) - (j - V))) - ((ae = Et * V) - Q * ee - re * ee - Q * te))), w[0] = _e - (se + W) + (W - Y), W = (Z = Be - ((fe = Be + se) - (W = fe - Be)) + (se - W)) - (se = Z - ae), w[1] = Z - (se + W) + (W - ae), W = (ke = fe + se) - fe, w[2] = fe - (ke - W) + (se - W), w[3] = ke;
+        const qi = a(Gi, m, 4, w, p);
+        W = (_e = (re = U - (Q = (j = 134217729 * U) - (j - U))) * (te = J - (ee = (j = 134217729 * J) - (j - J))) - ((Be = U * J) - Q * ee - re * ee - Q * te)) - (se = _e - (Y = (re = H - (Q = (j = 134217729 * H) - (j - H))) * (te = V - (ee = (j = 134217729 * V) - (j - V))) - ((ae = H * V) - Q * ee - re * ee - Q * te))), w[0] = _e - (se + W) + (W - Y), W = (Z = Be - ((fe = Be + se) - (W = fe - Be)) + (se - W)) - (se = Z - ae), w[1] = Z - (se + W) + (W - ae), W = (ke = fe + se) - fe, w[2] = fe - (ke - W) + (se - W), w[3] = ke;
+        const fn = a(qi, p, 4, w, y);
+        return y[fn - 1];
+      }(b, k, I, S, P, N, C);
+    }, t.orient2dfast = function(b, k, I, S, P, N) {
+      return (k - N) * (I - P) - (b - P) * (S - N);
     }, Object.defineProperty(t, "__esModule", { value: !0 });
   });
-})(ba, ba.exports);
-var yy = ba.exports, hc = gy, Es = dy, _y = py, wy = yy.orient2d;
-Es.default && (Es = Es.default);
-ul.exports = lg;
-ul.exports.default = lg;
-function lg(n, e, t) {
+})(Sa, Sa.exports);
+var Py = Sa.exports, mc = Iy, Cs = ky, Ty = Ny, Ay = Py.orient2d;
+Cs.default && (Cs = Cs.default);
+hl.exports = hg;
+hl.exports.default = hg;
+function hg(n, e, t) {
   e = Math.max(0, e === void 0 ? 2 : e), t = t || 0;
-  var r = Sy(n), i = new hc(16);
+  var r = By(n), i = new mc(16);
   i.toBBox = function(S) {
     return {
       minX: S[0],
@@ -14249,91 +14684,91 @@ function lg(n, e, t) {
       maxX: S[0],
       maxY: S[1]
     };
-  }, i.compareMinX = function(S, N) {
-    return S[0] - N[0];
-  }, i.compareMinY = function(S, N) {
-    return S[1] - N[1];
+  }, i.compareMinX = function(S, P) {
+    return S[0] - P[0];
+  }, i.compareMinY = function(S, P) {
+    return S[1] - P[1];
   }, i.load(n);
   for (var a = [], l = 0, u; l < r.length; l++) {
     var f = r[l];
-    i.remove(f), u = dc(f, u), a.push(u);
+    i.remove(f), u = yc(f, u), a.push(u);
   }
-  var g = new hc(16);
-  for (l = 0; l < a.length; l++) g.insert(Wo(a[l]));
+  var g = new mc(16);
+  for (l = 0; l < a.length; l++) g.insert(Zo(a[l]));
   for (var d = e * e, m = t * t; a.length; ) {
-    var p = a.shift(), y = p.p, w = p.next.p, b = $o(y, w);
+    var p = a.shift(), y = p.p, w = p.next.p, b = Ko(y, w);
     if (!(b < m)) {
-      var M = b / d;
-      f = xy(i, p.prev.p, y, w, p.next.next.p, M, g), f && Math.min($o(f, y), $o(f, w)) <= M && (a.push(p), a.push(dc(f, p)), i.remove(f), g.remove(p), g.insert(Wo(p)), g.insert(Wo(p.next)));
+      var k = b / d;
+      f = Ry(i, p.prev.p, y, w, p.next.next.p, k, g), f && Math.min(Ko(f, y), Ko(f, w)) <= k && (a.push(p), a.push(yc(f, p)), i.remove(f), g.remove(p), g.insert(Zo(p)), g.insert(Zo(p.next)));
     }
   }
   p = u;
-  var k = [];
+  var I = [];
   do
-    k.push(p.p), p = p.next;
+    I.push(p.p), p = p.next;
   while (p !== u);
-  return k.push(p.p), k;
+  return I.push(p.p), I;
 }
-function xy(n, e, t, r, i, a, l) {
-  for (var u = new Es([], Ey), f = n.data; f; ) {
+function Ry(n, e, t, r, i, a, l) {
+  for (var u = new Cs([], Oy), f = n.data; f; ) {
     for (var g = 0; g < f.children.length; g++) {
-      var d = f.children[g], m = f.leaf ? Zo(d, t, r) : by(t, r, d);
+      var d = f.children[g], m = f.leaf ? Jo(d, t, r) : Dy(t, r, d);
       m > a || u.push({
         node: d,
         dist: m
       });
     }
     for (; u.length && !u.peek().node.children; ) {
-      var p = u.pop(), y = p.node, w = Zo(y, e, t), b = Zo(y, r, i);
-      if (p.dist < w && p.dist < b && gc(t, y, l) && gc(r, y, l)) return y;
+      var p = u.pop(), y = p.node, w = Jo(y, e, t), b = Jo(y, r, i);
+      if (p.dist < w && p.dist < b && pc(t, y, l) && pc(r, y, l)) return y;
     }
     f = u.pop(), f && (f = f.node);
   }
   return null;
 }
-function Ey(n, e) {
+function Oy(n, e) {
   return n.dist - e.dist;
 }
-function by(n, e, t) {
-  if (fc(n, t) || fc(e, t)) return 0;
-  var r = ss(n[0], n[1], e[0], e[1], t.minX, t.minY, t.maxX, t.minY);
+function Dy(n, e, t) {
+  if (vc(n, t) || vc(e, t)) return 0;
+  var r = as(n[0], n[1], e[0], e[1], t.minX, t.minY, t.maxX, t.minY);
   if (r === 0) return 0;
-  var i = ss(n[0], n[1], e[0], e[1], t.minX, t.minY, t.minX, t.maxY);
+  var i = as(n[0], n[1], e[0], e[1], t.minX, t.minY, t.minX, t.maxY);
   if (i === 0) return 0;
-  var a = ss(n[0], n[1], e[0], e[1], t.maxX, t.minY, t.maxX, t.maxY);
+  var a = as(n[0], n[1], e[0], e[1], t.maxX, t.minY, t.maxX, t.maxY);
   if (a === 0) return 0;
-  var l = ss(n[0], n[1], e[0], e[1], t.minX, t.maxY, t.maxX, t.maxY);
+  var l = as(n[0], n[1], e[0], e[1], t.minX, t.maxY, t.maxX, t.maxY);
   return l === 0 ? 0 : Math.min(r, i, a, l);
 }
-function fc(n, e) {
+function vc(n, e) {
   return n[0] >= e.minX && n[0] <= e.maxX && n[1] >= e.minY && n[1] <= e.maxY;
 }
-function gc(n, e, t) {
+function pc(n, e, t) {
   for (var r = Math.min(n[0], e[0]), i = Math.min(n[1], e[1]), a = Math.max(n[0], e[0]), l = Math.max(n[1], e[1]), u = t.search({ minX: r, minY: i, maxX: a, maxY: l }), f = 0; f < u.length; f++)
-    if (Cy(u[f].p, u[f].next.p, n, e)) return !1;
+    if (Fy(u[f].p, u[f].next.p, n, e)) return !1;
   return !0;
 }
-function _r(n, e, t) {
-  return wy(n[0], n[1], e[0], e[1], t[0], t[1]);
+function wr(n, e, t) {
+  return Ay(n[0], n[1], e[0], e[1], t[0], t[1]);
 }
-function Cy(n, e, t, r) {
-  return n !== r && e !== t && _r(n, e, t) > 0 != _r(n, e, r) > 0 && _r(t, r, n) > 0 != _r(t, r, e) > 0;
+function Fy(n, e, t, r) {
+  return n !== r && e !== t && wr(n, e, t) > 0 != wr(n, e, r) > 0 && wr(t, r, n) > 0 != wr(t, r, e) > 0;
 }
-function Wo(n) {
+function Zo(n) {
   var e = n.p, t = n.next.p;
   return n.minX = Math.min(e[0], t[0]), n.minY = Math.min(e[1], t[1]), n.maxX = Math.max(e[0], t[0]), n.maxY = Math.max(e[1], t[1]), n;
 }
-function Sy(n) {
+function By(n) {
   for (var e = n[0], t = n[0], r = n[0], i = n[0], a = 0; a < n.length; a++) {
     var l = n[a];
     l[0] < e[0] && (e = l), l[0] > r[0] && (r = l), l[1] < t[1] && (t = l), l[1] > i[1] && (i = l);
   }
   var u = [e, t, r, i], f = u.slice();
   for (a = 0; a < n.length; a++)
-    _y(n[a], u) || f.push(n[a]);
-  return Iy(f);
+    Ty(n[a], u) || f.push(n[a]);
+  return Gy(f);
 }
-function dc(n, e) {
+function yc(n, e) {
   var t = {
     p: n,
     prev: null,
@@ -14345,11 +14780,11 @@ function dc(n, e) {
   };
   return e ? (t.next = e.next, t.prev = e, e.next.prev = t, e.next = t) : (t.prev = t, t.next = t), t;
 }
-function $o(n, e) {
+function Ko(n, e) {
   var t = n[0] - e[0], r = n[1] - e[1];
   return t * t + r * r;
 }
-function Zo(n, e, t) {
+function Jo(n, e, t) {
   var r = e[0], i = e[1], a = t[0] - r, l = t[1] - i;
   if (a !== 0 || l !== 0) {
     var u = ((n[0] - r) * a + (n[1] - i) * l) / (a * a + l * l);
@@ -14357,83 +14792,83 @@ function Zo(n, e, t) {
   }
   return a = n[0] - r, l = n[1] - i, a * a + l * l;
 }
-function ss(n, e, t, r, i, a, l, u) {
-  var f = t - n, g = r - e, d = l - i, m = u - a, p = n - i, y = e - a, w = f * f + g * g, b = f * d + g * m, M = d * d + m * m, k = f * p + g * y, S = d * p + m * y, N = w * M - b * b, P, A, B, F, C = N, L = N;
-  N === 0 ? (A = 0, C = 1, F = S, L = M) : (A = b * S - M * k, F = w * S - b * k, A < 0 ? (A = 0, F = S, L = M) : A > C && (A = C, F = S + b, L = M)), F < 0 ? (F = 0, -k < 0 ? A = 0 : -k > w ? A = C : (A = -k, C = w)) : F > L && (F = L, -k + b < 0 ? A = 0 : -k + b > w ? A = C : (A = -k + b, C = w)), P = A === 0 ? 0 : A / C, B = F === 0 ? 0 : F / L;
-  var T = (1 - P) * n + P * t, D = (1 - P) * e + P * r, z = (1 - B) * i + B * l, U = (1 - B) * a + B * u, X = z - T, O = U - D;
+function as(n, e, t, r, i, a, l, u) {
+  var f = t - n, g = r - e, d = l - i, m = u - a, p = n - i, y = e - a, w = f * f + g * g, b = f * d + g * m, k = d * d + m * m, I = f * p + g * y, S = d * p + m * y, P = w * k - b * b, N, A, B, F, C = P, L = P;
+  P === 0 ? (A = 0, C = 1, F = S, L = k) : (A = b * S - k * I, F = w * S - b * I, A < 0 ? (A = 0, F = S, L = k) : A > C && (A = C, F = S + b, L = k)), F < 0 ? (F = 0, -I < 0 ? A = 0 : -I > w ? A = C : (A = -I, C = w)) : F > L && (F = L, -I + b < 0 ? A = 0 : -I + b > w ? A = C : (A = -I + b, C = w)), N = A === 0 ? 0 : A / C, B = F === 0 ? 0 : F / L;
+  var T = (1 - N) * n + N * t, D = (1 - N) * e + N * r, z = (1 - B) * i + B * l, q = (1 - B) * a + B * u, X = z - T, O = q - D;
   return X * X + O * O;
 }
-function ky(n, e) {
+function zy(n, e) {
   return n[0] === e[0] ? n[1] - e[1] : n[0] - e[0];
 }
-function Iy(n) {
-  n.sort(ky);
+function Gy(n) {
+  n.sort(zy);
   for (var e = [], t = 0; t < n.length; t++) {
-    for (; e.length >= 2 && _r(e[e.length - 2], e[e.length - 1], n[t]) <= 0; )
+    for (; e.length >= 2 && wr(e[e.length - 2], e[e.length - 1], n[t]) <= 0; )
       e.pop();
     e.push(n[t]);
   }
   for (var r = [], i = n.length - 1; i >= 0; i--) {
-    for (; r.length >= 2 && _r(r[r.length - 2], r[r.length - 1], n[i]) <= 0; )
+    for (; r.length >= 2 && wr(r[r.length - 2], r[r.length - 1], n[i]) <= 0; )
       r.pop();
     r.push(n[i]);
   }
   return r.pop(), e.pop(), e.concat(r);
 }
-var My = ul.exports;
-const Ly = /* @__PURE__ */ Di(My);
-function ug(n, e = {}) {
+var qy = hl.exports;
+const Hy = /* @__PURE__ */ Bi(qy);
+function fg(n, e = {}) {
   e.concavity = e.concavity || 1 / 0;
   const t = [];
-  if (Ve(n, (i) => {
+  if (We(n, (i) => {
     t.push([i[0], i[1]]);
   }), !t.length)
     return null;
-  const r = Ly(t, e.concavity);
+  const r = Hy(t, e.concavity);
   return r.length > 3 ? pe([r], e.properties) : null;
 }
-function cg(n, e = {}) {
-  switch (Ct(n)) {
+function gg(n, e = {}) {
+  switch (St(n)) {
     case "Point":
       return de(Me(n), e.properties);
     case "Polygon":
       var t = [];
-      Ve(n, function(P) {
-        t.push(P);
+      We(n, function(N) {
+        t.push(N);
       });
-      var r = Ut(n, { properties: e.properties }), i = r.geometry.coordinates, a = 0, l = 0, u = 0, f, g, d, m, p, y, w, b, M = t.map(function(P) {
-        return [P[0] - i[0], P[1] - i[1]];
+      var r = Ut(n, { properties: e.properties }), i = r.geometry.coordinates, a = 0, l = 0, u = 0, f, g, d, m, p, y, w, b, k = t.map(function(N) {
+        return [N[0] - i[0], N[1] - i[1]];
       });
       for (f = 0; f < t.length - 1; f++)
-        g = M[f], m = g[0], y = g[1], d = M[f + 1], p = d[0], w = d[1], b = m * w - p * y, u += b, a += (m + p) * b, l += (y + w) * b;
+        g = k[f], m = g[0], y = g[1], d = k[f + 1], p = d[0], w = d[1], b = m * w - p * y, u += b, a += (m + p) * b, l += (y + w) * b;
       if (u === 0)
         return r;
-      var k = u * 0.5, S = 1 / (6 * k);
+      var I = u * 0.5, S = 1 / (6 * I);
       return de(
         [i[0] + S * a, i[1] + S * l],
         e.properties
       );
     default:
-      var N = ug(n);
-      return N ? cg(N, { properties: e.properties }) : Ut(n, { properties: e.properties });
+      var P = fg(n);
+      return P ? gg(P, { properties: e.properties }) : Ut(n, { properties: e.properties });
   }
 }
-function cl(n, e, t = {}) {
+function fl(n, e, t = {}) {
   const r = t.steps || 64, i = t.properties ? t.properties : !Array.isArray(n) && n.type === "Feature" && n.properties ? n.properties : {}, a = [];
   for (let l = 0; l < r; l++)
     a.push(
-      un(n, e, l * -360 / r, t).geometry.coordinates
+      cn(n, e, l * -360 / r, t).geometry.coordinates
     );
   return a.push(a[0]), pe([a], i);
 }
-function it(n) {
+function st(n) {
   if (!n)
     throw new Error("geojson is required");
   switch (n.type) {
     case "Feature":
-      return hg(n);
+      return dg(n);
     case "FeatureCollection":
-      return Py(n);
+      return Uy(n);
     case "Point":
     case "LineString":
     case "Polygon":
@@ -14441,12 +14876,12 @@ function it(n) {
     case "MultiLineString":
     case "MultiPolygon":
     case "GeometryCollection":
-      return hl(n);
+      return gl(n);
     default:
       throw new Error("unknown GeoJSON type");
   }
 }
-function hg(n) {
+function dg(n) {
   const e = { type: "Feature" };
   return Object.keys(n).forEach((t) => {
     switch (t) {
@@ -14457,16 +14892,16 @@ function hg(n) {
       default:
         e[t] = n[t];
     }
-  }), e.properties = Qs(n.properties), n.geometry == null ? e.geometry = null : e.geometry = hl(n.geometry), e;
+  }), e.properties = eo(n.properties), n.geometry == null ? e.geometry = null : e.geometry = gl(n.geometry), e;
 }
-function Qs(n) {
+function eo(n) {
   const e = {};
   return n && Object.keys(n).forEach((t) => {
     const r = n[t];
-    typeof r == "object" ? r === null ? e[t] = null : Array.isArray(r) ? e[t] = r.map((i) => i) : e[t] = Qs(r) : e[t] = r;
+    typeof r == "object" ? r === null ? e[t] = null : Array.isArray(r) ? e[t] = r.map((i) => i) : e[t] = eo(r) : e[t] = r;
   }), e;
 }
-function Py(n) {
+function Uy(n) {
   const e = { type: "FeatureCollection" };
   return Object.keys(n).forEach((t) => {
     switch (t) {
@@ -14476,17 +14911,17 @@ function Py(n) {
       default:
         e[t] = n[t];
     }
-  }), e.features = n.features.map((t) => hg(t)), e;
+  }), e.features = n.features.map((t) => dg(t)), e;
 }
-function hl(n) {
+function gl(n) {
   const e = { type: n.type };
-  return n.bbox && (e.bbox = n.bbox), n.type === "GeometryCollection" ? (e.geometries = n.geometries.map((t) => hl(t)), e) : (e.coordinates = fg(n.coordinates), e);
+  return n.bbox && (e.bbox = n.bbox), n.type === "GeometryCollection" ? (e.geometries = n.geometries.map((t) => gl(t)), e) : (e.coordinates = mg(n.coordinates), e);
 }
-function fg(n) {
+function mg(n) {
   const e = n;
-  return typeof e[0] != "object" ? e.slice() : e.map((t) => fg(t));
+  return typeof e[0] != "object" ? e.slice() : e.map((t) => mg(t));
 }
-function gg(n, e) {
+function vg(n, e) {
   if (!n) throw new Error("geojson is required");
   if (n.type !== "FeatureCollection")
     throw new Error("geojson must be a FeatureCollection");
@@ -14494,24 +14929,24 @@ function gg(n, e) {
     throw new Error("filter is required");
   var t = [];
   return Le(n, function(r) {
-    js(r.properties, e) && t.push(r);
+    to(r.properties, e) && t.push(r);
   }), ce(t);
 }
-function fl(n, e, t) {
+function dl(n, e, t) {
   if (!n) throw new Error("geojson is required");
   if (n.type !== "FeatureCollection")
     throw new Error("geojson must be a FeatureCollection");
   if (e == null)
     throw new Error("property is required");
-  for (var r = gl(n, e), i = Object.keys(r), a = 0; a < i.length; a++) {
+  for (var r = ml(n, e), i = Object.keys(r), a = 0; a < i.length; a++) {
     for (var l = i[a], u = r[l], f = [], g = 0; g < u.length; g++)
       f.push(n.features[u[g]]);
     t(ce(f), l, a);
   }
 }
-function dg(n, e, t, r) {
+function pg(n, e, t, r) {
   var i = r;
-  return fl(
+  return dl(
     n,
     e,
     function(a, l, u) {
@@ -14524,7 +14959,7 @@ function dg(n, e, t, r) {
     }
   ), i;
 }
-function gl(n, e) {
+function ml(n, e) {
   var t = {};
   return Le(n, function(r, i) {
     var a = r.properties || {};
@@ -14534,26 +14969,26 @@ function gl(n, e) {
     }
   }), t;
 }
-function js(n, e) {
+function to(n, e) {
   if (n === void 0) return !1;
   var t = typeof e;
   if (t === "number" || t === "string")
     return Object.prototype.hasOwnProperty.call(n, e);
   if (Array.isArray(e)) {
     for (var r = 0; r < e.length; r++)
-      if (!js(n, e[r])) return !1;
+      if (!to(n, e[r])) return !1;
     return !0;
   } else
-    return dl(n, e);
+    return vl(n, e);
 }
-function dl(n, e) {
+function vl(n, e) {
   for (var t = Object.keys(e), r = 0; r < t.length; r++) {
     var i = t[r];
     if (n[i] !== e[i]) return !1;
   }
   return !0;
 }
-function mg(n, e) {
+function yg(n, e) {
   if (!e) return {};
   if (!e.length) return {};
   for (var t = {}, r = 0; r < e.length; r++) {
@@ -14562,54 +14997,54 @@ function mg(n, e) {
   }
   return t;
 }
-const Ny = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Yy = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  applyFilter: js,
-  clusterEach: fl,
-  clusterReduce: dg,
-  createBins: gl,
-  filterProperties: mg,
-  getCluster: gg,
-  propertiesContainsFilter: dl
+  applyFilter: to,
+  clusterEach: dl,
+  clusterReduce: pg,
+  createBins: ml,
+  filterProperties: yg,
+  getCluster: vg,
+  propertiesContainsFilter: vl
 }, Symbol.toStringTag, { value: "Module" }));
-function Ty(n, e, t = {}) {
-  t.mutate !== !0 && (n = it(n));
-  const r = t.minPoints || 3, i = Ni(e, t.units);
-  var a = new Dr(n.features.length), l = n.features.map((y) => !1), u = n.features.map((y) => !1), f = n.features.map((y) => !1), g = n.features.map((y) => -1);
+function Xy(n, e, t = {}) {
+  t.mutate !== !0 && (n = st(n));
+  const r = t.minPoints || 3, i = Ai(e, t.units);
+  var a = new Fr(n.features.length), l = n.features.map((y) => !1), u = n.features.map((y) => !1), f = n.features.map((y) => !1), g = n.features.map((y) => -1);
   a.load(
     n.features.map((y, w) => {
-      var [b, M] = y.geometry.coordinates;
+      var [b, k] = y.geometry.coordinates;
       return {
         minX: b,
-        minY: M,
+        minY: k,
         maxX: b,
-        maxY: M,
+        maxY: k,
         index: w
       };
     })
   );
   const d = (y) => {
-    const w = n.features[y], [b, M] = w.geometry.coordinates, k = Math.max(M - i, -90), S = Math.min(M + i, 90), N = function() {
-      return k < 0 && S > 0 ? i : Math.abs(k) < Math.abs(S) ? i / Math.cos(je(S)) : i / Math.cos(je(k));
-    }(), P = Math.max(b - N, -360), A = Math.min(b + N, 360), B = { minX: P, minY: k, maxX: A, maxY: S };
+    const w = n.features[y], [b, k] = w.geometry.coordinates, I = Math.max(k - i, -90), S = Math.min(k + i, 90), P = function() {
+      return I < 0 && S > 0 ? i : Math.abs(I) < Math.abs(S) ? i / Math.cos(et(S)) : i / Math.cos(et(I));
+    }(), N = Math.max(b - P, -360), A = Math.min(b + P, 360), B = { minX: N, minY: I, maxX: A, maxY: S };
     return a.search(B).filter(
       (F) => {
         const C = F.index, L = n.features[C];
-        return Ge(w, L, {
+        return qe(w, L, {
           units: t.units
         }) <= e;
       }
     );
   }, m = (y, w) => {
     for (var b = 0; b < w.length; b++) {
-      var M = w[b];
-      const k = M.index;
-      if (!l[k]) {
-        l[k] = !0;
-        const S = d(k);
+      var k = w[b];
+      const I = k.index;
+      if (!l[I]) {
+        l[I] = !0;
+        const S = d(I);
         S.length >= r && w.push(...S);
       }
-      u[k] || (u[k] = !0, g[k] = y);
+      u[I] || (u[I] = !0, g[I] = y);
     }
   };
   var p = 0;
@@ -14617,8 +15052,8 @@ function Ty(n, e, t = {}) {
     if (l[w]) return;
     const b = d(w);
     if (b.length >= r) {
-      const M = p;
-      p++, l[w] = !0, m(M, b);
+      const k = p;
+      p++, l[w] = !0, m(k, b);
     } else
       f[w] = !0;
   }), n.features.forEach((y, w) => {
@@ -14626,7 +15061,7 @@ function Ty(n, e, t = {}) {
     b.properties || (b.properties = {}), g[w] >= 0 ? (b.properties.dbscan = f[w] ? "edge" : "core", b.properties.cluster = g[w]) : b.properties.dbscan = "noise";
   }), n;
 }
-var vg = {
+var _g = {
   /**
    * Euclidean distance
    */
@@ -14649,7 +15084,7 @@ var vg = {
     var i = Math.abs(e - t);
     return r ? i : i * i;
   }
-}, pg = vg, Ay = pg.eudist, Ry = pg.dist, Oy = {
+}, wg = _g, Vy = wg.eudist, Wy = wg.dist, $y = {
   kmrand: function(e, t) {
     for (var r = {}, i = [], a = t << 2, l = e.length, u = e[0].length > 0; i.length < t && a-- > 0; ) {
       var f = e[Math.floor(Math.random() * l)], g = u ? f.join("_") : "" + f;
@@ -14662,7 +15097,7 @@ var vg = {
    * K-means++ initial centroid selection
    */
   kmpp: function(e, t) {
-    var r = e[0].length ? Ay : Ry, i = [], a = e.length, l = e[0].length > 0, u = e[Math.floor(Math.random() * a)];
+    var r = e[0].length ? Vy : Wy, i = [], a = e.length, l = e[0].length > 0, u = e[Math.floor(Math.random() * a)];
     for (l ? u.join("_") : "" + u, i.push(u); i.length < t; ) {
       for (var f = [], g = i.length, d = 0, m = [], p = 0; p < a; p++) {
         for (var y = 1 / 0, w = 0; w < g; w++) {
@@ -14671,63 +15106,63 @@ var vg = {
         }
         f[p] = y;
       }
-      for (var M = 0; M < a; M++)
-        d += f[M];
       for (var k = 0; k < a; k++)
-        m[k] = { i: k, v: e[k], pr: f[k] / d, cs: 0 };
+        d += f[k];
+      for (var I = 0; I < a; I++)
+        m[I] = { i: I, v: e[I], pr: f[I] / d, cs: 0 };
       m.sort(function(A, B) {
         return A.pr - B.pr;
       }), m[0].cs = m[0].pr;
       for (var S = 1; S < a; S++)
         m[S].cs = m[S - 1].cs + m[S].pr;
-      for (var N = Math.random(), P = 0; P < a - 1 && m[P++].cs < N; )
+      for (var P = Math.random(), N = 0; N < a - 1 && m[N++].cs < P; )
         ;
-      i.push(m[P - 1].v);
+      i.push(m[N - 1].v);
     }
     return i;
   }
-}, ml = vg, yg = Oy, Dy = ml.eudist;
-ml.mandist;
-ml.dist;
-var Fy = yg.kmrand, By = yg.kmpp, mc = 1e4;
-function vc(n, e, t) {
+}, pl = _g, xg = $y, Zy = pl.eudist;
+pl.mandist;
+pl.dist;
+var Ky = xg.kmrand, Jy = xg.kmpp, _c = 1e4;
+function wc(n, e, t) {
   t = t || [];
   for (var r = 0; r < n; r++)
     t[r] = e;
   return t;
 }
-function zy(n, e, t, r) {
-  var i = [], a = [], l = [], u = [], f = !1, g = r || mc, d = n.length, m = n[0].length, p = m > 0, y = [];
+function Qy(n, e, t, r) {
+  var i = [], a = [], l = [], u = [], f = !1, g = r || _c, d = n.length, m = n[0].length, p = m > 0, y = [];
   if (t)
-    t == "kmrand" ? i = Fy(n, e) : t == "kmpp" ? i = By(n, e) : i = t;
+    t == "kmrand" ? i = Ky(n, e) : t == "kmpp" ? i = Jy(n, e) : i = t;
   else for (var w = {}; i.length < e; ) {
     var b = Math.floor(Math.random() * d);
     w[b] || (w[b] = !0, i.push(n[b]));
   }
   do {
-    vc(e, 0, y);
-    for (var M = 0; M < d; M++) {
-      for (var k = 1 / 0, S = 0, N = 0; N < e; N++) {
-        var u = p ? Dy(n[M], i[N]) : Math.abs(n[M] - i[N]);
-        u <= k && (k = u, S = N);
+    wc(e, 0, y);
+    for (var k = 0; k < d; k++) {
+      for (var I = 1 / 0, S = 0, P = 0; P < e; P++) {
+        var u = p ? Zy(n[k], i[P]) : Math.abs(n[k] - i[P]);
+        u <= I && (I = u, S = P);
       }
-      l[M] = S, y[S]++;
+      l[k] = S, y[S]++;
     }
-    for (var P = [], a = [], A = 0; A < e; A++)
-      P[A] = p ? vc(m, 0, P[A]) : 0, a[A] = i[A];
+    for (var N = [], a = [], A = 0; A < e; A++)
+      N[A] = p ? wc(m, 0, N[A]) : 0, a[A] = i[A];
     if (p) {
       for (var B = 0; B < e; B++)
         i[B] = [];
       for (var F = 0; F < d; F++)
-        for (var C = l[F], L = P[C], T = n[F], D = 0; D < m; D++)
+        for (var C = l[F], L = N[C], T = n[F], D = 0; D < m; D++)
           L[D] += T[D];
       f = !0;
       for (var z = 0; z < e; z++) {
-        for (var U = i[z], X = P[z], O = a[z], H = y[z], q = 0; q < m; q++)
-          U[q] = X[q] / H || 0;
+        for (var q = i[z], X = N[z], O = a[z], U = y[z], H = 0; H < m; H++)
+          q[H] = X[H] / U || 0;
         if (f) {
           for (var V = 0; V < m; V++)
-            if (O[V] != U[V]) {
+            if (O[V] != q[V]) {
               f = !1;
               break;
             }
@@ -14736,10 +15171,10 @@ function zy(n, e, t, r) {
     } else {
       for (var J = 0; J < d; J++) {
         var W = l[J];
-        P[W] += n[J];
+        N[W] += n[J];
       }
       for (var j = 0; j < e; j++)
-        i[j] = P[j] / y[j] || 0;
+        i[j] = N[j] / y[j] || 0;
       f = !0;
       for (var Q = 0; Q < e; Q++)
         if (a[Q] != i[Q]) {
@@ -14750,18 +15185,18 @@ function zy(n, e, t, r) {
     f = f || --g <= 0;
   } while (!f);
   return {
-    it: mc - g,
+    it: _c - g,
     k: e,
     idxs: l,
     centroids: i
   };
 }
-var Gy = zy;
-const qy = /* @__PURE__ */ Di(Gy);
-function Uy(n, e = {}) {
+var jy = Qy;
+const e1 = /* @__PURE__ */ Bi(jy);
+function t1(n, e = {}) {
   var t = n.features.length;
-  e.numberOfClusters = e.numberOfClusters || Math.round(Math.sqrt(t / 2)), e.numberOfClusters > t && (e.numberOfClusters = t), e.mutate !== !0 && (n = it(n));
-  var r = _i(n), i = r.slice(0, e.numberOfClusters), a = qy(r, e.numberOfClusters, i), l = {};
+  e.numberOfClusters = e.numberOfClusters || Math.round(Math.sqrt(t / 2)), e.numberOfClusters > t && (e.numberOfClusters = t), e.mutate !== !0 && (n = st(n));
+  var r = xi(n), i = r.slice(0, e.numberOfClusters), a = e1(r, e.numberOfClusters, i), l = {};
   return a.centroids.forEach(function(u, f) {
     l[f] = u;
   }), Le(n, function(u, f) {
@@ -14769,8 +15204,8 @@ function Uy(n, e = {}) {
     u.properties.cluster = g, u.properties.centroid = l[g];
   }), n;
 }
-function Hy(n, e, t, r) {
-  var i = new Dr(6), a = e.features.map(function(l) {
+function n1(n, e, t, r) {
+  var i = new Fr(6), a = e.features.map(function(l) {
     var u;
     return {
       minX: l.geometry.coordinates[0],
@@ -14782,7 +15217,7 @@ function Hy(n, e, t, r) {
   });
   return i.load(a), n.features.forEach(function(l) {
     l.properties || (l.properties = {});
-    var u = qe(l), f = i.search({
+    var u = He(l), f = i.search({
       minX: u[0],
       minY: u[1],
       maxX: u[2],
@@ -14793,7 +15228,7 @@ function Hy(n, e, t, r) {
     }), l.properties[r] = g;
   }), n;
 }
-function Yy(n) {
+function r1(n) {
   var e = {
     MultiPoint: {
       coordinates: [],
@@ -14837,14 +15272,14 @@ function Yy(n) {
       return e[t].coordinates.length;
     }).sort().map(function(t) {
       var r = { type: t, coordinates: e[t].coordinates }, i = { collectedProperties: e[t].properties };
-      return Qe(r, i);
+      return je(r, i);
     })
   );
 }
-function _g(n, e) {
+function Eg(n, e) {
   let t = !1;
   return ce(
-    Wy(
+    o1(
       n.features.map((r) => {
         const i = {
           x: r.geometry.coordinates[0],
@@ -14863,7 +15298,7 @@ function _g(n, e) {
     })
   );
 }
-var pc = class {
+var xc = class {
   constructor(n, e, t) {
     this.a = n, this.b = e, this.c = t;
     const r = e.x - n.x, i = e.y - n.y, a = t.x - n.x, l = t.y - n.y, u = r * (n.x + e.x) + i * (n.y + e.y), f = a * (n.x + t.x) + l * (n.y + t.y), g = 2 * (r * (t.y - e.y) - i * (t.x - e.x));
@@ -14871,10 +15306,10 @@ var pc = class {
     this.x = (l * u - i * f) / g, this.y = (r * f - a * u) / g, d = this.x - n.x, m = this.y - n.y, this.r = d * d + m * m;
   }
 };
-function Xy(n, e) {
+function i1(n, e) {
   return e.x - n.x;
 }
-function Vy(n) {
+function s1(n) {
   let e = n.length, t, r, i, a, l;
   e: for (; e; )
     for (r = n[--e], t = n[--e], i = e; i; )
@@ -14883,10 +15318,10 @@ function Vy(n) {
         continue e;
       }
 }
-function Wy(n) {
+function o1(n) {
   if (n.length < 3)
     return [];
-  n.sort(Xy);
+  n.sort(i1);
   let e = n.length - 1;
   const t = n[e].x, r = n[0].x;
   let i = n[e].y, a = i;
@@ -14895,33 +15330,33 @@ function Wy(n) {
   for (; e--; )
     n[e].y < i && (i = n[e].y), n[e].y > a && (a = n[e].y);
   let y = r - t, w = a - i;
-  const b = y > w ? y : w, M = (r + t) * 0.5, k = (a + i) * 0.5, S = [
-    new pc(
+  const b = y > w ? y : w, k = (r + t) * 0.5, I = (a + i) * 0.5, S = [
+    new xc(
       {
         __sentinel: !0,
-        x: M - 20 * b,
-        y: k - b
+        x: k - 20 * b,
+        y: I - b
       },
       {
         __sentinel: !0,
-        x: M,
-        y: k + 20 * b
+        x: k,
+        y: I + 20 * b
       },
       {
         __sentinel: !0,
-        x: M + 20 * b,
-        y: k - b
+        x: k + 20 * b,
+        y: I - b
       }
     )
-  ], N = [], P = [];
+  ], P = [], N = [];
   let A;
   for (e = n.length; e--; ) {
-    for (P.length = 0, A = S.length; A--; ) {
+    for (N.length = 0, A = S.length; A--; ) {
       if (y = n[e].x - S[A].x, y > 0 && y * y > S[A].r) {
-        N.push(S[A]), S.splice(A, 1);
+        P.push(S[A]), S.splice(A, 1);
         continue;
       }
-      w = n[e].y - S[A].y, !(y * y + w * w > S[A].r) && (P.push(
+      w = n[e].y - S[A].y, !(y * y + w * w > S[A].r) && (N.push(
         S[A].a,
         S[A].b,
         S[A].b,
@@ -14930,18 +15365,18 @@ function Wy(n) {
         S[A].a
       ), S.splice(A, 1));
     }
-    for (Vy(P), A = P.length; A; )
-      f = P[--A], u = P[--A], g = n[e], d = f.x - u.x, m = f.y - u.y, p = 2 * (d * (g.y - f.y) - m * (g.x - f.x)), Math.abs(p) > l && S.push(new pc(u, f, g));
+    for (s1(N), A = N.length; A; )
+      f = N[--A], u = N[--A], g = n[e], d = f.x - u.x, m = f.y - u.y, p = 2 * (d * (g.y - f.y) - m * (g.x - f.x)), Math.abs(p) > l && S.push(new xc(u, f, g));
   }
-  for (Array.prototype.push.apply(N, S), e = N.length; e--; )
-    (N[e].a.__sentinel || N[e].b.__sentinel || N[e].c.__sentinel) && N.splice(e, 1);
-  return N;
+  for (Array.prototype.push.apply(P, S), e = P.length; e--; )
+    (P[e].a.__sentinel || P[e].b.__sentinel || P[e].c.__sentinel) && P.splice(e, 1);
+  return P;
 }
-function $y(n) {
+function a1(n) {
   return n;
 }
-function Zy(n) {
-  if (n == null) return $y;
+function l1(n) {
+  if (n == null) return a1;
   var e, t, r = n.scale[0], i = n.scale[1], a = n.translate[0], l = n.translate[1];
   return function(u, f) {
     f || (e = t = 0);
@@ -14950,16 +15385,16 @@ function Zy(n) {
     return m;
   };
 }
-function Ky(n, e) {
+function u1(n, e) {
   for (var t, r = n.length, i = r - e; i < --r; ) t = n[i], n[i++] = n[r], n[r] = t;
 }
-function wg(n, e) {
-  var t = Zy(n.transform), r = n.arcs;
+function bg(n, e) {
+  var t = l1(n.transform), r = n.arcs;
   function i(d, m) {
     m.length && m.pop();
     for (var p = r[d < 0 ? ~d : d], y = 0, w = p.length; y < w; ++y)
       m.push(t(p[y], y));
-    d < 0 && Ky(m, w);
+    d < 0 && u1(m, w);
   }
   function a(d) {
     return t(d);
@@ -15005,7 +15440,7 @@ function wg(n, e) {
   }
   return g(e);
 }
-function Jy(n, e) {
+function c1(n, e) {
   var t = {}, r = {}, i = {}, a = [], l = -1;
   e.forEach(function(g, d) {
     var m = n.arcs[g < 0 ? ~g : g], p;
@@ -15022,8 +15457,8 @@ function Jy(n, e) {
     else if (y = r[p])
       if (delete r[y.start], y.unshift(g), y.start = m, w = i[m]) {
         delete i[w.end];
-        var M = w === y ? y : w.concat(y);
-        r[M.start = w.start] = i[M.end = y.end] = M;
+        var k = w === y ? y : w.concat(y);
+        r[k.start = w.start] = i[k.end = y.end] = k;
       } else
         r[y.start] = i[y.end] = y;
     else
@@ -15047,14 +15482,14 @@ function Jy(n, e) {
     t[g < 0 ? ~g : g] || a.push([g]);
   }), a;
 }
-function Qy(n) {
+function h1(n) {
   for (var e = -1, t = n.length, r, i = n[t - 1], a = 0; ++e < t; ) r = i, i = n[e], a += r[0] * i[1] - r[1] * i[0];
   return Math.abs(a);
 }
-function jy(n) {
-  return wg(n, e1.apply(this, arguments));
+function f1(n) {
+  return bg(n, g1.apply(this, arguments));
 }
-function e1(n, e) {
+function g1(n, e) {
   var t = {}, r = [], i = [];
   e.forEach(a);
   function a(f) {
@@ -15078,7 +15513,7 @@ function e1(n, e) {
     }), r.push(f);
   }
   function u(f) {
-    return Qy(wg(n, { type: "Polygon", arcs: [f] }).coordinates[0]);
+    return h1(bg(n, { type: "Polygon", arcs: [f] }).coordinates[0]);
   }
   return r.forEach(function(f) {
     if (!f._) {
@@ -15099,12 +15534,12 @@ function e1(n, e) {
     arcs: i.map(function(f) {
       var g = [], d;
       if (f.forEach(function(b) {
-        b.forEach(function(M) {
-          M.forEach(function(k) {
-            t[k < 0 ? ~k : k].length < 2 && g.push(k);
+        b.forEach(function(k) {
+          k.forEach(function(I) {
+            t[I < 0 ? ~I : I].length < 2 && g.push(I);
           });
         });
-      }), g = Jy(n, g), (d = g.length) > 1)
+      }), g = c1(n, g), (d = g.length) > 1)
         for (var m = 1, p = u(g[0]), y, w; m < d; ++m)
           (y = u(g[m])) > p && (w = g[0], g[0] = g[m], g[m] = w, p = y);
       return g;
@@ -15113,11 +15548,11 @@ function e1(n, e) {
     })
   };
 }
-var vl = Object.prototype.hasOwnProperty;
-function t1(n) {
+var yl = Object.prototype.hasOwnProperty;
+function d1(n) {
   var e = 1 / 0, t = 1 / 0, r = -1 / 0, i = -1 / 0;
   function a(m) {
-    m != null && vl.call(l, m.type) && l[m.type](m);
+    m != null && yl.call(l, m.type) && l[m.type](m);
   }
   var l = {
     GeometryCollection: function(m) {
@@ -15156,7 +15591,7 @@ function t1(n) {
     a(n[d]);
   return r >= e && i >= t ? [e, t, r, i] : void 0;
 }
-function n1(n, e, t, r, i) {
+function m1(n, e, t, r, i) {
   arguments.length === 3 && (r = Array, i = null);
   for (var a = new r(n = 1 << Math.max(4, Math.ceil(Math.log(n) / Math.LN2))), l = n - 1, u = 0; u < n; ++u)
     a[u] = i;
@@ -15189,38 +15624,38 @@ function n1(n, e, t, r, i) {
     values: d
   };
 }
-function pl(n, e, t, r, i, a) {
+function _l(n, e, t, r, i, a) {
   arguments.length === 3 && (r = a = Array, i = null);
   for (var l = new r(n = 1 << Math.max(4, Math.ceil(Math.log(n) / Math.LN2))), u = new a(n), f = n - 1, g = 0; g < n; ++g)
     l[g] = i;
   function d(w, b) {
-    for (var M = e(w) & f, k = l[M], S = 0; k != i; ) {
-      if (t(k, w)) return u[M] = b;
+    for (var k = e(w) & f, I = l[k], S = 0; I != i; ) {
+      if (t(I, w)) return u[k] = b;
       if (++S >= n) throw new Error("full hashmap");
-      k = l[M = M + 1 & f];
+      I = l[k = k + 1 & f];
     }
-    return l[M] = w, u[M] = b, b;
+    return l[k] = w, u[k] = b, b;
   }
   function m(w, b) {
-    for (var M = e(w) & f, k = l[M], S = 0; k != i; ) {
-      if (t(k, w)) return u[M];
+    for (var k = e(w) & f, I = l[k], S = 0; I != i; ) {
+      if (t(I, w)) return u[k];
       if (++S >= n) throw new Error("full hashmap");
-      k = l[M = M + 1 & f];
+      I = l[k = k + 1 & f];
     }
-    return l[M] = w, u[M] = b, b;
+    return l[k] = w, u[k] = b, b;
   }
   function p(w, b) {
-    for (var M = e(w) & f, k = l[M], S = 0; k != i; ) {
-      if (t(k, w)) return u[M];
+    for (var k = e(w) & f, I = l[k], S = 0; I != i; ) {
+      if (t(I, w)) return u[k];
       if (++S >= n) break;
-      k = l[M = M + 1 & f];
+      I = l[k = k + 1 & f];
     }
     return b;
   }
   function y() {
-    for (var w = [], b = 0, M = l.length; b < M; ++b) {
-      var k = l[b];
-      k != i && w.push(k);
+    for (var w = [], b = 0, k = l.length; b < k; ++b) {
+      var I = l[b];
+      I != i && w.push(I);
     }
     return w;
   }
@@ -15232,84 +15667,84 @@ function pl(n, e, t, r, i, a) {
     keys: y
   };
 }
-function Wn(n, e) {
+function $n(n, e) {
   return n[0] === e[0] && n[1] === e[1];
 }
-var xg = new ArrayBuffer(16), yc = new Float64Array(xg), os = new Uint32Array(xg);
-function Ca(n) {
-  yc[0] = n[0], yc[1] = n[1];
-  var e = os[0] ^ os[1];
-  return e = e << 5 ^ e >> 7 ^ os[2] ^ os[3], e & 2147483647;
+var Cg = new ArrayBuffer(16), Ec = new Float64Array(Cg), ls = new Uint32Array(Cg);
+function Ia(n) {
+  Ec[0] = n[0], Ec[1] = n[1];
+  var e = ls[0] ^ ls[1];
+  return e = e << 5 ^ e >> 7 ^ ls[2] ^ ls[3], e & 2147483647;
 }
-function r1(n) {
+function v1(n) {
   var e = n.coordinates, t = n.lines, r = n.rings, i = B(), a = new Int32Array(e.length), l = new Int32Array(e.length), u = new Int32Array(e.length), f = new Int8Array(e.length), g = 0, d, m, p, y, w;
   for (d = 0, m = e.length; d < m; ++d)
     a[d] = l[d] = u[d] = -1;
   for (d = 0, m = t.length; d < m; ++d) {
-    var b = t[d], M = b[0], k = b[1];
-    for (y = i[M], w = i[++M], ++g, f[y] = 1; ++M <= k; )
-      A(d, p = y, y = w, w = i[M]);
+    var b = t[d], k = b[0], I = b[1];
+    for (y = i[k], w = i[++k], ++g, f[y] = 1; ++k <= I; )
+      A(d, p = y, y = w, w = i[k]);
     ++g, f[w] = 1;
   }
   for (d = 0, m = e.length; d < m; ++d)
     a[d] = -1;
   for (d = 0, m = r.length; d < m; ++d) {
-    var S = r[d], N = S[0] + 1, P = S[1];
-    for (p = i[P - 1], y = i[N - 1], w = i[N], A(d, p, y, w); ++N <= P; )
-      A(d, p = y, y = w, w = i[N]);
+    var S = r[d], P = S[0] + 1, N = S[1];
+    for (p = i[N - 1], y = i[P - 1], w = i[P], A(d, p, y, w); ++P <= N; )
+      A(d, p = y, y = w, w = i[P]);
   }
-  function A(D, z, U, X) {
-    if (a[U] !== D) {
-      a[U] = D;
-      var O = l[U];
+  function A(D, z, q, X) {
+    if (a[q] !== D) {
+      a[q] = D;
+      var O = l[q];
       if (O >= 0) {
-        var H = u[U];
-        (O !== z || H !== X) && (O !== X || H !== z) && (++g, f[U] = 1);
+        var U = u[q];
+        (O !== z || U !== X) && (O !== X || U !== z) && (++g, f[q] = 1);
       } else
-        l[U] = z, u[U] = X;
+        l[q] = z, u[q] = X;
     }
   }
   function B() {
-    for (var D = pl(e.length * 1.4, F, C, Int32Array, -1, Int32Array), z = new Int32Array(e.length), U = 0, X = e.length; U < X; ++U)
-      z[U] = D.maybeSet(U, U);
+    for (var D = _l(e.length * 1.4, F, C, Int32Array, -1, Int32Array), z = new Int32Array(e.length), q = 0, X = e.length; q < X; ++q)
+      z[q] = D.maybeSet(q, q);
     return z;
   }
   function F(D) {
-    return Ca(e[D]);
+    return Ia(e[D]);
   }
   function C(D, z) {
-    return Wn(e[D], e[z]);
+    return $n(e[D], e[z]);
   }
   a = l = u = null;
-  var L = n1(g * 1.4, Ca, Wn), T;
+  var L = m1(g * 1.4, Ia, $n), T;
   for (d = 0, m = e.length; d < m; ++d)
     f[T = i[d]] && L.add(e[T]);
   return L;
 }
-function i1(n) {
-  var e = r1(n), t = n.coordinates, r = n.lines, i = n.rings, a, l, u;
+function p1(n) {
+  var e = v1(n), t = n.coordinates, r = n.lines, i = n.rings, a, l, u;
   for (l = 0, u = r.length; l < u; ++l)
     for (var f = r[l], g = f[0], d = f[1]; ++g < d; )
       e.has(t[g]) && (a = { 0: g, 1: f[1] }, f[1] = g, f = f.next = a);
   for (l = 0, u = i.length; l < u; ++l)
     for (var m = i[l], p = m[0], y = p, w = m[1], b = e.has(t[p]); ++y < w; )
-      e.has(t[y]) && (b ? (a = { 0: y, 1: m[1] }, m[1] = y, m = m.next = a) : (s1(t, p, w, w - y), t[w] = t[p], b = !0, y = p));
+      e.has(t[y]) && (b ? (a = { 0: y, 1: m[1] }, m[1] = y, m = m.next = a) : (y1(t, p, w, w - y), t[w] = t[p], b = !0, y = p));
   return n;
 }
-function s1(n, e, t, r) {
-  Ko(n, e, t), Ko(n, e, e + r), Ko(n, e + r, t);
+function y1(n, e, t, r) {
+  Qo(n, e, t), Qo(n, e, e + r), Qo(n, e + r, t);
 }
-function Ko(n, e, t) {
+function Qo(n, e, t) {
   for (var r = e + (t-- - e >> 1), i; e < r; ++e, --t)
     i = n[e], n[e] = n[t], n[t] = i;
 }
-function o1(n) {
+function _1(n) {
   var e = n.coordinates, t = n.lines, r, i = n.rings, a, l = t.length + i.length, u, f;
   for (delete n.lines, delete n.rings, u = 0, f = t.length; u < f; ++u)
     for (r = t[u]; r = r.next; ) ++l;
   for (u = 0, f = i.length; u < f; ++u)
     for (a = i[u]; a = a.next; ) ++l;
-  var g = pl(l * 2 * 1.4, Ca, Wn), d = n.arcs = [];
+  var g = _l(l * 2 * 1.4, Ia, $n), d = n.arcs = [];
   for (u = 0, f = t.length; u < f; ++u) {
     r = t[u];
     do
@@ -15324,88 +15759,88 @@ function o1(n) {
     else
       p(a);
   function m(S) {
-    var N, P, A, B, F, C, L, T;
-    if (A = g.get(N = e[S[0]])) {
+    var P, N, A, B, F, C, L, T;
+    if (A = g.get(P = e[S[0]])) {
       for (L = 0, T = A.length; L < T; ++L)
         if (B = A[L], y(B, S)) {
           S[0] = B[0], S[1] = B[1];
           return;
         }
     }
-    if (F = g.get(P = e[S[1]])) {
+    if (F = g.get(N = e[S[1]])) {
       for (L = 0, T = F.length; L < T; ++L)
         if (C = F[L], w(C, S)) {
           S[1] = C[0], S[0] = C[1];
           return;
         }
     }
-    A ? A.push(S) : g.set(N, [S]), F ? F.push(S) : g.set(P, [S]), d.push(S);
+    A ? A.push(S) : g.set(P, [S]), F ? F.push(S) : g.set(N, [S]), d.push(S);
   }
   function p(S) {
-    var N, P, A, B, F;
-    if (P = g.get(N = e[S[0]]))
-      for (B = 0, F = P.length; B < F; ++B) {
-        if (A = P[B], b(A, S)) {
+    var P, N, A, B, F;
+    if (N = g.get(P = e[S[0]]))
+      for (B = 0, F = N.length; B < F; ++B) {
+        if (A = N[B], b(A, S)) {
           S[0] = A[0], S[1] = A[1];
           return;
         }
-        if (M(A, S)) {
+        if (k(A, S)) {
           S[0] = A[1], S[1] = A[0];
           return;
         }
       }
-    if (P = g.get(N = e[S[0] + k(S)]))
-      for (B = 0, F = P.length; B < F; ++B) {
-        if (A = P[B], b(A, S)) {
+    if (N = g.get(P = e[S[0] + I(S)]))
+      for (B = 0, F = N.length; B < F; ++B) {
+        if (A = N[B], b(A, S)) {
           S[0] = A[0], S[1] = A[1];
           return;
         }
-        if (M(A, S)) {
+        if (k(A, S)) {
           S[0] = A[1], S[1] = A[0];
           return;
         }
       }
-    P ? P.push(S) : g.set(N, [S]), d.push(S);
+    N ? N.push(S) : g.set(P, [S]), d.push(S);
   }
-  function y(S, N) {
-    var P = S[0], A = N[0], B = S[1], F = N[1];
-    if (P - B !== A - F) return !1;
-    for (; P <= B; ++P, ++A) if (!Wn(e[P], e[A])) return !1;
+  function y(S, P) {
+    var N = S[0], A = P[0], B = S[1], F = P[1];
+    if (N - B !== A - F) return !1;
+    for (; N <= B; ++N, ++A) if (!$n(e[N], e[A])) return !1;
     return !0;
   }
-  function w(S, N) {
-    var P = S[0], A = N[0], B = S[1], F = N[1];
-    if (P - B !== A - F) return !1;
-    for (; P <= B; ++P, --F) if (!Wn(e[P], e[F])) return !1;
+  function w(S, P) {
+    var N = S[0], A = P[0], B = S[1], F = P[1];
+    if (N - B !== A - F) return !1;
+    for (; N <= B; ++N, --F) if (!$n(e[N], e[F])) return !1;
     return !0;
   }
-  function b(S, N) {
-    var P = S[0], A = N[0], B = S[1], F = N[1], C = B - P;
+  function b(S, P) {
+    var N = S[0], A = P[0], B = S[1], F = P[1], C = B - N;
     if (C !== F - A) return !1;
-    for (var L = k(S), T = k(N), D = 0; D < C; ++D)
-      if (!Wn(e[P + (D + L) % C], e[A + (D + T) % C])) return !1;
+    for (var L = I(S), T = I(P), D = 0; D < C; ++D)
+      if (!$n(e[N + (D + L) % C], e[A + (D + T) % C])) return !1;
     return !0;
   }
-  function M(S, N) {
-    var P = S[0], A = N[0], B = S[1], F = N[1], C = B - P;
+  function k(S, P) {
+    var N = S[0], A = P[0], B = S[1], F = P[1], C = B - N;
     if (C !== F - A) return !1;
-    for (var L = k(S), T = C - k(N), D = 0; D < C; ++D)
-      if (!Wn(e[P + (D + L) % C], e[F - (D + T) % C])) return !1;
+    for (var L = I(S), T = C - I(P), D = 0; D < C; ++D)
+      if (!$n(e[N + (D + L) % C], e[F - (D + T) % C])) return !1;
     return !0;
   }
-  function k(S) {
-    for (var N = S[0], P = S[1], A = N, B = A, F = e[A]; ++A < P; ) {
+  function I(S) {
+    for (var P = S[0], N = S[1], A = P, B = A, F = e[A]; ++A < N; ) {
       var C = e[A];
       (C[0] < F[0] || C[0] === F[0] && C[1] < F[1]) && (B = A, F = C);
     }
-    return B - N;
+    return B - P;
   }
   return n;
 }
-function a1(n) {
+function w1(n) {
   var e = -1, t = [], r = [], i = [];
   function a(m) {
-    m && vl.call(l, m.type) && l[m.type](m);
+    m && yl.call(l, m.type) && l[m.type](m);
   }
   var l = {
     GeometryCollection: function(m) {
@@ -15447,20 +15882,20 @@ function a1(n) {
     objects: n
   };
 }
-function l1(n) {
+function x1(n) {
   var e = {}, t;
-  for (t in n) e[t] = u1(n[t]);
+  for (t in n) e[t] = E1(n[t]);
   return e;
 }
-function u1(n) {
-  return n == null ? { type: null } : (n.type === "FeatureCollection" ? c1 : n.type === "Feature" ? Eg : yl)(n);
+function E1(n) {
+  return n == null ? { type: null } : (n.type === "FeatureCollection" ? b1 : n.type === "Feature" ? Sg : wl)(n);
 }
-function c1(n) {
-  var e = { type: "GeometryCollection", geometries: n.features.map(Eg) };
+function b1(n) {
+  var e = { type: "GeometryCollection", geometries: n.features.map(Sg) };
   return n.bbox != null && (e.bbox = n.bbox), e;
 }
-function Eg(n) {
-  var e = yl(n.geometry), t;
+function Sg(n) {
+  var e = wl(n.geometry), t;
   n.id != null && (e.id = n.id), n.bbox != null && (e.bbox = n.bbox);
   for (t in n.properties) {
     e.properties = n.properties;
@@ -15468,18 +15903,18 @@ function Eg(n) {
   }
   return e;
 }
-function yl(n) {
+function wl(n) {
   if (n == null) return { type: null };
-  var e = n.type === "GeometryCollection" ? { type: "GeometryCollection", geometries: n.geometries.map(yl) } : n.type === "Point" || n.type === "MultiPoint" ? { type: n.type, coordinates: n.coordinates } : { type: n.type, arcs: n.coordinates };
+  var e = n.type === "GeometryCollection" ? { type: "GeometryCollection", geometries: n.geometries.map(wl) } : n.type === "Point" || n.type === "MultiPoint" ? { type: n.type, coordinates: n.coordinates } : { type: n.type, arcs: n.coordinates };
   return n.bbox != null && (e.bbox = n.bbox), e;
 }
-function h1(n, e) {
-  var t = t1(n = l1(n)), r = o1(i1(a1(n))), i = r.coordinates, a = pl(r.arcs.length * 1.4, f1, g1);
+function C1(n, e) {
+  var t = d1(n = x1(n)), r = _1(p1(w1(n))), i = r.coordinates, a = _l(r.arcs.length * 1.4, S1, I1);
   n = r.objects, r.bbox = t, r.arcs = r.arcs.map(function(m, p) {
     return a.set(m, p), i.slice(m[0], m[1] + 1);
   }), delete r.coordinates, i = null;
   function l(m) {
-    m && vl.call(u, m.type) && u[m.type](m);
+    m && yl.call(u, m.type) && u[m.type](m);
   }
   var u = {
     GeometryCollection: function(m) {
@@ -15513,39 +15948,39 @@ function h1(n, e) {
     l(n[d]);
   return r;
 }
-function f1(n) {
+function S1(n) {
   var e = n[0], t = n[1], r;
   return t < e && (r = e, e = t, t = r), e + 31 * t;
 }
-function g1(n, e) {
+function I1(n, e) {
   var t = n[0], r = n[1], i = e[0], a = e[1], l;
   return r < t && (l = t, t = r, r = l), a < i && (l = i, i = a, a = l), t === i && r === a;
 }
-function d1(n, e = {}) {
+function k1(n, e = {}) {
   if (e = e || {}, !Oe(e))
     throw new Error("options is invalid");
   const t = e.mutate;
-  if (Ct(n) !== "FeatureCollection")
+  if (St(n) !== "FeatureCollection")
     throw new Error("geojson must be a FeatureCollection");
   if (!n.features.length)
     throw new Error("geojson is empty");
-  (t === !1 || t === void 0) && (n = it(n));
-  const r = [], i = ja(
+  (t === !1 || t === void 0) && (n = st(n));
+  const r = [], i = tl(
     n,
     (a, l) => {
-      const u = m1(a, l);
+      const u = M1(a, l);
       return u || (r.push(a), l);
     }
   );
-  return i && r.push(i), r.length ? r.length === 1 ? r[0] : An(
+  return i && r.push(i), r.length ? r.length === 1 ? r[0] : Rn(
     r.map((a) => a.coordinates)
   ) : null;
 }
-function as(n) {
+function us(n) {
   return n[0].toString() + "," + n[1].toString();
 }
-function m1(n, e) {
-  const t = n.geometry.coordinates, r = e.geometry.coordinates, i = as(t[0]), a = as(t[t.length - 1]), l = as(r[0]), u = as(r[r.length - 1]);
+function M1(n, e) {
+  const t = n.geometry.coordinates, r = e.geometry.coordinates, i = us(t[0]), a = us(t[t.length - 1]), l = us(r[0]), u = us(r[r.length - 1]);
   let f;
   if (i === u)
     f = r.concat(t.slice(1));
@@ -15557,62 +15992,62 @@ function m1(n, e) {
     f = t.concat(r.reverse().slice(1));
   else
     return null;
-  return ke(f);
+  return Ie(f);
 }
-function v1(n, e = {}) {
-  if (Ct(n) !== "FeatureCollection")
+function L1(n, e = {}) {
+  if (St(n) !== "FeatureCollection")
     throw new Error("geojson must be a FeatureCollection");
   if (!n.features.length)
     throw new Error("geojson is empty");
-  (e.mutate === !1 || e.mutate === void 0) && (n = it(n));
+  (e.mutate === !1 || e.mutate === void 0) && (n = st(n));
   const t = [];
-  ot(n, (a) => {
+  at(n, (a) => {
     t.push(a.geometry);
   });
-  const r = h1({ geoms: Xa(t).geometry });
-  return jy(r, r.objects.geoms.geometries);
+  const r = C1({ geoms: Wa(t).geometry });
+  return f1(r, r.objects.geoms.geometries);
 }
-function p1(n, e = {}) {
+function N1(n, e = {}) {
   if (e = e || {}, !Oe(e))
     throw new Error("options is invalid");
   const t = e.mutate;
-  if (Ct(n) !== "FeatureCollection")
+  if (St(n) !== "FeatureCollection")
     throw new Error("geojson must be a FeatureCollection");
   if (!n.features.length)
     throw new Error("geojson is empty");
-  (t === !1 || t === void 0) && (n = it(n));
-  const r = y1(n);
+  (t === !1 || t === void 0) && (n = st(n));
+  const r = P1(n);
   if (!r)
     throw new Error("geojson must be homogenous");
   const i = n;
   switch (r) {
     case "LineString":
-      return d1(i, e);
+      return k1(i, e);
     case "Polygon":
-      return v1(i, e);
+      return L1(i, e);
     default:
       throw new Error(r + " is not supported");
   }
 }
-function y1(n) {
+function P1(n) {
   const e = {};
-  ot(n, (r) => {
+  at(n, (r) => {
     e[r.geometry.type] = !0;
   });
   const t = Object.keys(e);
   return t.length === 1 ? t[0] : null;
 }
-function _1(n, e = {}) {
-  const t = e.maxEdge || 1 / 0, r = w1(n), i = _g(r);
+function T1(n, e = {}) {
+  const t = e.maxEdge || 1 / 0, r = A1(n), i = Eg(r);
   if (i.features = i.features.filter((l) => {
-    const u = l.geometry.coordinates[0][0], f = l.geometry.coordinates[0][1], g = l.geometry.coordinates[0][2], d = Ge(u, f, e), m = Ge(f, g, e), p = Ge(u, g, e);
+    const u = l.geometry.coordinates[0][0], f = l.geometry.coordinates[0][1], g = l.geometry.coordinates[0][2], d = qe(u, f, e), m = qe(f, g, e), p = qe(u, g, e);
     return d <= t && m <= t && p <= t;
   }), i.features.length < 1)
     return null;
-  const a = p1(i);
-  return a.coordinates.length === 1 && (a.coordinates = a.coordinates[0], a.type = "Polygon"), Qe(a);
+  const a = N1(i);
+  return a.coordinates.length === 1 && (a.coordinates = a.coordinates[0], a.type = "Polygon"), je(a);
 }
-function w1(n) {
+function A1(n) {
   const e = [], t = {};
   return Le(n, (r) => {
     if (!r.geometry)
@@ -15621,8 +16056,8 @@ function w1(n) {
     Object.prototype.hasOwnProperty.call(t, i) || (e.push(r), t[i] = !0);
   }), ce(e);
 }
-var x1 = /^-?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i, Jo = Math.ceil, zt = Math.floor, Et = "[BigNumber Error] ", _c = Et + "Number primitive has more than 15 significant digits: ", Vt = 1e14, Ce = 14, Qo = 9007199254740991, jo = [1, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12, 1e13], Ln = 1e7, st = 1e9;
-function bg(n) {
+var R1 = /^-?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i, jo = Math.ceil, Gt = Math.floor, bt = "[BigNumber Error] ", bc = bt + "Number primitive has more than 15 significant digits: ", Wt = 1e14, Ce = 14, ea = 9007199254740991, ta = [1, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12, 1e13], Nn = 1e7, ot = 1e9;
+function Ig(n) {
   var e, t, r, i = S.prototype = { constructor: S, toString: null, valueOf: null }, a = new S(1), l = 20, u = 4, f = -7, g = 21, d = -1e7, m = 1e7, p = !1, y = 1, w = 0, b = {
     prefix: "",
     groupSize: 3,
@@ -15633,9 +16068,9 @@ function bg(n) {
     fractionGroupSeparator: " ",
     // non-breaking space
     suffix: ""
-  }, M = "0123456789abcdefghijklmnopqrstuvwxyz", k = !0;
+  }, k = "0123456789abcdefghijklmnopqrstuvwxyz", I = !0;
   function S(C, L) {
-    var T, D, z, U, X, O, H, q, V = this;
+    var T, D, z, q, X, O, U, H, V = this;
     if (!(V instanceof S)) return new S(C, L);
     if (L == null) {
       if (C && C._isBigNumber === !0) {
@@ -15644,94 +16079,94 @@ function bg(n) {
       }
       if ((O = typeof C == "number") && C * 0 == 0) {
         if (V.s = 1 / C < 0 ? (C = -C, -1) : 1, C === ~~C) {
-          for (U = 0, X = C; X >= 10; X /= 10, U++) ;
-          U > m ? V.c = V.e = null : (V.e = U, V.c = [C]);
+          for (q = 0, X = C; X >= 10; X /= 10, q++) ;
+          q > m ? V.c = V.e = null : (V.e = q, V.c = [C]);
           return;
         }
-        q = String(C);
+        H = String(C);
       } else {
-        if (!x1.test(q = String(C))) return r(V, q, O);
-        V.s = q.charCodeAt(0) == 45 ? (q = q.slice(1), -1) : 1;
+        if (!R1.test(H = String(C))) return r(V, H, O);
+        V.s = H.charCodeAt(0) == 45 ? (H = H.slice(1), -1) : 1;
       }
-      (U = q.indexOf(".")) > -1 && (q = q.replace(".", "")), (X = q.search(/e/i)) > 0 ? (U < 0 && (U = X), U += +q.slice(X + 1), q = q.substring(0, X)) : U < 0 && (U = q.length);
+      (q = H.indexOf(".")) > -1 && (H = H.replace(".", "")), (X = H.search(/e/i)) > 0 ? (q < 0 && (q = X), q += +H.slice(X + 1), H = H.substring(0, X)) : q < 0 && (q = H.length);
     } else {
-      if (Ke(L, 2, M.length, "Base"), L == 10 && k)
+      if (Je(L, 2, k.length, "Base"), L == 10 && I)
         return V = new S(C), B(V, l + V.e + 1, u);
-      if (q = String(C), O = typeof C == "number") {
-        if (C * 0 != 0) return r(V, q, O, L);
-        if (V.s = 1 / C < 0 ? (q = q.slice(1), -1) : 1, S.DEBUG && q.replace(/^0\.0*|\./, "").length > 15)
-          throw Error(_c + C);
+      if (H = String(C), O = typeof C == "number") {
+        if (C * 0 != 0) return r(V, H, O, L);
+        if (V.s = 1 / C < 0 ? (H = H.slice(1), -1) : 1, S.DEBUG && H.replace(/^0\.0*|\./, "").length > 15)
+          throw Error(bc + C);
       } else
-        V.s = q.charCodeAt(0) === 45 ? (q = q.slice(1), -1) : 1;
-      for (T = M.slice(0, L), U = X = 0, H = q.length; X < H; X++)
-        if (T.indexOf(D = q.charAt(X)) < 0) {
+        V.s = H.charCodeAt(0) === 45 ? (H = H.slice(1), -1) : 1;
+      for (T = k.slice(0, L), q = X = 0, U = H.length; X < U; X++)
+        if (T.indexOf(D = H.charAt(X)) < 0) {
           if (D == ".") {
-            if (X > U) {
-              U = H;
+            if (X > q) {
+              q = U;
               continue;
             }
-          } else if (!z && (q == q.toUpperCase() && (q = q.toLowerCase()) || q == q.toLowerCase() && (q = q.toUpperCase()))) {
-            z = !0, X = -1, U = 0;
+          } else if (!z && (H == H.toUpperCase() && (H = H.toLowerCase()) || H == H.toLowerCase() && (H = H.toUpperCase()))) {
+            z = !0, X = -1, q = 0;
             continue;
           }
           return r(V, String(C), O, L);
         }
-      O = !1, q = t(q, L, 10, V.s), (U = q.indexOf(".")) > -1 ? q = q.replace(".", "") : U = q.length;
+      O = !1, H = t(H, L, 10, V.s), (q = H.indexOf(".")) > -1 ? H = H.replace(".", "") : q = H.length;
     }
-    for (X = 0; q.charCodeAt(X) === 48; X++) ;
-    for (H = q.length; q.charCodeAt(--H) === 48; ) ;
-    if (q = q.slice(X, ++H)) {
-      if (H -= X, O && S.DEBUG && H > 15 && (C > Qo || C !== zt(C)))
-        throw Error(_c + V.s * C);
-      if ((U = U - X - 1) > m)
+    for (X = 0; H.charCodeAt(X) === 48; X++) ;
+    for (U = H.length; H.charCodeAt(--U) === 48; ) ;
+    if (H = H.slice(X, ++U)) {
+      if (U -= X, O && S.DEBUG && U > 15 && (C > ea || C !== Gt(C)))
+        throw Error(bc + V.s * C);
+      if ((q = q - X - 1) > m)
         V.c = V.e = null;
-      else if (U < d)
+      else if (q < d)
         V.c = [V.e = 0];
       else {
-        if (V.e = U, V.c = [], X = (U + 1) % Ce, U < 0 && (X += Ce), X < H) {
-          for (X && V.c.push(+q.slice(0, X)), H -= Ce; X < H; )
-            V.c.push(+q.slice(X, X += Ce));
-          X = Ce - (q = q.slice(X)).length;
+        if (V.e = q, V.c = [], X = (q + 1) % Ce, q < 0 && (X += Ce), X < U) {
+          for (X && V.c.push(+H.slice(0, X)), U -= Ce; X < U; )
+            V.c.push(+H.slice(X, X += Ce));
+          X = Ce - (H = H.slice(X)).length;
         } else
-          X -= H;
-        for (; X--; q += "0") ;
-        V.c.push(+q);
+          X -= U;
+        for (; X--; H += "0") ;
+        V.c.push(+H);
       }
     } else
       V.c = [V.e = 0];
   }
-  S.clone = bg, S.ROUND_UP = 0, S.ROUND_DOWN = 1, S.ROUND_CEIL = 2, S.ROUND_FLOOR = 3, S.ROUND_HALF_UP = 4, S.ROUND_HALF_DOWN = 5, S.ROUND_HALF_EVEN = 6, S.ROUND_HALF_CEIL = 7, S.ROUND_HALF_FLOOR = 8, S.EUCLID = 9, S.config = S.set = function(C) {
+  S.clone = Ig, S.ROUND_UP = 0, S.ROUND_DOWN = 1, S.ROUND_CEIL = 2, S.ROUND_FLOOR = 3, S.ROUND_HALF_UP = 4, S.ROUND_HALF_DOWN = 5, S.ROUND_HALF_EVEN = 6, S.ROUND_HALF_CEIL = 7, S.ROUND_HALF_FLOOR = 8, S.EUCLID = 9, S.config = S.set = function(C) {
     var L, T;
     if (C != null)
       if (typeof C == "object") {
-        if (C.hasOwnProperty(L = "DECIMAL_PLACES") && (T = C[L], Ke(T, 0, st, L), l = T), C.hasOwnProperty(L = "ROUNDING_MODE") && (T = C[L], Ke(T, 0, 8, L), u = T), C.hasOwnProperty(L = "EXPONENTIAL_AT") && (T = C[L], T && T.pop ? (Ke(T[0], -st, 0, L), Ke(T[1], 0, st, L), f = T[0], g = T[1]) : (Ke(T, -st, st, L), f = -(g = T < 0 ? -T : T))), C.hasOwnProperty(L = "RANGE"))
+        if (C.hasOwnProperty(L = "DECIMAL_PLACES") && (T = C[L], Je(T, 0, ot, L), l = T), C.hasOwnProperty(L = "ROUNDING_MODE") && (T = C[L], Je(T, 0, 8, L), u = T), C.hasOwnProperty(L = "EXPONENTIAL_AT") && (T = C[L], T && T.pop ? (Je(T[0], -ot, 0, L), Je(T[1], 0, ot, L), f = T[0], g = T[1]) : (Je(T, -ot, ot, L), f = -(g = T < 0 ? -T : T))), C.hasOwnProperty(L = "RANGE"))
           if (T = C[L], T && T.pop)
-            Ke(T[0], -st, -1, L), Ke(T[1], 1, st, L), d = T[0], m = T[1];
-          else if (Ke(T, -st, st, L), T)
+            Je(T[0], -ot, -1, L), Je(T[1], 1, ot, L), d = T[0], m = T[1];
+          else if (Je(T, -ot, ot, L), T)
             d = -(m = T < 0 ? -T : T);
           else
-            throw Error(Et + L + " cannot be zero: " + T);
+            throw Error(bt + L + " cannot be zero: " + T);
         if (C.hasOwnProperty(L = "CRYPTO"))
           if (T = C[L], T === !!T)
             if (T)
               if (typeof crypto < "u" && crypto && (crypto.getRandomValues || crypto.randomBytes))
                 p = T;
               else
-                throw p = !T, Error(Et + "crypto unavailable");
+                throw p = !T, Error(bt + "crypto unavailable");
             else
               p = T;
           else
-            throw Error(Et + L + " not true or false: " + T);
-        if (C.hasOwnProperty(L = "MODULO_MODE") && (T = C[L], Ke(T, 0, 9, L), y = T), C.hasOwnProperty(L = "POW_PRECISION") && (T = C[L], Ke(T, 0, st, L), w = T), C.hasOwnProperty(L = "FORMAT"))
+            throw Error(bt + L + " not true or false: " + T);
+        if (C.hasOwnProperty(L = "MODULO_MODE") && (T = C[L], Je(T, 0, 9, L), y = T), C.hasOwnProperty(L = "POW_PRECISION") && (T = C[L], Je(T, 0, ot, L), w = T), C.hasOwnProperty(L = "FORMAT"))
           if (T = C[L], typeof T == "object") b = T;
-          else throw Error(Et + L + " not an object: " + T);
+          else throw Error(bt + L + " not an object: " + T);
         if (C.hasOwnProperty(L = "ALPHABET"))
           if (T = C[L], typeof T == "string" && !/^.?$|[+\-.\s]|(.).*\1/.test(T))
-            k = T.slice(0, 10) == "0123456789", M = T;
+            I = T.slice(0, 10) == "0123456789", k = T;
           else
-            throw Error(Et + L + " invalid: " + T);
+            throw Error(bt + L + " invalid: " + T);
       } else
-        throw Error(Et + "Object expected: " + C);
+        throw Error(bt + "Object expected: " + C);
     return {
       DECIMAL_PLACES: l,
       ROUNDING_MODE: u,
@@ -15741,178 +16176,178 @@ function bg(n) {
       MODULO_MODE: y,
       POW_PRECISION: w,
       FORMAT: b,
-      ALPHABET: M
+      ALPHABET: k
     };
   }, S.isBigNumber = function(C) {
     if (!C || C._isBigNumber !== !0) return !1;
     if (!S.DEBUG) return !0;
-    var L, T, D = C.c, z = C.e, U = C.s;
+    var L, T, D = C.c, z = C.e, q = C.s;
     e: if ({}.toString.call(D) == "[object Array]") {
-      if ((U === 1 || U === -1) && z >= -st && z <= st && z === zt(z)) {
+      if ((q === 1 || q === -1) && z >= -ot && z <= ot && z === Gt(z)) {
         if (D[0] === 0) {
           if (z === 0 && D.length === 1) return !0;
           break e;
         }
         if (L = (z + 1) % Ce, L < 1 && (L += Ce), String(D[0]).length == L) {
           for (L = 0; L < D.length; L++)
-            if (T = D[L], T < 0 || T >= Vt || T !== zt(T)) break e;
+            if (T = D[L], T < 0 || T >= Wt || T !== Gt(T)) break e;
           if (T !== 0) return !0;
         }
       }
-    } else if (D === null && z === null && (U === null || U === 1 || U === -1))
+    } else if (D === null && z === null && (q === null || q === 1 || q === -1))
       return !0;
-    throw Error(Et + "Invalid BigNumber: " + C);
+    throw Error(bt + "Invalid BigNumber: " + C);
   }, S.maximum = S.max = function() {
-    return P(arguments, -1);
+    return N(arguments, -1);
   }, S.minimum = S.min = function() {
-    return P(arguments, 1);
+    return N(arguments, 1);
   }, S.random = function() {
     var C = 9007199254740992, L = Math.random() * C & 2097151 ? function() {
-      return zt(Math.random() * C);
+      return Gt(Math.random() * C);
     } : function() {
       return (Math.random() * 1073741824 | 0) * 8388608 + (Math.random() * 8388608 | 0);
     };
     return function(T) {
-      var D, z, U, X, O, H = 0, q = [], V = new S(a);
-      if (T == null ? T = l : Ke(T, 0, st), X = Jo(T / Ce), p)
+      var D, z, q, X, O, U = 0, H = [], V = new S(a);
+      if (T == null ? T = l : Je(T, 0, ot), X = jo(T / Ce), p)
         if (crypto.getRandomValues) {
-          for (D = crypto.getRandomValues(new Uint32Array(X *= 2)); H < X; )
-            O = D[H] * 131072 + (D[H + 1] >>> 11), O >= 9e15 ? (z = crypto.getRandomValues(new Uint32Array(2)), D[H] = z[0], D[H + 1] = z[1]) : (q.push(O % 1e14), H += 2);
-          H = X / 2;
+          for (D = crypto.getRandomValues(new Uint32Array(X *= 2)); U < X; )
+            O = D[U] * 131072 + (D[U + 1] >>> 11), O >= 9e15 ? (z = crypto.getRandomValues(new Uint32Array(2)), D[U] = z[0], D[U + 1] = z[1]) : (H.push(O % 1e14), U += 2);
+          U = X / 2;
         } else if (crypto.randomBytes) {
-          for (D = crypto.randomBytes(X *= 7); H < X; )
-            O = (D[H] & 31) * 281474976710656 + D[H + 1] * 1099511627776 + D[H + 2] * 4294967296 + D[H + 3] * 16777216 + (D[H + 4] << 16) + (D[H + 5] << 8) + D[H + 6], O >= 9e15 ? crypto.randomBytes(7).copy(D, H) : (q.push(O % 1e14), H += 7);
-          H = X / 7;
+          for (D = crypto.randomBytes(X *= 7); U < X; )
+            O = (D[U] & 31) * 281474976710656 + D[U + 1] * 1099511627776 + D[U + 2] * 4294967296 + D[U + 3] * 16777216 + (D[U + 4] << 16) + (D[U + 5] << 8) + D[U + 6], O >= 9e15 ? crypto.randomBytes(7).copy(D, U) : (H.push(O % 1e14), U += 7);
+          U = X / 7;
         } else
-          throw p = !1, Error(Et + "crypto unavailable");
+          throw p = !1, Error(bt + "crypto unavailable");
       if (!p)
-        for (; H < X; )
-          O = L(), O < 9e15 && (q[H++] = O % 1e14);
-      for (X = q[--H], T %= Ce, X && T && (O = jo[Ce - T], q[H] = zt(X / O) * O); q[H] === 0; q.pop(), H--) ;
-      if (H < 0)
-        q = [U = 0];
+        for (; U < X; )
+          O = L(), O < 9e15 && (H[U++] = O % 1e14);
+      for (X = H[--U], T %= Ce, X && T && (O = ta[Ce - T], H[U] = Gt(X / O) * O); H[U] === 0; H.pop(), U--) ;
+      if (U < 0)
+        H = [q = 0];
       else {
-        for (U = -1; q[0] === 0; q.splice(0, 1), U -= Ce) ;
-        for (H = 1, O = q[0]; O >= 10; O /= 10, H++) ;
-        H < Ce && (U -= Ce - H);
+        for (q = -1; H[0] === 0; H.splice(0, 1), q -= Ce) ;
+        for (U = 1, O = H[0]; O >= 10; O /= 10, U++) ;
+        U < Ce && (q -= Ce - U);
       }
-      return V.e = U, V.c = q, V;
+      return V.e = q, V.c = H, V;
     };
   }(), S.sum = function() {
     for (var C = 1, L = arguments, T = new S(L[0]); C < L.length; ) T = T.plus(L[C++]);
     return T;
   }, t = /* @__PURE__ */ function() {
     var C = "0123456789";
-    function L(T, D, z, U) {
-      for (var X, O = [0], H, q = 0, V = T.length; q < V; ) {
-        for (H = O.length; H--; O[H] *= D) ;
-        for (O[0] += U.indexOf(T.charAt(q++)), X = 0; X < O.length; X++)
+    function L(T, D, z, q) {
+      for (var X, O = [0], U, H = 0, V = T.length; H < V; ) {
+        for (U = O.length; U--; O[U] *= D) ;
+        for (O[0] += q.indexOf(T.charAt(H++)), X = 0; X < O.length; X++)
           O[X] > z - 1 && (O[X + 1] == null && (O[X + 1] = 0), O[X + 1] += O[X] / z | 0, O[X] %= z);
       }
       return O.reverse();
     }
-    return function(T, D, z, U, X) {
-      var O, H, q, V, J, W, j, Q, re = T.indexOf("."), ee = l, te = u;
+    return function(T, D, z, q, X) {
+      var O, U, H, V, J, W, j, Q, re = T.indexOf("."), ee = l, te = u;
       for (re >= 0 && (V = w, w = 0, T = T.replace(".", ""), Q = new S(D), W = Q.pow(T.length - re), w = V, Q.c = L(
-        vn(Ft(W.c), W.e, "0"),
+        pn(Bt(W.c), W.e, "0"),
         10,
         z,
         C
-      ), Q.e = Q.c.length), j = L(T, D, z, X ? (O = M, C) : (O = C, M)), q = V = j.length; j[--V] == 0; j.pop()) ;
+      ), Q.e = Q.c.length), j = L(T, D, z, X ? (O = k, C) : (O = C, k)), H = V = j.length; j[--V] == 0; j.pop()) ;
       if (!j[0]) return O.charAt(0);
-      if (re < 0 ? --q : (W.c = j, W.e = q, W.s = U, W = e(W, Q, ee, te, z), j = W.c, J = W.r, q = W.e), H = q + ee + 1, re = j[H], V = z / 2, J = J || H < 0 || j[H + 1] != null, J = te < 4 ? (re != null || J) && (te == 0 || te == (W.s < 0 ? 3 : 2)) : re > V || re == V && (te == 4 || J || te == 6 && j[H - 1] & 1 || te == (W.s < 0 ? 8 : 7)), H < 1 || !j[0])
-        T = J ? vn(O.charAt(1), -ee, O.charAt(0)) : O.charAt(0);
+      if (re < 0 ? --H : (W.c = j, W.e = H, W.s = q, W = e(W, Q, ee, te, z), j = W.c, J = W.r, H = W.e), U = H + ee + 1, re = j[U], V = z / 2, J = J || U < 0 || j[U + 1] != null, J = te < 4 ? (re != null || J) && (te == 0 || te == (W.s < 0 ? 3 : 2)) : re > V || re == V && (te == 4 || J || te == 6 && j[U - 1] & 1 || te == (W.s < 0 ? 8 : 7)), U < 1 || !j[0])
+        T = J ? pn(O.charAt(1), -ee, O.charAt(0)) : O.charAt(0);
       else {
-        if (j.length = H, J)
-          for (--z; ++j[--H] > z; )
-            j[H] = 0, H || (++q, j = [1].concat(j));
+        if (j.length = U, J)
+          for (--z; ++j[--U] > z; )
+            j[U] = 0, U || (++H, j = [1].concat(j));
         for (V = j.length; !j[--V]; ) ;
         for (re = 0, T = ""; re <= V; T += O.charAt(j[re++])) ;
-        T = vn(T, q, O.charAt(0));
+        T = pn(T, H, O.charAt(0));
       }
       return T;
     };
   }(), e = /* @__PURE__ */ function() {
-    function C(D, z, U) {
-      var X, O, H, q, V = 0, J = D.length, W = z % Ln, j = z / Ln | 0;
+    function C(D, z, q) {
+      var X, O, U, H, V = 0, J = D.length, W = z % Nn, j = z / Nn | 0;
       for (D = D.slice(); J--; )
-        H = D[J] % Ln, q = D[J] / Ln | 0, X = j * H + q * W, O = W * H + X % Ln * Ln + V, V = (O / U | 0) + (X / Ln | 0) + j * q, D[J] = O % U;
+        U = D[J] % Nn, H = D[J] / Nn | 0, X = j * U + H * W, O = W * U + X % Nn * Nn + V, V = (O / q | 0) + (X / Nn | 0) + j * H, D[J] = O % q;
       return V && (D = [V].concat(D)), D;
     }
-    function L(D, z, U, X) {
-      var O, H;
-      if (U != X)
-        H = U > X ? 1 : -1;
+    function L(D, z, q, X) {
+      var O, U;
+      if (q != X)
+        U = q > X ? 1 : -1;
       else
-        for (O = H = 0; O < U; O++)
+        for (O = U = 0; O < q; O++)
           if (D[O] != z[O]) {
-            H = D[O] > z[O] ? 1 : -1;
+            U = D[O] > z[O] ? 1 : -1;
             break;
           }
-      return H;
+      return U;
     }
-    function T(D, z, U, X) {
-      for (var O = 0; U--; )
-        D[U] -= O, O = D[U] < z[U] ? 1 : 0, D[U] = O * X + D[U] - z[U];
+    function T(D, z, q, X) {
+      for (var O = 0; q--; )
+        D[q] -= O, O = D[q] < z[q] ? 1 : 0, D[q] = O * X + D[q] - z[q];
       for (; !D[0] && D.length > 1; D.splice(0, 1)) ;
     }
-    return function(D, z, U, X, O) {
-      var H, q, V, J, W, j, Q, re, ee, te, se, fe, Z, Fe, _e, ae, Y, Ie = D.s == z.s ? 1 : -1, Ne = D.c, be = z.c;
-      if (!Ne || !Ne[0] || !be || !be[0])
+    return function(D, z, q, X, O) {
+      var U, H, V, J, W, j, Q, re, ee, te, se, fe, Z, Be, _e, ae, Y, ke = D.s == z.s ? 1 : -1, Pe = D.c, be = z.c;
+      if (!Pe || !Pe[0] || !be || !be[0])
         return new S(
           // Return NaN if either NaN, or both Infinity or 0.
-          !D.s || !z.s || (Ne ? be && Ne[0] == be[0] : !be) ? NaN : (
+          !D.s || !z.s || (Pe ? be && Pe[0] == be[0] : !be) ? NaN : (
             // Return ±0 if x is ±0 or y is ±Infinity, or return ±Infinity as y is ±0.
-            Ne && Ne[0] == 0 || !be ? Ie * 0 : Ie / 0
+            Pe && Pe[0] == 0 || !be ? ke * 0 : ke / 0
           )
         );
-      for (re = new S(Ie), ee = re.c = [], q = D.e - z.e, Ie = U + q + 1, O || (O = Vt, q = Gt(D.e / Ce) - Gt(z.e / Ce), Ie = Ie / Ce | 0), V = 0; be[V] == (Ne[V] || 0); V++) ;
-      if (be[V] > (Ne[V] || 0) && q--, Ie < 0)
+      for (re = new S(ke), ee = re.c = [], H = D.e - z.e, ke = q + H + 1, O || (O = Wt, H = qt(D.e / Ce) - qt(z.e / Ce), ke = ke / Ce | 0), V = 0; be[V] == (Pe[V] || 0); V++) ;
+      if (be[V] > (Pe[V] || 0) && H--, ke < 0)
         ee.push(1), J = !0;
       else {
-        for (Fe = Ne.length, ae = be.length, V = 0, Ie += 2, W = zt(O / (be[0] + 1)), W > 1 && (be = C(be, W, O), Ne = C(Ne, W, O), ae = be.length, Fe = Ne.length), Z = ae, te = Ne.slice(0, ae), se = te.length; se < ae; te[se++] = 0) ;
+        for (Be = Pe.length, ae = be.length, V = 0, ke += 2, W = Gt(O / (be[0] + 1)), W > 1 && (be = C(be, W, O), Pe = C(Pe, W, O), ae = be.length, Be = Pe.length), Z = ae, te = Pe.slice(0, ae), se = te.length; se < ae; te[se++] = 0) ;
         Y = be.slice(), Y = [0].concat(Y), _e = be[0], be[1] >= O / 2 && _e++;
         do {
-          if (W = 0, H = L(be, te, ae, se), H < 0) {
-            if (fe = te[0], ae != se && (fe = fe * O + (te[1] || 0)), W = zt(fe / _e), W > 1)
+          if (W = 0, U = L(be, te, ae, se), U < 0) {
+            if (fe = te[0], ae != se && (fe = fe * O + (te[1] || 0)), W = Gt(fe / _e), W > 1)
               for (W >= O && (W = O - 1), j = C(be, W, O), Q = j.length, se = te.length; L(j, te, Q, se) == 1; )
-                W--, T(j, ae < Q ? Y : be, Q, O), Q = j.length, H = 1;
+                W--, T(j, ae < Q ? Y : be, Q, O), Q = j.length, U = 1;
             else
-              W == 0 && (H = W = 1), j = be.slice(), Q = j.length;
-            if (Q < se && (j = [0].concat(j)), T(te, j, se, O), se = te.length, H == -1)
+              W == 0 && (U = W = 1), j = be.slice(), Q = j.length;
+            if (Q < se && (j = [0].concat(j)), T(te, j, se, O), se = te.length, U == -1)
               for (; L(be, te, ae, se) < 1; )
                 W++, T(te, ae < se ? Y : be, se, O), se = te.length;
-          } else H === 0 && (W++, te = [0]);
-          ee[V++] = W, te[0] ? te[se++] = Ne[Z] || 0 : (te = [Ne[Z]], se = 1);
-        } while ((Z++ < Fe || te[0] != null) && Ie--);
+          } else U === 0 && (W++, te = [0]);
+          ee[V++] = W, te[0] ? te[se++] = Pe[Z] || 0 : (te = [Pe[Z]], se = 1);
+        } while ((Z++ < Be || te[0] != null) && ke--);
         J = te[0] != null, ee[0] || ee.splice(0, 1);
       }
-      if (O == Vt) {
-        for (V = 1, Ie = ee[0]; Ie >= 10; Ie /= 10, V++) ;
-        B(re, U + (re.e = V + q * Ce - 1) + 1, X, J);
+      if (O == Wt) {
+        for (V = 1, ke = ee[0]; ke >= 10; ke /= 10, V++) ;
+        B(re, q + (re.e = V + H * Ce - 1) + 1, X, J);
       } else
-        re.e = q, re.r = +J;
+        re.e = H, re.r = +J;
       return re;
     };
   }();
-  function N(C, L, T, D) {
-    var z, U, X, O, H;
-    if (T == null ? T = u : Ke(T, 0, 8), !C.c) return C.toString();
+  function P(C, L, T, D) {
+    var z, q, X, O, U;
+    if (T == null ? T = u : Je(T, 0, 8), !C.c) return C.toString();
     if (z = C.c[0], X = C.e, L == null)
-      H = Ft(C.c), H = D == 1 || D == 2 && (X <= f || X >= g) ? us(H, X) : vn(H, X, "0");
-    else if (C = B(new S(C), L, T), U = C.e, H = Ft(C.c), O = H.length, D == 1 || D == 2 && (L <= U || U <= f)) {
-      for (; O < L; H += "0", O++) ;
-      H = us(H, U);
-    } else if (L -= X + (D === 2 && U > X), H = vn(H, U, "0"), U + 1 > O) {
-      if (--L > 0) for (H += "."; L--; H += "0") ;
-    } else if (L += U - O, L > 0)
-      for (U + 1 == O && (H += "."); L--; H += "0") ;
-    return C.s < 0 && z ? "-" + H : H;
+      U = Bt(C.c), U = D == 1 || D == 2 && (X <= f || X >= g) ? hs(U, X) : pn(U, X, "0");
+    else if (C = B(new S(C), L, T), q = C.e, U = Bt(C.c), O = U.length, D == 1 || D == 2 && (L <= q || q <= f)) {
+      for (; O < L; U += "0", O++) ;
+      U = hs(U, q);
+    } else if (L -= X + (D === 2 && q > X), U = pn(U, q, "0"), q + 1 > O) {
+      if (--L > 0) for (U += "."; L--; U += "0") ;
+    } else if (L += q - O, L > 0)
+      for (q + 1 == O && (U += "."); L--; U += "0") ;
+    return C.s < 0 && z ? "-" + U : U;
   }
-  function P(C, L) {
-    for (var T, D, z = 1, U = new S(C[0]); z < C.length; z++)
-      D = new S(C[z]), (!D.s || (T = Hn(U, D)) === L || T === 0 && U.s === L) && (U = D);
-    return U;
+  function N(C, L) {
+    for (var T, D, z = 1, q = new S(C[0]); z < C.length; z++)
+      D = new S(C[z]), (!D.s || (T = Yn(q, D)) === L || T === 0 && q.s === L) && (q = D);
+    return q;
   }
   function A(C, L, T) {
     for (var D = 1, z = L.length; !L[--z]; L.pop()) ;
@@ -15921,57 +16356,57 @@ function bg(n) {
   }
   r = /* @__PURE__ */ function() {
     var C = /^(-?)0([xbo])(?=\w[\w.]*$)/i, L = /^([^.]+)\.$/, T = /^\.([^.]+)$/, D = /^-?(Infinity|NaN)$/, z = /^\s*\+(?=[\w.])|^\s+|\s+$/g;
-    return function(U, X, O, H) {
-      var q, V = O ? X : X.replace(z, "");
+    return function(q, X, O, U) {
+      var H, V = O ? X : X.replace(z, "");
       if (D.test(V))
-        U.s = isNaN(V) ? null : V < 0 ? -1 : 1;
+        q.s = isNaN(V) ? null : V < 0 ? -1 : 1;
       else {
         if (!O && (V = V.replace(C, function(J, W, j) {
-          return q = (j = j.toLowerCase()) == "x" ? 16 : j == "b" ? 2 : 8, !H || H == q ? W : J;
-        }), H && (q = H, V = V.replace(L, "$1").replace(T, "0.$1")), X != V))
-          return new S(V, q);
+          return H = (j = j.toLowerCase()) == "x" ? 16 : j == "b" ? 2 : 8, !U || U == H ? W : J;
+        }), U && (H = U, V = V.replace(L, "$1").replace(T, "0.$1")), X != V))
+          return new S(V, H);
         if (S.DEBUG)
-          throw Error(Et + "Not a" + (H ? " base " + H : "") + " number: " + X);
-        U.s = null;
+          throw Error(bt + "Not a" + (U ? " base " + U : "") + " number: " + X);
+        q.s = null;
       }
-      U.c = U.e = null;
+      q.c = q.e = null;
     };
   }();
   function B(C, L, T, D) {
-    var z, U, X, O, H, q, V, J = C.c, W = jo;
+    var z, q, X, O, U, H, V, J = C.c, W = ta;
     if (J) {
       e: {
         for (z = 1, O = J[0]; O >= 10; O /= 10, z++) ;
-        if (U = L - z, U < 0)
-          U += Ce, X = L, H = J[q = 0], V = zt(H / W[z - X - 1] % 10);
-        else if (q = Jo((U + 1) / Ce), q >= J.length)
+        if (q = L - z, q < 0)
+          q += Ce, X = L, U = J[H = 0], V = Gt(U / W[z - X - 1] % 10);
+        else if (H = jo((q + 1) / Ce), H >= J.length)
           if (D) {
-            for (; J.length <= q; J.push(0)) ;
-            H = V = 0, z = 1, U %= Ce, X = U - Ce + 1;
+            for (; J.length <= H; J.push(0)) ;
+            U = V = 0, z = 1, q %= Ce, X = q - Ce + 1;
           } else
             break e;
         else {
-          for (H = O = J[q], z = 1; O >= 10; O /= 10, z++) ;
-          U %= Ce, X = U - Ce + z, V = X < 0 ? 0 : zt(H / W[z - X - 1] % 10);
+          for (U = O = J[H], z = 1; O >= 10; O /= 10, z++) ;
+          q %= Ce, X = q - Ce + z, V = X < 0 ? 0 : Gt(U / W[z - X - 1] % 10);
         }
         if (D = D || L < 0 || // Are there any non-zero digits after the rounding digit?
         // The expression  n % pows10[d - j - 1]  returns all digits of n to the right
         // of the digit at j, e.g. if n is 908714 and j is 2, the expression gives 714.
-        J[q + 1] != null || (X < 0 ? H : H % W[z - X - 1]), D = T < 4 ? (V || D) && (T == 0 || T == (C.s < 0 ? 3 : 2)) : V > 5 || V == 5 && (T == 4 || D || T == 6 && // Check whether the digit to the left of the rounding digit is odd.
-        (U > 0 ? X > 0 ? H / W[z - X] : 0 : J[q - 1]) % 10 & 1 || T == (C.s < 0 ? 8 : 7)), L < 1 || !J[0])
+        J[H + 1] != null || (X < 0 ? U : U % W[z - X - 1]), D = T < 4 ? (V || D) && (T == 0 || T == (C.s < 0 ? 3 : 2)) : V > 5 || V == 5 && (T == 4 || D || T == 6 && // Check whether the digit to the left of the rounding digit is odd.
+        (q > 0 ? X > 0 ? U / W[z - X] : 0 : J[H - 1]) % 10 & 1 || T == (C.s < 0 ? 8 : 7)), L < 1 || !J[0])
           return J.length = 0, D ? (L -= C.e + 1, J[0] = W[(Ce - L % Ce) % Ce], C.e = -L || 0) : J[0] = C.e = 0, C;
-        if (U == 0 ? (J.length = q, O = 1, q--) : (J.length = q + 1, O = W[Ce - U], J[q] = X > 0 ? zt(H / W[z - X] % W[X]) * O : 0), D)
+        if (q == 0 ? (J.length = H, O = 1, H--) : (J.length = H + 1, O = W[Ce - q], J[H] = X > 0 ? Gt(U / W[z - X] % W[X]) * O : 0), D)
           for (; ; )
-            if (q == 0) {
-              for (U = 1, X = J[0]; X >= 10; X /= 10, U++) ;
+            if (H == 0) {
+              for (q = 1, X = J[0]; X >= 10; X /= 10, q++) ;
               for (X = J[0] += O, O = 1; X >= 10; X /= 10, O++) ;
-              U != O && (C.e++, J[0] == Vt && (J[0] = 1));
+              q != O && (C.e++, J[0] == Wt && (J[0] = 1));
               break;
             } else {
-              if (J[q] += O, J[q] != Vt) break;
-              J[q--] = 0, O = 1;
+              if (J[H] += O, J[H] != Wt) break;
+              J[H--] = 0, O = 1;
             }
-        for (U = J.length; J[--U] === 0; J.pop()) ;
+        for (q = J.length; J[--q] === 0; J.pop()) ;
       }
       C.e > m ? C.c = C.e = null : C.e < d && (C.c = [C.e = 0]);
     }
@@ -15979,72 +16414,72 @@ function bg(n) {
   }
   function F(C) {
     var L, T = C.e;
-    return T === null ? C.toString() : (L = Ft(C.c), L = T <= f || T >= g ? us(L, T) : vn(L, T, "0"), C.s < 0 ? "-" + L : L);
+    return T === null ? C.toString() : (L = Bt(C.c), L = T <= f || T >= g ? hs(L, T) : pn(L, T, "0"), C.s < 0 ? "-" + L : L);
   }
   return i.absoluteValue = i.abs = function() {
     var C = new S(this);
     return C.s < 0 && (C.s = 1), C;
   }, i.comparedTo = function(C, L) {
-    return Hn(this, new S(C, L));
+    return Yn(this, new S(C, L));
   }, i.decimalPlaces = i.dp = function(C, L) {
-    var T, D, z, U = this;
+    var T, D, z, q = this;
     if (C != null)
-      return Ke(C, 0, st), L == null ? L = u : Ke(L, 0, 8), B(new S(U), C + U.e + 1, L);
-    if (!(T = U.c)) return null;
-    if (D = ((z = T.length - 1) - Gt(this.e / Ce)) * Ce, z = T[z]) for (; z % 10 == 0; z /= 10, D--) ;
+      return Je(C, 0, ot), L == null ? L = u : Je(L, 0, 8), B(new S(q), C + q.e + 1, L);
+    if (!(T = q.c)) return null;
+    if (D = ((z = T.length - 1) - qt(this.e / Ce)) * Ce, z = T[z]) for (; z % 10 == 0; z /= 10, D--) ;
     return D < 0 && (D = 0), D;
   }, i.dividedBy = i.div = function(C, L) {
     return e(this, new S(C, L), l, u);
   }, i.dividedToIntegerBy = i.idiv = function(C, L) {
     return e(this, new S(C, L), 0, 1);
   }, i.exponentiatedBy = i.pow = function(C, L) {
-    var T, D, z, U, X, O, H, q, V, J = this;
+    var T, D, z, q, X, O, U, H, V, J = this;
     if (C = new S(C), C.c && !C.isInteger())
-      throw Error(Et + "Exponent not an integer: " + F(C));
+      throw Error(bt + "Exponent not an integer: " + F(C));
     if (L != null && (L = new S(L)), O = C.e > 14, !J.c || !J.c[0] || J.c[0] == 1 && !J.e && J.c.length == 1 || !C.c || !C.c[0])
-      return V = new S(Math.pow(+F(J), O ? C.s * (2 - ls(C)) : +F(C))), L ? V.mod(L) : V;
-    if (H = C.s < 0, L) {
+      return V = new S(Math.pow(+F(J), O ? C.s * (2 - cs(C)) : +F(C))), L ? V.mod(L) : V;
+    if (U = C.s < 0, L) {
       if (L.c ? !L.c[0] : !L.s) return new S(NaN);
-      D = !H && J.isInteger() && L.isInteger(), D && (J = J.mod(L));
+      D = !U && J.isInteger() && L.isInteger(), D && (J = J.mod(L));
     } else {
       if (C.e > 9 && (J.e > 0 || J.e < -1 || (J.e == 0 ? J.c[0] > 1 || O && J.c[1] >= 24e7 : J.c[0] < 8e13 || O && J.c[0] <= 9999975e7)))
-        return U = J.s < 0 && ls(C) ? -0 : 0, J.e > -1 && (U = 1 / U), new S(H ? 1 / U : U);
-      w && (U = Jo(w / Ce + 2));
+        return q = J.s < 0 && cs(C) ? -0 : 0, J.e > -1 && (q = 1 / q), new S(U ? 1 / q : q);
+      w && (q = jo(w / Ce + 2));
     }
-    for (O ? (T = new S(0.5), H && (C.s = 1), q = ls(C)) : (z = Math.abs(+F(C)), q = z % 2), V = new S(a); ; ) {
-      if (q) {
+    for (O ? (T = new S(0.5), U && (C.s = 1), H = cs(C)) : (z = Math.abs(+F(C)), H = z % 2), V = new S(a); ; ) {
+      if (H) {
         if (V = V.times(J), !V.c) break;
-        U ? V.c.length > U && (V.c.length = U) : D && (V = V.mod(L));
+        q ? V.c.length > q && (V.c.length = q) : D && (V = V.mod(L));
       }
       if (z) {
-        if (z = zt(z / 2), z === 0) break;
-        q = z % 2;
+        if (z = Gt(z / 2), z === 0) break;
+        H = z % 2;
       } else if (C = C.times(T), B(C, C.e + 1, 1), C.e > 14)
-        q = ls(C);
+        H = cs(C);
       else {
         if (z = +F(C), z === 0) break;
-        q = z % 2;
+        H = z % 2;
       }
-      J = J.times(J), U ? J.c && J.c.length > U && (J.c.length = U) : D && (J = J.mod(L));
+      J = J.times(J), q ? J.c && J.c.length > q && (J.c.length = q) : D && (J = J.mod(L));
     }
-    return D ? V : (H && (V = a.div(V)), L ? V.mod(L) : U ? B(V, w, u, X) : V);
+    return D ? V : (U && (V = a.div(V)), L ? V.mod(L) : q ? B(V, w, u, X) : V);
   }, i.integerValue = function(C) {
     var L = new S(this);
-    return C == null ? C = u : Ke(C, 0, 8), B(L, L.e + 1, C);
+    return C == null ? C = u : Je(C, 0, 8), B(L, L.e + 1, C);
   }, i.isEqualTo = i.eq = function(C, L) {
-    return Hn(this, new S(C, L)) === 0;
+    return Yn(this, new S(C, L)) === 0;
   }, i.isFinite = function() {
     return !!this.c;
   }, i.isGreaterThan = i.gt = function(C, L) {
-    return Hn(this, new S(C, L)) > 0;
+    return Yn(this, new S(C, L)) > 0;
   }, i.isGreaterThanOrEqualTo = i.gte = function(C, L) {
-    return (L = Hn(this, new S(C, L))) === 1 || L === 0;
+    return (L = Yn(this, new S(C, L))) === 1 || L === 0;
   }, i.isInteger = function() {
-    return !!this.c && Gt(this.e / Ce) > this.c.length - 2;
+    return !!this.c && qt(this.e / Ce) > this.c.length - 2;
   }, i.isLessThan = i.lt = function(C, L) {
-    return Hn(this, new S(C, L)) < 0;
+    return Yn(this, new S(C, L)) < 0;
   }, i.isLessThanOrEqualTo = i.lte = function(C, L) {
-    return (L = Hn(this, new S(C, L))) === -1 || L === 0;
+    return (L = Yn(this, new S(C, L))) === -1 || L === 0;
   }, i.isNaN = function() {
     return !this.s;
   }, i.isNegative = function() {
@@ -16054,12 +16489,12 @@ function bg(n) {
   }, i.isZero = function() {
     return !!this.c && this.c[0] == 0;
   }, i.minus = function(C, L) {
-    var T, D, z, U, X = this, O = X.s;
+    var T, D, z, q, X = this, O = X.s;
     if (C = new S(C, L), L = C.s, !O || !L) return new S(NaN);
     if (O != L)
       return C.s = -L, X.plus(C);
-    var H = X.e / Ce, q = C.e / Ce, V = X.c, J = C.c;
-    if (!H || !q) {
+    var U = X.e / Ce, H = C.e / Ce, V = X.c, J = C.c;
+    if (!U || !H) {
       if (!V || !J) return V ? (C.s = -L, C) : new S(J ? X : NaN);
       if (!V[0] || !J[0])
         return J[0] ? (C.s = -L, C) : new S(V[0] ? X : (
@@ -16067,37 +16502,37 @@ function bg(n) {
           u == 3 ? -0 : 0
         ));
     }
-    if (H = Gt(H), q = Gt(q), V = V.slice(), O = H - q) {
-      for ((U = O < 0) ? (O = -O, z = V) : (q = H, z = J), z.reverse(), L = O; L--; z.push(0)) ;
+    if (U = qt(U), H = qt(H), V = V.slice(), O = U - H) {
+      for ((q = O < 0) ? (O = -O, z = V) : (H = U, z = J), z.reverse(), L = O; L--; z.push(0)) ;
       z.reverse();
     } else
-      for (D = (U = (O = V.length) < (L = J.length)) ? O : L, O = L = 0; L < D; L++)
+      for (D = (q = (O = V.length) < (L = J.length)) ? O : L, O = L = 0; L < D; L++)
         if (V[L] != J[L]) {
-          U = V[L] < J[L];
+          q = V[L] < J[L];
           break;
         }
-    if (U && (z = V, V = J, J = z, C.s = -C.s), L = (D = J.length) - (T = V.length), L > 0) for (; L--; V[T++] = 0) ;
-    for (L = Vt - 1; D > O; ) {
+    if (q && (z = V, V = J, J = z, C.s = -C.s), L = (D = J.length) - (T = V.length), L > 0) for (; L--; V[T++] = 0) ;
+    for (L = Wt - 1; D > O; ) {
       if (V[--D] < J[D]) {
         for (T = D; T && !V[--T]; V[T] = L) ;
-        --V[T], V[D] += Vt;
+        --V[T], V[D] += Wt;
       }
       V[D] -= J[D];
     }
-    for (; V[0] == 0; V.splice(0, 1), --q) ;
-    return V[0] ? A(C, V, q) : (C.s = u == 3 ? -1 : 1, C.c = [C.e = 0], C);
+    for (; V[0] == 0; V.splice(0, 1), --H) ;
+    return V[0] ? A(C, V, H) : (C.s = u == 3 ? -1 : 1, C.c = [C.e = 0], C);
   }, i.modulo = i.mod = function(C, L) {
     var T, D, z = this;
     return C = new S(C, L), !z.c || !C.s || C.c && !C.c[0] ? new S(NaN) : !C.c || z.c && !z.c[0] ? new S(z) : (y == 9 ? (D = C.s, C.s = 1, T = e(z, C, 0, 3), C.s = D, T.s *= D) : T = e(z, C, 0, y), C = z.minus(T.times(C)), !C.c[0] && y == 1 && (C.s = z.s), C);
   }, i.multipliedBy = i.times = function(C, L) {
-    var T, D, z, U, X, O, H, q, V, J, W, j, Q, re, ee, te = this, se = te.c, fe = (C = new S(C, L)).c;
+    var T, D, z, q, X, O, U, H, V, J, W, j, Q, re, ee, te = this, se = te.c, fe = (C = new S(C, L)).c;
     if (!se || !fe || !se[0] || !fe[0])
       return !te.s || !C.s || se && !se[0] && !fe || fe && !fe[0] && !se ? C.c = C.e = C.s = null : (C.s *= te.s, !se || !fe ? C.c = C.e = null : (C.c = [0], C.e = 0)), C;
-    for (D = Gt(te.e / Ce) + Gt(C.e / Ce), C.s *= te.s, H = se.length, J = fe.length, H < J && (Q = se, se = fe, fe = Q, z = H, H = J, J = z), z = H + J, Q = []; z--; Q.push(0)) ;
-    for (re = Vt, ee = Ln, z = J; --z >= 0; ) {
-      for (T = 0, W = fe[z] % ee, j = fe[z] / ee | 0, X = H, U = z + X; U > z; )
-        q = se[--X] % ee, V = se[X] / ee | 0, O = j * q + V * W, q = W * q + O % ee * ee + Q[U] + T, T = (q / re | 0) + (O / ee | 0) + j * V, Q[U--] = q % re;
-      Q[U] = T;
+    for (D = qt(te.e / Ce) + qt(C.e / Ce), C.s *= te.s, U = se.length, J = fe.length, U < J && (Q = se, se = fe, fe = Q, z = U, U = J, J = z), z = U + J, Q = []; z--; Q.push(0)) ;
+    for (re = Wt, ee = Nn, z = J; --z >= 0; ) {
+      for (T = 0, W = fe[z] % ee, j = fe[z] / ee | 0, X = U, q = z + X; q > z; )
+        H = se[--X] % ee, V = se[X] / ee | 0, O = j * H + V * W, H = W * H + O % ee * ee + Q[q] + T, T = (H / re | 0) + (O / ee | 0) + j * V, Q[q--] = H % re;
+      Q[q] = T;
     }
     return T ? ++D : Q.splice(0, 1), A(C, Q, D);
   }, i.negated = function() {
@@ -16108,97 +16543,97 @@ function bg(n) {
     if (C = new S(C, L), L = C.s, !z || !L) return new S(NaN);
     if (z != L)
       return C.s = -L, D.minus(C);
-    var U = D.e / Ce, X = C.e / Ce, O = D.c, H = C.c;
-    if (!U || !X) {
-      if (!O || !H) return new S(z / 0);
-      if (!O[0] || !H[0]) return H[0] ? C : new S(O[0] ? D : z * 0);
+    var q = D.e / Ce, X = C.e / Ce, O = D.c, U = C.c;
+    if (!q || !X) {
+      if (!O || !U) return new S(z / 0);
+      if (!O[0] || !U[0]) return U[0] ? C : new S(O[0] ? D : z * 0);
     }
-    if (U = Gt(U), X = Gt(X), O = O.slice(), z = U - X) {
-      for (z > 0 ? (X = U, T = H) : (z = -z, T = O), T.reverse(); z--; T.push(0)) ;
+    if (q = qt(q), X = qt(X), O = O.slice(), z = q - X) {
+      for (z > 0 ? (X = q, T = U) : (z = -z, T = O), T.reverse(); z--; T.push(0)) ;
       T.reverse();
     }
-    for (z = O.length, L = H.length, z - L < 0 && (T = H, H = O, O = T, L = z), z = 0; L; )
-      z = (O[--L] = O[L] + H[L] + z) / Vt | 0, O[L] = Vt === O[L] ? 0 : O[L] % Vt;
+    for (z = O.length, L = U.length, z - L < 0 && (T = U, U = O, O = T, L = z), z = 0; L; )
+      z = (O[--L] = O[L] + U[L] + z) / Wt | 0, O[L] = Wt === O[L] ? 0 : O[L] % Wt;
     return z && (O = [z].concat(O), ++X), A(C, O, X);
   }, i.precision = i.sd = function(C, L) {
-    var T, D, z, U = this;
+    var T, D, z, q = this;
     if (C != null && C !== !!C)
-      return Ke(C, 1, st), L == null ? L = u : Ke(L, 0, 8), B(new S(U), C, L);
-    if (!(T = U.c)) return null;
+      return Je(C, 1, ot), L == null ? L = u : Je(L, 0, 8), B(new S(q), C, L);
+    if (!(T = q.c)) return null;
     if (z = T.length - 1, D = z * Ce + 1, z = T[z]) {
       for (; z % 10 == 0; z /= 10, D--) ;
       for (z = T[0]; z >= 10; z /= 10, D++) ;
     }
-    return C && U.e + 1 > D && (D = U.e + 1), D;
+    return C && q.e + 1 > D && (D = q.e + 1), D;
   }, i.shiftedBy = function(C) {
-    return Ke(C, -Qo, Qo), this.times("1e" + C);
+    return Je(C, -ea, ea), this.times("1e" + C);
   }, i.squareRoot = i.sqrt = function() {
-    var C, L, T, D, z, U = this, X = U.c, O = U.s, H = U.e, q = l + 4, V = new S("0.5");
+    var C, L, T, D, z, q = this, X = q.c, O = q.s, U = q.e, H = l + 4, V = new S("0.5");
     if (O !== 1 || !X || !X[0])
-      return new S(!O || O < 0 && (!X || X[0]) ? NaN : X ? U : 1 / 0);
-    if (O = Math.sqrt(+F(U)), O == 0 || O == 1 / 0 ? (L = Ft(X), (L.length + H) % 2 == 0 && (L += "0"), O = Math.sqrt(+L), H = Gt((H + 1) / 2) - (H < 0 || H % 2), O == 1 / 0 ? L = "5e" + H : (L = O.toExponential(), L = L.slice(0, L.indexOf("e") + 1) + H), T = new S(L)) : T = new S(O + ""), T.c[0]) {
-      for (H = T.e, O = H + q, O < 3 && (O = 0); ; )
-        if (z = T, T = V.times(z.plus(e(U, z, q, 1))), Ft(z.c).slice(0, O) === (L = Ft(T.c)).slice(0, O))
-          if (T.e < H && --O, L = L.slice(O - 3, O + 1), L == "9999" || !D && L == "4999") {
-            if (!D && (B(z, z.e + l + 2, 0), z.times(z).eq(U))) {
+      return new S(!O || O < 0 && (!X || X[0]) ? NaN : X ? q : 1 / 0);
+    if (O = Math.sqrt(+F(q)), O == 0 || O == 1 / 0 ? (L = Bt(X), (L.length + U) % 2 == 0 && (L += "0"), O = Math.sqrt(+L), U = qt((U + 1) / 2) - (U < 0 || U % 2), O == 1 / 0 ? L = "5e" + U : (L = O.toExponential(), L = L.slice(0, L.indexOf("e") + 1) + U), T = new S(L)) : T = new S(O + ""), T.c[0]) {
+      for (U = T.e, O = U + H, O < 3 && (O = 0); ; )
+        if (z = T, T = V.times(z.plus(e(q, z, H, 1))), Bt(z.c).slice(0, O) === (L = Bt(T.c)).slice(0, O))
+          if (T.e < U && --O, L = L.slice(O - 3, O + 1), L == "9999" || !D && L == "4999") {
+            if (!D && (B(z, z.e + l + 2, 0), z.times(z).eq(q))) {
               T = z;
               break;
             }
-            q += 4, O += 4, D = 1;
+            H += 4, O += 4, D = 1;
           } else {
-            (!+L || !+L.slice(1) && L.charAt(0) == "5") && (B(T, T.e + l + 2, 1), C = !T.times(T).eq(U));
+            (!+L || !+L.slice(1) && L.charAt(0) == "5") && (B(T, T.e + l + 2, 1), C = !T.times(T).eq(q));
             break;
           }
     }
     return B(T, T.e + l + 1, u, C);
   }, i.toExponential = function(C, L) {
-    return C != null && (Ke(C, 0, st), C++), N(this, C, L, 1);
+    return C != null && (Je(C, 0, ot), C++), P(this, C, L, 1);
   }, i.toFixed = function(C, L) {
-    return C != null && (Ke(C, 0, st), C = C + this.e + 1), N(this, C, L);
+    return C != null && (Je(C, 0, ot), C = C + this.e + 1), P(this, C, L);
   }, i.toFormat = function(C, L, T) {
     var D, z = this;
     if (T == null)
       C != null && L && typeof L == "object" ? (T = L, L = null) : C && typeof C == "object" ? (T = C, C = L = null) : T = b;
     else if (typeof T != "object")
-      throw Error(Et + "Argument not an object: " + T);
+      throw Error(bt + "Argument not an object: " + T);
     if (D = z.toFixed(C, L), z.c) {
-      var U, X = D.split("."), O = +T.groupSize, H = +T.secondaryGroupSize, q = T.groupSeparator || "", V = X[0], J = X[1], W = z.s < 0, j = W ? V.slice(1) : V, Q = j.length;
-      if (H && (U = O, O = H, H = U, Q -= U), O > 0 && Q > 0) {
-        for (U = Q % O || O, V = j.substr(0, U); U < Q; U += O) V += q + j.substr(U, O);
-        H > 0 && (V += q + j.slice(U)), W && (V = "-" + V);
+      var q, X = D.split("."), O = +T.groupSize, U = +T.secondaryGroupSize, H = T.groupSeparator || "", V = X[0], J = X[1], W = z.s < 0, j = W ? V.slice(1) : V, Q = j.length;
+      if (U && (q = O, O = U, U = q, Q -= q), O > 0 && Q > 0) {
+        for (q = Q % O || O, V = j.substr(0, q); q < Q; q += O) V += H + j.substr(q, O);
+        U > 0 && (V += H + j.slice(q)), W && (V = "-" + V);
       }
-      D = J ? V + (T.decimalSeparator || "") + ((H = +T.fractionGroupSize) ? J.replace(
-        new RegExp("\\d{" + H + "}\\B", "g"),
+      D = J ? V + (T.decimalSeparator || "") + ((U = +T.fractionGroupSize) ? J.replace(
+        new RegExp("\\d{" + U + "}\\B", "g"),
         "$&" + (T.fractionGroupSeparator || "")
       ) : J) : V;
     }
     return (T.prefix || "") + D + (T.suffix || "");
   }, i.toFraction = function(C) {
-    var L, T, D, z, U, X, O, H, q, V, J, W, j = this, Q = j.c;
+    var L, T, D, z, q, X, O, U, H, V, J, W, j = this, Q = j.c;
     if (C != null && (O = new S(C), !O.isInteger() && (O.c || O.s !== 1) || O.lt(a)))
-      throw Error(Et + "Argument " + (O.isInteger() ? "out of range: " : "not an integer: ") + F(O));
+      throw Error(bt + "Argument " + (O.isInteger() ? "out of range: " : "not an integer: ") + F(O));
     if (!Q) return new S(j);
-    for (L = new S(a), q = T = new S(a), D = H = new S(a), W = Ft(Q), U = L.e = W.length - j.e - 1, L.c[0] = jo[(X = U % Ce) < 0 ? Ce + X : X], C = !C || O.comparedTo(L) > 0 ? U > 0 ? L : q : O, X = m, m = 1 / 0, O = new S(W), H.c[0] = 0; V = e(O, L, 0, 1), z = T.plus(V.times(D)), z.comparedTo(C) != 1; )
-      T = D, D = z, q = H.plus(V.times(z = q)), H = z, L = O.minus(V.times(z = L)), O = z;
-    return z = e(C.minus(T), D, 0, 1), H = H.plus(z.times(q)), T = T.plus(z.times(D)), H.s = q.s = j.s, U = U * 2, J = e(q, D, U, u).minus(j).abs().comparedTo(
-      e(H, T, U, u).minus(j).abs()
-    ) < 1 ? [q, D] : [H, T], m = X, J;
+    for (L = new S(a), H = T = new S(a), D = U = new S(a), W = Bt(Q), q = L.e = W.length - j.e - 1, L.c[0] = ta[(X = q % Ce) < 0 ? Ce + X : X], C = !C || O.comparedTo(L) > 0 ? q > 0 ? L : H : O, X = m, m = 1 / 0, O = new S(W), U.c[0] = 0; V = e(O, L, 0, 1), z = T.plus(V.times(D)), z.comparedTo(C) != 1; )
+      T = D, D = z, H = U.plus(V.times(z = H)), U = z, L = O.minus(V.times(z = L)), O = z;
+    return z = e(C.minus(T), D, 0, 1), U = U.plus(z.times(H)), T = T.plus(z.times(D)), U.s = H.s = j.s, q = q * 2, J = e(H, D, q, u).minus(j).abs().comparedTo(
+      e(U, T, q, u).minus(j).abs()
+    ) < 1 ? [H, D] : [U, T], m = X, J;
   }, i.toNumber = function() {
     return +F(this);
   }, i.toPrecision = function(C, L) {
-    return C != null && Ke(C, 1, st), N(this, C, L, 2);
+    return C != null && Je(C, 1, ot), P(this, C, L, 2);
   }, i.toString = function(C) {
     var L, T = this, D = T.s, z = T.e;
-    return z === null ? D ? (L = "Infinity", D < 0 && (L = "-" + L)) : L = "NaN" : (C == null ? L = z <= f || z >= g ? us(Ft(T.c), z) : vn(Ft(T.c), z, "0") : C === 10 && k ? (T = B(new S(T), l + z + 1, u), L = vn(Ft(T.c), T.e, "0")) : (Ke(C, 2, M.length, "Base"), L = t(vn(Ft(T.c), z, "0"), 10, C, D, !0)), D < 0 && T.c[0] && (L = "-" + L)), L;
+    return z === null ? D ? (L = "Infinity", D < 0 && (L = "-" + L)) : L = "NaN" : (C == null ? L = z <= f || z >= g ? hs(Bt(T.c), z) : pn(Bt(T.c), z, "0") : C === 10 && I ? (T = B(new S(T), l + z + 1, u), L = pn(Bt(T.c), T.e, "0")) : (Je(C, 2, k.length, "Base"), L = t(pn(Bt(T.c), z, "0"), 10, C, D, !0)), D < 0 && T.c[0] && (L = "-" + L)), L;
   }, i.valueOf = i.toJSON = function() {
     return F(this);
   }, i._isBigNumber = !0, i[Symbol.toStringTag] = "BigNumber", i[Symbol.for("nodejs.util.inspect.custom")] = i.valueOf, n != null && S.set(n), S;
 }
-function Gt(n) {
+function qt(n) {
   var e = n | 0;
   return n > 0 || n === e ? e : e - 1;
 }
-function Ft(n) {
+function Bt(n) {
   for (var e, t, r = 1, i = n.length, a = n[0] + ""; r < i; ) {
     for (e = n[r++] + "", t = Ce - e.length; t--; e = "0" + e) ;
     a += e;
@@ -16206,7 +16641,7 @@ function Ft(n) {
   for (i = a.length; a.charCodeAt(--i) === 48; ) ;
   return a.slice(0, i + 1 || 1);
 }
-function Hn(n, e) {
+function Yn(n, e) {
   var t, r, i = n.c, a = e.c, l = n.s, u = e.s, f = n.e, g = e.e;
   if (!l || !u) return null;
   if (t = i && !i[0], r = a && !a[0], t || r) return t ? r ? 0 : -u : l;
@@ -16216,18 +16651,18 @@ function Hn(n, e) {
   for (u = (f = i.length) < (g = a.length) ? f : g, l = 0; l < u; l++) if (i[l] != a[l]) return i[l] > a[l] ^ t ? 1 : -1;
   return f == g ? 0 : f > g ^ t ? 1 : -1;
 }
-function Ke(n, e, t, r) {
-  if (n < e || n > t || n !== zt(n))
-    throw Error(Et + (r || "Argument") + (typeof n == "number" ? n < e || n > t ? " out of range: " : " not an integer: " : " not a primitive number: ") + String(n));
+function Je(n, e, t, r) {
+  if (n < e || n > t || n !== Gt(n))
+    throw Error(bt + (r || "Argument") + (typeof n == "number" ? n < e || n > t ? " out of range: " : " not an integer: " : " not a primitive number: ") + String(n));
 }
-function ls(n) {
+function cs(n) {
   var e = n.c.length - 1;
-  return Gt(n.e / Ce) == e && n.c[e] % 2 != 0;
+  return qt(n.e / Ce) == e && n.c[e] % 2 != 0;
 }
-function us(n, e) {
+function hs(n, e) {
   return (n.length > 1 ? n.charAt(0) + "." + n.slice(1) : n) + (e < 0 ? "e" : "e+") + e;
 }
-function vn(n, e, t) {
+function pn(n, e, t) {
   var r, i;
   if (e < 0) {
     for (i = t + "."; ++e; i += t) ;
@@ -16238,18 +16673,18 @@ function vn(n, e, t) {
   } else e < r && (n = n.slice(0, e) + "." + n.slice(e));
   return n;
 }
-var an = bg(), E1 = class {
+var ln = Ig(), O1 = class {
   constructor(n) {
     ue(this, "key");
     ue(this, "left", null);
     ue(this, "right", null);
     this.key = n;
   }
-}, Kr = class extends E1 {
+}, Jr = class extends O1 {
   constructor(n) {
     super(n);
   }
-}, b1 = class {
+}, D1 = class {
   constructor() {
     ue(this, "size", 0);
     ue(this, "modificationCount", 0);
@@ -16347,13 +16782,13 @@ var an = bg(), E1 = class {
       has: (n) => this.has(n)
     };
   }
-}, df, mf, Os = class ui extends b1 {
+}, pf, yf, Fs = class hi extends D1 {
   constructor(t, r) {
     super();
     ue(this, "root", null);
     ue(this, "compare");
     ue(this, "validKey");
-    ue(this, df, "[object Set]");
+    ue(this, pf, "[object Set]");
     this.compare = t ?? this.defaultCompare(), this.validKey = r ?? ((i) => i != null && i != null);
   }
   delete(t) {
@@ -16371,11 +16806,11 @@ var an = bg(), E1 = class {
   }
   add(t) {
     const r = this.splay(t);
-    return r != 0 && this.addNewRoot(new Kr(t), r), this;
+    return r != 0 && this.addNewRoot(new Jr(t), r), this;
   }
   addAndReturn(t) {
     const r = this.splay(t);
-    return r != 0 && this.addNewRoot(new Kr(t), r), this.root.key;
+    return r != 0 && this.addNewRoot(new Jr(t), r), this.root.key;
   }
   addAll(t) {
     for (const r of t)
@@ -16423,7 +16858,7 @@ var an = bg(), E1 = class {
     return i.key;
   }
   retainAll(t) {
-    const r = new ui(this.compare, this.validKey), i = this.modificationCount;
+    const r = new hi(this.compare, this.validKey), i = this.modificationCount;
     for (const a of t) {
       if (i != this.modificationCount)
         throw "Concurrent modification during iteration.";
@@ -16435,13 +16870,13 @@ var an = bg(), E1 = class {
     return !this.validKey(t) || this.splay(t) != 0 ? null : this.root.key;
   }
   intersection(t) {
-    const r = new ui(this.compare, this.validKey);
+    const r = new hi(this.compare, this.validKey);
     for (const i of this)
       t.has(i) && r.add(i);
     return r;
   }
   difference(t) {
-    const r = new ui(this.compare, this.validKey);
+    const r = new hi(this.compare, this.validKey);
     for (const i of this)
       t.has(i) || r.add(i);
     return r;
@@ -16451,7 +16886,7 @@ var an = bg(), E1 = class {
     return r.addAll(t), r;
   }
   clone() {
-    const t = new ui(this.compare, this.validKey);
+    const t = new hi(this.compare, this.validKey);
     return t.size = this.size, t.root = this.copyNode(this.root), t;
   }
   copyNode(t) {
@@ -16460,23 +16895,23 @@ var an = bg(), E1 = class {
       let u, f;
       do {
         if (u = a.left, f = a.right, u != null) {
-          const g = new Kr(u.key);
+          const g = new Jr(u.key);
           l.left = g, r(u, g);
         }
         if (f != null) {
-          const g = new Kr(f.key);
+          const g = new Jr(f.key);
           l.right = g, a = f, l = g;
         }
       } while (f != null);
     }
-    const i = new Kr(t.key);
+    const i = new Jr(t.key);
     return r(t, i), i;
   }
   toSet() {
     return this.clone();
   }
   entries() {
-    return new S1(this.wrap());
+    return new B1(this.wrap());
   }
   keys() {
     return this[Symbol.iterator]();
@@ -16484,10 +16919,10 @@ var an = bg(), E1 = class {
   values() {
     return this[Symbol.iterator]();
   }
-  [(mf = Symbol.iterator, df = Symbol.toStringTag, mf)]() {
-    return new C1(this.wrap());
+  [(yf = Symbol.iterator, pf = Symbol.toStringTag, yf)]() {
+    return new F1(this.wrap());
   }
-}, Cg = class {
+}, kg = class {
   constructor(n) {
     ue(this, "tree");
     ue(this, "path", new Array());
@@ -16536,65 +16971,65 @@ var an = bg(), E1 = class {
       n = this.path.pop();
     return this.path.length > 0;
   }
-}, C1 = class extends Cg {
+}, F1 = class extends kg {
   getValue(n) {
     return n.key;
   }
-}, S1 = class extends Cg {
+}, B1 = class extends kg {
   getValue(n) {
     return [n.key, n.key];
   }
-}, Sg = (n) => () => n, Sa = (n) => {
-  const e = n ? (t, r) => r.minus(t).abs().isLessThanOrEqualTo(n) : Sg(!1);
+}, Mg = (n) => () => n, ka = (n) => {
+  const e = n ? (t, r) => r.minus(t).abs().isLessThanOrEqualTo(n) : Mg(!1);
   return (t, r) => e(t, r) ? 0 : t.comparedTo(r);
 };
-function k1(n) {
+function z1(n) {
   const e = n ? (t, r, i, a, l) => t.exponentiatedBy(2).isLessThanOrEqualTo(
     a.minus(r).exponentiatedBy(2).plus(l.minus(i).exponentiatedBy(2)).times(n)
-  ) : Sg(!1);
+  ) : Mg(!1);
   return (t, r, i) => {
     const a = t.x, l = t.y, u = i.x, f = i.y, g = l.minus(f).times(r.x.minus(u)).minus(a.minus(u).times(r.y.minus(f)));
     return e(g, a, l, u, f) ? 0 : g.comparedTo(0);
   };
 }
-var I1 = (n) => n, M1 = (n) => {
+var G1 = (n) => n, q1 = (n) => {
   if (n) {
-    const e = new Os(Sa(n)), t = new Os(Sa(n)), r = (a, l) => l.addAndReturn(a), i = (a) => ({
+    const e = new Fs(ka(n)), t = new Fs(ka(n)), r = (a, l) => l.addAndReturn(a), i = (a) => ({
       x: r(a.x, e),
       y: r(a.y, t)
     });
-    return i({ x: new an(0), y: new an(0) }), i;
+    return i({ x: new ln(0), y: new ln(0) }), i;
   }
-  return I1;
-}, ka = (n) => ({
+  return G1;
+}, Ma = (n) => ({
   set: (e) => {
-    bn = ka(e);
+    Cn = Ma(e);
   },
-  reset: () => ka(n),
-  compare: Sa(n),
-  snap: M1(n),
-  orient: k1(n)
-}), bn = ka(), Jr = (n, e) => n.ll.x.isLessThanOrEqualTo(e.x) && e.x.isLessThanOrEqualTo(n.ur.x) && n.ll.y.isLessThanOrEqualTo(e.y) && e.y.isLessThanOrEqualTo(n.ur.y), Ia = (n, e) => {
+  reset: () => Ma(n),
+  compare: ka(n),
+  snap: q1(n),
+  orient: z1(n)
+}), Cn = Ma(), Qr = (n, e) => n.ll.x.isLessThanOrEqualTo(e.x) && e.x.isLessThanOrEqualTo(n.ur.x) && n.ll.y.isLessThanOrEqualTo(e.y) && e.y.isLessThanOrEqualTo(n.ur.y), La = (n, e) => {
   if (e.ur.x.isLessThan(n.ll.x) || n.ur.x.isLessThan(e.ll.x) || e.ur.y.isLessThan(n.ll.y) || n.ur.y.isLessThan(e.ll.y))
     return null;
   const t = n.ll.x.isLessThan(e.ll.x) ? e.ll.x : n.ll.x, r = n.ur.x.isLessThan(e.ur.x) ? n.ur.x : e.ur.x, i = n.ll.y.isLessThan(e.ll.y) ? e.ll.y : n.ll.y, a = n.ur.y.isLessThan(e.ur.y) ? n.ur.y : e.ur.y;
   return { ll: { x: t, y: i }, ur: { x: r, y: a } };
-}, bs = (n, e) => n.x.times(e.y).minus(n.y.times(e.x)), kg = (n, e) => n.x.times(e.x).plus(n.y.times(e.y)), Ds = (n) => kg(n, n).sqrt(), L1 = (n, e, t) => {
+}, Ss = (n, e) => n.x.times(e.y).minus(n.y.times(e.x)), Lg = (n, e) => n.x.times(e.x).plus(n.y.times(e.y)), Bs = (n) => Lg(n, n).sqrt(), H1 = (n, e, t) => {
   const r = { x: e.x.minus(n.x), y: e.y.minus(n.y) }, i = { x: t.x.minus(n.x), y: t.y.minus(n.y) };
-  return bs(i, r).div(Ds(i)).div(Ds(r));
-}, P1 = (n, e, t) => {
+  return Ss(i, r).div(Bs(i)).div(Bs(r));
+}, U1 = (n, e, t) => {
   const r = { x: e.x.minus(n.x), y: e.y.minus(n.y) }, i = { x: t.x.minus(n.x), y: t.y.minus(n.y) };
-  return kg(i, r).div(Ds(i)).div(Ds(r));
-}, wc = (n, e, t) => e.y.isZero() ? null : { x: n.x.plus(e.x.div(e.y).times(t.minus(n.y))), y: t }, xc = (n, e, t) => e.x.isZero() ? null : { x: t, y: n.y.plus(e.y.div(e.x).times(t.minus(n.x))) }, N1 = (n, e, t, r) => {
-  if (e.x.isZero()) return xc(t, r, n.x);
-  if (r.x.isZero()) return xc(n, e, t.x);
-  if (e.y.isZero()) return wc(t, r, n.y);
-  if (r.y.isZero()) return wc(n, e, t.y);
-  const i = bs(e, r);
+  return Lg(i, r).div(Bs(i)).div(Bs(r));
+}, Cc = (n, e, t) => e.y.isZero() ? null : { x: n.x.plus(e.x.div(e.y).times(t.minus(n.y))), y: t }, Sc = (n, e, t) => e.x.isZero() ? null : { x: t, y: n.y.plus(e.y.div(e.x).times(t.minus(n.x))) }, Y1 = (n, e, t, r) => {
+  if (e.x.isZero()) return Sc(t, r, n.x);
+  if (r.x.isZero()) return Sc(n, e, t.x);
+  if (e.y.isZero()) return Cc(t, r, n.y);
+  if (r.y.isZero()) return Cc(n, e, t.y);
+  const i = Ss(e, r);
   if (i.isZero()) return null;
-  const a = { x: t.x.minus(n.x), y: t.y.minus(n.y) }, l = bs(a, e).div(i), u = bs(a, r).div(i), f = n.x.plus(u.times(e.x)), g = t.x.plus(l.times(r.x)), d = n.y.plus(u.times(e.y)), m = t.y.plus(l.times(r.y)), p = f.plus(g).div(2), y = d.plus(m).div(2);
+  const a = { x: t.x.minus(n.x), y: t.y.minus(n.y) }, l = Ss(a, e).div(i), u = Ss(a, r).div(i), f = n.x.plus(u.times(e.x)), g = t.x.plus(l.times(r.x)), d = n.y.plus(u.times(e.y)), m = t.y.plus(l.times(r.y)), p = f.plus(g).div(2), y = d.plus(m).div(2);
   return { x: p, y };
-}, nn = class Ig {
+}, rn = class Ng {
   // Warning: 'point' input will be modified and re-used (for performance)
   constructor(e, t) {
     ue(this, "point");
@@ -16606,8 +17041,8 @@ var I1 = (n) => n, M1 = (n) => {
   }
   // for ordering sweep events in the sweep event queue
   static compare(e, t) {
-    const r = Ig.comparePoints(e.point, t.point);
-    return r !== 0 ? r : (e.point !== t.point && e.link(t), e.isLeft !== t.isLeft ? e.isLeft ? 1 : -1 : Fs.compare(e.segment, t.segment));
+    const r = Ng.comparePoints(e.point, t.point);
+    return r !== 0 ? r : (e.point !== t.point && e.link(t), e.isLeft !== t.isLeft ? e.isLeft ? 1 : -1 : zs.compare(e.segment, t.segment));
   }
   // for ordering points in sweep line order
   static comparePoints(e, t) {
@@ -16658,8 +17093,8 @@ var I1 = (n) => n, M1 = (n) => {
     const t = /* @__PURE__ */ new Map(), r = (i) => {
       const a = i.otherSE;
       t.set(i, {
-        sine: L1(this.point, e.point, a.point),
-        cosine: P1(this.point, e.point, a.point)
+        sine: H1(this.point, e.point, a.point),
+        cosine: U1(this.point, e.point, a.point)
       });
     };
     return (i, a) => {
@@ -16668,7 +17103,7 @@ var I1 = (n) => n, M1 = (n) => {
       return l.isGreaterThanOrEqualTo(0) && f.isGreaterThanOrEqualTo(0) ? u.isLessThan(g) ? 1 : u.isGreaterThan(g) ? -1 : 0 : l.isLessThan(0) && f.isLessThan(0) ? u.isLessThan(g) ? -1 : u.isGreaterThan(g) ? 1 : 0 : f.isLessThan(l) ? -1 : f.isGreaterThan(l) ? 1 : 0;
     };
   }
-}, T1 = class Ma {
+}, X1 = class Na {
   constructor(e) {
     ue(this, "events");
     ue(this, "poly");
@@ -16692,9 +17127,9 @@ var I1 = (n) => n, M1 = (n) => {
         for (; ; ) {
           const p = u.getAvailableLinkedEvents();
           if (p.length === 0) {
-            const b = g[0].point, M = g[g.length - 1].point;
+            const b = g[0].point, k = g[g.length - 1].point;
             throw new Error(
-              `Unable to complete output ring starting at [${b.x}, ${b.y}]. Last matching segment found ends at [${M.x}, ${M.y}].`
+              `Unable to complete output ring starting at [${b.x}, ${b.y}]. Last matching segment found ends at [${k.x}, ${k.y}].`
             );
           }
           if (p.length === 1) {
@@ -16702,14 +17137,14 @@ var I1 = (n) => n, M1 = (n) => {
             break;
           }
           let y = null;
-          for (let b = 0, M = m.length; b < M; b++)
+          for (let b = 0, k = m.length; b < k; b++)
             if (m[b].point === u.point) {
               y = b;
               break;
             }
           if (y !== null) {
-            const b = m.splice(y)[0], M = g.splice(b.index);
-            M.unshift(M[0].otherSE), t.push(new Ma(M.reverse()));
+            const b = m.splice(y)[0], k = g.splice(b.index);
+            k.unshift(k[0].otherSE), t.push(new Na(k.reverse()));
             continue;
           }
           m.push({
@@ -16720,7 +17155,7 @@ var I1 = (n) => n, M1 = (n) => {
           f = p.sort(w)[0].otherSE;
           break;
         }
-      t.push(new Ma(g));
+      t.push(new Na(g));
     }
     return t;
   }
@@ -16729,11 +17164,11 @@ var I1 = (n) => n, M1 = (n) => {
     const t = [e];
     for (let g = 1, d = this.events.length - 1; g < d; g++) {
       const m = this.events[g].point, p = this.events[g + 1].point;
-      bn.orient(m, e, p) !== 0 && (t.push(m), e = m);
+      Cn.orient(m, e, p) !== 0 && (t.push(m), e = m);
     }
     if (t.length === 1) return null;
     const r = t[0], i = t[1];
-    bn.orient(r, e, i) === 0 && t.shift(), t.push(t[0]);
+    Cn.orient(r, e, i) === 0 && t.shift(), t.push(t[0]);
     const a = this.isExteriorRing() ? 1 : -1, l = this.isExteriorRing() ? 0 : t.length - 1, u = this.isExteriorRing() ? t.length : -1, f = [];
     for (let g = l; g != u; g += a)
       f.push([t[g].x.toNumber(), t[g].y.toNumber()]);
@@ -16755,7 +17190,7 @@ var I1 = (n) => n, M1 = (n) => {
     let e = this.events[0];
     for (let l = 1, u = this.events.length; l < u; l++) {
       const f = this.events[l];
-      nn.compare(e, f) > 0 && (e = f);
+      rn.compare(e, f) > 0 && (e = f);
     }
     let t = e.segment.prevInResult(), r = t ? t.prevInResult() : null;
     for (; ; ) {
@@ -16766,7 +17201,7 @@ var I1 = (n) => n, M1 = (n) => {
       t = r.prevInResult(), r = t ? t.prevInResult() : null;
     }
   }
-}, Ec = class {
+}, Ic = class {
   constructor(n) {
     ue(this, "exteriorRing");
     ue(this, "interiorRings");
@@ -16785,7 +17220,7 @@ var I1 = (n) => n, M1 = (n) => {
     }
     return e;
   }
-}, A1 = class {
+}, V1 = class {
   constructor(n) {
     ue(this, "rings");
     ue(this, "polys");
@@ -16805,20 +17240,20 @@ var I1 = (n) => n, M1 = (n) => {
     for (let r = 0, i = n.length; r < i; r++) {
       const a = n[r];
       if (!a.poly)
-        if (a.isExteriorRing()) e.push(new Ec(a));
+        if (a.isExteriorRing()) e.push(new Ic(a));
         else {
           const l = a.enclosingRing();
-          l != null && l.poly || e.push(new Ec(l)), (t = l == null ? void 0 : l.poly) == null || t.addInterior(a);
+          l != null && l.poly || e.push(new Ic(l)), (t = l == null ? void 0 : l.poly) == null || t.addInterior(a);
         }
     }
     return e;
   }
-}, R1 = class {
-  constructor(n, e = Fs.compare) {
+}, W1 = class {
+  constructor(n, e = zs.compare) {
     ue(this, "queue");
     ue(this, "tree");
     ue(this, "segments");
-    this.queue = n, this.tree = new Os(e), this.segments = [];
+    this.queue = n, this.tree = new Fs(e), this.segments = [];
   }
   process(n) {
     const e = n.segment, t = [];
@@ -16853,7 +17288,7 @@ var I1 = (n) => n, M1 = (n) => {
       }
       if (a !== null || l !== null) {
         let u = null;
-        a === null ? u = l : l === null ? u = a : u = nn.comparePoints(
+        a === null ? u = l : l === null ? u = a : u = rn.comparePoints(
           a,
           l
         ) <= 0 ? a : l, this.queue.delete(e.rightSE), t.push(e.rightSE);
@@ -16891,35 +17326,35 @@ var I1 = (n) => n, M1 = (n) => {
     const r = n.split(e);
     return r.push(t), n.consumedBy === void 0 && this.tree.add(n), r;
   }
-}, O1 = class {
+}, $1 = class {
   constructor() {
     ue(this, "type");
     ue(this, "numMultiPolys");
   }
   run(n, e, t) {
-    ci.type = n;
-    const r = [new Cc(e, !0)];
+    fi.type = n;
+    const r = [new Mc(e, !0)];
     for (let g = 0, d = t.length; g < d; g++)
-      r.push(new Cc(t[g], !1));
-    if (ci.numMultiPolys = r.length, ci.type === "difference") {
+      r.push(new Mc(t[g], !1));
+    if (fi.numMultiPolys = r.length, fi.type === "difference") {
       const g = r[0];
       let d = 1;
       for (; d < r.length; )
-        Ia(r[d].bbox, g.bbox) !== null ? d++ : r.splice(d, 1);
+        La(r[d].bbox, g.bbox) !== null ? d++ : r.splice(d, 1);
     }
-    if (ci.type === "intersection")
+    if (fi.type === "intersection")
       for (let g = 0, d = r.length; g < d; g++) {
         const m = r[g];
         for (let p = g + 1, y = r.length; p < y; p++)
-          if (Ia(m.bbox, r[p].bbox) === null) return [];
+          if (La(m.bbox, r[p].bbox) === null) return [];
       }
-    const i = new Os(nn.compare);
+    const i = new Fs(rn.compare);
     for (let g = 0, d = r.length; g < d; g++) {
       const m = r[g].getSweepEvents();
       for (let p = 0, y = m.length; p < y; p++)
         i.add(m[p]);
     }
-    const a = new R1(i);
+    const a = new W1(i);
     let l = null;
     for (i.size != 0 && (l = i.first(), i.delete(l)); l; ) {
       const g = a.process(l);
@@ -16929,11 +17364,11 @@ var I1 = (n) => n, M1 = (n) => {
       }
       i.size != 0 ? (l = i.first(), i.delete(l)) : l = null;
     }
-    bn.reset();
-    const u = T1.factory(a.segments);
-    return new A1(u).getGeom();
+    Cn.reset();
+    const u = X1.factory(a.segments);
+    return new V1(u).getGeom();
   }
-}, ci = new O1(), Rr = ci, D1 = 0, Fs = class Cs {
+}, fi = new $1(), Or = fi, Z1 = 0, zs = class Is {
   /* Warning: a reference to ringWindings input will be stored,
    *  and possibly will be later modified */
   constructor(e, t, r, i) {
@@ -16949,7 +17384,7 @@ var I1 = (n) => n, M1 = (n) => {
     ue(this, "_beforeState");
     ue(this, "_afterState");
     ue(this, "_isInResult");
-    this.id = ++D1, this.leftSE = e, e.segment = this, e.otherSE = t, this.rightSE = t, t.segment = this, t.otherSE = e, this.rings = r, this.windings = i;
+    this.id = ++Z1, this.leftSE = e, e.segment = this, e.otherSE = t, this.rightSE = t, t.segment = this, t.otherSE = e, this.rings = r, this.windings = i;
   }
   /* This compare() function is for ordering segments in the sweep
    * line tree, and does so according to the following criteria:
@@ -17006,7 +17441,7 @@ var I1 = (n) => n, M1 = (n) => {
   }
   static fromRing(e, t, r) {
     let i, a, l;
-    const u = nn.comparePoints(e, t);
+    const u = rn.comparePoints(e, t);
     if (u < 0)
       i = e, a = t, l = 1;
     else if (u > 0)
@@ -17015,8 +17450,8 @@ var I1 = (n) => n, M1 = (n) => {
       throw new Error(
         `Tried to create degenerate segment at [${e.x}, ${e.y}]`
       );
-    const f = new nn(i, !0), g = new nn(a, !1);
-    return new Cs(f, g, [r], [l]);
+    const f = new rn(i, !0), g = new rn(a, !1);
+    return new Is(f, g, [r], [l]);
   }
   /* When a segment is split, the rightSE is replaced with a new sweep event */
   replaceRightSE(e) {
@@ -17053,7 +17488,7 @@ var I1 = (n) => n, M1 = (n) => {
    *  -1: point lies below the segment (to the right of vertical)
    */
   comparePoint(e) {
-    return bn.orient(this.leftSE.point, e, this.rightSE.point);
+    return Cn.orient(this.leftSE.point, e, this.rightSE.point);
   }
   /**
    * Given another segment, returns the first non-trivial intersection
@@ -17071,9 +17506,9 @@ var I1 = (n) => n, M1 = (n) => {
    * Else, return null.
    */
   getIntersection(e) {
-    const t = this.bbox(), r = e.bbox(), i = Ia(t, r);
+    const t = this.bbox(), r = e.bbox(), i = La(t, r);
     if (i === null) return null;
-    const a = this.leftSE.point, l = this.rightSE.point, u = e.leftSE.point, f = e.rightSE.point, g = Jr(t, u) && this.comparePoint(u) === 0, d = Jr(r, a) && e.comparePoint(a) === 0, m = Jr(t, f) && this.comparePoint(f) === 0, p = Jr(r, l) && e.comparePoint(l) === 0;
+    const a = this.leftSE.point, l = this.rightSE.point, u = e.leftSE.point, f = e.rightSE.point, g = Qr(t, u) && this.comparePoint(u) === 0, d = Qr(r, a) && e.comparePoint(a) === 0, m = Qr(t, f) && this.comparePoint(f) === 0, p = Qr(r, l) && e.comparePoint(l) === 0;
     if (d && g)
       return p && !m ? l : !p && m ? f : null;
     if (d)
@@ -17083,8 +17518,8 @@ var I1 = (n) => n, M1 = (n) => {
     if (p && m) return null;
     if (p) return l;
     if (m) return f;
-    const y = N1(a, this.vector(), u, e.vector());
-    return y === null || !Jr(i, y) ? null : bn.snap(y);
+    const y = Y1(a, this.vector(), u, e.vector());
+    return y === null || !Qr(i, y) ? null : Cn.snap(y);
   }
   /**
    * Split the given segment into multiple segments on the given points.
@@ -17099,15 +17534,15 @@ var I1 = (n) => n, M1 = (n) => {
    * Warning: input array of points is modified
    */
   split(e) {
-    const t = [], r = e.events !== void 0, i = new nn(e, !0), a = new nn(e, !1), l = this.rightSE;
+    const t = [], r = e.events !== void 0, i = new rn(e, !0), a = new rn(e, !1), l = this.rightSE;
     this.replaceRightSE(a), t.push(a), t.push(i);
-    const u = new Cs(
+    const u = new Is(
       i,
       l,
       this.rings.slice(),
       this.windings.slice()
     );
-    return nn.comparePoints(u.leftSE.point, u.rightSE.point) > 0 && u.swapEvents(), nn.comparePoints(this.leftSE.point, this.rightSE.point) > 0 && this.swapEvents(), r && (i.checkForConsuming(), a.checkForConsuming()), t;
+    return rn.comparePoints(u.leftSE.point, u.rightSE.point) > 0 && u.swapEvents(), rn.comparePoints(this.leftSE.point, this.rightSE.point) > 0 && this.swapEvents(), r && (i.checkForConsuming(), a.checkForConsuming()), t;
   }
   /* Swap which event is left and right */
   swapEvents() {
@@ -17122,7 +17557,7 @@ var I1 = (n) => n, M1 = (n) => {
     let t = this, r = e;
     for (; t.consumedBy; ) t = t.consumedBy;
     for (; r.consumedBy; ) r = r.consumedBy;
-    const i = Cs.compare(t, r);
+    const i = Is.compare(t, r);
     if (i !== 0) {
       if (i > 0) {
         const a = t;
@@ -17193,7 +17628,7 @@ var I1 = (n) => n, M1 = (n) => {
     if (this.consumedBy) return !1;
     if (this._isInResult !== void 0) return this._isInResult;
     const e = this.beforeState().multiPolys, t = this.afterState().multiPolys;
-    switch (Rr.type) {
+    switch (Or.type) {
       case "union": {
         const r = e.length === 0, i = t.length === 0;
         this._isInResult = r !== i;
@@ -17201,7 +17636,7 @@ var I1 = (n) => n, M1 = (n) => {
       }
       case "intersection": {
         let r, i;
-        e.length < t.length ? (r = e.length, i = t.length) : (r = t.length, i = e.length), this._isInResult = i === Rr.numMultiPolys && r < i;
+        e.length < t.length ? (r = e.length, i = t.length) : (r = t.length, i = e.length), this._isInResult = i === Or.numMultiPolys && r < i;
         break;
       }
       case "xor": {
@@ -17217,7 +17652,7 @@ var I1 = (n) => n, M1 = (n) => {
     }
     return this._isInResult;
   }
-}, bc = class {
+}, kc = class {
   constructor(n, e, t) {
     ue(this, "poly");
     ue(this, "isExterior");
@@ -17227,7 +17662,7 @@ var I1 = (n) => n, M1 = (n) => {
       throw new Error("Input geometry is not a valid Polygon or MultiPolygon");
     if (this.poly = e, this.isExterior = t, this.segments = [], typeof n[0][0] != "number" || typeof n[0][1] != "number")
       throw new Error("Input geometry is not a valid Polygon or MultiPolygon");
-    const r = bn.snap({ x: new an(n[0][0]), y: new an(n[0][1]) });
+    const r = Cn.snap({ x: new ln(n[0][0]), y: new ln(n[0][1]) });
     this.bbox = {
       ll: { x: r.x, y: r.y },
       ur: { x: r.x, y: r.y }
@@ -17236,10 +17671,10 @@ var I1 = (n) => n, M1 = (n) => {
     for (let a = 1, l = n.length; a < l; a++) {
       if (typeof n[a][0] != "number" || typeof n[a][1] != "number")
         throw new Error("Input geometry is not a valid Polygon or MultiPolygon");
-      const u = bn.snap({ x: new an(n[a][0]), y: new an(n[a][1]) });
-      u.x.eq(i.x) && u.y.eq(i.y) || (this.segments.push(Fs.fromRing(i, u, this)), u.x.isLessThan(this.bbox.ll.x) && (this.bbox.ll.x = u.x), u.y.isLessThan(this.bbox.ll.y) && (this.bbox.ll.y = u.y), u.x.isGreaterThan(this.bbox.ur.x) && (this.bbox.ur.x = u.x), u.y.isGreaterThan(this.bbox.ur.y) && (this.bbox.ur.y = u.y), i = u);
+      const u = Cn.snap({ x: new ln(n[a][0]), y: new ln(n[a][1]) });
+      u.x.eq(i.x) && u.y.eq(i.y) || (this.segments.push(zs.fromRing(i, u, this)), u.x.isLessThan(this.bbox.ll.x) && (this.bbox.ll.x = u.x), u.y.isLessThan(this.bbox.ll.y) && (this.bbox.ll.y = u.y), u.x.isGreaterThan(this.bbox.ur.x) && (this.bbox.ur.x = u.x), u.y.isGreaterThan(this.bbox.ur.y) && (this.bbox.ur.y = u.y), i = u);
     }
-    (!r.x.eq(i.x) || !r.y.eq(i.y)) && this.segments.push(Fs.fromRing(i, r, this));
+    (!r.x.eq(i.x) || !r.y.eq(i.y)) && this.segments.push(zs.fromRing(i, r, this));
   }
   getSweepEvents() {
     const n = [];
@@ -17249,7 +17684,7 @@ var I1 = (n) => n, M1 = (n) => {
     }
     return n;
   }
-}, F1 = class {
+}, K1 = class {
   constructor(n, e) {
     ue(this, "multiPoly");
     ue(this, "exteriorRing");
@@ -17257,12 +17692,12 @@ var I1 = (n) => n, M1 = (n) => {
     ue(this, "bbox");
     if (!Array.isArray(n))
       throw new Error("Input geometry is not a valid Polygon or MultiPolygon");
-    this.exteriorRing = new bc(n[0], this, !0), this.bbox = {
+    this.exteriorRing = new kc(n[0], this, !0), this.bbox = {
       ll: { x: this.exteriorRing.bbox.ll.x, y: this.exteriorRing.bbox.ll.y },
       ur: { x: this.exteriorRing.bbox.ur.x, y: this.exteriorRing.bbox.ur.y }
     }, this.interiorRings = [];
     for (let t = 1, r = n.length; t < r; t++) {
-      const i = new bc(n[t], this, !1);
+      const i = new kc(n[t], this, !1);
       i.bbox.ll.x.isLessThan(this.bbox.ll.x) && (this.bbox.ll.x = i.bbox.ll.x), i.bbox.ll.y.isLessThan(this.bbox.ll.y) && (this.bbox.ll.y = i.bbox.ll.y), i.bbox.ur.x.isGreaterThan(this.bbox.ur.x) && (this.bbox.ur.x = i.bbox.ur.x), i.bbox.ur.y.isGreaterThan(this.bbox.ur.y) && (this.bbox.ur.y = i.bbox.ur.y), this.interiorRings.push(i);
     }
     this.multiPoly = e;
@@ -17276,7 +17711,7 @@ var I1 = (n) => n, M1 = (n) => {
     }
     return n;
   }
-}, Cc = class {
+}, Mc = class {
   constructor(n, e) {
     ue(this, "isSubject");
     ue(this, "polys");
@@ -17288,11 +17723,11 @@ var I1 = (n) => n, M1 = (n) => {
     } catch {
     }
     this.polys = [], this.bbox = {
-      ll: { x: new an(Number.POSITIVE_INFINITY), y: new an(Number.POSITIVE_INFINITY) },
-      ur: { x: new an(Number.NEGATIVE_INFINITY), y: new an(Number.NEGATIVE_INFINITY) }
+      ll: { x: new ln(Number.POSITIVE_INFINITY), y: new ln(Number.POSITIVE_INFINITY) },
+      ur: { x: new ln(Number.NEGATIVE_INFINITY), y: new ln(Number.NEGATIVE_INFINITY) }
     };
     for (let t = 0, r = n.length; t < r; t++) {
-      const i = new F1(n[t], this);
+      const i = new K1(n[t], this);
       i.bbox.ll.x.isLessThan(this.bbox.ll.x) && (this.bbox.ll.x = i.bbox.ll.x), i.bbox.ll.y.isLessThan(this.bbox.ll.y) && (this.bbox.ll.y = i.bbox.ll.y), i.bbox.ur.x.isGreaterThan(this.bbox.ur.x) && (this.bbox.ur.x = i.bbox.ur.x), i.bbox.ur.y.isGreaterThan(this.bbox.ur.y) && (this.bbox.ur.y = i.bbox.ur.y), this.polys.push(i);
     }
     this.isSubject = e;
@@ -17306,35 +17741,35 @@ var I1 = (n) => n, M1 = (n) => {
     }
     return n;
   }
-}, Tn = (n, ...e) => Rr.run("union", n, e), Mg = (n, ...e) => Rr.run("intersection", n, e), B1 = (n, ...e) => Rr.run("xor", n, e), Lg = (n, ...e) => Rr.run("difference", n, e), z1 = bn.set;
-const G1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+}, An = (n, ...e) => Or.run("union", n, e), Pg = (n, ...e) => Or.run("intersection", n, e), J1 = (n, ...e) => Or.run("xor", n, e), Tg = (n, ...e) => Or.run("difference", n, e), Q1 = Cn.set;
+const j1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  difference: Lg,
-  intersection: Mg,
-  setPrecision: z1,
-  union: Tn,
-  xor: B1
+  difference: Tg,
+  intersection: Pg,
+  setPrecision: Q1,
+  union: An,
+  xor: J1
 }, Symbol.toStringTag, { value: "Module" }));
-function q1(n) {
+function e_(n) {
   const e = [];
-  if (ut(n, (i) => {
+  if (ct(n, (i) => {
     e.push(i.coordinates);
   }), e.length < 2)
     throw new Error("Must have at least two features");
-  const t = n.features[0].properties || {}, r = Lg(e[0], ...e.slice(1));
-  return r.length === 0 ? null : r.length === 1 ? pe(r[0], t) : bt(r, t);
+  const t = n.features[0].properties || {}, r = Tg(e[0], ...e.slice(1));
+  return r.length === 0 ? null : r.length === 1 ? pe(r[0], t) : Ct(r, t);
 }
-function La(n) {
+function Pa(n) {
   if (!n) throw new Error("geojson is required");
   var e = [];
-  return ot(n, function(t) {
+  return at(n, function(t) {
     e.push(t);
   }), ce(e);
 }
-function U1(n, e = {}) {
+function t_(n, e = {}) {
   if (e = e || {}, !Oe(e)) throw new Error("options is invalid");
   const { propertyName: t } = e;
-  Cn(n, "Polygon", "dissolve");
+  Sn(n, "Polygon", "dissolve");
   const r = [];
   if (t) {
     const i = {};
@@ -17346,8 +17781,8 @@ function U1(n, e = {}) {
     });
     const a = Object.keys(i);
     for (let l = 0; l < a.length; l++) {
-      const u = bt(
-        Tn.apply(
+      const u = Ct(
+        An.apply(
           null,
           // List of polygons expressed as Position[][][] a.k.a. Geom[]
           i[a[l]].map(function(f) {
@@ -17358,9 +17793,9 @@ function U1(n, e = {}) {
       u && u.properties && (u.properties[t] = a[l], r.push(u));
     }
   } else
-    return La(
-      bt(
-        Tn.apply(
+    return Pa(
+      Ct(
+        An.apply(
           null,
           // List of polygons expressed as Position[][][] a.k.a. Geom[]
           n.features.map(function(i) {
@@ -17369,13 +17804,13 @@ function U1(n, e = {}) {
         )
       )
     );
-  return La(ce(r));
+  return Pa(ce(r));
 }
-function H1(n, e, t = 2) {
+function n_(n, e, t = 2) {
   const r = Me(n), i = Me(e), a = r[0] - i[0], l = r[1] - i[1];
   return t === 1 ? Math.abs(a) + Math.abs(l) : Math.pow(Math.pow(a, t) + Math.pow(l, t), 1 / t);
 }
-function Pg(n, e) {
+function Ag(n, e) {
   var t, r;
   e = e || {};
   const i = e.threshold || 1e4, a = e.p || 2, l = (t = e.binary) != null ? t : !1, u = e.alpha || -1, f = (r = e.standardization) != null ? r : !1, g = [];
@@ -17388,7 +17823,7 @@ function Pg(n, e) {
   for (let m = 0; m < g.length; m++)
     for (let p = m; p < g.length; p++) {
       m === p && (d[m][p] = 0);
-      const y = H1(g[m], g[p], a);
+      const y = n_(g[m], g[p], a);
       d[m][p] = y, d[p][m] = y;
     }
   for (let m = 0; m < g.length; m++)
@@ -17404,14 +17839,14 @@ function Pg(n, e) {
     }
   return d;
 }
-function br(n, e, t = {}) {
+function Cr(n, e, t = {}) {
   const r = Me(n), i = Me(e);
   i[0] += i[0] - r[0] > 180 ? -360 : r[0] - i[0] > 180 ? 360 : 0;
-  const a = Y1(r, i);
-  return Kn(a, "meters", t.units);
+  const a = r_(r, i);
+  return Jn(a, "meters", t.units);
 }
-function Y1(n, e, t) {
-  t = t === void 0 ? Be : Number(t);
+function r_(n, e, t) {
+  t = t === void 0 ? ze : Number(t);
   const r = t, i = n[1] * Math.PI / 180, a = e[1] * Math.PI / 180, l = a - i;
   let u = Math.abs(e[0] - n[0]) * Math.PI / 180;
   u > Math.PI && (u -= 2 * Math.PI);
@@ -17422,24 +17857,24 @@ function Y1(n, e, t) {
     l * l + g * g * u * u
   ) * r;
 }
-function eo(n, e, t, r = {}) {
+function no(n, e, t, r = {}) {
   const i = e < 0;
-  let a = Kn(
+  let a = Jn(
     Math.abs(e),
     r.units,
     "meters"
   );
   i && (a = -Math.abs(a));
-  const l = Me(n), u = X1(
+  const l = Me(n), u = i_(
     l,
     a,
     t
   );
   return u[0] += u[0] - l[0] > 180 ? -360 : l[0] - u[0] > 180 ? 360 : 0, de(u, r.properties);
 }
-function X1(n, e, t, r) {
-  r = r === void 0 ? Be : Number(r);
-  const i = e / r, a = n[0] * Math.PI / 180, l = je(n[1]), u = je(t), f = i * Math.cos(u);
+function i_(n, e, t, r) {
+  r = r === void 0 ? ze : Number(r);
+  const i = e / r, a = n[0] * Math.PI / 180, l = et(n[1]), u = et(t), f = i * Math.cos(u);
   let g = l + f;
   Math.abs(g) > Math.PI / 2 && (g = g > 0 ? Math.PI - g : -Math.PI - g);
   const d = Math.log(
@@ -17450,7 +17885,7 @@ function X1(n, e, t, r) {
     g * 180 / Math.PI
   ];
 }
-function Ng(n, e, t) {
+function Rg(n, e, t) {
   if (t = t || {}, !Oe(t)) throw new Error("options is invalid");
   const r = t.pivot, i = t.mutate;
   if (!n) throw new Error("geojson is required");
@@ -17458,14 +17893,14 @@ function Ng(n, e, t) {
     throw new Error("angle is required");
   if (e === 0) return n;
   const a = r ?? Ut(n);
-  return (i === !1 || i === void 0) && (n = it(n)), Ve(n, function(l) {
-    const f = Jn(a, l) + e, g = br(a, l), d = me(
-      eo(a, g, f)
+  return (i === !1 || i === void 0) && (n = st(n)), We(n, function(l) {
+    const f = Qn(a, l) + e, g = Cr(a, l), d = me(
+      no(a, g, f)
     );
     l[0] = d[0], l[1] = d[1];
-  }), Nn(n), n;
+  }), Tn(n), n;
 }
-function Tg(n, e, t, r) {
+function Og(n, e, t, r) {
   r = r || {};
   let i = r.steps || 64;
   const a = r.units || "kilometers";
@@ -17475,17 +17910,17 @@ function Tg(n, e, t, r) {
   if (!e) throw new Error("xSemiAxis is required");
   if (!t) throw new Error("ySemiAxis is required");
   if (!Oe(r)) throw new Error("options must be an object");
-  if (!tt(i)) throw new Error("steps must be a number");
-  if (!tt(l)) throw new Error("angle must be a number");
+  if (!nt(i)) throw new Error("steps must be a number");
+  if (!nt(l)) throw new Error("angle must be a number");
   const g = Me(
-    Ng(de(Me(n)), l, { pivot: u })
+    Rg(de(Me(n)), l, { pivot: u })
   );
   l = -90 + l, i = Math.ceil(i / 4);
   let d = [], m = [];
-  const p = e, y = t, w = y, b = (p - y) / (Math.PI / 2), M = (p + y) * Math.PI / 4, k = 0.5, S = i;
-  let N = 0, P = 0;
+  const p = e, y = t, w = y, b = (p - y) / (Math.PI / 2), k = (p + y) * Math.PI / 4, I = 0.5, S = i;
+  let P = 0, N = 0;
   for (let B = 0; B < i; B++)
-    P += N, b === 0 ? N = M / S / w : N = (-(b * P + w) + Math.sqrt(Math.pow(b * P + w, 2) - 4 * (k * b) * -(M / S))) / (2 * (k * b)), P != 0 && d.push(P);
+    N += P, b === 0 ? P = k / S / w : P = (-(b * N + w) + Math.sqrt(Math.pow(b * N + w, 2) - 4 * (I * b) * -(k / S))) / (2 * (I * b)), N != 0 && d.push(N);
   m.push(0);
   for (let B = 0; B < d.length; B++)
     m.push(d[B]);
@@ -17509,39 +17944,39 @@ function Tg(n, e, t, r) {
       Math.pow(p, 2) * Math.pow(y, 2) / (Math.pow(p * Math.sin(F), 2) + Math.pow(y * Math.cos(F), 2))
     );
     A.push(
-      un(g, C, l + ln(F), {
+      cn(g, C, l + un(F), {
         units: a
       }).geometry.coordinates
     );
   }
   return pe([A], f);
 }
-function Ag(n) {
-  return Ai(qe(n));
+function Dg(n) {
+  return Oi(He(n));
 }
-function to(n) {
+function ro(n) {
   const e = [];
   return n.type === "FeatureCollection" ? Le(n, function(t) {
-    Ve(t, function(r) {
+    We(t, function(r) {
       e.push(de(r, t.properties));
     });
-  }) : n.type === "Feature" ? Ve(n, function(t) {
+  }) : n.type === "Feature" ? We(n, function(t) {
     e.push(de(t, n.properties));
-  }) : Ve(n, function(t) {
+  }) : We(n, function(t) {
     e.push(de(t));
   }), ce(e);
 }
-function V1(n, e) {
+function s_(n, e) {
   var t;
   if (e = e || {}, !Oe(e)) throw new Error("options is invalid");
   const r = (t = e.mutate) != null ? t : !1;
   if (!n) throw new Error("geojson is required");
-  return (r === !1 || r === void 0) && (n = it(n)), Ve(n, function(i) {
+  return (r === !1 || r === void 0) && (n = st(n)), We(n, function(i) {
     var a = i[0], l = i[1];
     i[0] = l, i[1] = a;
   }), n;
 }
-function W1(n) {
+function o_(n) {
   const t = Math.pow(10, 6), r = [];
   for (let i = 0; i < n.length; i++) {
     const a = n[i];
@@ -17549,14 +17984,14 @@ function W1(n) {
   }
   return r;
 }
-const Sc = Math.PI / 180, kc = 180 / Math.PI;
-class Bs {
+const Lc = Math.PI / 180, Nc = 180 / Math.PI;
+class Gs {
   constructor(e, t) {
     ue(this, "lon");
     ue(this, "lat");
     ue(this, "x");
     ue(this, "y");
-    this.lon = e, this.lat = t, this.x = Sc * e, this.y = Sc * t;
+    this.lon = e, this.lat = t, this.x = Lc * e, this.y = Lc * t;
   }
   /**
    * Get a string representation of the coordinate
@@ -17585,10 +18020,10 @@ class Bs {
    */
   antipode() {
     const e = -1 * this.lat, t = this.lon < 0 ? 180 + this.lon : (180 - this.lon) * -1;
-    return new Bs(t, e);
+    return new Gs(t, e);
   }
 }
-class $1 {
+class a_ {
   constructor(e) {
     ue(this, "properties", {});
     ue(this, "geometries", []);
@@ -17663,7 +18098,7 @@ class $1 {
     return e.join("; ");
   }
 }
-class Z1 {
+class l_ {
   constructor() {
     ue(this, "coords", []);
     ue(this, "length", 0);
@@ -17677,7 +18112,7 @@ class Z1 {
     this.length++, this.coords.push(e);
   }
 }
-class K1 {
+class u_ {
   constructor(e, t, r) {
     ue(this, "start");
     ue(this, "end");
@@ -17687,7 +18122,7 @@ class K1 {
       throw new Error("GreatCircle constructor expects two args: start and end objects with x and y properties");
     if (!t || t.x === void 0 || t.y === void 0)
       throw new Error("GreatCircle constructor expects two args: start and end objects with x and y properties");
-    this.start = new Bs(e.x, e.y), this.end = new Bs(t.x, t.y), this.properties = r || {};
+    this.start = new Gs(e.x, e.y), this.end = new Gs(t.x, t.y), this.properties = r || {};
     const i = this.start.x - this.end.x, a = this.start.y - this.end.y, l = Math.pow(Math.sin(a / 2), 2) + Math.cos(this.start.y) * Math.cos(this.end.y) * Math.pow(Math.sin(i / 2), 2);
     if (this.g = 2 * Math.asin(Math.sqrt(l)), this.g === Math.PI)
       throw new Error("it appears " + this.start.view() + " and " + this.end.view() + " are 'antipodal', e.g diametrically opposite, thus there is no single route but rather infinite");
@@ -17708,8 +18143,8 @@ class K1 {
    * ```
    */
   interpolate(e) {
-    const t = Math.sin((1 - e) * this.g) / Math.sin(this.g), r = Math.sin(e * this.g) / Math.sin(this.g), i = t * Math.cos(this.start.y) * Math.cos(this.start.x) + r * Math.cos(this.end.y) * Math.cos(this.end.x), a = t * Math.cos(this.start.y) * Math.sin(this.start.x) + r * Math.cos(this.end.y) * Math.sin(this.end.x), l = t * Math.sin(this.start.y) + r * Math.sin(this.end.y), u = kc * Math.atan2(l, Math.sqrt(Math.pow(i, 2) + Math.pow(a, 2)));
-    return [kc * Math.atan2(a, i), u];
+    const t = Math.sin((1 - e) * this.g) / Math.sin(this.g), r = Math.sin(e * this.g) / Math.sin(this.g), i = t * Math.cos(this.start.y) * Math.cos(this.start.x) + r * Math.cos(this.end.y) * Math.cos(this.end.x), a = t * Math.cos(this.start.y) * Math.sin(this.start.x) + r * Math.cos(this.end.y) * Math.sin(this.end.x), l = t * Math.sin(this.start.y) + r * Math.sin(this.end.y), u = Nc * Math.atan2(l, Math.sqrt(Math.pow(i, 2) + Math.pow(a, 2)));
+    return [Nc * Math.atan2(a, i), u];
   }
   /**
    * Generate points along the great circle
@@ -17725,7 +18160,7 @@ class K1 {
    * ```
    */
   Arc(e, t) {
-    var p, y, w, b, M, k, S, N, P, A, B, F, C, L, T, D, z, U, X, O, H, q, V, J, W;
+    var p, y, w, b, k, I, S, P, N, A, B, F, C, L, T, D, z, q, X, O, U, H, V, J, W;
     let r = [];
     if (!e || e <= 2)
       r.push([this.start.lon, this.start.lat]), r.push([this.end.lon, this.end.lat]);
@@ -17749,22 +18184,22 @@ class K1 {
       for (let Q = 0; Q < r.length; ++Q) {
         const re = parseFloat((((w = r[Q]) == null ? void 0 : w[0]) ?? 0).toString());
         if (Q > 0 && Math.abs(re - (((b = r[Q - 1]) == null ? void 0 : b[0]) ?? 0)) > g) {
-          const ee = parseFloat((((M = r[Q - 1]) == null ? void 0 : M[0]) ?? 0).toString()), te = parseFloat((((k = r[Q - 1]) == null ? void 0 : k[1]) ?? 0).toString()), se = parseFloat((((S = r[Q]) == null ? void 0 : S[0]) ?? 0).toString()), fe = parseFloat((((N = r[Q]) == null ? void 0 : N[1]) ?? 0).toString());
-          if (ee > -180 && ee < f && se === 180 && Q + 1 < r.length && (((P = r[Q - 1]) == null ? void 0 : P[0]) ?? 0) > -180 && (((A = r[Q - 1]) == null ? void 0 : A[0]) ?? 0) < f) {
+          const ee = parseFloat((((k = r[Q - 1]) == null ? void 0 : k[0]) ?? 0).toString()), te = parseFloat((((I = r[Q - 1]) == null ? void 0 : I[1]) ?? 0).toString()), se = parseFloat((((S = r[Q]) == null ? void 0 : S[0]) ?? 0).toString()), fe = parseFloat((((P = r[Q]) == null ? void 0 : P[1]) ?? 0).toString());
+          if (ee > -180 && ee < f && se === 180 && Q + 1 < r.length && (((N = r[Q - 1]) == null ? void 0 : N[0]) ?? 0) > -180 && (((A = r[Q - 1]) == null ? void 0 : A[0]) ?? 0) < f) {
             j.push([-180, ((B = r[Q]) == null ? void 0 : B[1]) ?? 0]), Q++, j.push([((F = r[Q]) == null ? void 0 : F[0]) ?? 0, ((C = r[Q]) == null ? void 0 : C[1]) ?? 0]);
             continue;
           } else if (ee > u && ee < 180 && se === -180 && Q + 1 < r.length && (((L = r[Q - 1]) == null ? void 0 : L[0]) ?? 0) > u && (((T = r[Q - 1]) == null ? void 0 : T[0]) ?? 0) < 180) {
-            j.push([180, ((D = r[Q]) == null ? void 0 : D[1]) ?? 0]), Q++, j.push([((z = r[Q]) == null ? void 0 : z[0]) ?? 0, ((U = r[Q]) == null ? void 0 : U[1]) ?? 0]);
+            j.push([180, ((D = r[Q]) == null ? void 0 : D[1]) ?? 0]), Q++, j.push([((z = r[Q]) == null ? void 0 : z[0]) ?? 0, ((q = r[Q]) == null ? void 0 : q[1]) ?? 0]);
             continue;
           }
           if (ee <= 180 && se >= 180 && ee < se) {
-            const Z = (180 - ee) / (se - ee), Fe = Z * fe + (1 - Z) * te;
-            j.push([(((X = r[Q - 1]) == null ? void 0 : X[0]) ?? 0) > u ? 180 : -180, Fe]), j = [], j.push([(((O = r[Q - 1]) == null ? void 0 : O[0]) ?? 0) > u ? -180 : 180, Fe]), d.push(j);
+            const Z = (180 - ee) / (se - ee), Be = Z * fe + (1 - Z) * te;
+            j.push([(((X = r[Q - 1]) == null ? void 0 : X[0]) ?? 0) > u ? 180 : -180, Be]), j = [], j.push([(((O = r[Q - 1]) == null ? void 0 : O[0]) ?? 0) > u ? -180 : 180, Be]), d.push(j);
           } else
             j = [], d.push(j);
-          j.push([re, ((H = r[Q]) == null ? void 0 : H[1]) ?? 0]);
+          j.push([re, ((U = r[Q]) == null ? void 0 : U[1]) ?? 0]);
         } else
-          j.push([((q = r[Q]) == null ? void 0 : q[0]) ?? 0, ((V = r[Q]) == null ? void 0 : V[1]) ?? 0]);
+          j.push([((H = r[Q]) == null ? void 0 : H[0]) ?? 0, ((V = r[Q]) == null ? void 0 : V[1]) ?? 0]);
       }
     } else {
       const j = [];
@@ -17772,85 +18207,85 @@ class K1 {
       for (let Q = 0; Q < r.length; ++Q)
         j.push([((J = r[Q]) == null ? void 0 : J[0]) ?? 0, ((W = r[Q]) == null ? void 0 : W[1]) ?? 0]);
     }
-    const m = new $1(this.properties);
+    const m = new a_(this.properties);
     for (let j = 0; j < d.length; ++j) {
-      const Q = new Z1();
+      const Q = new l_();
       m.geometries.push(Q);
       const re = d[j];
       if (re)
         for (let ee = 0; ee < re.length; ++ee) {
           const te = re[ee];
-          te && Q.move_to(W1([te[0], te[1]]));
+          te && Q.move_to(o_([te[0], te[1]]));
         }
     }
     return m;
   }
 }
-function J1(n, e, t = {}) {
+function c_(n, e, t = {}) {
   if (typeof t != "object") throw new Error("options is invalid");
   const { properties: r = {}, npoints: i = 100, offset: a = 10 } = t, l = Me(n), u = Me(e);
   if (l[0] === u[0] && l[1] === u[1]) {
     const d = Array(i).fill([l[0], l[1]]);
-    return ke(d, r);
+    return Ie(d, r);
   }
-  return new K1(
+  return new u_(
     { x: l[0], y: l[1] },
     { x: u[0], y: u[1] },
     r || {}
   ).Arc(i, { offset: a }).json();
 }
-function Ei(n, e = {}) {
+function Ci(n, e = {}) {
   const t = [];
-  if (ut(n, (i) => {
+  if (ct(n, (i) => {
     t.push(i.coordinates);
   }), t.length < 2)
     throw new Error("Must specify at least 2 geometries");
-  const r = Mg(t[0], ...t.slice(1));
-  return r.length === 0 ? null : r.length === 1 ? pe(r[0], e.properties) : bt(r, e.properties);
+  const r = Pg(t[0], ...t.slice(1));
+  return r.length === 0 ? null : r.length === 1 ? pe(r[0], e.properties) : Ct(r, e.properties);
 }
-function Rg(n, e, t = {}) {
-  const r = JSON.stringify(t.properties || {}), [i, a, l, u] = n, f = (a + u) / 2, g = (i + l) / 2, m = e * 2 / Ge([i, f], [l, f], t) * (l - i), y = e * 2 / Ge([g, a], [g, u], t) * (u - a), w = m / 2, b = w * 2, M = Math.sqrt(3) / 2 * y, k = l - i, S = u - a, N = 3 / 4 * b, P = M, A = (k - b) / (b - w / 2), B = Math.floor(A), F = (B * N - w / 2 - k) / 2 - w / 2 + N / 2, C = Math.floor((S - M) / M);
-  let L = (S - C * M) / 2;
-  const T = C * M - S > M / 2;
-  T && (L -= M / 4);
+function Fg(n, e, t = {}) {
+  const r = JSON.stringify(t.properties || {}), [i, a, l, u] = n, f = (a + u) / 2, g = (i + l) / 2, m = e * 2 / qe([i, f], [l, f], t) * (l - i), y = e * 2 / qe([g, a], [g, u], t) * (u - a), w = m / 2, b = w * 2, k = Math.sqrt(3) / 2 * y, I = l - i, S = u - a, P = 3 / 4 * b, N = k, A = (I - b) / (b - w / 2), B = Math.floor(A), F = (B * P - w / 2 - I) / 2 - w / 2 + P / 2, C = Math.floor((S - k) / k);
+  let L = (S - C * k) / 2;
+  const T = C * k - S > k / 2;
+  T && (L -= k / 4);
   const D = [], z = [];
   for (let X = 0; X < 6; X++) {
     const O = 2 * Math.PI / 6 * X;
     D.push(Math.cos(O)), z.push(Math.sin(O));
   }
-  const U = [];
+  const q = [];
   for (let X = 0; X <= B; X++)
     for (let O = 0; O <= C; O++) {
-      const H = X % 2 === 1;
-      if (O === 0 && H || O === 0 && T) continue;
-      const q = X * N + i - F;
-      let V = O * P + a + L;
-      if (H && (V -= M / 2), t.triangles === !0)
-        j1(
-          [q, V],
+      const U = X % 2 === 1;
+      if (O === 0 && U || O === 0 && T) continue;
+      const H = X * P + i - F;
+      let V = O * N + a + L;
+      if (U && (V -= k / 2), t.triangles === !0)
+        f_(
+          [H, V],
           m / 2,
           y / 2,
           JSON.parse(r),
           D,
           z
         ).forEach(function(J) {
-          t.mask ? Ei(ce([t.mask, J])) && U.push(J) : U.push(J);
+          t.mask ? Ci(ce([t.mask, J])) && q.push(J) : q.push(J);
         });
       else {
-        const J = Q1(
-          [q, V],
+        const J = h_(
+          [H, V],
           m / 2,
           y / 2,
           JSON.parse(r),
           D,
           z
         );
-        t.mask ? Ei(ce([t.mask, J])) && U.push(J) : U.push(J);
+        t.mask ? Ci(ce([t.mask, J])) && q.push(J) : q.push(J);
       }
     }
-  return ce(U);
+  return ce(q);
 }
-function Q1(n, e, t, r, i, a) {
+function h_(n, e, t, r, i, a) {
   const l = [];
   for (let u = 0; u < 6; u++) {
     const f = n[0] + e * i[u], g = n[1] + t * a[u];
@@ -17858,7 +18293,7 @@ function Q1(n, e, t, r, i, a) {
   }
   return l.push(l[0].slice()), pe([l], r);
 }
-function j1(n, e, t, r, i, a) {
+function f_(n, e, t, r, i, a) {
   const l = [];
   for (let u = 0; u < 6; u++) {
     const f = [];
@@ -17869,46 +18304,46 @@ function j1(n, e, t, r, i, a) {
   }
   return l;
 }
-function Og(n, e, t = {}) {
+function Bg(n, e, t = {}) {
   t.mask && !t.units && (t.units = "kilometers");
-  for (var r = [], i = n[0], a = n[1], l = n[2], u = n[3], f = e / Ge([i, a], [l, a], t), g = f * (l - i), d = e / Ge([i, a], [i, u], t), m = d * (u - a), p = l - i, y = u - a, w = Math.floor(p / g), b = Math.floor(y / m), M = (p - w * g) / 2, k = (y - b * m) / 2, S = i + M; S <= l; ) {
-    for (var N = a + k; N <= u; ) {
-      var P = de([S, N], t.properties);
-      t.mask ? sl(P, t.mask) && r.push(P) : r.push(P), N += m;
+  for (var r = [], i = n[0], a = n[1], l = n[2], u = n[3], f = e / qe([i, a], [l, a], t), g = f * (l - i), d = e / qe([i, a], [i, u], t), m = d * (u - a), p = l - i, y = u - a, w = Math.floor(p / g), b = Math.floor(y / m), k = (p - w * g) / 2, I = (y - b * m) / 2, S = i + k; S <= l; ) {
+    for (var P = a + I; P <= u; ) {
+      var N = de([S, P], t.properties);
+      t.mask ? al(N, t.mask) && r.push(N) : r.push(N), P += m;
     }
     S += g;
   }
   return ce(r);
 }
-function Dg(n, e, t, r = {}) {
-  const i = [], a = n[0], l = n[1], u = n[2], f = n[3], g = u - a, d = Kn(e, r.units, "degrees"), m = f - l, p = Kn(t, r.units, "degrees"), y = Math.floor(Math.abs(g) / d), w = Math.floor(Math.abs(m) / p), b = (g - y * d) / 2, M = (m - w * p) / 2;
-  let k = a + b;
+function zg(n, e, t, r = {}) {
+  const i = [], a = n[0], l = n[1], u = n[2], f = n[3], g = u - a, d = Jn(e, r.units, "degrees"), m = f - l, p = Jn(t, r.units, "degrees"), y = Math.floor(Math.abs(g) / d), w = Math.floor(Math.abs(m) / p), b = (g - y * d) / 2, k = (m - w * p) / 2;
+  let I = a + b;
   for (let S = 0; S < y; S++) {
-    let N = l + M;
-    for (let P = 0; P < w; P++) {
+    let P = l + k;
+    for (let N = 0; N < w; N++) {
       const A = pe(
         [
           [
-            [k, N],
-            [k, N + p],
-            [k + d, N + p],
-            [k + d, N],
-            [k, N]
+            [I, P],
+            [I, P + p],
+            [I + d, P + p],
+            [I + d, P],
+            [I, P]
           ]
         ],
         r.properties
       );
-      r.mask ? Hf(r.mask, A) && i.push(A) : i.push(A), N += p;
+      r.mask ? Vf(r.mask, A) && i.push(A) : i.push(A), P += p;
     }
-    k += d;
+    I += d;
   }
   return ce(i);
 }
-function _l(n, e, t = {}) {
-  return Dg(n, e, e, t);
+function xl(n, e, t = {}) {
+  return zg(n, e, e, t);
 }
-function Fg(n, e, t = {}) {
-  for (var r = [], i = e / Ge([n[0], n[1]], [n[2], n[1]], t), a = i * (n[2] - n[0]), l = e / Ge([n[0], n[1]], [n[0], n[3]], t), u = l * (n[3] - n[1]), f = 0, g = n[0]; g <= n[2]; ) {
+function Gg(n, e, t = {}) {
+  for (var r = [], i = e / qe([n[0], n[1]], [n[2], n[1]], t), a = i * (n[2] - n[0]), l = e / qe([n[0], n[1]], [n[0], n[3]], t), u = l * (n[3] - n[1]), f = 0, g = n[0]; g <= n[2]; ) {
     for (var d = 0, m = n[1]; m <= n[3]; ) {
       var p = null, y = null;
       f % 2 === 0 && d % 2 === 0 ? (p = pe(
@@ -17991,73 +18426,73 @@ function Fg(n, e, t = {}) {
           ]
         ],
         t.properties
-      )), t.mask ? (Ei(ce([t.mask, p])) && r.push(p), Ei(ce([t.mask, y])) && r.push(y)) : (r.push(p), r.push(y)), m += u, d++;
+      )), t.mask ? (Ci(ce([t.mask, p])) && r.push(p), Ci(ce([t.mask, y])) && r.push(y)) : (r.push(p), r.push(y)), m += u, d++;
     }
     f++, g += a;
   }
   return ce(r);
 }
-function e_(n, e, t) {
+function g_(n, e, t) {
   var r, i, a, l;
   if (t = t || {}, typeof t != "object")
     throw new Error("options is invalid");
   if (!n)
     throw new Error("points is required");
-  if (Cn(n, "Point", "input must contain Points"), !e)
+  if (Sn(n, "Point", "input must contain Points"), !e)
     throw new Error("cellSize is required");
-  var u = (r = t.gridType) != null ? r : "square", f = (i = t.property) != null ? i : "elevation", g = (a = t.weight) != null ? a : 1, d = (l = t.bbox) != null ? l : qe(n);
+  var u = (r = t.gridType) != null ? r : "square", f = (i = t.property) != null ? i : "elevation", g = (a = t.weight) != null ? a : 1, d = (l = t.bbox) != null ? l : He(n);
   if (g !== void 0 && typeof g != "number")
     throw new Error("weight must be a number");
-  pi(d);
+  _i(d);
   var m;
   switch (u) {
     case "point":
     case "points":
-      m = Og(d, e, t);
+      m = Bg(d, e, t);
       break;
     case "square":
     case "squares":
-      m = _l(d, e, t);
+      m = xl(d, e, t);
       break;
     case "hex":
     case "hexes":
-      m = Rg(d, e, t);
+      m = Fg(d, e, t);
       break;
     case "triangle":
     case "triangles":
-      m = Fg(d, e, t);
+      m = Gg(d, e, t);
       break;
     default:
       throw new Error("invalid gridType");
   }
   var p = [];
   return Le(m, function(y) {
-    var w, b = 0, M = 0;
+    var w, b = 0, k = 0;
     Le(n, function(S) {
-      var N, P = u === "point" ? y : Ut(y), A = Ge(P, S, t), B;
-      if (f !== void 0 && (B = (N = S.properties) == null ? void 0 : N[f]), B === void 0 && (B = S.geometry.coordinates[2]), B === void 0)
+      var P, N = u === "point" ? y : Ut(y), A = qe(N, S, t), B;
+      if (f !== void 0 && (B = (P = S.properties) == null ? void 0 : P[f]), B === void 0 && (B = S.geometry.coordinates[2]), B === void 0)
         throw new Error("zValue is missing");
       A === 0 && (b = B);
       var F = 1 / Math.pow(A, g);
-      M += F, b += F * B;
+      k += F, b += F * B;
     });
-    var k = it(y);
-    (w = k.properties) != null || (k.properties = {}), k.properties[f] = b / M, p.push(k);
+    var I = st(y);
+    (w = I.properties) != null || (I.properties = {}), I.properties[f] = b / k, p.push(I);
   }), ce(p);
 }
-var t_ = Object.defineProperty, Ic = Object.getOwnPropertySymbols, n_ = Object.prototype.hasOwnProperty, r_ = Object.prototype.propertyIsEnumerable, Mc = (n, e, t) => e in n ? t_(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t, Lc = (n, e) => {
+var d_ = Object.defineProperty, Pc = Object.getOwnPropertySymbols, m_ = Object.prototype.hasOwnProperty, v_ = Object.prototype.propertyIsEnumerable, Tc = (n, e, t) => e in n ? d_(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t, Ac = (n, e) => {
   for (var t in e || (e = {}))
-    n_.call(e, t) && Mc(n, t, e[t]);
-  if (Ic)
-    for (var t of Ic(e))
-      r_.call(e, t) && Mc(n, t, e[t]);
+    m_.call(e, t) && Tc(n, t, e[t]);
+  if (Pc)
+    for (var t of Pc(e))
+      v_.call(e, t) && Tc(n, t, e[t]);
   return n;
 };
-function i_(n, e = {}) {
+function p_(n, e = {}) {
   if (!Oe(e)) throw new Error("options is invalid");
   const { zProperty: t = "elevation", flip: r = !1, flags: i = !1 } = e;
-  Cn(n, "Point", "input must contain Points");
-  for (var a = s_(n, r), l = [], u = 0; u < a.length; u++) {
+  Sn(n, "Point", "input must contain Points");
+  for (var a = y_(n, r), l = [], u = 0; u < a.length; u++) {
     for (var f = a[u], g = [], d = 0; d < f.length; d++) {
       var m = f[d];
       m.properties == null && (m.properties = {}), m.properties[t] ? g.push(m.properties[t]) : g.push(0), i === !0 && (m.properties.matrixPosition = [u, d]);
@@ -18066,7 +18501,7 @@ function i_(n, e = {}) {
   }
   return l;
 }
-function s_(n, e) {
+function y_(n, e) {
   var t = {};
   Le(n, (i) => {
     var a = me(i)[1];
@@ -18079,45 +18514,45 @@ function s_(n, e) {
     e ? (i, a) => me(i[0])[1] - me(a[0])[1] : (i, a) => me(a[0])[1] - me(i[0])[1]
   ), r;
 }
-function o_(n, e, t) {
+function __(n, e, t) {
   if (t = t || {}, !Oe(t)) throw new Error("options is invalid");
   const r = t.zProperty || "elevation", i = t.commonProperties || {}, a = t.breaksProperties || [];
-  if (Cn(n, "Point", "Input must contain Points"), !e) throw new Error("breaks is required");
+  if (Sn(n, "Point", "Input must contain Points"), !e) throw new Error("breaks is required");
   if (!Array.isArray(e)) throw new Error("breaks is not an Array");
   if (!Oe(i))
     throw new Error("commonProperties is not an Object");
   if (!Array.isArray(a))
     throw new Error("breaksProperties is not an Array");
-  const l = i_(n, { zProperty: r, flip: !0 }), u = l[0].length;
+  const l = p_(n, { zProperty: r, flip: !0 }), u = l[0].length;
   if (l.length < 2 || u < 2)
     throw new Error("Matrix of points must be at least 2x2");
   for (let d = 1; d < l.length; d++)
     if (l[d].length !== u)
       throw new Error("Matrix of points is not uniform in the x dimension");
-  let f = a_(l, e, r);
-  f = u_(f, l, n);
+  let f = w_(l, e, r);
+  f = E_(f, l, n);
   const g = f.map((d, m) => {
     if (a[m] && !Oe(a[m]))
       throw new Error("Each mappedProperty is required to be an Object");
-    const p = Lc(Lc({}, i), a[m]);
-    return p[r] = d[r], bt(
+    const p = Ac(Ac({}, i), a[m]);
+    return p[r] = d[r], Ct(
       d.groupedRings,
       p
     );
   });
   return ce(g);
 }
-function a_(n, e, t) {
+function w_(n, e, t) {
   const r = [];
   let i;
   for (let a = 1; a < e.length; a++) {
-    a === 1 && (i = Pc(n, +e[0]));
-    const l = +e[a], u = +e[a - 1], f = Pc(n, l), g = f.map(
+    a === 1 && (i = Rc(n, +e[0]));
+    const l = +e[a], u = +e[a - 1], f = Rc(n, l), g = f.map(
       (y) => (
         // note that we (in-place) reverse the array result of .map and not the original segment itself.
         y.map((w) => [w[0], w[1]]).reverse()
       )
-    ), d = l_(i.concat(g), n), m = c_(d), p = h_(m);
+    ), d = x_(i.concat(g), n), m = b_(d), p = C_(m);
     if (p.length === 0 && n[0][0] < l && n[0][0] >= u) {
       const y = n[0].length, w = n.length;
       p.push([
@@ -18137,7 +18572,7 @@ function a_(n, e, t) {
   }
   return r;
 }
-function Pc(n, e) {
+function Rc(n, e) {
   const t = [], r = n[0].length, i = n.length;
   for (let l = 0; l < i - 1; l++)
     for (let u = 0; u < r - 1; u++) {
@@ -18273,7 +18708,7 @@ function Pc(n, e) {
     return f > 1 ? 1 : f < 0 ? 0 : f;
   }
 }
-function l_(n, e) {
+function x_(n, e) {
   const t = e.length, r = e[0].length, i = [], a = [];
   for (; n.length > 0; ) {
     const l = [...n.shift()];
@@ -18303,7 +18738,7 @@ function l_(n, e) {
     const u = l[l.length - 1];
     let f, g;
     if (u[0] === 0 && u[1] !== 0)
-      f = cs(
+      f = fs(
         i,
         (d) => d[0][0] === 0 && d[0][1] < u[1],
         // left side, below end
@@ -18311,7 +18746,7 @@ function l_(n, e) {
         // prefer positions to the top
       ), g = [0, 0];
     else if (u[1] === 0 && u[0] !== r - 1)
-      f = cs(
+      f = fs(
         i,
         (d) => d[0][1] === 0 && d[0][0] > u[0],
         // bottom side, right of end
@@ -18319,7 +18754,7 @@ function l_(n, e) {
         // prefer positions to the left
       ), g = [r - 1, 0];
     else if (u[0] === r - 1 && u[1] !== t - 1)
-      f = cs(
+      f = fs(
         i,
         (d) => d[0][0] === r - 1 && d[0][1] > u[1],
         // right side, above end
@@ -18327,7 +18762,7 @@ function l_(n, e) {
         // prefer positions to the bottom
       ), g = [r - 1, t - 1];
     else if (u[1] === t - 1 && u[0] !== 0)
-      f = cs(
+      f = fs(
         i,
         (d) => d[0][1] === t - 1 && d[0][0] < u[0],
         // top side, left of end
@@ -18351,8 +18786,8 @@ function l_(n, e) {
     a[l].length < 4 && (a.splice(l, 1), l--);
   return a;
 }
-function u_(n, e, t) {
-  const r = qe(t), i = r[2] - r[0], a = r[3] - r[1], l = r[0], u = r[1], f = e[0].length - 1, g = e.length - 1, d = i / f, m = a / g;
+function E_(n, e, t) {
+  const r = He(t), i = r[2] - r[0], a = r[3] - r[1], l = r[0], u = r[1], f = e[0].length - 1, g = e.length - 1, d = i / f, m = a / g;
   return n.map(function(p) {
     return p.groupedRings = p.groupedRings.map(
       function(y) {
@@ -18366,9 +18801,9 @@ function u_(n, e, t) {
     ), p;
   });
 }
-function c_(n) {
+function b_(n) {
   const e = n.map(function(t) {
-    return { ring: t, area: Ti(pe([t])) };
+    return { ring: t, area: Ri(pe([t])) };
   });
   return e.sort(function(t, r) {
     return r.area - t.area;
@@ -18376,9 +18811,9 @@ function c_(n) {
     return t.ring;
   });
 }
-function h_(n) {
+function C_(n) {
   const e = n.map((r) => ({ lrCoordinates: r, grouped: !1 })), t = [];
-  for (; !f_(e); )
+  for (; !S_(e); )
     for (let r = 0; r < e.length; r++)
       if (!e[r].grouped) {
         const i = [];
@@ -18387,9 +18822,9 @@ function h_(n) {
         e: for (let l = r + 1; l < e.length; l++)
           if (!e[l].grouped) {
             const u = pe([e[l].lrCoordinates]);
-            if (Nc(u, a)) {
+            if (Oc(u, a)) {
               for (let f = 1; f < i.length; f++)
-                if (Nc(u, pe([i[f]])))
+                if (Oc(u, pe([i[f]])))
                   continue e;
               i.push(e[l].lrCoordinates), e[l].grouped = !0;
             }
@@ -18398,38 +18833,38 @@ function h_(n) {
       }
   return t;
 }
-function Nc(n, e) {
-  const t = to(n);
+function Oc(n, e) {
+  const t = ro(n);
   for (let r = 0; r < t.features.length; r++)
     if (!xe(t.features[r], e))
       return !1;
   return !0;
 }
-function f_(n) {
+function S_(n) {
   for (let e = 0; e < n.length; e++)
     if (n[e].grouped === !1)
       return !1;
   return !0;
 }
-function cs(n, e, t) {
+function fs(n, e, t) {
   let r = -1;
   for (let i = 0; i < n.length; i++)
     e(n[i]) && (r === -1 || t(n[r], n[i]) > 0) && (r = i);
   return r;
 }
-var g_ = Object.defineProperty, Tc = Object.getOwnPropertySymbols, d_ = Object.prototype.hasOwnProperty, m_ = Object.prototype.propertyIsEnumerable, Ac = (n, e, t) => e in n ? g_(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t, Rc = (n, e) => {
+var I_ = Object.defineProperty, Dc = Object.getOwnPropertySymbols, k_ = Object.prototype.hasOwnProperty, M_ = Object.prototype.propertyIsEnumerable, Fc = (n, e, t) => e in n ? I_(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t, Bc = (n, e) => {
   for (var t in e || (e = {}))
-    d_.call(e, t) && Ac(n, t, e[t]);
-  if (Tc)
-    for (var t of Tc(e))
-      m_.call(e, t) && Ac(n, t, e[t]);
+    k_.call(e, t) && Fc(n, t, e[t]);
+  if (Dc)
+    for (var t of Dc(e))
+      M_.call(e, t) && Fc(n, t, e[t]);
   return n;
 };
-function v_(n, e = {}) {
+function L_(n, e = {}) {
   if (!Oe(e)) throw new Error("options is invalid");
   const { zProperty: t = "elevation", flip: r = !1, flags: i = !1 } = e;
-  Cn(n, "Point", "input must contain Points");
-  for (var a = p_(n, r), l = [], u = 0; u < a.length; u++) {
+  Sn(n, "Point", "input must contain Points");
+  for (var a = N_(n, r), l = [], u = 0; u < a.length; u++) {
     for (var f = a[u], g = [], d = 0; d < f.length; d++) {
       var m = f[d];
       m.properties == null && (m.properties = {}), m.properties[t] ? g.push(m.properties[t]) : g.push(0), i === !0 && (m.properties.matrixPosition = [u, d]);
@@ -18438,7 +18873,7 @@ function v_(n, e = {}) {
   }
   return l;
 }
-function p_(n, e) {
+function N_(n, e) {
   var t = {};
   Le(n, (i) => {
     var a = me(i)[1];
@@ -18451,41 +18886,41 @@ function p_(n, e) {
     e ? (i, a) => me(i[0])[1] - me(a[0])[1] : (i, a) => me(a[0])[1] - me(i[0])[1]
   ), r;
 }
-function y_(n, e, t) {
+function P_(n, e, t) {
   if (t = t || {}, !Oe(t)) throw new Error("options is invalid");
   const r = t.zProperty || "elevation", i = t.commonProperties || {}, a = t.breaksProperties || [];
-  if (Cn(n, "Point", "Input must contain Points"), !e) throw new Error("breaks is required");
+  if (Sn(n, "Point", "Input must contain Points"), !e) throw new Error("breaks is required");
   if (!Array.isArray(e)) throw new Error("breaks must be an Array");
   if (!Oe(i))
     throw new Error("commonProperties must be an Object");
   if (!Array.isArray(a))
     throw new Error("breaksProperties must be an Array");
-  const l = v_(n, { zProperty: r, flip: !0 }), u = l[0].length;
+  const l = L_(n, { zProperty: r, flip: !0 }), u = l[0].length;
   if (l.length < 2 || u < 2)
     throw new Error("Matrix of points must be at least 2x2");
   for (let d = 1; d < l.length; d++)
     if (l[d].length !== u)
       throw new Error("Matrix of points is not uniform in the x dimension");
-  const f = __(
+  const f = T_(
     l,
     e,
     r,
     i,
     a
-  ), g = x_(f, l, n);
+  ), g = R_(f, l, n);
   return ce(g);
 }
-function __(n, e, t, r, i) {
+function T_(n, e, t, r, i) {
   const a = [];
   for (let l = 0; l < e.length; l++) {
-    const u = +e[l], f = Rc(Rc({}, r), i[l]);
+    const u = +e[l], f = Bc(Bc({}, r), i[l]);
     f[t] = u;
-    const g = An(w_(n, u), f);
+    const g = Rn(A_(n, u), f);
     a.push(g);
   }
   return a;
 }
-function w_(n, e) {
+function A_(n, e) {
   const t = [], r = n.length, i = n[0].length;
   for (let u = 0; u < r - 1; u++)
     for (let f = 0; f < i - 1; f++) {
@@ -18641,15 +19076,15 @@ function w_(n, e) {
     return g > 1 ? 1 : g < 0 ? 0 : g;
   }
 }
-function x_(n, e, t) {
-  const r = qe(t), i = r[2] - r[0], a = r[3] - r[1], l = r[0], u = r[1], f = e[0].length - 1, g = e.length - 1, d = i / f, m = a / g, p = (y) => {
+function R_(n, e, t) {
+  const r = He(t), i = r[2] - r[0], a = r[3] - r[1], l = r[0], u = r[1], f = e[0].length - 1, g = e.length - 1, d = i / f, m = a / g, p = (y) => {
     y[0] = y[0] * d + l, y[1] = y[1] * m + u;
   };
   return n.forEach((y) => {
-    Ve(y, p);
+    We(y, p);
   }), n;
 }
-function E_(n) {
+function O_(n) {
   let e, t;
   const r = {
     type: "FeatureCollection",
@@ -18675,7 +19110,7 @@ function E_(n) {
           l === 0 && u === i.length - 2 && // lineString is closed
           i[l][0] === i[i.length - 1][0] && i[l][1] === i[i.length - 1][1]))
             continue;
-          const f = b_(
+          const f = D_(
             i[l][0],
             i[l][1],
             i[l + 1][0],
@@ -18690,7 +19125,7 @@ function E_(n) {
     });
   }), r;
 }
-function b_(n, e, t, r, i, a, l, u) {
+function D_(n, e, t, r, i, a, l, u) {
   let f, g, d, m, p;
   const y = {
     x: null,
@@ -18700,37 +19135,37 @@ function b_(n, e, t, r, i, a, l, u) {
   };
   return f = (u - a) * (t - n) - (l - i) * (r - e), f === 0 ? y.x !== null && y.y !== null ? y : !1 : (g = e - a, d = n - i, m = (l - i) * g - (u - a) * d, p = (t - n) * g - (r - e) * d, g = m / f, d = p / f, y.x = n + g * (t - n), y.y = e + g * (r - e), g >= 0 && g <= 1 && (y.onLine1 = !0), d >= 0 && d <= 1 && (y.onLine2 = !0), y.onLine1 && y.onLine2 ? [y.x, y.y] : !1);
 }
-function wl(n, e = {}) {
-  return Ws(
+function El(n, e = {}) {
+  return Zs(
     n,
     (t, r) => {
       const i = r.geometry.coordinates;
-      return t + Ge(i[0], i[1], e);
+      return t + qe(i[0], i[1], e);
     },
     0
   );
 }
-function Bg(n, e, t, r, i = {}) {
-  const a = i.steps || 64, l = Oc(t), u = Oc(r), f = !Array.isArray(n) && n.type === "Feature" ? n.properties : {};
+function qg(n, e, t, r, i = {}) {
+  const a = i.steps || 64, l = zc(t), u = zc(r), f = !Array.isArray(n) && n.type === "Feature" ? n.properties : {};
   if (l === u)
-    return ke(
-      cl(n, e, i).geometry.coordinates[0],
+    return Ie(
+      fl(n, e, i).geometry.coordinates[0],
       f
     );
   const g = l, d = l < u ? u : u + 360, m = [], p = (d - g) / a;
   for (let y = 0; y <= a; y++) {
     const w = y === a ? d : g + y * p;
     m.push(
-      un(n, e, w, i).geometry.coordinates
+      cn(n, e, w, i).geometry.coordinates
     );
   }
-  return ke(m, f);
+  return Ie(m, f);
 }
-function Oc(n) {
+function zc(n) {
   let e = n % 360;
   return e < 0 && (e += 360), e;
 }
-function zg(n, e, t, r = {}) {
+function Hg(n, e, t, r = {}) {
   if (!Oe(r)) throw new Error("options is invalid");
   const { units: i = "kilometers" } = r;
   var a, l = [];
@@ -18743,29 +19178,29 @@ function zg(n, e, t, r = {}) {
     if (f > e && l.length === 0) {
       let w = e - f;
       if (!w)
-        return l.push(a[y]), ke(l);
-      d = En(a[y], a[y - 1]) - 180, m = un(a[y], w, d, { units: i }), l.push(m.geometry.coordinates);
+        return l.push(a[y]), Ie(l);
+      d = bn(a[y], a[y - 1]) - 180, m = cn(a[y], w, d, { units: i }), l.push(m.geometry.coordinates);
     }
     if (f >= t)
-      return g = t - f, g ? (d = En(a[y], a[y - 1]) - 180, m = un(a[y], g, d, { units: i }), l.push(m.geometry.coordinates), ke(l)) : (l.push(a[y]), ke(l));
+      return g = t - f, g ? (d = bn(a[y], a[y - 1]) - 180, m = cn(a[y], g, d, { units: i }), l.push(m.geometry.coordinates), Ie(l)) : (l.push(a[y]), Ie(l));
     if (f >= e && l.push(a[y]), y === a.length - 1)
-      return ke(l);
-    f += Ge(a[y], a[y + 1], { units: i });
+      return Ie(l);
+    f += qe(a[y], a[y + 1], { units: i });
   }
   if (f < e && a.length === u)
     throw new Error("Start position is beyond line");
   var p = a[a.length - 1];
-  return ke([p, p]);
+  return Ie([p, p]);
 }
-function C_(n, e, t = {}) {
+function F_(n, e, t = {}) {
   if (!Oe(t)) throw new Error("options is invalid");
   const { units: r = "kilometers", reverse: i = !1 } = t;
   if (!n) throw new Error("geojson is required");
   if (e <= 0)
     throw new Error("segmentLength must be greater than 0");
   const a = [];
-  return ot(n, (l) => {
-    i && (l.geometry.coordinates = l.geometry.coordinates.reverse()), S_(
+  return at(n, (l) => {
+    i && (l.geometry.coordinates = l.geometry.coordinates.reverse()), B_(
       l,
       e,
       r,
@@ -18775,14 +19210,14 @@ function C_(n, e, t = {}) {
     );
   }), ce(a);
 }
-function S_(n, e, t, r) {
-  var i = wl(n, { units: t });
+function B_(n, e, t, r) {
+  var i = El(n, { units: t });
   if (i <= e)
     return r(n);
   var a = i / e;
   Number.isInteger(a) || (a = Math.floor(a) + 1);
   for (var l = 0; l < a; l++) {
-    var u = zg(
+    var u = Hg(
       n,
       e * l,
       e * (l + 1),
@@ -18791,75 +19226,75 @@ function S_(n, e, t, r) {
     r(u);
   }
 }
-function zs(n) {
+function qs(n) {
   var e = n[0], t = n[1];
   return [t[0] - e[0], t[1] - e[1]];
 }
-function Pa(n, e) {
+function Ta(n, e) {
   return n[0] * e[1] - e[0] * n[1];
 }
-function k_(n, e) {
+function z_(n, e) {
   return [n[0] + e[0], n[1] + e[1]];
 }
-function I_(n, e) {
+function G_(n, e) {
   return [n[0] - e[0], n[1] - e[1]];
 }
-function M_(n, e) {
+function q_(n, e) {
   return [n * e[0], n * e[1]];
 }
-function L_(n, e) {
-  var t = n[0], r = zs(n), i = e[0], a = zs(e), l = Pa(r, a), u = I_(i, t), f = Pa(u, a), g = f / l, d = k_(t, M_(g, r));
+function H_(n, e) {
+  var t = n[0], r = qs(n), i = e[0], a = qs(e), l = Ta(r, a), u = G_(i, t), f = Ta(u, a), g = f / l, d = z_(t, q_(g, r));
   return d;
 }
-function P_(n, e) {
-  var t = zs(n), r = zs(e);
-  return Pa(t, r) === 0;
+function U_(n, e) {
+  var t = qs(n), r = qs(e);
+  return Ta(t, r) === 0;
 }
-function N_(n, e) {
-  return P_(n, e) ? !1 : L_(n, e);
+function Y_(n, e) {
+  return U_(n, e) ? !1 : H_(n, e);
 }
-function T_(n, e, t = {}) {
+function X_(n, e, t = {}) {
   if (t = t || {}, !Oe(t)) throw new Error("options is invalid");
   const { units: r = "kilometers" } = t;
   if (!n) throw new Error("geojson is required");
   if (e == null || isNaN(e))
     throw new Error("distance is required");
-  var i = Ct(n), a = n.type === "Feature" ? n.properties : {};
+  var i = St(n), a = n.type === "Feature" ? n.properties : {};
   switch (i) {
     case "LineString":
-      return Dc(n, e, r);
+      return Gc(n, e, r);
     case "MultiLineString":
       var l = [];
-      return ot(n, function(u) {
+      return at(n, function(u) {
         l.push(
-          Dc(u, e, r).geometry.coordinates
+          Gc(u, e, r).geometry.coordinates
         );
-      }), An(l, a);
+      }), Rn(l, a);
     default:
       throw new Error("geometry " + i + " is not supported");
   }
 }
-function Dc(n, e, t) {
-  var r = [], i = Ni(e, t), a = me(n), l = [];
+function Gc(n, e, t) {
+  var r = [], i = Ai(e, t), a = me(n), l = [];
   return a.forEach(function(u, f) {
     if (f !== a.length - 1) {
-      var g = A_(
+      var g = V_(
         u,
         a[f + 1],
         i
       );
       if (r.push(g), f > 0) {
-        var d = r[f - 1], m = N_(g, d);
+        var d = r[f - 1], m = Y_(g, d);
         m !== !1 && (d[1] = m, g[0] = m), l.push(d[0]), f === a.length - 2 && (l.push(g[0]), l.push(g[1]));
       }
       a.length === 2 && (l.push(g[0]), l.push(g[1]));
     }
-  }), ke(
+  }), Ie(
     l,
     n.type === "Feature" ? n.properties : {}
   );
 }
-function A_(n, e, t) {
+function V_(n, e, t) {
   var r = Math.sqrt(
     (n[0] - e[0]) * (n[0] - e[0]) + (n[1] - e[1]) * (n[1] - e[1])
   ), i = n[0] + t * (e[1] - n[1]) / r, a = e[0] + t * (e[1] - n[1]) / r, l = n[1] + t * (n[0] - e[0]) / r, u = e[1] + t * (n[0] - e[0]) / r;
@@ -18868,47 +19303,47 @@ function A_(n, e, t) {
     [a, u]
   ];
 }
-function R_(n, e, t) {
+function W_(n, e, t) {
   const r = me(t);
-  if (Ct(t) !== "LineString")
+  if (St(t) !== "LineString")
     throw new Error("line must be a LineString");
-  const i = _n(t, n), a = _n(t, e);
-  Fc(t, i), Fc(t, a);
+  const i = wn(t, n), a = wn(t, e);
+  qc(t, i), qc(t, a);
   const l = i.properties.segmentIndex <= a.properties.segmentIndex ? [i, a] : [a, i], u = [l[0].geometry.coordinates];
   for (let f = l[0].properties.segmentIndex + 1; f < l[1].properties.segmentIndex + 1; f++)
     u.push(r[f]);
-  return u.push(l[1].geometry.coordinates), ke(u, t.type === "Feature" ? t.properties : {});
+  return u.push(l[1].geometry.coordinates), Ie(u, t.type === "Feature" ? t.properties : {});
 }
-function Fc(n, e) {
+function qc(n, e) {
   let t = n.type === "Feature" ? n.geometry : n;
   e.properties.segmentIndex >= t.coordinates.length - 1 && (e.properties.segmentIndex = t.coordinates.length - 2);
 }
-function O_(n, e = {}) {
+function $_(n, e = {}) {
   var t, r, i, a = e.properties, l = (t = e.autoComplete) != null ? t : !0, u = (r = e.orderCoords) != null ? r : !0, f = (i = e.mutate) != null ? i : !1;
-  switch (f || (n = it(n)), n.type) {
+  switch (f || (n = st(n)), n.type) {
     case "FeatureCollection":
       var g = [];
       return n.features.forEach(function(d) {
         g.push(
-          me(Bc(d, {}, l, u))
+          me(Hc(d, {}, l, u))
         );
-      }), bt(g, a);
+      }), Ct(g, a);
     default:
-      return Bc(n, a, l, u);
+      return Hc(n, a, l, u);
   }
 }
-function Bc(n, e, t, r) {
+function Hc(n, e, t, r) {
   e = e || (n.type === "Feature" ? n.properties : {});
-  var i = He(n), a = i.coordinates, l = i.type;
+  var i = Ye(n), a = i.coordinates, l = i.type;
   if (!a.length) throw new Error("line must contain coordinates");
   switch (l) {
     case "LineString":
-      return t && (a = zc(a)), pe([a], e);
+      return t && (a = Uc(a)), pe([a], e);
     case "MultiLineString":
       var u = [], f = 0;
       return a.forEach(function(g) {
-        if (t && (g = zc(g)), r) {
-          var d = D_(qe(ke(g)));
+        if (t && (g = Uc(g)), r) {
+          var d = Z_(He(Ie(g)));
           d > f ? (u.unshift(g), f = d) : u.push(g);
         } else
           u.push(g);
@@ -18917,45 +19352,45 @@ function Bc(n, e, t, r) {
       throw new Error("geometry type " + l + " is not supported");
   }
 }
-function zc(n) {
+function Uc(n) {
   var e = n[0], t = e[0], r = e[1], i = n[n.length - 1], a = i[0], l = i[1];
   return (t !== a || r !== l) && n.push(e), n;
 }
-function D_(n) {
+function Z_(n) {
   var e = n[0], t = n[1], r = n[2], i = n[3];
   return Math.abs(e - r) * Math.abs(t - i);
 }
-function F_(n, e, t) {
+function K_(n, e, t) {
   var r;
   const i = (r = t == null ? void 0 : t.mutate) != null ? r : !1;
   let a = e;
-  e && i === !1 && (a = it(e));
-  const l = z_(a);
+  e && i === !1 && (a = st(e));
+  const l = Q_(a);
   let u = null;
-  return n.type === "FeatureCollection" ? u = B_(n) : n.type === "Feature" ? u = Na(
-    Tn(n.geometry.coordinates)
-  ) : u = Na(
-    Tn(n.coordinates)
+  return n.type === "FeatureCollection" ? u = J_(n) : n.type === "Feature" ? u = Aa(
+    An(n.geometry.coordinates)
+  ) : u = Aa(
+    An(n.coordinates)
   ), u.geometry.coordinates.forEach(function(f) {
     l.geometry.coordinates.push(f[0]);
   }), l;
 }
-function B_(n) {
-  const e = n.features.length === 2 ? Tn(
+function J_(n) {
+  const e = n.features.length === 2 ? An(
     n.features[0].geometry.coordinates,
     n.features[1].geometry.coordinates
-  ) : Tn.apply(
-    G1,
+  ) : An.apply(
+    j1,
     n.features.map(function(t) {
       return t.geometry.coordinates;
     })
   );
-  return Na(e);
+  return Aa(e);
 }
-function Na(n) {
-  return bt(n);
+function Aa(n) {
+  return Ct(n);
 }
-function z_(n) {
+function Q_(n) {
   let t = [
     [
       [180, 90],
@@ -18967,13 +19402,13 @@ function z_(n) {
   ];
   return n && (n.type === "Feature" ? t = n.geometry.coordinates : t = n.coordinates), pe(t);
 }
-function G_(n, e) {
-  const t = Ge(n, e), r = En(n, e);
-  return un(n, t / 2, r);
+function j_(n, e) {
+  const t = qe(n, e), r = bn(n, e);
+  return cn(n, t / 2, r);
 }
-function q_(n, e) {
+function ew(n, e) {
   var t, r;
-  const i = e.inputField, a = e.threshold || 1e5, l = e.p || 2, u = (t = e.binary) != null ? t : !1, f = e.alpha || -1, g = (r = e.standardization) != null ? r : !0, d = Pg(n, {
+  const i = e.inputField, a = e.threshold || 1e5, l = e.p || 2, u = (t = e.binary) != null ? t : !1, f = e.alpha || -1, g = (r = e.standardization) != null ? r : !0, d = Ag(n, {
     alpha: f,
     binary: u,
     p: l,
@@ -18984,64 +19419,64 @@ function q_(n, e) {
     const D = T.properties || {};
     m.push(D[i]);
   });
-  const p = Gg(m), y = U_(m);
-  let w = 0, b = 0, M = 0, k = 0;
+  const p = Ug(m), y = tw(m);
+  let w = 0, b = 0, k = 0, I = 0;
   const S = d.length;
   for (let T = 0; T < S; T++) {
     let D = 0;
     for (let z = 0; z < S; z++)
-      w += d[T][z] * (m[T] - p) * (m[z] - p), b += d[T][z], M += Math.pow(d[T][z] + d[z][T], 2), D += d[T][z] + d[z][T];
-    k += Math.pow(D, 2);
+      w += d[T][z] * (m[T] - p) * (m[z] - p), b += d[T][z], k += Math.pow(d[T][z] + d[z][T], 2), D += d[T][z] + d[z][T];
+    I += Math.pow(D, 2);
   }
-  M = 0.5 * M;
-  const N = w / b / y, P = -1 / (S - 1), A = S * S * M - S * k + 3 * (b * b), B = (S - 1) * (S + 1) * (b * b), F = A / B - P * P, C = Math.sqrt(F), L = (N - P) / C;
+  k = 0.5 * k;
+  const P = w / b / y, N = -1 / (S - 1), A = S * S * k - S * I + 3 * (b * b), B = (S - 1) * (S + 1) * (b * b), F = A / B - N * N, C = Math.sqrt(F), L = (P - N) / C;
   return {
-    expectedMoranIndex: P,
-    moranIndex: N,
+    expectedMoranIndex: N,
+    moranIndex: P,
     stdNorm: C,
     zNorm: L
   };
 }
-function Gg(n) {
+function Ug(n) {
   let e = 0;
   for (const t of n)
     e += t;
   return e / n.length;
 }
-function U_(n) {
-  const e = Gg(n);
+function tw(n) {
+  const e = Ug(n);
   let t = 0;
   for (const r of n)
     t += Math.pow(r - e, 2);
   return t / n.length;
 }
-var H_ = Object.defineProperty, Y_ = Object.defineProperties, X_ = Object.getOwnPropertyDescriptors, Gc = Object.getOwnPropertySymbols, V_ = Object.prototype.hasOwnProperty, W_ = Object.prototype.propertyIsEnumerable, qc = (n, e, t) => e in n ? H_(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t, Uc = (n, e) => {
+var nw = Object.defineProperty, rw = Object.defineProperties, iw = Object.getOwnPropertyDescriptors, Yc = Object.getOwnPropertySymbols, sw = Object.prototype.hasOwnProperty, ow = Object.prototype.propertyIsEnumerable, Xc = (n, e, t) => e in n ? nw(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t, Vc = (n, e) => {
   for (var t in e || (e = {}))
-    V_.call(e, t) && qc(n, t, e[t]);
-  if (Gc)
-    for (var t of Gc(e))
-      W_.call(e, t) && qc(n, t, e[t]);
+    sw.call(e, t) && Xc(n, t, e[t]);
+  if (Yc)
+    for (var t of Yc(e))
+      ow.call(e, t) && Xc(n, t, e[t]);
   return n;
-}, Hc = (n, e) => Y_(n, X_(e));
-function no(n, e, t = {}) {
+}, Wc = (n, e) => rw(n, iw(e));
+function io(n, e, t = {}) {
   if (!n) throw new Error("targetPoint is required");
   if (!e) throw new Error("points is required");
   let r = 1 / 0, i = 0;
   Le(e, (l, u) => {
-    const f = Ge(n, l, t);
+    const f = qe(n, l, t);
     f < r && (i = u, r = f);
   });
-  const a = it(e.features[i]);
-  return Hc(Uc({}, a), {
-    properties: Hc(Uc({}, a.properties), {
+  const a = st(e.features[i]);
+  return Wc(Vc({}, a), {
+    properties: Wc(Vc({}, a.properties), {
       featureIndex: i,
       distanceToPoint: r
     })
   });
 }
-function $_(n, e) {
+function aw(n, e) {
   e = e || {};
-  const t = e.studyArea || Ai(qe(n)), r = e.properties || {}, i = e.units || "kilometers", a = [];
+  const t = e.studyArea || Oi(He(n)), r = e.properties || {}, i = e.units || "kilometers", a = [];
   Le(n, (m) => {
     a.push(Ut(m));
   });
@@ -19049,12 +19484,12 @@ function $_(n, e) {
     const y = ce(
       a.filter((w, b) => b !== p)
     );
-    return Ge(
+    return qe(
       m,
-      no(m, y).geometry.coordinates,
+      io(m, y).geometry.coordinates,
       { units: i }
     );
-  }).reduce((m, p) => m + p, 0) / l, f = l / Va(Ti(t), "meters", i), g = 1 / (2 * Math.sqrt(f)), d = 0.26136 / Math.sqrt(l * f);
+  }).reduce((m, p) => m + p, 0) / l, f = l / $a(Ri(t), "meters", i), g = 1 / (2 * Math.sqrt(f)), d = 0.26136 / Math.sqrt(l * f);
   return r.nearestNeighborAnalysis = {
     units: i,
     arealUnits: i + "²",
@@ -19065,67 +19500,67 @@ function $_(n, e) {
     zScore: (u - g) / d
   }, t.properties = r, t;
 }
-function xl(n, e, t = {}) {
+function bl(n, e, t = {}) {
   var r, i;
   const a = (r = t.method) != null ? r : "geodesic", l = (i = t.units) != null ? i : "kilometers";
   if (!n)
     throw new Error("pt is required");
-  if (Array.isArray(n) ? n = de(n) : n.type === "Point" ? n = Qe(n) : yi(n, "Point", "point"), !e)
+  if (Array.isArray(n) ? n = de(n) : n.type === "Point" ? n = je(n) : wi(n, "Point", "point"), !e)
     throw new Error("line is required");
-  Array.isArray(e) ? e = ke(e) : e.type === "LineString" ? e = Qe(e) : yi(e, "LineString", "line");
+  Array.isArray(e) ? e = Ie(e) : e.type === "LineString" ? e = je(e) : wi(e, "LineString", "line");
   let u = 1 / 0;
   const f = n.geometry.coordinates;
-  return on(e, (g) => {
+  return an(e, (g) => {
     if (g) {
-      const d = g.geometry.coordinates[0], m = g.geometry.coordinates[1], p = Z_(f, d, m, { method: a });
+      const d = g.geometry.coordinates[0], m = g.geometry.coordinates[1], p = lw(f, d, m, { method: a });
       p < u && (u = p);
     }
-  }), Kn(u, "degrees", l);
+  }), Jn(u, "degrees", l);
 }
-function Z_(n, e, t, r) {
+function lw(n, e, t, r) {
   if (r.method === "geodesic")
-    return _n(ke([e, t]).geometry, n, {
+    return wn(Ie([e, t]).geometry, n, {
       units: "degrees"
     }).properties.pointDistance;
-  const i = [t[0] - e[0], t[1] - e[1]], a = [n[0] - e[0], n[1] - e[1]], l = Yc(a, i);
+  const i = [t[0] - e[0], t[1] - e[1]], a = [n[0] - e[0], n[1] - e[1]], l = $c(a, i);
   if (l <= 0)
-    return br(n, e, { units: "degrees" });
-  const u = Yc(i, i);
+    return Cr(n, e, { units: "degrees" });
+  const u = $c(i, i);
   if (u <= l)
-    return br(n, t, { units: "degrees" });
+    return Cr(n, t, { units: "degrees" });
   const f = l / u, g = [e[0] + f * i[0], e[1] + f * i[1]];
-  return br(n, g, { units: "degrees" });
+  return Cr(n, g, { units: "degrees" });
 }
-function Yc(n, e) {
+function $c(n, e) {
   return n[0] * e[0] + n[1] * e[1];
 }
-var K_ = Object.defineProperty, Xc = Object.getOwnPropertySymbols, J_ = Object.prototype.hasOwnProperty, Q_ = Object.prototype.propertyIsEnumerable, Vc = (n, e, t) => e in n ? K_(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t, ea = (n, e) => {
+var uw = Object.defineProperty, Zc = Object.getOwnPropertySymbols, cw = Object.prototype.hasOwnProperty, hw = Object.prototype.propertyIsEnumerable, Kc = (n, e, t) => e in n ? uw(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t, na = (n, e) => {
   for (var t in e || (e = {}))
-    J_.call(e, t) && Vc(n, t, e[t]);
-  if (Xc)
-    for (var t of Xc(e))
-      Q_.call(e, t) && Vc(n, t, e[t]);
+    cw.call(e, t) && Kc(n, t, e[t]);
+  if (Zc)
+    for (var t of Zc(e))
+      hw.call(e, t) && Kc(n, t, e[t]);
   return n;
 };
-function j_(n, e, t = {}) {
-  const r = t.units, i = t.properties || {}, a = ew(n);
+function fw(n, e, t = {}) {
+  const r = t.units, i = t.properties || {}, a = gw(n);
   if (!a.features.length)
     throw new Error("points must contain features");
   if (!e)
     throw new Error("line is required");
-  if (Ct(e) !== "LineString")
+  if (St(e) !== "LineString")
     throw new Error("line must be a LineString");
   let l = 1 / 0, u = null;
   return Le(a, (f) => {
-    const g = xl(f, e, { units: r });
+    const g = bl(f, e, { units: r });
     g < l && (l = g, u = f);
-  }), u && (u.properties = ea(ea(ea({}, { dist: l }), u.properties), i)), u;
+  }), u && (u.properties = na(na(na({}, { dist: l }), u.properties), i)), u;
 }
-function ew(n) {
+function gw(n) {
   const e = [];
   switch (n.geometry ? n.geometry.type : n.type) {
     case "GeometryCollection":
-      return ut(n, (r) => {
+      return ct(n, (r) => {
         r.type === "Point" && e.push({ type: "Feature", properties: {}, geometry: r });
       }), { type: "FeatureCollection", features: e };
     case "FeatureCollection":
@@ -19134,15 +19569,15 @@ function ew(n) {
       throw new Error("points must be a Point Collection");
   }
 }
-function tw(n, e) {
-  const t = Me(n), a = He(e).coordinates[0];
+function dw(n, e) {
+  const t = Me(n), a = Ye(e).coordinates[0];
   if (a.length < 4)
     throw new Error("OuterRing of a Polygon must have 4 or more Positions.");
-  const l = e.type === "Feature" && e.properties || {}, u = l.a, f = l.b, g = l.c, d = t[0], m = t[1], p = a[0][0], y = a[0][1], w = u !== void 0 ? u : a[0][2], b = a[1][0], M = a[1][1], k = f !== void 0 ? f : a[1][2], S = a[2][0], N = a[2][1], P = g !== void 0 ? g : a[2][2];
-  return (P * (d - p) * (m - M) + w * (d - b) * (m - N) + k * (d - S) * (m - y) - k * (d - p) * (m - N) - P * (d - b) * (m - y) - w * (d - S) * (m - M)) / ((d - p) * (m - M) + (d - b) * (m - N) + (d - S) * (m - y) - (d - p) * (m - N) - (d - b) * (m - y) - (d - S) * (m - M));
+  const l = e.type === "Feature" && e.properties || {}, u = l.a, f = l.b, g = l.c, d = t[0], m = t[1], p = a[0][0], y = a[0][1], w = u !== void 0 ? u : a[0][2], b = a[1][0], k = a[1][1], I = f !== void 0 ? f : a[1][2], S = a[2][0], P = a[2][1], N = g !== void 0 ? g : a[2][2];
+  return (N * (d - p) * (m - k) + w * (d - b) * (m - P) + I * (d - S) * (m - y) - I * (d - p) * (m - P) - N * (d - b) * (m - y) - w * (d - S) * (m - k)) / ((d - p) * (m - k) + (d - b) * (m - P) + (d - S) * (m - y) - (d - p) * (m - P) - (d - b) * (m - y) - (d - S) * (m - k));
 }
-function nw(n) {
-  const e = rw(n), t = Ks(e);
+function mw(n) {
+  const e = vw(n), t = Qs(e);
   let r = !1, i = 0;
   for (; !r && i < e.features.length; ) {
     const a = e.features[i].geometry;
@@ -19156,7 +19591,7 @@ function nw(n) {
     } else if (a.type === "LineString") {
       let y = 0;
       for (; !p && y < a.coordinates.length - 1; )
-        l = t.geometry.coordinates[0], u = t.geometry.coordinates[1], f = a.coordinates[y][0], g = a.coordinates[y][1], d = a.coordinates[y + 1][0], m = a.coordinates[y + 1][1], Wc(l, u, f, g, d, m) && (p = !0, r = !0), y++;
+        l = t.geometry.coordinates[0], u = t.geometry.coordinates[1], f = a.coordinates[y][0], g = a.coordinates[y][1], d = a.coordinates[y + 1][0], m = a.coordinates[y + 1][1], Jc(l, u, f, g, d, m) && (p = !0, r = !0), y++;
     } else if (a.type === "MultiLineString") {
       let y = 0;
       for (; y < a.coordinates.length; ) {
@@ -19164,7 +19599,7 @@ function nw(n) {
         let w = 0;
         const b = a.coordinates[y];
         for (; !p && w < b.length - 1; )
-          l = t.geometry.coordinates[0], u = t.geometry.coordinates[1], f = b[w][0], g = b[w][1], d = b[w + 1][0], m = b[w + 1][1], Wc(l, u, f, g, d, m) && (p = !0, r = !0), w++;
+          l = t.geometry.coordinates[0], u = t.geometry.coordinates[1], f = b[w][0], g = b[w][1], d = b[w + 1][0], m = b[w + 1][1], Jc(l, u, f, g, d, m) && (p = !0, r = !0), w++;
         y++;
       }
     } else (a.type === "Polygon" || a.type === "MultiPolygon") && xe(t, a) && (r = !0);
@@ -19176,92 +19611,92 @@ function nw(n) {
     const a = ce([]);
     for (let l = 0; l < e.features.length; l++)
       a.features = a.features.concat(
-        to(e.features[l]).features
+        ro(e.features[l]).features
       );
-    return de(no(t, a).geometry.coordinates);
+    return de(io(t, a).geometry.coordinates);
   }
 }
-function rw(n) {
-  return n.type !== "FeatureCollection" ? n.type !== "Feature" ? ce([Qe(n)]) : ce([n]) : n;
+function vw(n) {
+  return n.type !== "FeatureCollection" ? n.type !== "Feature" ? ce([je(n)]) : ce([n]) : n;
 }
-function Wc(n, e, t, r, i, a) {
+function Jc(n, e, t, r, i, a) {
   const l = Math.sqrt((i - t) * (i - t) + (a - r) * (a - r)), u = Math.sqrt((n - t) * (n - t) + (e - r) * (e - r)), f = Math.sqrt((i - n) * (i - n) + (a - e) * (a - e));
   return l === u + f;
 }
-function qg(n, e) {
+function Yg(n, e) {
   const t = [];
   return Le(n, function(r) {
     let i = !1;
     if (r.geometry.type === "Point")
-      ut(e, function(l) {
+      ct(e, function(l) {
         xe(r, l) && (i = !0);
       }), i && t.push(r);
     else if (r.geometry.type === "MultiPoint") {
       var a = [];
-      ut(e, function(l) {
-        Ve(r, function(u) {
+      ct(e, function(l) {
+        We(r, function(u) {
           xe(u, l) && (i = !0, a.push(u));
         });
       }), i && t.push(
-        Li(a, r.properties)
+        Pi(a, r.properties)
       );
     } else
       throw new Error("Input geometry must be a Point or MultiPoint");
   }), ce(t);
 }
-function Ta(n, e, t = {}) {
+function Ra(n, e, t = {}) {
   var r, i;
   const a = (r = t.method) != null ? r : "geodesic", l = (i = t.units) != null ? i : "kilometers";
   if (!n) throw new Error("point is required");
   if (!e)
     throw new Error("polygon or multi-polygon is required");
-  const u = He(e);
+  const u = Ye(e);
   if (u.type === "MultiPolygon") {
     const d = u.coordinates.map(
-      (m) => Ta(n, pe(m), { method: a, units: l })
+      (m) => Ra(n, pe(m), { method: a, units: l })
     );
     return Math.min(...d.map(Math.abs)) * (xe(n, e) ? -1 : 1);
   }
   if (u.coordinates.length > 1) {
     const [d, ...m] = u.coordinates.map(
-      (y) => Ta(n, pe([y]), { method: a, units: l })
+      (y) => Ra(n, pe([y]), { method: a, units: l })
     );
     if (d >= 0) return d;
     const p = Math.min(...m);
     return p < 0 ? Math.abs(p) : Math.max(p * -1, d);
   }
-  const f = Lr(u);
+  const f = Nr(u);
   let g = 1 / 0;
-  return ot(f, (d) => {
+  return at(f, (d) => {
     g = Math.min(
       g,
-      xl(n, d, {
+      bl(n, d, {
         method: a,
         units: l
       })
     );
   }), xe(n, u) ? -g : g;
 }
-function iw(n) {
+function pw(n) {
   return (n > 0) - (n < 0) || +n;
 }
-function El(n, e, t) {
+function Cl(n, e, t) {
   const r = e[0] - n[0], i = e[1] - n[1], a = t[0] - e[0], l = t[1] - e[1];
-  return iw(r * l - a * i);
+  return pw(r * l - a * i);
 }
-function sw(n, e) {
+function yw(n, e) {
   const t = n.geometry.coordinates[0].map((l) => l[0]), r = n.geometry.coordinates[0].map((l) => l[1]), i = e.geometry.coordinates[0].map((l) => l[0]), a = e.geometry.coordinates[0].map((l) => l[1]);
   return Math.max.apply(null, t) === Math.max.apply(null, i) && Math.max.apply(null, r) === Math.max.apply(null, a) && Math.min.apply(null, t) === Math.min.apply(null, i) && Math.min.apply(null, r) === Math.min.apply(null, a);
 }
-function $c(n, e) {
+function Qc(n, e) {
   return e.geometry.coordinates[0].every(
     (t) => xe(de(t), n)
   );
 }
-function ow(n, e) {
+function _w(n, e) {
   return n[0] === e[0] && n[1] === e[1];
 }
-var aw = class {
+var ww = class {
   constructor(e, t) {
     this.id = e, this.coordinates = t, this.innerEdges = [], this.outerEdges = [], this.outerEdgesSorted = !1;
   }
@@ -19295,7 +19730,7 @@ var aw = class {
         return -1;
       if (r.coordinates[0] - this.coordinates[0] === 0 && i.coordinates[0] - this.coordinates[0] === 0)
         return r.coordinates[1] - this.coordinates[1] >= 0 || i.coordinates[1] - this.coordinates[1] >= 0 ? r.coordinates[1] - i.coordinates[1] : i.coordinates[1] - r.coordinates[1];
-      const a = El(
+      const a = Cl(
         this.coordinates,
         r.coordinates,
         i.coordinates
@@ -19323,14 +19758,14 @@ var aw = class {
   addInnerEdge(e) {
     this.innerEdges.push(e);
   }
-}, lw = class Ug {
+}, xw = class Xg {
   /**
    * Creates or get the symetric Edge.
    *
    * @returns {Edge} - Symetric Edge.
    */
   getSymetric() {
-    return this.symetric || (this.symetric = new Ug(this.to, this.from), this.symetric.symetric = this), this.symetric;
+    return this.symetric || (this.symetric = new Xg(this.to, this.from), this.symetric.symetric = this), this.symetric;
   }
   /**
    * @param {Node} from - start node of the Edge
@@ -19365,7 +19800,7 @@ var aw = class {
    * @returns {Feature<LineString>} - LineString representation of the Edge
    */
   toLineString() {
-    return ke([this.from.coordinates, this.to.coordinates]);
+    return Ie([this.from.coordinates, this.to.coordinates]);
   }
   /**
    * Comparator of two edges.
@@ -19378,13 +19813,13 @@ var aw = class {
    *          1 otherwise
    */
   compareTo(e) {
-    return El(
+    return Cl(
       e.from.coordinates,
       e.to.coordinates,
       this.to.coordinates
     );
   }
-}, Hg = class {
+}, Vg = class {
   constructor() {
     this.edges = [], this.polygon = void 0, this.envelope = void 0;
   }
@@ -19468,7 +19903,7 @@ var aw = class {
    * @returns {boolean} - true: if it is a hole
    */
   isHole() {
-    const n = this.edges.reduce((i, a, l) => (a.from.coordinates[1] > this.edges[i].from.coordinates[1] && (i = l), i), 0), e = (n === 0 ? this.length : n) - 1, t = (n + 1) % this.length, r = El(
+    const n = this.edges.reduce((i, a, l) => (a.from.coordinates[1] > this.edges[i].from.coordinates[1] && (i = l), i), 0), e = (n === 0 ? this.length : n) - 1, t = (n + 1) % this.length, r = Cl(
       this.edges[e].from.coordinates,
       this.edges[n].from.coordinates,
       this.edges[t].from.coordinates
@@ -19482,7 +19917,7 @@ var aw = class {
    * @returns {Feature<MultiPoint>} - Multipoint representation of the EdgeRing
    */
   toMultiPoint() {
-    return Li(this.edges.map((n) => n.from.coordinates));
+    return Pi(this.edges.map((n) => n.from.coordinates));
   }
   /**
    * Creates a Polygon representing the EdgeRing.
@@ -19502,7 +19937,7 @@ var aw = class {
    * @returns {Feature<Polygon>} - envelope
    */
   getEnvelope() {
-    return this.envelope ? this.envelope : this.envelope = Ag(this.toPolygon());
+    return this.envelope ? this.envelope : this.envelope = Dg(this.toPolygon());
   }
   /**
    * `geos::operation::polygonize::EdgeRing::findEdgeRingContaining`
@@ -19517,14 +19952,14 @@ var aw = class {
     let r, i;
     return e.forEach((a) => {
       const l = a.getEnvelope();
-      if (i && (r = i.getEnvelope()), !sw(l, t) && $c(l, t)) {
+      if (i && (r = i.getEnvelope()), !yw(l, t) && Qc(l, t)) {
         const u = n.map(
           (g) => g.from.coordinates
         );
         let f;
         for (const g of u)
-          a.some((d) => ow(g, d.from.coordinates)) || (f = g);
-        f && a.inside(de(f)) && (!i || $c(r, l)) && (i = a);
+          a.some((d) => _w(g, d.from.coordinates)) || (f = g);
+        f && a.inside(de(f)) && (!i || Qc(r, l)) && (i = a);
       }
     }), i;
   }
@@ -19538,14 +19973,14 @@ var aw = class {
     return xe(n, this.toPolygon());
   }
 };
-function uw(n) {
+function Ew(n) {
   if (!n) throw new Error("No geojson passed");
   if (n.type !== "FeatureCollection" && n.type !== "GeometryCollection" && n.type !== "MultiLineString" && n.type !== "LineString" && n.type !== "Feature")
     throw new Error(
       `Invalid input type '${n.type}'. Geojson must be FeatureCollection, GeometryCollection, LineString, MultiLineString or Feature`
     );
 }
-var cw = class Yg {
+var bw = class Wg {
   constructor() {
     this.nodes = /* @__PURE__ */ new Map(), this.nodeId = 0, this.edges = /* @__PURE__ */ new Map();
   }
@@ -19558,10 +19993,10 @@ var cw = class Yg {
    * @throws {Error} if geoJson is invalid.
    */
   static fromGeoJson(e) {
-    uw(e);
-    const t = new Yg();
-    return ot(e, (r) => {
-      yi(r, "LineString", "Graph::fromGeoJson"), $a(r, (i, a) => {
+    Ew(e);
+    const t = new Wg();
+    return at(e, (r) => {
+      wi(r, "LineString", "Graph::fromGeoJson"), Ka(r, (i, a) => {
         if (i) {
           const l = t.getNode(i), u = t.getNode(a);
           t.addEdge(l, u);
@@ -19580,7 +20015,7 @@ var cw = class Yg {
     var t;
     let r = (t = this.nodes.get(e[0])) == null ? void 0 : t.get(e[1]);
     if (r == null) {
-      const i = new aw(this.nodeId++, e);
+      const i = new ww(this.nodeId++, e);
       let a = this.nodes.get(e[0]);
       return a == null && (a = /* @__PURE__ */ new Map(), this.nodes.set(e[0], a)), a.set(e[1], i), i;
     }
@@ -19598,7 +20033,7 @@ var cw = class Yg {
     var r;
     if ((r = this.edges.get(e)) != null && r.has(t))
       return;
-    const i = new lw(e, t), a = i.getSymetric();
+    const i = new xw(e, t), a = i.getSymetric();
     let l = this.edges.get(e);
     l == null && (l = /* @__PURE__ */ new Map(), this.edges.set(e, l)), l.set(t, i);
     let u = this.edges.get(t);
@@ -19733,7 +20168,7 @@ var cw = class Yg {
    */
   _findEdgeRing(e) {
     let t = e;
-    const r = new Hg();
+    const r = new Vg();
     do
       r.push(t), t.ring = r, t = t.next;
     while (!e.isEqual(t));
@@ -19769,42 +20204,42 @@ var cw = class Yg {
         e(r);
   }
 };
-function hw(n) {
-  const e = cw.fromGeoJson(n);
+function Cw(n) {
+  const e = bw.fromGeoJson(n);
   e.deleteDangles(), e.deleteCutEdges();
   const t = [], r = [];
   return e.getEdgeRings().filter((i) => i.isValid()).forEach((i) => {
     i.isHole() ? t.push(i) : r.push(i);
   }), t.forEach((i) => {
-    Hg.findEdgeRingContaining(i, r) && r.push(i);
+    Vg.findEdgeRingContaining(i, r) && r.push(i);
   }), ce(r.map((i) => i.toPolygon()));
 }
-function fw(n, e) {
+function Sw(n, e) {
   e = e || {}, e.iterations = e.iterations || 1;
   const { iterations: t } = e, r = [];
   if (!n) throw new Error("inputPolys is required");
-  return ut(n, function(i, a, l) {
+  return ct(n, function(i, a, l) {
     if (i.type === "Polygon") {
       let u = [[]];
       for (let f = 0; f < t; f++) {
         let g = [], d = i;
-        f > 0 && (d = pe(u).geometry), gw(d, g), u = g.slice(0);
+        f > 0 && (d = pe(u).geometry), Iw(d, g), u = g.slice(0);
       }
       r.push(pe(u, l));
     } else if (i.type === "MultiPolygon") {
       let u = [[[]]];
       for (let f = 0; f < t; f++) {
         let g = [], d = i;
-        f > 0 && (d = bt(u).geometry), dw(d, g), u = g.slice(0);
+        f > 0 && (d = Ct(u).geometry), kw(d, g), u = g.slice(0);
       }
-      r.push(bt(u, l));
+      r.push(Ct(u, l));
     } else
       throw new Error("geometry is invalid, must be Polygon or MultiPolygon");
   }), ce(r);
 }
-function gw(n, e) {
+function Iw(n, e) {
   var t, r;
-  Ve(
+  We(
     n,
     function(i, a, l, u, f) {
       if (r !== f)
@@ -19826,9 +20261,9 @@ function gw(n, e) {
     i.push(i[0]);
   });
 }
-function dw(n, e) {
+function kw(n, e) {
   let t, r, i;
-  Ve(
+  We(
     n,
     function(a, l, u, f, g) {
       if (r !== f)
@@ -19854,18 +20289,18 @@ function dw(n, e) {
     });
   });
 }
-function mw(n, e) {
+function Mw(n, e) {
   const t = me(n), r = me(e);
   let i = [], a = [], l;
-  const u = qe(e);
+  const u = He(e);
   let f = 0, g = null;
-  switch (t[0] > u[0] && t[0] < u[2] && t[1] > u[1] && t[1] < u[3] && (g = no(n, to(e)), f = g.properties.featureIndex), Ct(e)) {
+  switch (t[0] > u[0] && t[0] < u[2] && t[1] > u[1] && t[1] < u[3] && (g = io(n, ro(e)), f = g.properties.featureIndex), St(e)) {
     case "Polygon":
-      i = r[0][f], a = r[0][0], g !== null && g.geometry.coordinates[1] < t[1] && (a = r[0][f]), l = bi(
+      i = r[0][f], a = r[0][0], g !== null && g.geometry.coordinates[1] < t[1] && (a = r[0][f]), l = Si(
         r[0][0],
         r[0][r[0].length - 1],
         t
-      ), [i, a] = Zc(
+      ), [i, a] = jc(
         r[0],
         t,
         l,
@@ -19876,8 +20311,8 @@ function mw(n, e) {
     case "MultiPolygon":
       for (var m = 0, p = 0, y = 0, w = 0; w < r[0].length; w++) {
         m = w;
-        for (var b = !1, M = 0; M < r[0][w].length; M++) {
-          if (p = M, y === f) {
+        for (var b = !1, k = 0; k < r[0][w].length; k++) {
+          if (p = k, y === f) {
             b = !0;
             break;
           }
@@ -19885,88 +20320,88 @@ function mw(n, e) {
         }
         if (b) break;
       }
-      i = r[0][m][p], a = r[0][m][p], l = bi(
+      i = r[0][m][p], a = r[0][m][p], l = Si(
         r[0][0][0],
         r[0][0][r[0][0].length - 1],
         t
-      ), r.forEach(function(k) {
-        [i, a] = Zc(k[0], t, l, i, a);
+      ), r.forEach(function(I) {
+        [i, a] = jc(I[0], t, l, i, a);
       });
       break;
   }
   return ce([de(i), de(a)]);
 }
-function Zc(n, e, t, r, i) {
+function jc(n, e, t, r, i) {
   for (let a = 0; a < n.length; a++) {
     const l = n[a];
     let u = n[a + 1];
     a === n.length - 1 && (u = n[0]);
-    const f = bi(l, u, e);
-    t <= 0 && f > 0 ? pw(e, l, r) || (r = l) : t > 0 && f <= 0 && (vw(e, l, i) || (i = l)), t = f;
+    const f = Si(l, u, e);
+    t <= 0 && f > 0 ? Nw(e, l, r) || (r = l) : t > 0 && f <= 0 && (Lw(e, l, i) || (i = l)), t = f;
   }
   return [r, i];
 }
-function vw(n, e, t) {
-  return bi(n, e, t) > 0;
+function Lw(n, e, t) {
+  return Si(n, e, t) > 0;
 }
-function pw(n, e, t) {
-  return bi(n, e, t) < 0;
+function Nw(n, e, t) {
+  return Si(n, e, t) < 0;
 }
-function bi(n, e, t) {
+function Si(n, e, t) {
   return (e[0] - n[0]) * (t[1] - n[1]) - (t[0] - n[0]) * (e[1] - n[1]);
 }
-function Xg(n, e = {}) {
-  return Wg(n, "mercator", e);
+function $g(n, e = {}) {
+  return Kg(n, "mercator", e);
 }
-function Vg(n, e = {}) {
-  return Wg(n, "wgs84", e);
+function Zg(n, e = {}) {
+  return Kg(n, "wgs84", e);
 }
-function Wg(n, e, t = {}) {
+function Kg(n, e, t = {}) {
   t = t || {};
   var r = t.mutate;
   if (!n) throw new Error("geojson is required");
-  return Array.isArray(n) && tt(n[0]) ? n = e === "mercator" ? Kc(n) : Jc(n) : (r !== !0 && (n = it(n)), Ve(n, function(i) {
-    var a = e === "mercator" ? Kc(i) : Jc(i);
+  return Array.isArray(n) && nt(n[0]) ? n = e === "mercator" ? eh(n) : th(n) : (r !== !0 && (n = st(n)), We(n, function(i) {
+    var a = e === "mercator" ? eh(i) : th(i);
     i[0] = a[0], i[1] = a[1];
   })), n;
 }
-function Kc(n) {
-  var e = Math.PI / 180, t = 6378137, r = 20037508342789244e-9, i = Math.abs(n[0]) <= 180 ? n[0] : n[0] - yw(n[0]) * 360, a = [
+function eh(n) {
+  var e = Math.PI / 180, t = 6378137, r = 20037508342789244e-9, i = Math.abs(n[0]) <= 180 ? n[0] : n[0] - Pw(n[0]) * 360, a = [
     t * i * e,
     t * Math.log(Math.tan(Math.PI * 0.25 + 0.5 * n[1] * e))
   ];
   return a[0] > r && (a[0] = r), a[0] < -r && (a[0] = -r), a[1] > r && (a[1] = r), a[1] < -r && (a[1] = -r), a;
 }
-function Jc(n) {
+function th(n) {
   var e = 180 / Math.PI, t = 6378137;
   return [
     n[0] * e / t,
     (Math.PI * 0.5 - 2 * Math.atan(Math.exp(-n[1] / t))) * e
   ];
 }
-function yw(n) {
+function Pw(n) {
   return n < 0 ? -1 : n > 0 ? 1 : 0;
 }
-const _w = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Tw = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  toMercator: Xg,
-  toWgs84: Vg
+  toMercator: $g,
+  toWgs84: Zg
 }, Symbol.toStringTag, { value: "Module" }));
-function ww(n, e) {
+function Aw(n, e) {
   e = e || {};
-  const t = e.studyBbox || qe(n), r = e.confidenceLevel || 20, i = n.features, a = i.length, l = Ti(Ai(t)), u = Math.sqrt(l / a * 2), g = _l(t, u, {
+  const t = e.studyBbox || He(n), r = e.confidenceLevel || 20, i = n.features, a = i.length, l = Ri(Oi(t)), u = Math.sqrt(l / a * 2), g = xl(t, u, {
     units: "meters"
   }).features, d = {};
   for (let F = 0; F < g.length; F++)
     d[F] = {
-      box: qe(g[F]),
+      box: He(g[F]),
       cnt: 0
     };
   let m = 0;
   for (const F of i)
     for (const C of Object.keys(d)) {
       const L = d[C].box;
-      if (Ew(Me(F), L)) {
+      if (Ow(Me(F), L)) {
         d[C].cnt += 1, m += 1;
         break;
       }
@@ -19977,33 +20412,33 @@ function ww(n, e) {
     C > p && (p = C);
   }
   const y = [], w = Object.keys(d).length, b = m / w;
-  let M = 0;
+  let k = 0;
   for (let F = 0; F < p + 1; F++)
-    M += Math.exp(-b) * Math.pow(b, F) / bw(F), y.push(M);
-  const k = [];
+    k += Math.exp(-b) * Math.pow(b, F) / Dw(F), y.push(k);
+  const I = [];
   let S = 0;
   for (let F = 0; F < p + 1; F++) {
     for (const L of Object.keys(d))
       d[L].cnt === F && (S += 1);
     const C = S / w;
-    k.push(C);
+    I.push(C);
   }
-  let N = 0;
+  let P = 0;
   for (let F = 0; F < p + 1; F++) {
     const C = Math.abs(
-      y[F] - k[F]
+      y[F] - I[F]
     );
-    C > N && (N = C);
+    C > P && (P = C);
   }
-  const A = xw[r] / Math.sqrt(w), B = {
+  const A = Rw[r] / Math.sqrt(w), B = {
     criticalValue: A,
     isRandom: !0,
-    maxAbsoluteDifference: N,
-    observedDistribution: k
+    maxAbsoluteDifference: P,
+    observedDistribution: I
   };
-  return N > A && (B.isRandom = !1), B;
+  return P > A && (B.isRandom = !1), B;
 }
-var xw = {
+var Rw = {
   20: 1.07275,
   15: 1.13795,
   10: 1.22385,
@@ -20011,34 +20446,34 @@ var xw = {
   2: 1.51743,
   1: 1.62762
 };
-function Ew(n, e) {
+function Ow(n, e) {
   return e[0] <= n[0] && e[1] <= n[1] && e[2] >= n[0] && e[3] >= n[1];
 }
-function bw(n) {
+function Dw(n) {
   const e = [];
   function t(r) {
     return r === 0 || r === 1 ? 1 : e[r] > 0 ? e[r] : e[r] = t(r - 1) * r;
   }
   return t(n);
 }
-function $g(n) {
-  return io(n), ro(n);
+function Jg(n) {
+  return oo(n), so(n);
 }
-function ro(n) {
-  return Array.isArray(n) ? Qc(n) : n && n.bbox ? Qc(n.bbox) : [Sw(), kw()];
+function so(n) {
+  return Array.isArray(n) ? nh(n) : n && n.bbox ? nh(n.bbox) : [Bw(), zw()];
 }
-function io(n) {
-  n != null && (Array.isArray(n) ? pi(n) : n.bbox != null && pi(n.bbox));
+function oo(n) {
+  n != null && (Array.isArray(n) ? _i(n) : n.bbox != null && _i(n.bbox));
 }
-function Zg(n, e = {}) {
-  io(e.bbox), n == null && (n = 1);
+function Qg(n, e = {}) {
+  oo(e.bbox), n == null && (n = 1);
   const t = [];
   for (let r = 0; r < n; r++)
-    t.push(de(ro(e.bbox)));
+    t.push(de(so(e.bbox)));
   return ce(t);
 }
-function Kg(n, e = {}) {
-  io(e.bbox), n == null && (n = 1), (e.bbox === void 0 || e.bbox === null) && (e.bbox = [-180, -90, 180, 90]), (!tt(e.num_vertices) || e.num_vertices === void 0) && (e.num_vertices = 10), (!tt(e.max_radial_length) || e.max_radial_length === void 0) && (e.max_radial_length = 10);
+function jg(n, e = {}) {
+  oo(e.bbox), n == null && (n = 1), (e.bbox === void 0 || e.bbox === null) && (e.bbox = [-180, -90, 180, 90]), (!nt(e.num_vertices) || e.num_vertices === void 0) && (e.num_vertices = 10), (!nt(e.max_radial_length) || e.max_radial_length === void 0) && (e.max_radial_length = 10);
   const t = Math.abs(e.bbox[0] - e.bbox[2]), r = Math.abs(e.bbox[1] - e.bbox[3]), i = Math.min(t / 2, r / 2);
   if (e.max_radial_length > i)
     throw new Error("max_radial_length is greater than the radius of the bbox");
@@ -20060,20 +20495,20 @@ function Kg(n, e = {}) {
         m * (e.max_radial_length || 10) * Math.sin(d),
         m * (e.max_radial_length || 10) * Math.cos(d)
       ]);
-    }), f[f.length - 1] = f[0], f = f.reverse().map(Cw(ro(a))), l.push(pe([f]));
+    }), f[f.length - 1] = f[0], f = f.reverse().map(Fw(so(a))), l.push(pe([f]));
   }
   return ce(l);
 }
-function Jg(n, e = {}) {
+function ed(n, e = {}) {
   if (e = e || {}, !Oe(e))
     throw new Error("options is invalid");
   const t = e.bbox;
-  io(t);
+  oo(t);
   let r = e.num_vertices, i = e.max_length, a = e.max_rotation;
-  n == null && (n = 1), (!tt(r) || r === void 0 || r < 2) && (r = 10), (!tt(i) || i === void 0) && (i = 1e-4), (!tt(a) || a === void 0) && (a = Math.PI / 8);
+  n == null && (n = 1), (!nt(r) || r === void 0 || r < 2) && (r = 10), (!nt(i) || i === void 0) && (i = 1e-4), (!nt(a) || a === void 0) && (a = Math.PI / 8);
   const l = [];
   for (let u = 0; u < n; u++) {
-    const g = [ro(t)];
+    const g = [so(t)];
     for (let d = 0; d < r - 1; d++) {
       const p = (d === 0 ? Math.random() * 2 * Math.PI : Math.tan(
         (g[d][1] - g[d - 1][1]) / (g[d][0] - g[d - 1][0])
@@ -20083,36 +20518,36 @@ function Jg(n, e = {}) {
         g[d][1] + y * Math.sin(p)
       ]);
     }
-    l.push(ke(g));
+    l.push(Ie(g));
   }
   return ce(l);
 }
-function Cw(n) {
+function Fw(n) {
   return (e) => [e[0] + n[0], e[1] + n[1]];
 }
-function Qg() {
+function td() {
   return Math.random() - 0.5;
 }
-function Sw() {
-  return Qg() * 360;
+function Bw() {
+  return td() * 360;
 }
-function kw() {
-  return Qg() * 180;
+function zw() {
+  return td() * 180;
 }
-function Qc(n) {
+function nh(n) {
   return [
     Math.random() * (n[2] - n[0]) + n[0],
     Math.random() * (n[3] - n[1]) + n[1]
   ];
 }
-const Iw = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Gw = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  randomLineString: Jg,
-  randomPoint: Zg,
-  randomPolygon: Kg,
-  randomPosition: $g
+  randomLineString: ed,
+  randomPoint: Qg,
+  randomPolygon: jg,
+  randomPosition: Jg
 }, Symbol.toStringTag, { value: "Module" }));
-function Mw(n, e = {}) {
+function qw(n, e = {}) {
   var t, r;
   if (e = e || {}, !Oe(e)) throw new Error("options is invalid");
   const i = (t = e.mutate) != null ? t : !1, a = (r = e.reverse) != null ? r : !1;
@@ -20121,67 +20556,67 @@ function Mw(n, e = {}) {
     throw new Error("<reverse> must be a boolean");
   if (typeof i != "boolean")
     throw new Error("<mutate> must be a boolean");
-  !i && n.type !== "Point" && n.type !== "MultiPoint" && (n = it(n));
+  !i && n.type !== "Point" && n.type !== "MultiPoint" && (n = st(n));
   const l = [];
   switch (n.type) {
     case "GeometryCollection":
-      return ut(n, function(u) {
-        Ss(u, a);
+      return ct(n, function(u) {
+        ks(u, a);
       }), n;
     case "FeatureCollection":
       return Le(n, function(u) {
-        const f = Ss(u, a);
+        const f = ks(u, a);
         Le(f, function(g) {
           l.push(g);
         });
       }), ce(l);
   }
-  return Ss(n, a);
+  return ks(n, a);
 }
-function Ss(n, e) {
+function ks(n, e) {
   switch (n.type === "Feature" ? n.geometry.type : n.type) {
     case "GeometryCollection":
-      return ut(n, function(r) {
-        Ss(r, e);
+      return ct(n, function(r) {
+        ks(r, e);
       }), n;
     case "LineString":
-      return jc(me(n), e), n;
+      return rh(me(n), e), n;
     case "Polygon":
-      return eh(me(n), e), n;
+      return ih(me(n), e), n;
     case "MultiLineString":
       return me(n).forEach(function(r) {
-        jc(r, e);
+        rh(r, e);
       }), n;
     case "MultiPolygon":
       return me(n).forEach(function(r) {
-        eh(r, e);
+        ih(r, e);
       }), n;
     case "Point":
     case "MultiPoint":
       return n;
   }
 }
-function jc(n, e) {
-  Ls(n) === e && n.reverse();
+function rh(n, e) {
+  Ps(n) === e && n.reverse();
 }
-function eh(n, e) {
-  Ls(n[0]) !== e && n[0].reverse();
+function ih(n, e) {
+  Ps(n[0]) !== e && n[0].reverse();
   for (let t = 1; t < n.length; t++)
-    Ls(n[t]) === e && n[t].reverse();
+    Ps(n[t]) === e && n[t].reverse();
 }
-function Lw(n, e) {
+function Hw(n, e) {
   if (!n) throw new Error("fc is required");
   if (e == null) throw new Error("num is required");
   if (typeof e != "number") throw new Error("num must be a number");
-  var t = ce(Pw(n.features, e));
+  var t = ce(Uw(n.features, e));
   return t;
 }
-function Pw(n, e) {
+function Uw(n, e) {
   for (var t = n.slice(0), r = n.length, i = r - e, a, l; r-- > i; )
     l = Math.floor((r + 1) * Math.random()), a = t[l], t[l] = t[r], t[r] = a;
   return t.slice(i);
 }
-function Nw(n, e, t, r, i = {}) {
+function Yw(n, e, t, r, i = {}) {
   if (i = i || {}, !Oe(i)) throw new Error("options is invalid");
   const a = i.properties;
   if (!n) throw new Error("center is required");
@@ -20191,45 +20626,45 @@ function Nw(n, e, t, r, i = {}) {
     throw new Error("bearing2 is required");
   if (!e) throw new Error("radius is required");
   if (typeof i != "object") throw new Error("options must be an object");
-  if (th(t) === th(r))
-    return cl(n, e, i);
-  const l = me(n), u = Bg(n, e, t, r, i), f = [[l]];
-  return Ve(u, function(g) {
+  if (sh(t) === sh(r))
+    return fl(n, e, i);
+  const l = me(n), u = qg(n, e, t, r, i), f = [[l]];
+  return We(u, function(g) {
     f[0].push(g);
   }), f[0].push(l), pe(f, a);
 }
-function th(n) {
+function sh(n) {
   let e = n % 360;
   return e < 0 && (e += 360), e;
 }
-function jg(n, e, t) {
+function nd(n, e, t) {
   if (t = t || {}, !Oe(t)) throw new Error("options is invalid");
   const r = t.origin || "centroid", i = t.mutate || !1;
   if (!n) throw new Error("geojson required");
   if (typeof e != "number" || e <= 0)
     throw new Error("invalid factor");
   const a = Array.isArray(r) || typeof r == "object";
-  return i !== !0 && (n = it(n)), n.type === "FeatureCollection" && !a ? (Le(n, function(l, u) {
-    n.features[u] = nh(
+  return i !== !0 && (n = st(n)), n.type === "FeatureCollection" && !a ? (Le(n, function(l, u) {
+    n.features[u] = oh(
       l,
       e,
       r
     );
-  }), e !== 1 && delete n.bbox, n) : nh(n, e, r);
+  }), e !== 1 && delete n.bbox, n) : oh(n, e, r);
 }
-function nh(n, e, t) {
-  const r = Ct(n) === "Point", i = Tw(n, t);
-  return e === 1 || r || (Ve(n, function(a) {
-    const l = br(i, a), u = Jn(i, a), f = l * e, g = me(
-      eo(i, f, u)
+function oh(n, e, t) {
+  const r = St(n) === "Point", i = Xw(n, t);
+  return e === 1 || r || (We(n, function(a) {
+    const l = Cr(i, a), u = Qn(i, a), f = l * e, g = me(
+      no(i, f, u)
     );
     a[0] = g[0], a[1] = g[1], a.length === 3 && (a[2] *= e);
-  }), Nn(n)), n;
+  }), Tn(n)), n;
 }
-function Tw(n, e) {
+function Xw(n, e) {
   if (e == null && (e = "centroid"), Array.isArray(e) || typeof e == "object")
     return Me(e);
-  const t = n.bbox ? n.bbox : qe(n, { recompute: !0 }), r = t[0], i = t[1], a = t[2], l = t[3];
+  const t = n.bbox ? n.bbox : He(n, { recompute: !0 }), r = t[0], i = t[1], a = t[2], l = t[3];
   switch (e) {
     case "sw":
     case "southwest":
@@ -20252,7 +20687,7 @@ function Tw(n, e) {
     case "topright":
       return de([a, l]);
     case "center":
-      return Ks(n);
+      return Qs(n);
     case void 0:
     case null:
     case "centroid":
@@ -20261,17 +20696,17 @@ function Tw(n, e) {
       throw new Error("invalid origin");
   }
 }
-function rh(n) {
+function ah(n) {
   for (var e = n, t = []; e.parent; )
     t.unshift(e), e = e.parent;
   return t;
 }
-function Aw() {
-  return new Dw(function(n) {
+function Vw() {
+  return new Zw(function(n) {
     return n.f;
   });
 }
-var Gs = {
+var Hs = {
   /**
    * Perform an A* Search on a graph given a start and end node.
    *
@@ -20288,11 +20723,11 @@ var Gs = {
   search: function(n, e, t, r = {}) {
     var i;
     n.cleanDirty(), r = r || {};
-    var a = Gs.heuristics.manhattan, l = (i = r.closest) != null ? i : !1, u = Aw(), f = e;
+    var a = Hs.heuristics.manhattan, l = (i = r.closest) != null ? i : !1, u = Vw(), f = e;
     for (e.h = a(e, t), u.push(e); u.size() > 0; ) {
       var g = u.pop();
       if (g === t)
-        return rh(g);
+        return ah(g);
       g.closed = !0;
       for (var d = n.neighbors(g), m = 0, p = d.length; m < p; ++m) {
         var y = d[m];
@@ -20302,7 +20737,7 @@ var Gs = {
         }
       }
     }
-    return l ? rh(f) : [];
+    return l ? ah(f) : [];
   },
   // See list of heuristics: http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
   heuristics: {
@@ -20318,13 +20753,13 @@ var Gs = {
   cleanNode: function(n) {
     n.f = 0, n.g = 0, n.h = 0, n.visited = !1, n.closed = !1, n.parent = void 0;
   }
-}, Rw = class {
+}, Ww = class {
   constructor(n, e = {}) {
     this.nodes = [], this.grid = [], this.dirtyNodes = [], this.diagonal = !!e.diagonal;
     for (var t = 0; t < n.length; t++) {
       this.grid[t] = [];
       for (var r = 0, i = n[t]; r < i.length; r++) {
-        var a = new Ow(t, r, i[r]);
+        var a = new $w(t, r, i[r]);
         this.grid[t][r] = a, this.nodes.push(a);
       }
     }
@@ -20333,11 +20768,11 @@ var Gs = {
   init() {
     this.dirtyNodes = [];
     for (var n = 0; n < this.nodes.length; n++)
-      Gs.cleanNode(this.nodes[n]);
+      Hs.cleanNode(this.nodes[n]);
   }
   cleanDirty() {
     for (var n = 0; n < this.dirtyNodes.length; n++)
-      Gs.cleanNode(this.dirtyNodes[n]);
+      Hs.cleanNode(this.dirtyNodes[n]);
     this.dirtyNodes = [];
   }
   markDirty(n) {
@@ -20356,7 +20791,7 @@ var Gs = {
     return n.join(`
 `);
   }
-}, Ow = class {
+}, $w = class {
   constructor(n, e, t) {
     this.visited = !1, this.h = 0, this.g = 0, this.f = 0, this.closed = !1, this.x = n, this.y = e, this.weight = t;
   }
@@ -20369,7 +20804,7 @@ var Gs = {
   isWall() {
     return this.weight === 0;
   }
-}, Dw = class {
+}, Zw = class {
   constructor(n) {
     this.content = [], this.scoreFunction = n;
   }
@@ -20417,59 +20852,59 @@ var Gs = {
     }
   }
 };
-function Fw(n, e, t = {}) {
+function Kw(n, e, t = {}) {
   if (t = t || {}, !Oe(t)) throw new Error("options is invalid");
   let r = t.obstacles || ce([]), i = t.resolution || 100;
   if (!n) throw new Error("start is required");
   if (!e) throw new Error("end is required");
-  if (!tt(i) || i <= 0)
+  if (!nt(i) || i <= 0)
     throw new Error("options.resolution must be a number, greater than 0");
   const a = Me(n), l = Me(e);
   if (n = de(a), e = de(l), r.type === "FeatureCollection") {
     if (r.features.length === 0)
-      return ke([a, l]);
+      return Ie([a, l]);
   } else if (r.type === "Feature" && r.geometry.type === "Polygon")
     r = ce([r]);
   else if (r.type === "Polygon")
-    r = ce([Qe(He(r))]);
+    r = ce([je(Ye(r))]);
   else
     throw new Error("invalid obstacles");
   const u = r;
   u.features.push(n), u.features.push(e);
-  const f = qe(jg(Ai(qe(u)), 1.15)), [g, d, m, p] = f;
+  const f = He(nd(Oi(He(u)), 1.15)), [g, d, m, p] = f;
   u.features.pop(), u.features.pop();
-  const y = Ge([g, d], [m, d], t) / i, w = (m - g) / y, b = Ge([g, d], [g, p], t) / i, M = (p - d) / b, k = y % 1 * w / 2, S = b % 1 * M / 2, N = [], P = [];
+  const y = qe([g, d], [m, d], t) / i, w = (m - g) / y, b = qe([g, d], [g, p], t) / i, k = (p - d) / b, I = y % 1 * w / 2, S = b % 1 * k / 2, P = [], N = [];
   let A, B, F = 1 / 0, C = 1 / 0, L = p - S, T = 0;
   for (; L >= d; ) {
-    const H = [], q = [];
-    let V = g + k, J = 0;
+    const U = [], H = [];
+    let V = g + I, J = 0;
     for (; V <= m; ) {
-      const W = de([V, L]), j = Bw(W, r);
-      H.push(j ? 0 : 1), q.push(V + "|" + L);
-      const Q = Ge(W, n);
+      const W = de([V, L]), j = Jw(W, r);
+      U.push(j ? 0 : 1), H.push(V + "|" + L);
+      const Q = qe(W, n);
       !j && Q < F && (F = Q, A = { x: J, y: T });
-      const re = Ge(W, e);
+      const re = qe(W, e);
       !j && re < C && (C = re, B = { x: J, y: T }), V += w, J++;
     }
-    P.push(H), N.push(q), L -= M, T++;
+    N.push(U), P.push(H), L -= k, T++;
   }
-  const D = new Rw(P, { diagonal: !0 }), z = D.grid[A.y][A.x], U = D.grid[B.y][B.x], X = Gs.search(D, z, U), O = [a];
-  return X.forEach(function(H) {
-    const q = N[H.x][H.y].split("|");
-    O.push([+q[0], +q[1]]);
-  }), O.push(l), Qn(ke(O));
+  const D = new Ww(N, { diagonal: !0 }), z = D.grid[A.y][A.x], q = D.grid[B.y][B.x], X = Hs.search(D, z, q), O = [a];
+  return X.forEach(function(U) {
+    const H = P[U.x][U.y].split("|");
+    O.push([+H[0], +H[1]]);
+  }), O.push(l), jn(Ie(O));
 }
-function Bw(n, e) {
+function Jw(n, e) {
   for (let t = 0; t < e.features.length; t++)
     if (xe(n, e.features[t]))
       return !0;
   return !1;
 }
-function zw(n, e) {
+function Qw(n, e) {
   var t = n[0] - e[0], r = n[1] - e[1];
   return t * t + r * r;
 }
-function Gw(n, e, t) {
+function jw(n, e, t) {
   var r = e[0], i = e[1], a = t[0] - r, l = t[1] - i;
   if (a !== 0 || l !== 0) {
     var u = ((n[0] - r) * a + (n[1] - i) * l) / (a * a + l * l);
@@ -20477,44 +20912,44 @@ function Gw(n, e, t) {
   }
   return a = n[0] - r, l = n[1] - i, a * a + l * l;
 }
-function qw(n, e) {
+function ex(n, e) {
   for (var t = n[0], r = [t], i, a = 1, l = n.length; a < l; a++)
-    i = n[a], zw(i, t) > e && (r.push(i), t = i);
+    i = n[a], Qw(i, t) > e && (r.push(i), t = i);
   return t !== i && r.push(i), r;
 }
-function Aa(n, e, t, r, i) {
+function Oa(n, e, t, r, i) {
   for (var a = r, l, u = e + 1; u < t; u++) {
-    var f = Gw(n[u], n[e], n[t]);
+    var f = jw(n[u], n[e], n[t]);
     f > a && (l = u, a = f);
   }
-  a > r && (l - e > 1 && Aa(n, e, l, r, i), i.push(n[l]), t - l > 1 && Aa(n, l, t, r, i));
+  a > r && (l - e > 1 && Oa(n, e, l, r, i), i.push(n[l]), t - l > 1 && Oa(n, l, t, r, i));
 }
-function Uw(n, e) {
+function tx(n, e) {
   var t = n.length - 1, r = [n[0]];
-  return Aa(n, 0, t, e, r), r.push(n[t]), r;
+  return Oa(n, 0, t, e, r), r.push(n[t]), r;
 }
-function qs(n, e, t) {
+function Us(n, e, t) {
   if (n.length <= 2) return n;
   var r = e !== void 0 ? e * e : 1;
-  return n = t ? n : qw(n, r), n = Uw(n, r), n;
+  return n = t ? n : ex(n, r), n = tx(n, r), n;
 }
-function Hw(n, e = {}) {
+function nx(n, e = {}) {
   var t, r, i;
   if (e = e ?? {}, !Oe(e)) throw new Error("options is invalid");
   const a = (t = e.tolerance) != null ? t : 1, l = (r = e.highQuality) != null ? r : !1, u = (i = e.mutate) != null ? i : !1;
   if (!n) throw new Error("geojson is required");
   if (a && a < 0) throw new Error("invalid tolerance");
-  return u !== !0 && (n = it(n)), ut(n, function(f) {
-    Yw(f, a, l);
+  return u !== !0 && (n = st(n)), ct(n, function(f) {
+    rx(f, a, l);
   }), n;
 }
-function Yw(n, e, t) {
+function rx(n, e, t) {
   const r = n.type;
   if (r === "Point" || r === "MultiPoint") return n;
-  if (Qn(n, { mutate: !0 }), r !== "GeometryCollection")
+  if (jn(n, { mutate: !0 }), r !== "GeometryCollection")
     switch (r) {
       case "LineString":
-        n.coordinates = qs(
+        n.coordinates = Us(
           n.coordinates,
           e,
           t
@@ -20522,11 +20957,11 @@ function Yw(n, e, t) {
         break;
       case "MultiLineString":
         n.coordinates = n.coordinates.map(
-          (i) => qs(i, e, t)
+          (i) => Us(i, e, t)
         );
         break;
       case "Polygon":
-        n.coordinates = ih(
+        n.coordinates = lh(
           n.coordinates,
           e,
           t
@@ -20534,26 +20969,26 @@ function Yw(n, e, t) {
         break;
       case "MultiPolygon":
         n.coordinates = n.coordinates.map(
-          (i) => ih(i, e, t)
+          (i) => lh(i, e, t)
         );
     }
   return n;
 }
-function ih(n, e, t) {
+function lh(n, e, t) {
   return n.map(function(r) {
     if (r.length < 4)
       throw new Error("invalid polygon");
-    let i = e, a = qs(r, i, t);
-    for (; !sh(a) && i >= Number.EPSILON; )
-      i -= i * 0.01, a = qs(r, i, t);
-    return sh(a) ? ((a[a.length - 1][0] !== a[0][0] || a[a.length - 1][1] !== a[0][1]) && a.push(a[0]), a) : r;
+    let i = e, a = Us(r, i, t);
+    for (; !uh(a) && i >= Number.EPSILON; )
+      i -= i * 0.01, a = Us(r, i, t);
+    return uh(a) ? ((a[a.length - 1][0] !== a[0][0] || a[a.length - 1][1] !== a[0][1]) && a.push(a[0]), a) : r;
   });
 }
-function sh(n) {
+function uh(n) {
   return n.length < 3 ? !1 : !(n.length === 3 && n[2][0] === n[0][0] && n[2][1] === n[0][1]);
 }
-function Xw(n) {
-  var e = n[0], t = n[1], r = n[2], i = n[3], a = Ge(n.slice(0, 2), [r, t]), l = Ge(n.slice(0, 2), [e, i]);
+function ix(n) {
+  var e = n[0], t = n[1], r = n[2], i = n[3], a = qe(n.slice(0, 2), [r, t]), l = qe(n.slice(0, 2), [e, i]);
   if (a >= l) {
     var u = (t + i) / 2;
     return [
@@ -20572,156 +21007,156 @@ function Xw(n) {
     ];
   }
 }
-function Vw(n, e) {
+function sx(n, e) {
   var t;
   if (e = e || {}, !Oe(e)) throw new Error("options is invalid");
   const r = e.steps || 64, i = e.weight, a = e.properties || {};
-  if (!tt(r)) throw new Error("steps must be a number");
+  if (!nt(r)) throw new Error("steps must be a number");
   if (!Oe(a)) throw new Error("properties must be a number");
-  const l = _i(n).length, u = ll(n, { weight: i });
+  const l = xi(n).length, u = cl(n, { weight: i });
   let f = 0, g = 0, d = 0;
   Le(n, function(C) {
     var L;
-    const T = i && ((L = C.properties) == null ? void 0 : L[i]) || 1, D = oh(me(C), me(u));
+    const T = i && ((L = C.properties) == null ? void 0 : L[i]) || 1, D = ch(me(C), me(u));
     f += Math.pow(D.x, 2) * T, g += Math.pow(D.y, 2) * T, d += D.x * D.y * T;
   });
   const m = f - g, p = Math.sqrt(Math.pow(m, 2) + 4 * Math.pow(d, 2)), y = 2 * d, w = Math.atan((m + p) / y), b = w * 180 / Math.PI;
-  let M = 0, k = 0, S = 0;
+  let k = 0, I = 0, S = 0;
   Le(n, function(C) {
     var L;
-    const T = i && ((L = C.properties) == null ? void 0 : L[i]) || 1, D = oh(me(C), me(u));
-    M += Math.pow(
+    const T = i && ((L = C.properties) == null ? void 0 : L[i]) || 1, D = ch(me(C), me(u));
+    k += Math.pow(
       D.x * Math.cos(w) - D.y * Math.sin(w),
       2
-    ) * T, k += Math.pow(
+    ) * T, I += Math.pow(
       D.x * Math.sin(w) + D.y * Math.cos(w),
       2
     ) * T, S += T;
   });
-  const N = Math.sqrt(2 * M / S), P = Math.sqrt(2 * k / S), A = Tg(u, N, P, {
+  const P = Math.sqrt(2 * k / S), N = Math.sqrt(2 * I / S), A = Og(u, P, N, {
     units: "degrees",
     angle: b,
     steps: r,
     properties: a
-  }), B = qg(
+  }), B = Yg(
     n,
     ce([A])
   ), F = {
     meanCenterCoordinates: me(u),
-    semiMajorAxis: N,
-    semiMinorAxis: P,
+    semiMajorAxis: P,
+    semiMinorAxis: N,
     numberOfFeatures: l,
     angle: b,
-    percentageWithinEllipse: 100 * _i(B).length / l
+    percentageWithinEllipse: 100 * xi(B).length / l
   };
   return A.properties = (t = A.properties) != null ? t : {}, A.properties.standardDeviationalEllipse = F, A;
 }
-function oh(n, e) {
+function ch(n, e) {
   return {
     x: n[0] - e[0],
     y: n[1] - e[1]
   };
 }
-function Ww(n, e, t, r) {
-  return n = it(n), e = it(e), Le(n, function(i) {
+function ox(n, e, t, r) {
+  return n = st(n), e = st(e), Le(n, function(i) {
     i.properties || (i.properties = {}), Le(e, function(a) {
       i.properties && a.properties && i.properties[r] === void 0 && xe(i, a) && (i.properties[r] = a.properties[t]);
     });
   }), n;
 }
-var bl = { exports: {} };
-bl.exports = so;
-bl.exports.default = so;
-function so(n, e, t) {
+var Sl = { exports: {} };
+Sl.exports = ao;
+Sl.exports.default = ao;
+function ao(n, e, t) {
   t = t || 2;
-  var r = e && e.length, i = r ? e[0] * t : n.length, a = ed(n, 0, i, t, !0), l = [];
+  var r = e && e.length, i = r ? e[0] * t : n.length, a = rd(n, 0, i, t, !0), l = [];
   if (!a || a.next === a.prev) return l;
   var u, f, g, d, m, p, y;
-  if (r && (a = Qw(n, e, a, t)), n.length > 80 * t) {
+  if (r && (a = hx(n, e, a, t)), n.length > 80 * t) {
     u = g = n[0], f = d = n[1];
     for (var w = t; w < i; w += t)
       m = n[w], p = n[w + 1], m < u && (u = m), p < f && (f = p), m > g && (g = m), p > d && (d = p);
     y = Math.max(g - u, d - f), y = y !== 0 ? 32767 / y : 0;
   }
-  return Ci(a, l, t, u, f, y, 0), l;
+  return Ii(a, l, t, u, f, y, 0), l;
 }
-function ed(n, e, t, r, i) {
+function rd(n, e, t, r, i) {
   var a, l;
-  if (i === Da(n, e, t, r) > 0)
-    for (a = e; a < t; a += r) l = ah(a, n[a], n[a + 1], l);
+  if (i === Ba(n, e, t, r) > 0)
+    for (a = e; a < t; a += r) l = hh(a, n[a], n[a + 1], l);
   else
-    for (a = t - r; a >= e; a -= r) l = ah(a, n[a], n[a + 1], l);
-  return l && oo(l, l.next) && (ki(l), l = l.next), l;
+    for (a = t - r; a >= e; a -= r) l = hh(a, n[a], n[a + 1], l);
+  return l && lo(l, l.next) && (Mi(l), l = l.next), l;
 }
-function jn(n, e) {
+function er(n, e) {
   if (!n) return n;
   e || (e = n);
   var t = n, r;
   do
-    if (r = !1, !t.steiner && (oo(t, t.next) || Je(t.prev, t, t.next) === 0)) {
-      if (ki(t), t = e = t.prev, t === t.next) break;
+    if (r = !1, !t.steiner && (lo(t, t.next) || Qe(t.prev, t, t.next) === 0)) {
+      if (Mi(t), t = e = t.prev, t === t.next) break;
       r = !0;
     } else
       t = t.next;
   while (r || t !== e);
   return e;
 }
-function Ci(n, e, t, r, i, a, l) {
+function Ii(n, e, t, r, i, a, l) {
   if (n) {
-    !l && a && rx(n, r, i, a);
+    !l && a && vx(n, r, i, a);
     for (var u = n, f, g; n.prev !== n.next; ) {
-      if (f = n.prev, g = n.next, a ? Zw(n, r, i, a) : $w(n)) {
-        e.push(f.i / t | 0), e.push(n.i / t | 0), e.push(g.i / t | 0), ki(n), n = g.next, u = g.next;
+      if (f = n.prev, g = n.next, a ? lx(n, r, i, a) : ax(n)) {
+        e.push(f.i / t | 0), e.push(n.i / t | 0), e.push(g.i / t | 0), Mi(n), n = g.next, u = g.next;
         continue;
       }
       if (n = g, n === u) {
-        l ? l === 1 ? (n = Kw(jn(n), e, t), Ci(n, e, t, r, i, a, 2)) : l === 2 && Jw(n, e, t, r, i, a) : Ci(jn(n), e, t, r, i, a, 1);
+        l ? l === 1 ? (n = ux(er(n), e, t), Ii(n, e, t, r, i, a, 2)) : l === 2 && cx(n, e, t, r, i, a) : Ii(er(n), e, t, r, i, a, 1);
         break;
       }
     }
   }
 }
-function $w(n) {
+function ax(n) {
   var e = n.prev, t = n, r = n.next;
-  if (Je(e, t, r) >= 0) return !1;
+  if (Qe(e, t, r) >= 0) return !1;
   for (var i = e.x, a = t.x, l = r.x, u = e.y, f = t.y, g = r.y, d = i < a ? i < l ? i : l : a < l ? a : l, m = u < f ? u < g ? u : g : f < g ? f : g, p = i > a ? i > l ? i : l : a > l ? a : l, y = u > f ? u > g ? u : g : f > g ? f : g, w = r.next; w !== e; ) {
-    if (w.x >= d && w.x <= p && w.y >= m && w.y <= y && wr(i, u, a, f, l, g, w.x, w.y) && Je(w.prev, w, w.next) >= 0) return !1;
+    if (w.x >= d && w.x <= p && w.y >= m && w.y <= y && xr(i, u, a, f, l, g, w.x, w.y) && Qe(w.prev, w, w.next) >= 0) return !1;
     w = w.next;
   }
   return !0;
 }
-function Zw(n, e, t, r) {
+function lx(n, e, t, r) {
   var i = n.prev, a = n, l = n.next;
-  if (Je(i, a, l) >= 0) return !1;
-  for (var u = i.x, f = a.x, g = l.x, d = i.y, m = a.y, p = l.y, y = u < f ? u < g ? u : g : f < g ? f : g, w = d < m ? d < p ? d : p : m < p ? m : p, b = u > f ? u > g ? u : g : f > g ? f : g, M = d > m ? d > p ? d : p : m > p ? m : p, k = Ra(y, w, e, t, r), S = Ra(b, M, e, t, r), N = n.prevZ, P = n.nextZ; N && N.z >= k && P && P.z <= S; ) {
-    if (N.x >= y && N.x <= b && N.y >= w && N.y <= M && N !== i && N !== l && wr(u, d, f, m, g, p, N.x, N.y) && Je(N.prev, N, N.next) >= 0 || (N = N.prevZ, P.x >= y && P.x <= b && P.y >= w && P.y <= M && P !== i && P !== l && wr(u, d, f, m, g, p, P.x, P.y) && Je(P.prev, P, P.next) >= 0)) return !1;
-    P = P.nextZ;
+  if (Qe(i, a, l) >= 0) return !1;
+  for (var u = i.x, f = a.x, g = l.x, d = i.y, m = a.y, p = l.y, y = u < f ? u < g ? u : g : f < g ? f : g, w = d < m ? d < p ? d : p : m < p ? m : p, b = u > f ? u > g ? u : g : f > g ? f : g, k = d > m ? d > p ? d : p : m > p ? m : p, I = Da(y, w, e, t, r), S = Da(b, k, e, t, r), P = n.prevZ, N = n.nextZ; P && P.z >= I && N && N.z <= S; ) {
+    if (P.x >= y && P.x <= b && P.y >= w && P.y <= k && P !== i && P !== l && xr(u, d, f, m, g, p, P.x, P.y) && Qe(P.prev, P, P.next) >= 0 || (P = P.prevZ, N.x >= y && N.x <= b && N.y >= w && N.y <= k && N !== i && N !== l && xr(u, d, f, m, g, p, N.x, N.y) && Qe(N.prev, N, N.next) >= 0)) return !1;
+    N = N.nextZ;
   }
-  for (; N && N.z >= k; ) {
-    if (N.x >= y && N.x <= b && N.y >= w && N.y <= M && N !== i && N !== l && wr(u, d, f, m, g, p, N.x, N.y) && Je(N.prev, N, N.next) >= 0) return !1;
-    N = N.prevZ;
+  for (; P && P.z >= I; ) {
+    if (P.x >= y && P.x <= b && P.y >= w && P.y <= k && P !== i && P !== l && xr(u, d, f, m, g, p, P.x, P.y) && Qe(P.prev, P, P.next) >= 0) return !1;
+    P = P.prevZ;
   }
-  for (; P && P.z <= S; ) {
-    if (P.x >= y && P.x <= b && P.y >= w && P.y <= M && P !== i && P !== l && wr(u, d, f, m, g, p, P.x, P.y) && Je(P.prev, P, P.next) >= 0) return !1;
-    P = P.nextZ;
+  for (; N && N.z <= S; ) {
+    if (N.x >= y && N.x <= b && N.y >= w && N.y <= k && N !== i && N !== l && xr(u, d, f, m, g, p, N.x, N.y) && Qe(N.prev, N, N.next) >= 0) return !1;
+    N = N.nextZ;
   }
   return !0;
 }
-function Kw(n, e, t) {
+function ux(n, e, t) {
   var r = n;
   do {
     var i = r.prev, a = r.next.next;
-    !oo(i, a) && td(i, r, r.next, a) && Si(i, a) && Si(a, i) && (e.push(i.i / t | 0), e.push(r.i / t | 0), e.push(a.i / t | 0), ki(r), ki(r.next), r = n = a), r = r.next;
+    !lo(i, a) && id(i, r, r.next, a) && ki(i, a) && ki(a, i) && (e.push(i.i / t | 0), e.push(r.i / t | 0), e.push(a.i / t | 0), Mi(r), Mi(r.next), r = n = a), r = r.next;
   } while (r !== n);
-  return jn(r);
+  return er(r);
 }
-function Jw(n, e, t, r, i, a) {
+function cx(n, e, t, r, i, a) {
   var l = n;
   do {
     for (var u = l.next.next; u !== l.prev; ) {
-      if (l.i !== u.i && ox(l, u)) {
-        var f = nd(l, u);
-        l = jn(l, l.next), f = jn(f, f.next), Ci(l, e, t, r, i, a, 0), Ci(f, e, t, r, i, a, 0);
+      if (l.i !== u.i && _x(l, u)) {
+        var f = sd(l, u);
+        l = er(l, l.next), f = er(f, f.next), Ii(l, e, t, r, i, a, 0), Ii(f, e, t, r, i, a, 0);
         return;
       }
       u = u.next;
@@ -20729,25 +21164,25 @@ function Jw(n, e, t, r, i, a) {
     l = l.next;
   } while (l !== n);
 }
-function Qw(n, e, t, r) {
+function hx(n, e, t, r) {
   var i = [], a, l, u, f, g;
   for (a = 0, l = e.length; a < l; a++)
-    u = e[a] * r, f = a < l - 1 ? e[a + 1] * r : n.length, g = ed(n, u, f, r, !1), g === g.next && (g.steiner = !0), i.push(sx(g));
-  for (i.sort(jw), a = 0; a < i.length; a++)
-    t = ex(i[a], t);
+    u = e[a] * r, f = a < l - 1 ? e[a + 1] * r : n.length, g = rd(n, u, f, r, !1), g === g.next && (g.steiner = !0), i.push(yx(g));
+  for (i.sort(fx), a = 0; a < i.length; a++)
+    t = gx(i[a], t);
   return t;
 }
-function jw(n, e) {
+function fx(n, e) {
   return n.x - e.x;
 }
-function ex(n, e) {
-  var t = tx(n, e);
+function gx(n, e) {
+  var t = dx(n, e);
   if (!t)
     return e;
-  var r = nd(t, n);
-  return jn(r, r.next), jn(t, t.next);
+  var r = sd(t, n);
+  return er(r, r.next), er(t, t.next);
 }
-function tx(n, e) {
+function dx(n, e) {
   var t = e, r = n.x, i = n.y, a = -1 / 0, l;
   do {
     if (i <= t.y && i >= t.next.y && t.next.y !== t.y) {
@@ -20761,21 +21196,21 @@ function tx(n, e) {
   var f = l, g = l.x, d = l.y, m = 1 / 0, p;
   t = l;
   do
-    r >= t.x && t.x >= g && r !== t.x && wr(i < d ? r : a, i, g, d, i < d ? a : r, i, t.x, t.y) && (p = Math.abs(i - t.y) / (r - t.x), Si(t, n) && (p < m || p === m && (t.x > l.x || t.x === l.x && nx(l, t))) && (l = t, m = p)), t = t.next;
+    r >= t.x && t.x >= g && r !== t.x && xr(i < d ? r : a, i, g, d, i < d ? a : r, i, t.x, t.y) && (p = Math.abs(i - t.y) / (r - t.x), ki(t, n) && (p < m || p === m && (t.x > l.x || t.x === l.x && mx(l, t))) && (l = t, m = p)), t = t.next;
   while (t !== f);
   return l;
 }
-function nx(n, e) {
-  return Je(n.prev, n, e.prev) < 0 && Je(e.next, n, n.next) < 0;
+function mx(n, e) {
+  return Qe(n.prev, n, e.prev) < 0 && Qe(e.next, n, n.next) < 0;
 }
-function rx(n, e, t, r) {
+function vx(n, e, t, r) {
   var i = n;
   do
-    i.z === 0 && (i.z = Ra(i.x, i.y, e, t, r)), i.prevZ = i.prev, i.nextZ = i.next, i = i.next;
+    i.z === 0 && (i.z = Da(i.x, i.y, e, t, r)), i.prevZ = i.prev, i.nextZ = i.next, i = i.next;
   while (i !== n);
-  i.prevZ.nextZ = null, i.prevZ = null, ix(i);
+  i.prevZ.nextZ = null, i.prevZ = null, px(i);
 }
-function ix(n) {
+function px(n) {
   var e, t, r, i, a, l, u, f, g = 1;
   do {
     for (t = n, n = null, a = null, l = 0; t; ) {
@@ -20789,79 +21224,79 @@ function ix(n) {
   } while (l > 1);
   return n;
 }
-function Ra(n, e, t, r, i) {
+function Da(n, e, t, r, i) {
   return n = (n - t) * i | 0, e = (e - r) * i | 0, n = (n | n << 8) & 16711935, n = (n | n << 4) & 252645135, n = (n | n << 2) & 858993459, n = (n | n << 1) & 1431655765, e = (e | e << 8) & 16711935, e = (e | e << 4) & 252645135, e = (e | e << 2) & 858993459, e = (e | e << 1) & 1431655765, n | e << 1;
 }
-function sx(n) {
+function yx(n) {
   var e = n, t = n;
   do
     (e.x < t.x || e.x === t.x && e.y < t.y) && (t = e), e = e.next;
   while (e !== n);
   return t;
 }
-function wr(n, e, t, r, i, a, l, u) {
+function xr(n, e, t, r, i, a, l, u) {
   return (i - l) * (e - u) >= (n - l) * (a - u) && (n - l) * (r - u) >= (t - l) * (e - u) && (t - l) * (a - u) >= (i - l) * (r - u);
 }
-function ox(n, e) {
-  return n.next.i !== e.i && n.prev.i !== e.i && !ax(n, e) && // dones't intersect other edges
-  (Si(n, e) && Si(e, n) && lx(n, e) && // locally visible
-  (Je(n.prev, n, e.prev) || Je(n, e.prev, e)) || // does not create opposite-facing sectors
-  oo(n, e) && Je(n.prev, n, n.next) > 0 && Je(e.prev, e, e.next) > 0);
+function _x(n, e) {
+  return n.next.i !== e.i && n.prev.i !== e.i && !wx(n, e) && // dones't intersect other edges
+  (ki(n, e) && ki(e, n) && xx(n, e) && // locally visible
+  (Qe(n.prev, n, e.prev) || Qe(n, e.prev, e)) || // does not create opposite-facing sectors
+  lo(n, e) && Qe(n.prev, n, n.next) > 0 && Qe(e.prev, e, e.next) > 0);
 }
-function Je(n, e, t) {
+function Qe(n, e, t) {
   return (e.y - n.y) * (t.x - e.x) - (e.x - n.x) * (t.y - e.y);
 }
-function oo(n, e) {
+function lo(n, e) {
   return n.x === e.x && n.y === e.y;
 }
-function td(n, e, t, r) {
-  var i = fs(Je(n, e, t)), a = fs(Je(n, e, r)), l = fs(Je(t, r, n)), u = fs(Je(t, r, e));
-  return !!(i !== a && l !== u || i === 0 && hs(n, t, e) || a === 0 && hs(n, r, e) || l === 0 && hs(t, n, r) || u === 0 && hs(t, e, r));
+function id(n, e, t, r) {
+  var i = ds(Qe(n, e, t)), a = ds(Qe(n, e, r)), l = ds(Qe(t, r, n)), u = ds(Qe(t, r, e));
+  return !!(i !== a && l !== u || i === 0 && gs(n, t, e) || a === 0 && gs(n, r, e) || l === 0 && gs(t, n, r) || u === 0 && gs(t, e, r));
 }
-function hs(n, e, t) {
+function gs(n, e, t) {
   return e.x <= Math.max(n.x, t.x) && e.x >= Math.min(n.x, t.x) && e.y <= Math.max(n.y, t.y) && e.y >= Math.min(n.y, t.y);
 }
-function fs(n) {
+function ds(n) {
   return n > 0 ? 1 : n < 0 ? -1 : 0;
 }
-function ax(n, e) {
+function wx(n, e) {
   var t = n;
   do {
-    if (t.i !== n.i && t.next.i !== n.i && t.i !== e.i && t.next.i !== e.i && td(t, t.next, n, e)) return !0;
+    if (t.i !== n.i && t.next.i !== n.i && t.i !== e.i && t.next.i !== e.i && id(t, t.next, n, e)) return !0;
     t = t.next;
   } while (t !== n);
   return !1;
 }
-function Si(n, e) {
-  return Je(n.prev, n, n.next) < 0 ? Je(n, e, n.next) >= 0 && Je(n, n.prev, e) >= 0 : Je(n, e, n.prev) < 0 || Je(n, n.next, e) < 0;
+function ki(n, e) {
+  return Qe(n.prev, n, n.next) < 0 ? Qe(n, e, n.next) >= 0 && Qe(n, n.prev, e) >= 0 : Qe(n, e, n.prev) < 0 || Qe(n, n.next, e) < 0;
 }
-function lx(n, e) {
+function xx(n, e) {
   var t = n, r = !1, i = (n.x + e.x) / 2, a = (n.y + e.y) / 2;
   do
     t.y > a != t.next.y > a && t.next.y !== t.y && i < (t.next.x - t.x) * (a - t.y) / (t.next.y - t.y) + t.x && (r = !r), t = t.next;
   while (t !== n);
   return r;
 }
-function nd(n, e) {
-  var t = new Oa(n.i, n.x, n.y), r = new Oa(e.i, e.x, e.y), i = n.next, a = e.prev;
+function sd(n, e) {
+  var t = new Fa(n.i, n.x, n.y), r = new Fa(e.i, e.x, e.y), i = n.next, a = e.prev;
   return n.next = e, e.prev = n, t.next = i, i.prev = t, r.next = t, t.prev = r, a.next = r, r.prev = a, r;
 }
-function ah(n, e, t, r) {
-  var i = new Oa(n, e, t);
+function hh(n, e, t, r) {
+  var i = new Fa(n, e, t);
   return r ? (i.next = r.next, i.prev = r, r.next.prev = i, r.next = i) : (i.prev = i, i.next = i), i;
 }
-function ki(n) {
+function Mi(n) {
   n.next.prev = n.prev, n.prev.next = n.next, n.prevZ && (n.prevZ.nextZ = n.nextZ), n.nextZ && (n.nextZ.prevZ = n.prevZ);
 }
-function Oa(n, e, t) {
+function Fa(n, e, t) {
   this.i = n, this.x = e, this.y = t, this.prev = null, this.next = null, this.z = 0, this.prevZ = null, this.nextZ = null, this.steiner = !1;
 }
-so.deviation = function(n, e, t, r) {
-  var i = e && e.length, a = i ? e[0] * t : n.length, l = Math.abs(Da(n, 0, a, t));
+ao.deviation = function(n, e, t, r) {
+  var i = e && e.length, a = i ? e[0] * t : n.length, l = Math.abs(Ba(n, 0, a, t));
   if (i)
     for (var u = 0, f = e.length; u < f; u++) {
       var g = e[u] * t, d = u < f - 1 ? e[u + 1] * t : n.length;
-      l -= Math.abs(Da(n, g, d, t));
+      l -= Math.abs(Ba(n, g, d, t));
     }
   var m = 0;
   for (u = 0; u < r.length; u += 3) {
@@ -20872,12 +21307,12 @@ so.deviation = function(n, e, t, r) {
   }
   return l === 0 && m === 0 ? 0 : Math.abs((m - l) / l);
 };
-function Da(n, e, t, r) {
+function Ba(n, e, t, r) {
   for (var i = 0, a = e, l = t - r; a < t; a += r)
     i += (n[l] - n[a]) * (n[a + 1] + n[l + 1]), l = a;
   return i;
 }
-so.flatten = function(n) {
+ao.flatten = function(n) {
   for (var e = n[0][0].length, t = { vertices: [], holes: [], dimensions: e }, r = 0, i = 0; i < n.length; i++) {
     for (var a = 0; a < n[i].length; a++)
       for (var l = 0; l < e; l++) t.vertices.push(n[i][a][l]);
@@ -20885,21 +21320,21 @@ so.flatten = function(n) {
   }
   return t;
 };
-var ux = bl.exports;
-const cx = /* @__PURE__ */ Di(ux);
-function hx(n) {
+var Ex = Sl.exports;
+const bx = /* @__PURE__ */ Bi(Ex);
+function Cx(n) {
   if (!n.geometry || n.geometry.type !== "Polygon" && n.geometry.type !== "MultiPolygon")
     throw new Error("input must be a Polygon or MultiPolygon");
   const e = {
     type: "FeatureCollection",
     features: []
   };
-  return n.geometry.type === "Polygon" ? e.features = lh(n.geometry.coordinates) : n.geometry.coordinates.forEach(function(t) {
-    e.features = e.features.concat(lh(t));
+  return n.geometry.type === "Polygon" ? e.features = fh(n.geometry.coordinates) : n.geometry.coordinates.forEach(function(t) {
+    e.features = e.features.concat(fh(t));
   }), e;
 }
-function lh(n) {
-  const e = fx(n), t = 3, r = cx(e.vertices, e.holes, t), i = [], a = [];
+function fh(n) {
+  const e = Sx(n), t = 3, r = bx(e.vertices, e.holes, t), i = [], a = [];
   r.forEach(function(u, f) {
     const g = r[f];
     e.vertices[g * t + 2] !== void 0 ? a.push([
@@ -20917,7 +21352,7 @@ function lh(n) {
   }
   return i;
 }
-function fx(n) {
+function Sx(n) {
   const t = {
     vertices: [],
     holes: [],
@@ -20931,7 +21366,7 @@ function fx(n) {
   }
   return t;
 }
-function gx(n, e, t, r) {
+function Ix(n, e, t, r) {
   if (r = r || {}, !Oe(r)) throw new Error("options is invalid");
   var i = r.units, a = r.zTranslation, l = r.mutate;
   if (!n) throw new Error("geojson is required");
@@ -20942,44 +21377,44 @@ function gx(n, e, t, r) {
   if (a = a !== void 0 ? a : 0, e === 0 && a === 0) return n;
   if (t == null || isNaN(t))
     throw new Error("direction is required");
-  return e < 0 && (e = -e, t = t + 180), (l === !1 || l === void 0) && (n = it(n)), Ve(n, function(u) {
+  return e < 0 && (e = -e, t = t + 180), (l === !1 || l === void 0) && (n = st(n)), We(n, function(u) {
     var f = me(
-      eo(u, e, t, { units: i })
+      no(u, e, t, { units: i })
     );
     u[0] = f[0], u[1] = f[1], a && u.length === 3 && (u[2] += a);
-  }), Nn(n), n;
+  }), Tn(n), n;
 }
-function dx(n, e = {}) {
+function kx(n, e = {}) {
   const t = [];
-  if (ut(n, (i) => {
+  if (ct(n, (i) => {
     t.push(i.coordinates);
   }), t.length < 2)
     throw new Error("Must have at least 2 geometries");
-  const r = Tn(t[0], ...t.slice(1));
-  return r.length === 0 ? null : r.length === 1 ? pe(r[0], e.properties) : bt(r, e.properties);
+  const r = An(t[0], ...t.slice(1));
+  return r.length === 0 ? null : r.length === 1 ? pe(r[0], e.properties) : Ct(r, e.properties);
 }
-function mx(n, e) {
+function Mx(n, e) {
   if (n.geometry.type !== "Polygon")
     throw new Error("The input feature must be a Polygon");
   for (var t = n.geometry.coordinates, r = [], i = {}, a = [], l = 0; l < t.length; l++)
     for (var u = 0; u < t[l].length - 1; u++)
       a.push(y(l, u));
-  var f = new Dr();
+  var f = new Fr();
   f.load(a);
   for (var g = 0; g < t.length; g++)
     for (var d = 0; d < t[g].length - 1; d++) {
       var m = f.search(y(g, d));
       m.forEach(function(w) {
-        var b = w.ring, M = w.edge;
-        p(g, d, b, M);
+        var b = w.ring, k = w.edge;
+        p(g, d, b, k);
       });
     }
   return r;
-  function p(w, b, M, k) {
-    var S = t[w][b], N = t[w][b + 1], P = t[M][k], A = t[M][k + 1], B = vx(S, N, P, A);
+  function p(w, b, k, I) {
+    var S = t[w][b], P = t[w][b + 1], N = t[k][I], A = t[k][I + 1], B = Lx(S, P, N, A);
     if (B !== null) {
       var F, C;
-      if (N[0] !== S[0] ? F = (B[0] - S[0]) / (N[0] - S[0]) : F = (B[1] - S[1]) / (N[1] - S[1]), A[0] !== P[0] ? C = (B[0] - P[0]) / (A[0] - P[0]) : C = (B[1] - P[1]) / (A[1] - P[1]), !(F >= 1 || F <= 0 || C >= 1 || C <= 0)) {
+      if (P[0] !== S[0] ? F = (B[0] - S[0]) / (P[0] - S[0]) : F = (B[1] - S[1]) / (P[1] - S[1]), A[0] !== N[0] ? C = (B[0] - N[0]) / (A[0] - N[0]) : C = (B[1] - N[1]) / (A[1] - N[1]), !(F >= 1 || F <= 0 || C >= 1 || C <= 0)) {
         var L = B, T = !i[L.toString()];
         T && (i[L.toString()] = !0), e && r.push(
           e(
@@ -20987,11 +21422,11 @@ function mx(n, e) {
             w,
             b,
             S,
-            N,
-            F,
-            M,
-            k,
             P,
+            F,
+            k,
+            I,
+            N,
             A,
             C,
             T
@@ -21001,35 +21436,35 @@ function mx(n, e) {
     }
   }
   function y(w, b) {
-    var M = t[w][b], k = t[w][b + 1], S, N, P, A;
-    return M[0] < k[0] ? (S = M[0], N = k[0]) : (S = k[0], N = M[0]), M[1] < k[1] ? (P = M[1], A = k[1]) : (P = k[1], A = M[1]), {
+    var k = t[w][b], I = t[w][b + 1], S, P, N, A;
+    return k[0] < I[0] ? (S = k[0], P = I[0]) : (S = I[0], P = k[0]), k[1] < I[1] ? (N = k[1], A = I[1]) : (N = I[1], A = k[1]), {
       minX: S,
-      minY: P,
-      maxX: N,
+      minY: N,
+      maxX: P,
       maxY: A,
       ring: w,
       edge: b
     };
   }
 }
-function vx(n, e, t, r) {
-  if (hi(n, t) || hi(n, r) || hi(e, t) || hi(r, t))
+function Lx(n, e, t, r) {
+  if (gi(n, t) || gi(n, r) || gi(e, t) || gi(r, t))
     return null;
   var i = n[0], a = n[1], l = e[0], u = e[1], f = t[0], g = t[1], d = r[0], m = r[1], p = (i - l) * (g - m) - (a - u) * (f - d);
   if (p === 0) return null;
   var y = ((i * u - a * l) * (f - d) - (i - l) * (f * m - g * d)) / p, w = ((i * u - a * l) * (g - m) - (a - u) * (f * m - g * d)) / p;
   return [y, w];
 }
-function hi(n, e) {
+function gi(n, e) {
   if (!n || !e || n.length !== e.length) return !1;
   for (var t = 0, r = n.length; t < r; t++)
     if (n[t] instanceof Array && e[t] instanceof Array) {
-      if (!hi(n[t], e[t])) return !1;
+      if (!gi(n[t], e[t])) return !1;
     } else if (n[t] !== e[t])
       return !1;
   return !0;
 }
-function px(n) {
+function Nx(n) {
   if (n.type != "Feature")
     throw new Error("The input must a geojson object of type Feature");
   if (n.geometry === void 0 || n.geometry == null)
@@ -21038,19 +21473,19 @@ function px(n) {
     );
   if (n.geometry.type != "Polygon")
     throw new Error("The input must be a geojson Polygon");
-  for (var e = n.geometry.coordinates.length, t = [], k = 0; k < e; k++) {
-    var r = n.geometry.coordinates[k];
-    fi(r[0], r[r.length - 1]) || r.push(r[0]);
+  for (var e = n.geometry.coordinates.length, t = [], I = 0; I < e; I++) {
+    var r = n.geometry.coordinates[I];
+    di(r[0], r[r.length - 1]) || r.push(r[0]);
     for (var i = 0; i < r.length - 1; i++)
       t.push(r[i]);
   }
-  if (!_x(t))
+  if (!Tx(t))
     throw new Error(
       "The input polygon may not have duplicate vertices (except for the first and last vertex of each ring)"
     );
-  var a = t.length, l = mx(
+  var a = t.length, l = Mx(
     n,
-    function(re, ee, te, se, fe, Z, Fe, _e, ae, Y, Ie, Ne) {
+    function(re, ee, te, se, fe, Z, Be, _e, ae, Y, ke, Pe) {
       return [
         re,
         ee,
@@ -21058,42 +21493,42 @@ function px(n) {
         se,
         fe,
         Z,
-        Fe,
+        Be,
         _e,
         ae,
         Y,
-        Ie,
-        Ne
+        ke,
+        Pe
       ];
     }
   ), u = l.length;
   if (u == 0) {
-    for (var B = [], k = 0; k < e; k++)
+    for (var B = [], I = 0; I < e; I++)
       B.push(
-        pe([n.geometry.coordinates[k]], {
+        pe([n.geometry.coordinates[I]], {
           parent: -1,
-          winding: yx(n.geometry.coordinates[k])
+          winding: Px(n.geometry.coordinates[I])
         })
       );
     let re = ce(B);
     return J(re), W(re), re;
   }
-  for (var f = [], g = [], k = 0; k < e; k++) {
+  for (var f = [], g = [], I = 0; I < e; I++) {
     f.push([]);
-    for (var i = 0; i < n.geometry.coordinates[k].length - 1; i++)
-      f[k].push([
-        new uh(
-          n.geometry.coordinates[k][xr(i + 1, n.geometry.coordinates[k].length - 1)],
+    for (var i = 0; i < n.geometry.coordinates[I].length - 1; i++)
+      f[I].push([
+        new gh(
+          n.geometry.coordinates[I][Er(i + 1, n.geometry.coordinates[I].length - 1)],
           1,
-          [k, i],
-          [k, xr(i + 1, n.geometry.coordinates[k].length - 1)],
+          [I, i],
+          [I, Er(i + 1, n.geometry.coordinates[I].length - 1)],
           void 0
         )
       ]), g.push(
-        new ch(
-          n.geometry.coordinates[k][i],
-          [k, xr(i - 1, n.geometry.coordinates[k].length - 1)],
-          [k, i],
+        new dh(
+          n.geometry.coordinates[I][i],
+          [I, Er(i - 1, n.geometry.coordinates[I].length - 1)],
+          [I, i],
           void 0,
           void 0,
           !1,
@@ -21101,133 +21536,133 @@ function px(n) {
         )
       );
   }
-  for (var k = 0; k < u; k++)
-    f[l[k][1]][l[k][2]].push(
-      new uh(
-        l[k][0],
-        l[k][5],
-        [l[k][1], l[k][2]],
-        [l[k][6], l[k][7]],
+  for (var I = 0; I < u; I++)
+    f[l[I][1]][l[I][2]].push(
+      new gh(
+        l[I][0],
+        l[I][5],
+        [l[I][1], l[I][2]],
+        [l[I][6], l[I][7]],
         void 0
       )
-    ), l[k][11] && g.push(
-      new ch(
-        l[k][0],
-        [l[k][1], l[k][2]],
-        [l[k][6], l[k][7]],
+    ), l[I][11] && g.push(
+      new dh(
+        l[I][0],
+        [l[I][1], l[I][2]],
+        [l[I][6], l[I][7]],
         void 0,
         void 0,
         !0,
         !0
       )
     );
-  for (var d = g.length, k = 0; k < f.length; k++)
-    for (var i = 0; i < f[k].length; i++)
-      f[k][i].sort(function(ee, te) {
+  for (var d = g.length, I = 0; I < f.length; I++)
+    for (var i = 0; i < f[I].length; i++)
+      f[I][i].sort(function(ee, te) {
         return ee.param < te.param ? -1 : 1;
       });
-  for (var m = [], k = 0; k < d; k++)
+  for (var m = [], I = 0; I < d; I++)
     m.push({
-      minX: g[k].coord[0],
-      minY: g[k].coord[1],
-      maxX: g[k].coord[0],
-      maxY: g[k].coord[1],
-      index: k
+      minX: g[I].coord[0],
+      minY: g[I].coord[1],
+      maxX: g[I].coord[0],
+      maxY: g[I].coord[1],
+      index: I
     });
-  var p = new Dr();
+  var p = new Fr();
   p.load(m);
-  for (var k = 0; k < f.length; k++)
-    for (var i = 0; i < f[k].length; i++)
-      for (var y = 0; y < f[k][i].length; y++) {
+  for (var I = 0; I < f.length; I++)
+    for (var i = 0; i < f[I].length; i++)
+      for (var y = 0; y < f[I][i].length; y++) {
         let ee;
-        y == f[k][i].length - 1 ? ee = f[k][xr(i + 1, n.geometry.coordinates[k].length - 1)][0].coord : ee = f[k][i][y + 1].coord;
+        y == f[I][i].length - 1 ? ee = f[I][Er(i + 1, n.geometry.coordinates[I].length - 1)][0].coord : ee = f[I][i][y + 1].coord;
         var w = p.search({
           minX: ee[0],
           minY: ee[1],
           maxX: ee[0],
           maxY: ee[1]
         })[0];
-        f[k][i][y].nxtIsectAlongEdgeIn = w.index;
+        f[I][i][y].nxtIsectAlongEdgeIn = w.index;
       }
-  for (var k = 0; k < f.length; k++)
-    for (var i = 0; i < f[k].length; i++)
-      for (var y = 0; y < f[k][i].length; y++) {
-        let te = f[k][i][y].coord;
+  for (var I = 0; I < f.length; I++)
+    for (var i = 0; i < f[I].length; i++)
+      for (var y = 0; y < f[I][i].length; y++) {
+        let te = f[I][i][y].coord;
         var w = p.search({
           minX: te[0],
           minY: te[1],
           maxX: te[0],
           maxY: te[1]
         })[0], b = w.index;
-        b < a ? g[b].nxtIsectAlongRingAndEdge2 = f[k][i][y].nxtIsectAlongEdgeIn : fi(
+        b < a ? g[b].nxtIsectAlongRingAndEdge2 = f[I][i][y].nxtIsectAlongEdgeIn : di(
           g[b].ringAndEdge1,
-          f[k][i][y].ringAndEdgeIn
-        ) ? g[b].nxtIsectAlongRingAndEdge1 = f[k][i][y].nxtIsectAlongEdgeIn : g[b].nxtIsectAlongRingAndEdge2 = f[k][i][y].nxtIsectAlongEdgeIn;
+          f[I][i][y].ringAndEdgeIn
+        ) ? g[b].nxtIsectAlongRingAndEdge1 = f[I][i][y].nxtIsectAlongEdgeIn : g[b].nxtIsectAlongRingAndEdge2 = f[I][i][y].nxtIsectAlongEdgeIn;
       }
-  for (var M = [], k = 0, i = 0; i < e; i++) {
-    for (var S = k, y = 0; y < n.geometry.coordinates[i].length - 1; y++)
-      g[k].coord[0] < g[S].coord[0] && (S = k), k++;
-    for (var N = g[S].nxtIsectAlongRingAndEdge2, y = 0; y < g.length; y++)
+  for (var k = [], I = 0, i = 0; i < e; i++) {
+    for (var S = I, y = 0; y < n.geometry.coordinates[i].length - 1; y++)
+      g[I].coord[0] < g[S].coord[0] && (S = I), I++;
+    for (var P = g[S].nxtIsectAlongRingAndEdge2, y = 0; y < g.length; y++)
       if (g[y].nxtIsectAlongRingAndEdge1 == S || g[y].nxtIsectAlongRingAndEdge2 == S) {
-        var P = y;
+        var N = y;
         break;
       }
-    var A = ks(
+    var A = Ms(
       [
-        g[P].coord,
+        g[N].coord,
         g[S].coord,
-        g[N].coord
+        g[P].coord
       ],
       !0
     ) ? 1 : -1;
-    M.push({ isect: S, parent: -1, winding: A });
+    k.push({ isect: S, parent: -1, winding: A });
   }
-  M.sort(function(Q, re) {
+  k.sort(function(Q, re) {
     return g[Q.isect].coord > g[re.isect].coord ? -1 : 1;
   });
-  for (var B = []; M.length > 0; ) {
-    var F = M.pop(), C = F.isect, L = F.parent, T = F.winding, D = B.length, z = [g[C].coord], U = C;
+  for (var B = []; k.length > 0; ) {
+    var F = k.pop(), C = F.isect, L = F.parent, T = F.winding, D = B.length, z = [g[C].coord], q = C;
     if (g[C].ringAndEdge1Walkable)
       var X = g[C].ringAndEdge1, O = g[C].nxtIsectAlongRingAndEdge1;
     else
       var X = g[C].ringAndEdge2, O = g[C].nxtIsectAlongRingAndEdge2;
-    for (; !fi(g[C].coord, g[O].coord); ) {
+    for (; !di(g[C].coord, g[O].coord); ) {
       z.push(g[O].coord);
-      for (var H = void 0, k = 0; k < M.length; k++)
-        if (M[k].isect == O) {
-          H = k;
+      for (var U = void 0, I = 0; I < k.length; I++)
+        if (k[I].isect == O) {
+          U = I;
           break;
         }
-      if (H != null && M.splice(H, 1), fi(X, g[O].ringAndEdge1)) {
+      if (U != null && k.splice(U, 1), di(X, g[O].ringAndEdge1)) {
         if (X = g[O].ringAndEdge2, g[O].ringAndEdge2Walkable = !1, g[O].ringAndEdge1Walkable) {
-          var q = {
+          var H = {
             isect: O
           };
-          ks(
+          Ms(
             [
-              g[U].coord,
+              g[q].coord,
               g[O].coord,
               g[g[O].nxtIsectAlongRingAndEdge2].coord
             ],
             T == 1
-          ) ? (q.parent = L, q.winding = -T) : (q.parent = D, q.winding = T), M.push(q);
+          ) ? (H.parent = L, H.winding = -T) : (H.parent = D, H.winding = T), k.push(H);
         }
-        U = O, O = g[O].nxtIsectAlongRingAndEdge2;
+        q = O, O = g[O].nxtIsectAlongRingAndEdge2;
       } else {
         if (X = g[O].ringAndEdge1, g[O].ringAndEdge1Walkable = !1, g[O].ringAndEdge2Walkable) {
-          var q = {
+          var H = {
             isect: O
           };
-          ks(
+          Ms(
             [
-              g[U].coord,
+              g[q].coord,
               g[O].coord,
               g[g[O].nxtIsectAlongRingAndEdge1].coord
             ],
             T == 1
-          ) ? (q.parent = L, q.winding = -T) : (q.parent = D, q.winding = T), M.push(q);
+          ) ? (H.parent = L, H.winding = -T) : (H.parent = D, H.winding = T), k.push(H);
         }
-        U = O, O = g[O].nxtIsectAlongRingAndEdge1;
+        q = O, O = g[O].nxtIsectAlongRingAndEdge1;
       }
     }
     z.push(g[O].coord), B.push(
@@ -21251,7 +21686,7 @@ function px(n) {
             Q.features[re[ee]].geometry.coordinates[0][0],
             Q.features[fe],
             { ignoreBoundary: !0 }
-          ) && Ti(Q.features[fe]) < se && (te = fe);
+          ) && Ri(Q.features[fe]) < se && (te = fe);
         Q.features[re[ee]].properties.parent = te;
       }
   }
@@ -21271,32 +21706,32 @@ function px(n) {
   }
   return V;
 }
-var uh = class {
+var gh = class {
   // The next intersection when following the incomming edge (so not when following ringAndEdgeOut!)
   // Constructor for (ring- or intersection-) pseudo-vertices.
   constructor(n, e, t, r, i) {
     this.coord = n, this.param = e, this.ringAndEdgeIn = t, this.ringAndEdgeOut = r, this.nxtIsectAlongEdgeIn = i;
   }
-}, ch = class {
+}, dh = class {
   // Constructor for an intersection. There are two intersection-pseudo-vertices per self-intersection and one ring-pseudo-vertex per ring-vertex-intersection. Their labels 1 and 2 are not assigned a particular meaning but are permanent once given.
   constructor(n, e, t, r, i, a, l) {
     this.coord = n, this.ringAndEdge1 = e, this.ringAndEdge2 = t, this.nxtIsectAlongRingAndEdge1 = r, this.nxtIsectAlongRingAndEdge2 = i, this.ringAndEdge1Walkable = a, this.ringAndEdge2Walkable = l;
   }
 };
-function ks(n, e) {
+function Ms(n, e) {
   if (typeof e > "u" && (e = !0), n.length != 3)
     throw new Error("This function requires an array of three points [x,y]");
   var t = (n[1][0] - n[0][0]) * (n[2][1] - n[0][1]) - (n[1][1] - n[0][1]) * (n[2][0] - n[0][0]);
   return t >= 0 == e;
 }
-function yx(n) {
+function Px(n) {
   for (var e = 0, t = 0; t < n.length - 1; t++)
     n[t][0] < n[e][0] && (e = t);
-  if (ks(
+  if (Ms(
     [
-      n[xr(e - 1, n.length - 1)],
+      n[Er(e - 1, n.length - 1)],
       n[e],
-      n[xr(e + 1, n.length - 1)]
+      n[Er(e + 1, n.length - 1)]
     ],
     !0
   ))
@@ -21305,19 +21740,19 @@ function yx(n) {
     var r = -1;
   return r;
 }
-function fi(n, e) {
+function di(n, e) {
   if (!n || !e || n.length != e.length) return !1;
   for (var t = 0, r = n.length; t < r; t++)
     if (n[t] instanceof Array && e[t] instanceof Array) {
-      if (!fi(n[t], e[t])) return !1;
+      if (!di(n[t], e[t])) return !1;
     } else if (n[t] != e[t])
       return !1;
   return !0;
 }
-function xr(n, e) {
+function Er(n, e) {
   return (n % e + e) % e;
 }
-function _x(n) {
+function Tx(n) {
   for (var e = {}, t = 1, r = 0, i = n.length; r < i; ++r) {
     if (Object.prototype.hasOwnProperty.call(e, n[r].toString())) {
       t = 0;
@@ -21327,29 +21762,29 @@ function _x(n) {
   }
   return t;
 }
-function wx(n) {
+function Ax(n) {
   var e = [];
-  return ot(n, function(t) {
-    t.geometry.type === "Polygon" && Le(px(t), function(r) {
+  return at(n, function(t) {
+    t.geometry.type === "Polygon" && Le(Nx(t), function(r) {
       e.push(pe(r.geometry.coordinates, t.properties));
     });
   }), ce(e);
 }
-function hh(n) {
+function mh(n) {
   return function() {
     return n;
   };
 }
-function xx(n) {
+function Rx(n) {
   return n[0];
 }
-function Ex(n) {
+function Ox(n) {
   return n[1];
 }
-function Us() {
+function Ys() {
   this._ = null;
 }
-function ao(n) {
+function uo(n) {
   n.U = // parent node
   n.C = // color - true for red, false for black
   n.L = // left node
@@ -21357,8 +21792,8 @@ function ao(n) {
   n.P = // previous node
   n.N = null;
 }
-Us.prototype = {
-  constructor: Us,
+Ys.prototype = {
+  constructor: Ys,
   insert: function(n, e) {
     var t, r, i;
     if (n) {
@@ -21368,15 +21803,15 @@ Us.prototype = {
       } else
         n.R = e;
       t = n;
-    } else this._ ? (n = fh(this._), e.P = null, e.N = n, n.P = n.L = e, t = n) : (e.P = e.N = null, this._ = e, t = null);
+    } else this._ ? (n = vh(this._), e.P = null, e.N = n, n.P = n.L = e, t = n) : (e.P = e.N = null, this._ = e, t = null);
     for (e.L = e.R = null, e.U = t, e.C = !0, n = e; t && t.C; )
-      r = t.U, t === r.L ? (i = r.R, i && i.C ? (t.C = i.C = !1, r.C = !0, n = r) : (n === t.R && (Qr(this, t), n = t, t = n.U), t.C = !1, r.C = !0, jr(this, r))) : (i = r.L, i && i.C ? (t.C = i.C = !1, r.C = !0, n = r) : (n === t.L && (jr(this, t), n = t, t = n.U), t.C = !1, r.C = !0, Qr(this, r))), t = n.U;
+      r = t.U, t === r.L ? (i = r.R, i && i.C ? (t.C = i.C = !1, r.C = !0, n = r) : (n === t.R && (jr(this, t), n = t, t = n.U), t.C = !1, r.C = !0, ei(this, r))) : (i = r.L, i && i.C ? (t.C = i.C = !1, r.C = !0, n = r) : (n === t.L && (ei(this, t), n = t, t = n.U), t.C = !1, r.C = !0, jr(this, r))), t = n.U;
     this._.C = !1;
   },
   remove: function(n) {
     n.N && (n.N.P = n.P), n.P && (n.P.N = n.N), n.N = n.P = null;
     var e = n.U, t, r = n.L, i = n.R, a, l;
-    if (r ? i ? a = fh(i) : a = r : a = i, e ? e.L === n ? e.L = a : e.R = a : this._ = a, r && i ? (l = a.C, a.C = n.C, a.L = r, r.U = a, a !== i ? (e = a.U, a.U = n.U, n = a.R, e.L = n, a.R = i, i.U = a) : (a.U = e, e = a, n = a.R)) : (l = n.C, n = a), n && (n.U = e), !l) {
+    if (r ? i ? a = vh(i) : a = r : a = i, e ? e.L === n ? e.L = a : e.R = a : this._ = a, r && i ? (l = a.C, a.C = n.C, a.L = r, r.U = a, a !== i ? (e = a.U, a.U = n.U, n = a.R, e.L = n, a.R = i, i.U = a) : (a.U = e, e = a, n = a.R)) : (l = n.C, n = a), n && (n.U = e), !l) {
       if (n && n.C) {
         n.C = !1;
         return;
@@ -21384,12 +21819,12 @@ Us.prototype = {
       do {
         if (n === this._) break;
         if (n === e.L) {
-          if (t = e.R, t.C && (t.C = !1, e.C = !0, Qr(this, e), t = e.R), t.L && t.L.C || t.R && t.R.C) {
-            (!t.R || !t.R.C) && (t.L.C = !1, t.C = !0, jr(this, t), t = e.R), t.C = e.C, e.C = t.R.C = !1, Qr(this, e), n = this._;
+          if (t = e.R, t.C && (t.C = !1, e.C = !0, jr(this, e), t = e.R), t.L && t.L.C || t.R && t.R.C) {
+            (!t.R || !t.R.C) && (t.L.C = !1, t.C = !0, ei(this, t), t = e.R), t.C = e.C, e.C = t.R.C = !1, jr(this, e), n = this._;
             break;
           }
-        } else if (t = e.L, t.C && (t.C = !1, e.C = !0, jr(this, e), t = e.L), t.L && t.L.C || t.R && t.R.C) {
-          (!t.L || !t.L.C) && (t.R.C = !1, t.C = !0, Qr(this, t), t = e.L), t.C = e.C, e.C = t.L.C = !1, jr(this, e), n = this._;
+        } else if (t = e.L, t.C && (t.C = !1, e.C = !0, ei(this, e), t = e.L), t.L && t.L.C || t.R && t.R.C) {
+          (!t.L || !t.L.C) && (t.R.C = !1, t.C = !0, jr(this, t), t = e.L), t.C = e.C, e.C = t.L.C = !1, ei(this, e), n = this._;
           break;
         }
         t.C = !0, n = e, e = e.U;
@@ -21398,30 +21833,30 @@ Us.prototype = {
     }
   }
 };
-function Qr(n, e) {
+function jr(n, e) {
   var t = e, r = e.R, i = t.U;
   i ? i.L === t ? i.L = r : i.R = r : n._ = r, r.U = i, t.U = r, t.R = r.L, t.R && (t.R.U = t), r.L = t;
 }
-function jr(n, e) {
+function ei(n, e) {
   var t = e, r = e.L, i = t.U;
   i ? i.L === t ? i.L = r : i.R = r : n._ = r, r.U = i, t.U = r, t.L = r.R, t.L && (t.L.U = t), r.R = t;
 }
-function fh(n) {
+function vh(n) {
   for (; n.L; ) n = n.L;
   return n;
 }
-function gi(n, e, t, r) {
-  var i = [null, null], a = dt.push(i) - 1;
-  return i.left = n, i.right = e, t && Hs(i, n, e, t), r && Hs(i, e, n, r), Nt[n.index].halfedges.push(a), Nt[e.index].halfedges.push(a), i;
+function mi(n, e, t, r) {
+  var i = [null, null], a = mt.push(i) - 1;
+  return i.left = n, i.right = e, t && Xs(i, n, e, t), r && Xs(i, e, n, r), Tt[n.index].halfedges.push(a), Tt[e.index].halfedges.push(a), i;
 }
-function ei(n, e, t) {
+function ti(n, e, t) {
   var r = [e, t];
   return r.left = n, r;
 }
-function Hs(n, e, t, r) {
+function Xs(n, e, t, r) {
   !n[0] && !n[1] ? (n[0] = r, n.left = e, n.right = t) : n.left === t ? n[1] = r : n[0] = r;
 }
-function bx(n, e, t, r, i) {
+function Dx(n, e, t, r, i) {
   var a = n[0], l = n[1], u = a[0], f = a[1], g = l[0], d = l[1], m = 0, p = 1, y = g - u, w = d - f, b;
   if (b = e - u, !(!y && b > 0)) {
     if (b /= y, y < 0) {
@@ -21461,10 +21896,10 @@ function bx(n, e, t, r, i) {
     }
   }
 }
-function Cx(n, e, t, r, i) {
+function Fx(n, e, t, r, i) {
   var a = n[1];
   if (a) return !0;
-  var l = n[0], u = n.left, f = n.right, g = u[0], d = u[1], m = f[0], p = f[1], y = (g + m) / 2, w = (d + p) / 2, b, M;
+  var l = n[0], u = n.left, f = n.right, g = u[0], d = u[1], m = f[0], p = f[1], y = (g + m) / 2, w = (d + p) / 2, b, k;
   if (p === d) {
     if (y < e || y >= r) return;
     if (g > m) {
@@ -21476,178 +21911,178 @@ function Cx(n, e, t, r, i) {
       else if (l[1] < t) return;
       a = [y, t];
     }
-  } else if (b = (g - m) / (p - d), M = w - b * y, b < -1 || b > 1)
+  } else if (b = (g - m) / (p - d), k = w - b * y, b < -1 || b > 1)
     if (g > m) {
-      if (!l) l = [(t - M) / b, t];
+      if (!l) l = [(t - k) / b, t];
       else if (l[1] >= i) return;
-      a = [(i - M) / b, i];
+      a = [(i - k) / b, i];
     } else {
-      if (!l) l = [(i - M) / b, i];
+      if (!l) l = [(i - k) / b, i];
       else if (l[1] < t) return;
-      a = [(t - M) / b, t];
+      a = [(t - k) / b, t];
     }
   else if (d < p) {
-    if (!l) l = [e, b * e + M];
+    if (!l) l = [e, b * e + k];
     else if (l[0] >= r) return;
-    a = [r, b * r + M];
+    a = [r, b * r + k];
   } else {
-    if (!l) l = [r, b * r + M];
+    if (!l) l = [r, b * r + k];
     else if (l[0] < e) return;
-    a = [e, b * e + M];
+    a = [e, b * e + k];
   }
   return n[0] = l, n[1] = a, !0;
 }
-function Sx(n, e, t, r) {
-  for (var i = dt.length, a; i--; )
-    (!Cx(a = dt[i], n, e, t, r) || !bx(a, n, e, t, r) || !(Math.abs(a[0][0] - a[1][0]) > ze || Math.abs(a[0][1] - a[1][1]) > ze)) && delete dt[i];
+function Bx(n, e, t, r) {
+  for (var i = mt.length, a; i--; )
+    (!Fx(a = mt[i], n, e, t, r) || !Dx(a, n, e, t, r) || !(Math.abs(a[0][0] - a[1][0]) > Ge || Math.abs(a[0][1] - a[1][1]) > Ge)) && delete mt[i];
 }
-function kx(n) {
-  return Nt[n.index] = {
+function zx(n) {
+  return Tt[n.index] = {
     site: n,
     halfedges: []
   };
 }
-function Ix(n, e) {
+function Gx(n, e) {
   var t = n.site, r = e.left, i = e.right;
   return t === i && (i = r, r = t), i ? Math.atan2(i[1] - r[1], i[0] - r[0]) : (t === r ? (r = e[1], i = e[0]) : (r = e[0], i = e[1]), Math.atan2(r[0] - i[0], i[1] - r[1]));
 }
-function rd(n, e) {
+function od(n, e) {
   return e[+(e.left !== n.site)];
 }
-function Mx(n, e) {
+function qx(n, e) {
   return e[+(e.left === n.site)];
 }
-function Lx() {
-  for (var n = 0, e = Nt.length, t, r, i, a; n < e; ++n)
-    if ((t = Nt[n]) && (a = (r = t.halfedges).length)) {
+function Hx() {
+  for (var n = 0, e = Tt.length, t, r, i, a; n < e; ++n)
+    if ((t = Tt[n]) && (a = (r = t.halfedges).length)) {
       var l = new Array(a), u = new Array(a);
-      for (i = 0; i < a; ++i) l[i] = i, u[i] = Ix(t, dt[r[i]]);
+      for (i = 0; i < a; ++i) l[i] = i, u[i] = Gx(t, mt[r[i]]);
       for (l.sort(function(f, g) {
         return u[g] - u[f];
       }), i = 0; i < a; ++i) u[i] = r[l[i]];
       for (i = 0; i < a; ++i) r[i] = u[i];
     }
 }
-function Px(n, e, t, r) {
-  var i = Nt.length, a, l, u, f, g, d, m, p, y, w, b, M, k = !0;
+function Ux(n, e, t, r) {
+  var i = Tt.length, a, l, u, f, g, d, m, p, y, w, b, k, I = !0;
   for (a = 0; a < i; ++a)
-    if (l = Nt[a]) {
+    if (l = Tt[a]) {
       for (u = l.site, g = l.halfedges, f = g.length; f--; )
-        dt[g[f]] || g.splice(f, 1);
+        mt[g[f]] || g.splice(f, 1);
       for (f = 0, d = g.length; f < d; )
-        w = Mx(l, dt[g[f]]), b = w[0], M = w[1], m = rd(l, dt[g[++f % d]]), p = m[0], y = m[1], (Math.abs(b - p) > ze || Math.abs(M - y) > ze) && (g.splice(f, 0, dt.push(ei(
+        w = qx(l, mt[g[f]]), b = w[0], k = w[1], m = od(l, mt[g[++f % d]]), p = m[0], y = m[1], (Math.abs(b - p) > Ge || Math.abs(k - y) > Ge) && (g.splice(f, 0, mt.push(ti(
           u,
           w,
-          Math.abs(b - n) < ze && r - M > ze ? [n, Math.abs(p - n) < ze ? y : r] : Math.abs(M - r) < ze && t - b > ze ? [Math.abs(y - r) < ze ? p : t, r] : Math.abs(b - t) < ze && M - e > ze ? [t, Math.abs(p - t) < ze ? y : e] : Math.abs(M - e) < ze && b - n > ze ? [Math.abs(y - e) < ze ? p : n, e] : null
+          Math.abs(b - n) < Ge && r - k > Ge ? [n, Math.abs(p - n) < Ge ? y : r] : Math.abs(k - r) < Ge && t - b > Ge ? [Math.abs(y - r) < Ge ? p : t, r] : Math.abs(b - t) < Ge && k - e > Ge ? [t, Math.abs(p - t) < Ge ? y : e] : Math.abs(k - e) < Ge && b - n > Ge ? [Math.abs(y - e) < Ge ? p : n, e] : null
         )) - 1), ++d);
-      d && (k = !1);
+      d && (I = !1);
     }
-  if (k) {
-    var S, N, P, A = 1 / 0;
-    for (a = 0, k = null; a < i; ++a)
-      (l = Nt[a]) && (u = l.site, S = u[0] - n, N = u[1] - e, P = S * S + N * N, P < A && (A = P, k = l));
-    if (k) {
+  if (I) {
+    var S, P, N, A = 1 / 0;
+    for (a = 0, I = null; a < i; ++a)
+      (l = Tt[a]) && (u = l.site, S = u[0] - n, P = u[1] - e, N = S * S + P * P, N < A && (A = N, I = l));
+    if (I) {
       var B = [n, e], F = [n, r], C = [t, r], L = [t, e];
-      k.halfedges.push(
-        dt.push(ei(u = k.site, B, F)) - 1,
-        dt.push(ei(u, F, C)) - 1,
-        dt.push(ei(u, C, L)) - 1,
-        dt.push(ei(u, L, B)) - 1
+      I.halfedges.push(
+        mt.push(ti(u = I.site, B, F)) - 1,
+        mt.push(ti(u, F, C)) - 1,
+        mt.push(ti(u, C, L)) - 1,
+        mt.push(ti(u, L, B)) - 1
       );
     }
   }
   for (a = 0; a < i; ++a)
-    (l = Nt[a]) && (l.halfedges.length || delete Nt[a]);
+    (l = Tt[a]) && (l.halfedges.length || delete Tt[a]);
 }
-var id = [], Cl;
-function Nx() {
-  ao(this), this.x = this.y = this.arc = this.site = this.cy = null;
+var ad = [], Il;
+function Yx() {
+  uo(this), this.x = this.y = this.arc = this.site = this.cy = null;
 }
-function Er(n) {
+function br(n) {
   var e = n.P, t = n.N;
   if (!(!e || !t)) {
     var r = e.site, i = n.site, a = t.site;
     if (r !== a) {
       var l = i[0], u = i[1], f = r[0] - l, g = r[1] - u, d = a[0] - l, m = a[1] - u, p = 2 * (f * m - g * d);
       if (!(p >= -1e-12)) {
-        var y = f * f + g * g, w = d * d + m * m, b = (m * y - g * w) / p, M = (f * w - d * y) / p, k = id.pop() || new Nx();
-        k.arc = n, k.site = i, k.x = b + l, k.y = (k.cy = M + u) + Math.sqrt(b * b + M * M), n.circle = k;
-        for (var S = null, N = Ii._; N; )
-          if (k.y < N.y || k.y === N.y && k.x <= N.x)
-            if (N.L) N = N.L;
+        var y = f * f + g * g, w = d * d + m * m, b = (m * y - g * w) / p, k = (f * w - d * y) / p, I = ad.pop() || new Yx();
+        I.arc = n, I.site = i, I.x = b + l, I.y = (I.cy = k + u) + Math.sqrt(b * b + k * k), n.circle = I;
+        for (var S = null, P = Li._; P; )
+          if (I.y < P.y || I.y === P.y && I.x <= P.x)
+            if (P.L) P = P.L;
             else {
-              S = N.P;
+              S = P.P;
               break;
             }
-          else if (N.R) N = N.R;
+          else if (P.R) P = P.R;
           else {
-            S = N;
+            S = P;
             break;
           }
-        Ii.insert(S, k), S || (Cl = k);
+        Li.insert(S, I), S || (Il = I);
       }
     }
   }
 }
-function Cr(n) {
+function Sr(n) {
   var e = n.circle;
-  e && (e.P || (Cl = e.N), Ii.remove(e), id.push(e), ao(e), n.circle = null);
+  e && (e.P || (Il = e.N), Li.remove(e), ad.push(e), uo(e), n.circle = null);
 }
-var sd = [];
-function Tx() {
-  ao(this), this.edge = this.site = this.circle = null;
+var ld = [];
+function Xx() {
+  uo(this), this.edge = this.site = this.circle = null;
 }
-function gh(n) {
-  var e = sd.pop() || new Tx();
+function ph(n) {
+  var e = ld.pop() || new Xx();
   return e.site = n, e;
 }
-function ta(n) {
-  Cr(n), Sr.remove(n), sd.push(n), ao(n);
+function ra(n) {
+  Sr(n), Ir.remove(n), ld.push(n), uo(n);
 }
-function Ax(n) {
+function Vx(n) {
   var e = n.circle, t = e.x, r = e.cy, i = [t, r], a = n.P, l = n.N, u = [n];
-  ta(n);
-  for (var f = a; f.circle && Math.abs(t - f.circle.x) < ze && Math.abs(r - f.circle.cy) < ze; )
-    a = f.P, u.unshift(f), ta(f), f = a;
-  u.unshift(f), Cr(f);
-  for (var g = l; g.circle && Math.abs(t - g.circle.x) < ze && Math.abs(r - g.circle.cy) < ze; )
-    l = g.N, u.push(g), ta(g), g = l;
-  u.push(g), Cr(g);
+  ra(n);
+  for (var f = a; f.circle && Math.abs(t - f.circle.x) < Ge && Math.abs(r - f.circle.cy) < Ge; )
+    a = f.P, u.unshift(f), ra(f), f = a;
+  u.unshift(f), Sr(f);
+  for (var g = l; g.circle && Math.abs(t - g.circle.x) < Ge && Math.abs(r - g.circle.cy) < Ge; )
+    l = g.N, u.push(g), ra(g), g = l;
+  u.push(g), Sr(g);
   var d = u.length, m;
   for (m = 1; m < d; ++m)
-    g = u[m], f = u[m - 1], Hs(g.edge, f.site, g.site, i);
-  f = u[0], g = u[d - 1], g.edge = gi(f.site, g.site, null, i), Er(f), Er(g);
+    g = u[m], f = u[m - 1], Xs(g.edge, f.site, g.site, i);
+  f = u[0], g = u[d - 1], g.edge = mi(f.site, g.site, null, i), br(f), br(g);
 }
-function Rx(n) {
-  for (var e = n[0], t = n[1], r, i, a, l, u = Sr._; u; )
-    if (a = od(u, t) - e, a > ze) u = u.L;
-    else if (l = e - Ox(u, t), l > ze) {
+function Wx(n) {
+  for (var e = n[0], t = n[1], r, i, a, l, u = Ir._; u; )
+    if (a = ud(u, t) - e, a > Ge) u = u.L;
+    else if (l = e - $x(u, t), l > Ge) {
       if (!u.R) {
         r = u;
         break;
       }
       u = u.R;
     } else {
-      a > -ze ? (r = u.P, i = u) : l > -ze ? (r = u, i = u.N) : r = i = u;
+      a > -Ge ? (r = u.P, i = u) : l > -Ge ? (r = u, i = u.N) : r = i = u;
       break;
     }
-  kx(n);
-  var f = gh(n);
-  if (Sr.insert(r, f), !(!r && !i)) {
+  zx(n);
+  var f = ph(n);
+  if (Ir.insert(r, f), !(!r && !i)) {
     if (r === i) {
-      Cr(r), i = gh(r.site), Sr.insert(f, i), f.edge = i.edge = gi(r.site, f.site), Er(r), Er(i);
+      Sr(r), i = ph(r.site), Ir.insert(f, i), f.edge = i.edge = mi(r.site, f.site), br(r), br(i);
       return;
     }
     if (!i) {
-      f.edge = gi(r.site, f.site);
+      f.edge = mi(r.site, f.site);
       return;
     }
-    Cr(r), Cr(i);
-    var g = r.site, d = g[0], m = g[1], p = n[0] - d, y = n[1] - m, w = i.site, b = w[0] - d, M = w[1] - m, k = 2 * (p * M - y * b), S = p * p + y * y, N = b * b + M * M, P = [(M * S - y * N) / k + d, (p * N - b * S) / k + m];
-    Hs(i.edge, g, w, P), f.edge = gi(g, n, null, P), i.edge = gi(n, w, null, P), Er(r), Er(i);
+    Sr(r), Sr(i);
+    var g = r.site, d = g[0], m = g[1], p = n[0] - d, y = n[1] - m, w = i.site, b = w[0] - d, k = w[1] - m, I = 2 * (p * k - y * b), S = p * p + y * y, P = b * b + k * k, N = [(k * S - y * P) / I + d, (p * P - b * S) / I + m];
+    Xs(i.edge, g, w, N), f.edge = mi(g, n, null, N), i.edge = mi(n, w, null, N), br(r), br(i);
   }
 }
-function od(n, e) {
+function ud(n, e) {
   var t = n.site, r = t[0], i = t[1], a = i - e;
   if (!a) return r;
   var l = n.P;
@@ -21658,41 +22093,41 @@ function od(n, e) {
   var d = u - r, m = 1 / a - 1 / g, p = d / g;
   return m ? (-p + Math.sqrt(p * p - 2 * m * (d * d / (-2 * g) - f + g / 2 + i - a / 2))) / m + r : (r + u) / 2;
 }
-function Ox(n, e) {
+function $x(n, e) {
   var t = n.N;
-  if (t) return od(t, e);
+  if (t) return ud(t, e);
   var r = n.site;
   return r[1] === e ? r[0] : 1 / 0;
 }
-var ze = 1e-6, Sr, Nt, Ii, dt;
-function Dx(n, e, t) {
+var Ge = 1e-6, Ir, Tt, Li, mt;
+function Zx(n, e, t) {
   return (n[0] - t[0]) * (e[1] - n[1]) - (n[0] - e[0]) * (t[1] - n[1]);
 }
-function Fx(n, e) {
+function Kx(n, e) {
   return e[1] - n[1] || e[0] - n[0];
 }
-function Fa(n, e) {
-  var t = n.sort(Fx).pop(), r, i, a;
-  for (dt = [], Nt = new Array(n.length), Sr = new Us(), Ii = new Us(); ; )
-    if (a = Cl, t && (!a || t[1] < a.y || t[1] === a.y && t[0] < a.x))
-      (t[0] !== r || t[1] !== i) && (Rx(t), r = t[0], i = t[1]), t = n.pop();
+function za(n, e) {
+  var t = n.sort(Kx).pop(), r, i, a;
+  for (mt = [], Tt = new Array(n.length), Ir = new Ys(), Li = new Ys(); ; )
+    if (a = Il, t && (!a || t[1] < a.y || t[1] === a.y && t[0] < a.x))
+      (t[0] !== r || t[1] !== i) && (Wx(t), r = t[0], i = t[1]), t = n.pop();
     else if (a)
-      Ax(a.arc);
+      Vx(a.arc);
     else
       break;
-  if (Lx(), e) {
+  if (Hx(), e) {
     var l = +e[0][0], u = +e[0][1], f = +e[1][0], g = +e[1][1];
-    Sx(l, u, f, g), Px(l, u, f, g);
+    Bx(l, u, f, g), Ux(l, u, f, g);
   }
-  this.edges = dt, this.cells = Nt, Sr = Ii = dt = Nt = null;
+  this.edges = mt, this.cells = Tt, Ir = Li = mt = Tt = null;
 }
-Fa.prototype = {
-  constructor: Fa,
+za.prototype = {
+  constructor: za,
   polygons: function() {
     var n = this.edges;
     return this.cells.map(function(e) {
       var t = e.halfedges.map(function(r) {
-        return rd(e, n[r]);
+        return od(e, n[r]);
       });
       return t.data = e.site.data, t;
     });
@@ -21702,7 +22137,7 @@ Fa.prototype = {
     return this.cells.forEach(function(t, r) {
       if (u = (a = t.halfedges).length)
         for (var i = t.site, a, l = -1, u, f, g = e[a[u - 1]], d = g.left === i ? g.right : g.left; ++l < u; )
-          f = d, g = e[a[l]], d = g.left === i ? g.right : g.left, f && d && r < f.index && r < d.index && Dx(i, f, d) < 0 && n.push([i.data, f.data, d.data]);
+          f = d, g = e[a[l]], d = g.left === i ? g.right : g.left, f && d && r < f.index && r < d.index && Zx(i, f, d) < 0 && n.push([i.data, f.data, d.data]);
     }), n;
   },
   links: function() {
@@ -21722,19 +22157,19 @@ Fa.prototype = {
       u = r.cells[i = a], a = null, u.halfedges.forEach(function(m) {
         var p = r.edges[m], y = p.left;
         if (!((y === u.site || !y) && !(y = p.right))) {
-          var w = n - y[0], b = e - y[1], M = w * w + b * b;
-          M < d && (d = M, a = y.index);
+          var w = n - y[0], b = e - y[1], k = w * w + b * b;
+          k < d && (d = k, a = y.index);
         }
       });
     while (a !== null);
     return r._found = i, t == null || d <= t * t ? u.site : null;
   }
 };
-function Bx() {
-  var n = xx, e = Ex, t = null;
+function Jx() {
+  var n = Rx, e = Ox, t = null;
   function r(i) {
-    return new Fa(i.map(function(a, l) {
-      var u = [Math.round(n(a, l, i) / ze) * ze, Math.round(e(a, l, i) / ze) * ze];
+    return new za(i.map(function(a, l) {
+      var u = [Math.round(n(a, l, i) / Ge) * Ge, Math.round(e(a, l, i) / Ge) * Ge];
       return u.index = l, u.data = a, u;
     }), t);
   }
@@ -21745,101 +22180,101 @@ function Bx() {
   }, r.triangles = function(i) {
     return r(i).triangles();
   }, r.x = function(i) {
-    return arguments.length ? (n = typeof i == "function" ? i : hh(+i), r) : n;
+    return arguments.length ? (n = typeof i == "function" ? i : mh(+i), r) : n;
   }, r.y = function(i) {
-    return arguments.length ? (e = typeof i == "function" ? i : hh(+i), r) : e;
+    return arguments.length ? (e = typeof i == "function" ? i : mh(+i), r) : e;
   }, r.extent = function(i) {
     return arguments.length ? (t = i == null ? null : [[+i[0][0], +i[0][1]], [+i[1][0], +i[1][1]]], r) : t && [[t[0][0], t[0][1]], [t[1][0], t[1][1]]];
   }, r.size = function(i) {
     return arguments.length ? (t = i == null ? null : [[0, 0], [+i[0], +i[1]]], r) : t && [t[1][0] - t[0][0], t[1][1] - t[0][1]];
   }, r;
 }
-function zx(n) {
+function Qx(n) {
   return n = n.slice(), n.push(n[0]), pe([n]);
 }
-function Gx(n, e) {
+function jx(n, e) {
   if (e = e || {}, !Oe(e)) throw new Error("options is invalid");
   const t = e.bbox || [-180, -85, 180, 85];
   if (!n) throw new Error("points is required");
   if (!Array.isArray(t)) throw new Error("bbox is invalid");
-  return Cn(n, "Point", "points"), ce(
-    Bx().x((r) => r.geometry.coordinates[0]).y((r) => r.geometry.coordinates[1]).extent([
+  return Sn(n, "Point", "points"), ce(
+    Jx().x((r) => r.geometry.coordinates[0]).y((r) => r.geometry.coordinates[1]).extent([
       [t[0], t[1]],
       [t[2], t[3]]
     ]).polygons(n.features).map(function(r, i) {
-      return Object.assign(zx(r), {
-        properties: Qs(n.features[i].properties)
+      return Object.assign(Qx(r), {
+        properties: eo(n.features[i].properties)
       });
     })
   );
 }
-function qx(n, e = {}) {
+function eE(n, e = {}) {
   var t;
   const r = !!e.planar, i = (t = e.segment) != null ? t : !1;
   let a = 0, l = 0, u = 0, f = 0;
   const g = [];
-  i ? on(n, (S) => {
-    const [N, P] = mh(
+  i ? an(n, (S) => {
+    const [P, N] = _h(
       S.geometry.coordinates,
       r
-    ), A = dh(S, r);
-    isNaN(N) || isNaN(P) || (a += N, l += P, u += 1, f += A, g.push(Ut(S)));
+    ), A = yh(S, r);
+    isNaN(P) || isNaN(N) || (a += P, l += N, u += 1, f += A, g.push(Ut(S)));
   }) : Le(n, (S) => {
     if (S.geometry.type !== "LineString")
       throw new Error("shold to support MultiLineString?");
-    const [N, P] = mh(
+    const [P, N] = _h(
       S.geometry.coordinates,
       r
-    ), A = dh(S, r);
-    isNaN(N) || isNaN(P) || (a += N, l += P, u += 1, f += A, g.push(Ut(S)));
+    ), A = yh(S, r);
+    isNaN(P) || isNaN(N) || (a += P, l += N, u += 1, f += A, g.push(Ut(S)));
   });
-  const d = Hx(a, l), m = ad(d), p = Yx(
+  const d = nE(a, l), m = cd(d), p = rE(
     a,
     l,
     u
-  ), y = f / u, w = Ut(ce(g)), [b, M] = Me(w);
-  let k;
-  return r ? k = vh(
-    [b, M],
+  ), y = f / u, w = Ut(ce(g)), [b, k] = Me(w);
+  let I;
+  return r ? I = wh(
+    [b, k],
     d,
     y,
     r
-  ) : k = vh(
-    [b, M],
+  ) : I = wh(
+    [b, k],
     m,
     y,
     r
-  ), ke(k, {
+  ), Ie(I, {
     averageLength: y,
     averageX: b,
-    averageY: M,
+    averageY: k,
     bearingAngle: m,
     cartesianAngle: d,
     circularVariance: p,
     countOfLines: u
   });
 }
-function Ux(n) {
+function tE(n) {
   const [e, t] = n[0], [r, i] = n[1], a = r - e, l = i - t;
   return Math.sqrt(Math.pow(a, 2) + Math.pow(l, 2));
 }
-function dh(n, e) {
-  return e ? Ws(
+function yh(n, e) {
+  return e ? Zs(
     n,
     (t, r) => {
       const i = r.geometry.coordinates;
-      return t + Ux(i);
+      return t + tE(i);
     },
     0
-  ) : wl(n, {
+  ) : El(n, {
     units: "meters"
   });
 }
-function ad(n) {
+function cd(n) {
   let e = 90 - n;
   return e > 180 && (e -= 360), e;
 }
-function mh(n, e) {
+function _h(n, e) {
   const t = n[0], r = n[n.length - 1];
   if (e) {
     const [i, a] = t, [l, u] = r, f = l - i, g = u - a, d = Math.sqrt(Math.pow(f, 2) + Math.pow(g, 2));
@@ -21848,20 +22283,20 @@ function mh(n, e) {
     const m = g / d, p = f / d;
     return [m, p];
   } else {
-    const a = ad(En(t, r)) * Math.PI / 180;
+    const a = cd(bn(t, r)) * Math.PI / 180;
     return [Math.sin(a), Math.cos(a)];
   }
 }
-function Hx(n, e) {
+function nE(n, e) {
   let t = 0;
   return Math.abs(e) < 1e-9 ? t = 90 : t = Math.atan2(n, e) * 180 / Math.PI, n >= 0 ? e < 0 && (t += 180) : e < 0 && (t -= 180), t;
 }
-function Yx(n, e, t) {
+function rE(n, e, t) {
   if (t === 0)
     throw new Error("the size of the features set must be greater than 0");
   return 1 - Math.sqrt(Math.pow(n, 2) + Math.pow(e, 2)) / t;
 }
-function vh(n, e, t, r) {
+function wh(n, e, t, r) {
   if (r) {
     const [i, a] = n;
     let l, u, f, g;
@@ -21871,202 +22306,202 @@ function vh(n, e, t, r) {
       [f, g]
     ];
   } else {
-    const i = un(de(n), t / 2, e, {
+    const i = cn(de(n), t / 2, e, {
       units: "meters"
-    }), a = un(de(n), -t / 2, e, {
+    }), a = cn(de(n), -t / 2, e, {
       units: "meters"
     });
     return [Me(a), Me(i)];
   }
 }
-const PC = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const JC = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  along: H0,
-  angle: Y0,
-  applyFilter: js,
-  area: Ti,
-  areaFactors: Ms,
-  azimuthToBearing: Ef,
-  bbox: qe,
-  bboxClip: K0,
-  bboxPolygon: Ai,
-  bearing: En,
-  bearingToAzimuth: Mr,
-  bezierSpline: ev,
-  booleanClockwise: Ls,
-  booleanConcave: tv,
-  booleanContains: Rf,
-  booleanCrosses: Uf,
-  booleanDisjoint: il,
-  booleanEqual: si,
-  booleanIntersects: Hf,
-  booleanOverlap: Ep,
-  booleanParallel: bp,
+  along: nv,
+  angle: rv,
+  applyFilter: to,
+  area: Ri,
+  areaFactors: Ns,
+  azimuthToBearing: Sf,
+  bbox: He,
+  bboxClip: uv,
+  bboxPolygon: Oi,
+  bearing: bn,
+  bearingToAzimuth: Lr,
+  bezierSpline: gv,
+  booleanClockwise: Ps,
+  booleanConcave: dv,
+  booleanContains: Ff,
+  booleanCrosses: Xf,
+  booleanDisjoint: ol,
+  booleanEqual: ai,
+  booleanIntersects: Vf,
+  booleanOverlap: Op,
+  booleanParallel: Dp,
   booleanPointInPolygon: xe,
   booleanPointOnLine: Se,
-  booleanTouches: Sp,
-  booleanValid: Wf,
-  booleanWithin: sl,
-  buffer: cy,
-  center: Ks,
-  centerMean: ll,
-  centerMedian: fy,
-  centerOfMass: cg,
+  booleanTouches: Bp,
+  booleanValid: Kf,
+  booleanWithin: al,
+  buffer: by,
+  center: Qs,
+  centerMean: cl,
+  centerMedian: Sy,
+  centerOfMass: gg,
   centroid: Ut,
-  circle: cl,
-  cleanCoords: Qn,
-  clone: it,
-  cloneProperties: Qs,
-  clusterEach: fl,
-  clusterReduce: dg,
-  clusters: Ny,
-  clustersDbscan: Ty,
-  clustersKmeans: Uy,
-  collect: Hy,
-  collectionOf: Cn,
-  combine: Yy,
-  concave: _1,
-  containsNumber: Wa,
-  convertArea: Va,
-  convertLength: Kn,
-  convex: ug,
-  coordAll: _i,
-  coordEach: Ve,
-  coordReduce: $a,
-  createBins: gl,
-  degreesToRadians: je,
-  destination: un,
-  difference: q1,
-  directionalMean: qx,
-  dissolve: U1,
-  distance: Ge,
-  distanceWeight: Pg,
-  earthRadius: Be,
-  ellipse: Tg,
-  envelope: Ag,
-  explode: to,
-  factors: Vs,
-  feature: Qe,
+  circle: fl,
+  cleanCoords: jn,
+  clone: st,
+  cloneProperties: eo,
+  clusterEach: dl,
+  clusterReduce: pg,
+  clusters: Yy,
+  clustersDbscan: Xy,
+  clustersKmeans: t1,
+  collect: n1,
+  collectionOf: Sn,
+  combine: r1,
+  concave: T1,
+  containsNumber: Za,
+  convertArea: $a,
+  convertLength: Jn,
+  convex: fg,
+  coordAll: xi,
+  coordEach: We,
+  coordReduce: Ka,
+  createBins: ml,
+  degreesToRadians: et,
+  destination: cn,
+  difference: e_,
+  directionalMean: eE,
+  dissolve: t_,
+  distance: qe,
+  distanceWeight: Ag,
+  earthRadius: ze,
+  ellipse: Og,
+  envelope: Dg,
+  explode: ro,
+  factors: $s,
+  feature: je,
   featureCollection: ce,
   featureEach: Le,
-  featureOf: yi,
-  featureReduce: Ka,
-  filterProperties: mg,
-  findPoint: Mf,
-  findSegment: If,
-  flatten: La,
-  flattenEach: ot,
-  flattenReduce: kf,
-  flip: V1,
-  geojsonRbush: $s,
-  geojsonType: Cf,
-  geomEach: ut,
-  geomReduce: Ja,
-  geometry: pf,
-  geometryCollection: Xa,
-  getCluster: gg,
+  featureOf: wi,
+  featureReduce: Qa,
+  filterProperties: yg,
+  findPoint: Pf,
+  findSegment: Nf,
+  flatten: Pa,
+  flattenEach: at,
+  flattenReduce: Lf,
+  flip: s_,
+  geojsonRbush: Ks,
+  geojsonType: kf,
+  geomEach: ct,
+  geomReduce: ja,
+  geometry: wf,
+  geometryCollection: Wa,
+  getCluster: vg,
   getCoord: Me,
   getCoords: me,
-  getGeom: He,
-  getType: Ct,
-  greatCircle: J1,
-  helpers: G0,
-  hexGrid: Rg,
-  interpolate: e_,
-  intersect: Ei,
-  invariant: q0,
-  isNumber: tt,
+  getGeom: Ye,
+  getType: St,
+  greatCircle: c_,
+  helpers: j0,
+  hexGrid: Fg,
+  interpolate: g_,
+  intersect: Ci,
+  invariant: ev,
+  isNumber: nt,
   isObject: Oe,
-  isobands: o_,
-  isolines: y_,
-  kinks: E_,
-  length: wl,
-  lengthToDegrees: Ni,
-  lengthToRadians: Or,
-  lineArc: Bg,
-  lineChunk: C_,
-  lineEach: Qa,
-  lineIntersect: cn,
-  lineOffset: T_,
-  lineOverlap: Vf,
-  lineReduce: ja,
-  lineSegment: wi,
-  lineSlice: R_,
-  lineSliceAlong: zg,
-  lineSplit: Tf,
-  lineString: ke,
-  lineStrings: wf,
-  lineToPolygon: O_,
-  mask: F_,
-  meta: X0,
-  midpoint: G_,
-  moranIndex: q_,
-  multiLineString: An,
-  multiPoint: Li,
-  multiPolygon: bt,
-  nearestNeighborAnalysis: $_,
-  nearestPoint: no,
-  nearestPointOnLine: _n,
-  nearestPointToLine: j_,
-  planepoint: tw,
+  isobands: __,
+  isolines: P_,
+  kinks: O_,
+  length: El,
+  lengthToDegrees: Ai,
+  lengthToRadians: Dr,
+  lineArc: qg,
+  lineChunk: F_,
+  lineEach: el,
+  lineIntersect: hn,
+  lineOffset: X_,
+  lineOverlap: Zf,
+  lineReduce: tl,
+  lineSegment: Ei,
+  lineSlice: W_,
+  lineSliceAlong: Hg,
+  lineSplit: Of,
+  lineString: Ie,
+  lineStrings: bf,
+  lineToPolygon: $_,
+  mask: K_,
+  meta: iv,
+  midpoint: j_,
+  moranIndex: ew,
+  multiLineString: Rn,
+  multiPoint: Pi,
+  multiPolygon: Ct,
+  nearestNeighborAnalysis: aw,
+  nearestPoint: io,
+  nearestPointOnLine: wn,
+  nearestPointToLine: fw,
+  planepoint: dw,
   point: de,
-  pointGrid: Og,
-  pointOnFeature: nw,
-  pointToLineDistance: xl,
-  pointToPolygonDistance: Ta,
-  points: yf,
-  pointsWithinPolygon: qg,
+  pointGrid: Bg,
+  pointOnFeature: mw,
+  pointToLineDistance: bl,
+  pointToPolygonDistance: Ra,
+  points: xf,
+  pointsWithinPolygon: Yg,
   polygon: pe,
-  polygonSmooth: fw,
-  polygonTangents: mw,
-  polygonToLine: Lr,
-  polygonize: hw,
-  polygons: _f,
-  projection: _w,
-  propEach: Za,
-  propReduce: Sf,
-  propertiesContainsFilter: dl,
-  quadratAnalysis: ww,
-  radiansToDegrees: ln,
-  radiansToLength: Pi,
-  random: Iw,
-  randomLineString: Jg,
-  randomPoint: Zg,
-  randomPolygon: Kg,
-  randomPosition: $g,
-  rectangleGrid: Dg,
-  removeBbox: Nn,
-  rewind: Mw,
-  rhumbBearing: Jn,
-  rhumbDestination: eo,
-  rhumbDistance: br,
-  round: xf,
-  sample: Lw,
-  sector: Nw,
-  segmentEach: on,
-  segmentReduce: Ws,
-  shortestPath: Fw,
-  simplify: Hw,
-  square: Xw,
-  squareGrid: _l,
-  standardDeviationalEllipse: Vw,
-  tag: Ww,
-  tesselate: hx,
-  tin: _g,
-  toMercator: Xg,
-  toWgs84: Vg,
-  transformRotate: Ng,
-  transformScale: jg,
-  transformTranslate: gx,
-  triangleGrid: Fg,
-  truncate: Pf,
-  union: dx,
-  unkinkPolygon: wx,
-  validateBBox: pi,
-  validateId: bf,
-  voronoi: Gx
+  polygonSmooth: Sw,
+  polygonTangents: Mw,
+  polygonToLine: Nr,
+  polygonize: Cw,
+  polygons: Ef,
+  projection: Tw,
+  propEach: Ja,
+  propReduce: Mf,
+  propertiesContainsFilter: vl,
+  quadratAnalysis: Aw,
+  radiansToDegrees: un,
+  radiansToLength: Ti,
+  random: Gw,
+  randomLineString: ed,
+  randomPoint: Qg,
+  randomPolygon: jg,
+  randomPosition: Jg,
+  rectangleGrid: zg,
+  removeBbox: Tn,
+  rewind: qw,
+  rhumbBearing: Qn,
+  rhumbDestination: no,
+  rhumbDistance: Cr,
+  round: Cf,
+  sample: Hw,
+  sector: Yw,
+  segmentEach: an,
+  segmentReduce: Zs,
+  shortestPath: Kw,
+  simplify: nx,
+  square: ix,
+  squareGrid: xl,
+  standardDeviationalEllipse: sx,
+  tag: ox,
+  tesselate: Cx,
+  tin: Eg,
+  toMercator: $g,
+  toWgs84: Zg,
+  transformRotate: Rg,
+  transformScale: nd,
+  transformTranslate: Ix,
+  triangleGrid: Gg,
+  truncate: Af,
+  union: kx,
+  unkinkPolygon: Ax,
+  validateBBox: _i,
+  validateId: If,
+  voronoi: jx
 }, Symbol.toStringTag, { value: "Module" }));
-class Xx {
+class iE {
   constructor(e, t) {
     this.viewer = e, this.config = {
       baseColor: "#40aee2",
@@ -22103,13 +22538,13 @@ class Xx {
    * 添加图标图层
    */
   addLayer(e) {
-    var g, d, m, p, y, w, b, M;
+    var g, d, m, p, y, w, b, k;
     if (!e || !e.geometry || !e.geometry.coordinates) {
       console.error("缺少coordinates字段");
       return;
     }
     let t = e.geometry.coordinates[0], r = e.geometry.coordinates[1], i = e.geometry.coordinates[2] || 0;
-    const a = _u({
+    const a = xu({
       title: e.properties.title || (e == null ? void 0 : e.title) || "",
       showTitle: ((g = this.config) == null ? void 0 : g.showTitle) || !1,
       content: ((d = e == null ? void 0 : e.properties) == null ? void 0 : d.content) || (e == null ? void 0 : e.content) || [],
@@ -22121,7 +22556,7 @@ class Xx {
       // 注意这里应该是contentAlign，不是algin
       scale: 1,
       titleFontSize: (b = this.config) == null ? void 0 : b.titleFontSize,
-      contentFontSize: (M = this.config) == null ? void 0 : M.contentFontSize
+      contentFontSize: (k = this.config) == null ? void 0 : k.contentFontSize
     });
     if (a.width > 1920 || a.height > 1080) {
       console.warn("Canvas size too large, skipping...");
@@ -22145,7 +22580,7 @@ class Xx {
       height: a.height,
       createdTime: Date.now()
       // 记录创建时间，用于按时间隐藏策略
-    }), this.eventListener || (this.eventListener = (k) => this.render(), this.viewer.clock.onTick.addEventListener(this.eventListener)), this.config.allowClick || (f.pickPrimitive = this.config.allowClick), f;
+    }), this.eventListener || (this.eventListener = (I) => this.render(), this.viewer.clock.onTick.addEventListener(this.eventListener)), this.config.allowClick || (f.pickPrimitive = this.config.allowClick), f;
   }
   /**
    * 渲染和碰撞检测
@@ -22211,7 +22646,7 @@ class Xx {
   isPointInVisibleArea(e) {
     if (this.visibleAreaMode === "custom" && this.customVisibleArea) {
       const t = x.Math.toDegrees(e.longitude), r = x.Math.toDegrees(e.latitude), i = de([t, r]);
-      return sl(i, this.customVisibleArea);
+      return al(i, this.customVisibleArea);
     }
     return !0;
   }
@@ -22322,7 +22757,7 @@ class Xx {
     }
     let r = this.billboardCollection._billboards.findIndex((l) => l.id === e);
     if (r !== -1) {
-      const l = this.billboardCollection.get(r), u = _u({
+      const l = this.billboardCollection.get(r), u = xu({
         title: t.title || "",
         showTitle: this.config.showTitle || !1,
         content: t.content || [],
@@ -22392,7 +22827,7 @@ class Xx {
     };
   }
 }
-class Vx {
+class sE {
   constructor(e, t) {
     this.viewer = e, this.config = {
       fillColor: "#40aee2ff",
@@ -22423,13 +22858,13 @@ class Vx {
    * 添加圆图层
    */
   addLayer(e) {
-    var M, k, S, N, P, A, B, F, C, L;
+    var k, I, S, P, N, A, B, F, C, L;
     if (!e || !e.geometry || !e.geometry.coordinates) {
       console.error("缺少coordinates字段");
       return;
     }
     let t = e.geometry.coordinates[0], r = e.geometry.coordinates[1], i = e.geometry.coordinates[2] || this.config.height;
-    const a = ((M = e.properties) == null ? void 0 : M.xRadius) || this.config.xRadius || this.config.radius, l = ((k = e.properties) == null ? void 0 : k.yRadius) || this.config.yRadius || this.config.radius, u = ((S = e.properties) == null ? void 0 : S.fillColor) || this.config.fillColor, f = ((N = e.properties) == null ? void 0 : N.outline) || this.config.outline || !1, g = ((P = e.properties) == null ? void 0 : P.outlineColor) || this.config.outlineColor, d = ((A = e.properties) == null ? void 0 : A.outlineWidth) || this.config.outlineWidth, m = ((B = e.properties) == null ? void 0 : B.extrudedHeight) || this.config.extrudedHeight, p = ((F = e.properties) == null ? void 0 : F.rotation) || this.config.rotation || 0, y = ((C = e.properties) == null ? void 0 : C.opacity) || this.config.opacity, w = ((L = e.properties) == null ? void 0 : L.id) || rt(), b = this.layer.entities.add({
+    const a = ((k = e.properties) == null ? void 0 : k.xRadius) || this.config.xRadius || this.config.radius, l = ((I = e.properties) == null ? void 0 : I.yRadius) || this.config.yRadius || this.config.radius, u = ((S = e.properties) == null ? void 0 : S.fillColor) || this.config.fillColor, f = ((P = e.properties) == null ? void 0 : P.outline) || this.config.outline || !1, g = ((N = e.properties) == null ? void 0 : N.outlineColor) || this.config.outlineColor, d = ((A = e.properties) == null ? void 0 : A.outlineWidth) || this.config.outlineWidth, m = ((B = e.properties) == null ? void 0 : B.extrudedHeight) || this.config.extrudedHeight, p = ((F = e.properties) == null ? void 0 : F.rotation) || this.config.rotation || 0, y = ((C = e.properties) == null ? void 0 : C.opacity) || this.config.opacity, w = ((L = e.properties) == null ? void 0 : L.id) || rt(), b = this.layer.entities.add({
       id: w,
       position: x.Cartesian3.fromDegrees(t, r, i),
       ellipse: {
@@ -22500,12 +22935,12 @@ class Vx {
     this.viewer && this.layer && this.viewer.dataSources.remove(this.layer), this.layer = null, this.viewer = null;
   }
 }
-const Ba = "CircleWaveMaterial";
-let ph = !1;
-function Wx() {
-  ph || !x.Material || !x.Material._materialCache || (x.Material._materialCache.addMaterial(Ba, {
+const Ga = "CircleWaveMaterial";
+let xh = !1;
+function oE() {
+  xh || !x.Material || !x.Material._materialCache || (x.Material._materialCache.addMaterial(Ga, {
     fabric: {
-      type: Ba,
+      type: Ga,
       uniforms: {
         color: x.Color.YELLOW.clone(),
         time: 0,
@@ -22541,9 +22976,9 @@ function Wx() {
       `
     },
     translucent: () => !0
-  }), ph = !0);
+  }), xh = !0);
 }
-class $x {
+class aE {
   constructor(e = {}) {
     this._definitionChanged = new x.Event(), this.color = x.Color.fromCssColorString(e.color || "#FFCB33"), this.duration = e.duration || 3e3, this.count = e.count || 3, this.gradient = e.gradient ?? 0.1, this._startTime = Date.now();
   }
@@ -22554,7 +22989,7 @@ class $x {
     return this._definitionChanged;
   }
   getType() {
-    return Ba;
+    return Ga;
   }
   getValue(e, t = {}) {
     return t.color = x.Color.clone(this.color, t.color), t.time = (Date.now() - this._startTime) % this.duration / this.duration, t.count = this.count, t.gradient = 1 + 10 * (1 - this.gradient), t;
@@ -22563,7 +22998,7 @@ class $x {
     return this === e;
   }
 }
-class Zx {
+class lE {
   constructor(e, t) {
     this.viewer = e, this.config = {
       color: "#fbad06",
@@ -22571,7 +23006,7 @@ class Zx {
       duration: 3e3,
       count: 5,
       ...t
-    }, this.layer = new x.CustomDataSource("circle-wave-layer"), this.viewer.dataSources.add(this.layer), Wx();
+    }, this.layer = new x.CustomDataSource("circle-wave-layer"), this.viewer.dataSources.add(this.layer), oE();
   }
   setData(e = []) {
     if (this.clearLayer(), !Array.isArray(e)) {
@@ -22589,7 +23024,7 @@ class Zx {
       ellipse: {
         semiMajorAxis: a.radius || this.config.radius,
         semiMinorAxis: a.radius || this.config.radius,
-        material: new $x({
+        material: new aE({
           color: a.color || this.config.color,
           duration: a.duration || this.config.duration,
           count: a.count || this.config.count,
@@ -22651,12 +23086,12 @@ class Zx {
     this.viewer && this.layer && this.viewer.dataSources.remove(this.layer), this.layer = null, this.viewer = null;
   }
 }
-const za = "CircleExplosionMaterial";
-let yh = !1;
-function Kx() {
-  yh || !x.Material || !x.Material._materialCache || (x.Material._materialCache.addMaterial(za, {
+const qa = "CircleExplosionMaterial";
+let Eh = !1;
+function uE() {
+  Eh || !x.Material || !x.Material._materialCache || (x.Material._materialCache.addMaterial(qa, {
     fabric: {
-      type: za,
+      type: qa,
       uniforms: {
         color: x.Color.RED.clone(),
         time: 0,
@@ -22698,9 +23133,9 @@ function Kx() {
       `
     },
     translucent: () => !0
-  }), yh = !0);
+  }), Eh = !0);
 }
-class Jx {
+class cE {
   constructor(e = {}) {
     this._definitionChanged = new x.Event(), this.color = x.Color.fromCssColorString(e.color || "#ff0000"), this.duration = e.duration || 2e3, this.speed = e.speed || 1, this.fillAlpha = e.fillAlpha ?? 0.25, this.edgeWidth = e.edgeWidth ?? 0.03, this.waveWidth = e.waveWidth ?? 0.05, this._startTime = Date.now();
   }
@@ -22711,7 +23146,7 @@ class Jx {
     return this._definitionChanged;
   }
   getType() {
-    return za;
+    return qa;
   }
   getValue(e, t = {}) {
     return t.color = x.Color.clone(this.color, t.color), t.time = (Date.now() - this._startTime) % this.duration / this.duration, t.speed = this.speed, t.fillAlpha = this.fillAlpha, t.edgeWidth = this.edgeWidth, t.waveWidth = this.waveWidth, t;
@@ -22720,7 +23155,7 @@ class Jx {
     return this === e;
   }
 }
-class Qx {
+class hE {
   constructor(e, t = {}) {
     this.viewer = e, this.config = {
       color: "#ff2a2a",
@@ -22738,7 +23173,7 @@ class Qx {
       //扩散波宽度
       height: 0,
       ...t
-    }, this.layer = new x.CustomDataSource("circle-explosion-layer"), this.viewer.dataSources.add(this.layer), Kx();
+    }, this.layer = new x.CustomDataSource("circle-explosion-layer"), this.viewer.dataSources.add(this.layer), uE();
   }
   setData(e = []) {
     this.clearLayer(), Array.isArray(e) && e.forEach((t) => this.addLayer(t));
@@ -22752,7 +23187,7 @@ class Qx {
       ellipse: {
         semiMajorAxis: a.radius || this.config.radius,
         semiMinorAxis: a.radius || this.config.radius,
-        material: new Jx({
+        material: new cE({
           color: a.color || this.config.color,
           duration: a.duration || this.config.duration,
           speed: a.speed ?? this.config.speed,
@@ -22791,12 +23226,12 @@ class Qx {
     this.viewer && this.layer && this.viewer.dataSources.remove(this.layer), this.layer = null, this.viewer = null;
   }
 }
-const Ga = "PointRippleMaterial";
-let _h = !1;
-function jx() {
-  _h || !x.Material || !x.Material._materialCache || (x.Material._materialCache.addMaterial(Ga, {
+const Ha = "PointRippleMaterial";
+let bh = !1;
+function fE() {
+  bh || !x.Material || !x.Material._materialCache || (x.Material._materialCache.addMaterial(Ha, {
     fabric: {
-      type: Ga,
+      type: Ha,
       uniforms: {
         color: new x.Color(1, 0, 0, 1),
         time: 1,
@@ -22835,9 +23270,9 @@ function jx() {
       `
     },
     translucent: () => !0
-  }), _h = !0);
+  }), bh = !0);
 }
-class eE {
+class gE {
   constructor(e = {}) {
     this._definitionChanged = new x.Event(), this.color = x.Color.fromCssColorString(e.color || "#ff3b30"), this.duration = e.duration || 2e3, this.speed = e.speed ?? 1, this.innerFade = e.innerFade ?? 1.5, this.ringWidth = e.ringWidth ?? 0.06, this._startTime = Date.now();
   }
@@ -22848,7 +23283,7 @@ class eE {
     return this._definitionChanged;
   }
   getType() {
-    return Ga;
+    return Ha;
   }
   getValue(e, t = {}) {
     return t.color = this.color, t.time = (Date.now() - this._startTime) % this.duration / this.duration, t.speed = this.speed, t.innerFade = this.innerFade, t.ringWidth = this.ringWidth, t;
@@ -22857,7 +23292,7 @@ class eE {
     return this === e;
   }
 }
-class tE {
+class dE {
   constructor(e, t = {}) {
     this.viewer = e, this.config = {
       color: "#ff2d2d",
@@ -22873,7 +23308,7 @@ class tE {
       //环宽度
       height: 0,
       ...t
-    }, this.layer = new x.CustomDataSource("point-ripple-layer"), this.viewer.dataSources.add(this.layer), jx();
+    }, this.layer = new x.CustomDataSource("point-ripple-layer"), this.viewer.dataSources.add(this.layer), fE();
   }
   /**
    * data: [{ geometry: { coordinates: [lon, lat, height?] }, properties: { radius, color, duration, speed } }]
@@ -22894,7 +23329,7 @@ class tE {
         // 🔥 关键
         // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
         // classificationType: Cesium.ClassificationType.BOTH,
-        material: new eE({
+        material: new gE({
           color: a.color || this.config.color,
           duration: a.duration || this.config.duration,
           speed: a.speed ?? this.config.speed,
@@ -22928,7 +23363,7 @@ class tE {
     this.viewer && this.layer && this.viewer.dataSources.remove(this.layer), this.layer = null, this.viewer = null;
   }
 }
-class nE {
+class mE {
   constructor(e, t = {}) {
     this.viewer = e, this.config = {
       color: "#ffffff",
@@ -22952,23 +23387,23 @@ class nE {
       const u = (d = l.geometry) == null ? void 0 : d.coordinates, f = ((m = l.geometry) == null ? void 0 : m.type) || "Polygon";
       if (!u || !u.length) return;
       const g = (p) => {
-        var P, A, B;
+        var N, A, B;
         const y = p[0], w = p.slice(1), b = [];
         y.forEach((F) => b.push(F[0], F[1]));
-        const M = w.map((F) => {
+        const k = w.map((F) => {
           const C = [];
           return F.forEach((L) => C.push(L[0], L[1])), new x.PolygonHierarchy(
             x.Cartesian3.fromDegreesArray(C)
           );
-        }), k = new x.PolygonGeometry({
+        }), I = new x.PolygonGeometry({
           polygonHierarchy: new x.PolygonHierarchy(
             x.Cartesian3.fromDegreesArray(b),
-            M
+            k
           ),
           vertexFormat: x.PerInstanceColorAppearance.VERTEX_FORMAT
-        }), S = ((P = l.properties) == null ? void 0 : P.id) || rt();
+        }), S = ((N = l.properties) == null ? void 0 : N.id) || rt();
         t.push(new x.GeometryInstance({
-          geometry: k,
+          geometry: I,
           id: S,
           attributes: {
             color: x.ColorGeometryInstanceAttribute.fromColor(
@@ -22976,13 +23411,13 @@ class nE {
             )
           }
         }));
-        const N = (F) => {
+        const P = (F) => {
           const C = [];
           return F.forEach((L) => C.push(L[0], L[1])), C.push(F[0][0], F[0][1]), x.Cartesian3.fromDegreesArray(C);
         };
         r.push(new x.GeometryInstance({
           geometry: new x.PolylineGeometry({
-            positions: N(y),
+            positions: P(y),
             width: this.config.lineWidth || 2
           }),
           id: S,
@@ -22995,7 +23430,7 @@ class nE {
           var C;
           r.push(new x.GeometryInstance({
             geometry: new x.PolylineGeometry({
-              positions: N(F),
+              positions: P(F),
               width: this.config.lineWidth || 2
             }),
             id: S,
@@ -23078,7 +23513,7 @@ class nE {
     this.clearLayer(), this.viewer = null, this.data = [];
   }
 }
-class rE {
+class vE {
   constructor(e, t) {
     this.viewer = e, this.config = {
       type: "glow",
@@ -23214,10 +23649,10 @@ class rE {
     this.clearLayer();
   }
 }
-function wh(n, e) {
+function Ch(n, e) {
   return Number.isFinite(n) ? n : e;
 }
-class iE {
+class pE {
   constructor(e, t = {}) {
     this.viewer = e, this.config = {
       radius: 50,
@@ -23266,7 +23701,7 @@ class iE {
       if (e.forEach((t) => {
         var l, u;
         if (!((l = t == null ? void 0 : t.geometry) != null && l.coordinates)) return;
-        const [r, i] = t.geometry.coordinates, a = wh((u = t.properties) == null ? void 0 : u.value, 50);
+        const [r, i] = t.geometry.coordinates, a = Ch((u = t.properties) == null ? void 0 : u.value, 50);
         Number.isFinite(r) && Number.isFinite(i) && this._points.push({ lon: r, lat: i, value: a });
       }), !this._points.length)
         return this.clearLayer();
@@ -23280,7 +23715,7 @@ class iE {
     this._points.forEach((d) => {
       const m = (d.lon - i) / f * t, p = (u - d.lat) / g * t;
       if (!Number.isFinite(m) || !Number.isFinite(p)) return;
-      const y = Math.max(1, wh(this.config.radius, 50)), w = e.createRadialGradient(m, p, 0, m, p, y), b = Math.min(d.value / this.config.maxValue, 1);
+      const y = Math.max(1, Ch(this.config.radius, 50)), w = e.createRadialGradient(m, p, 0, m, p, y), b = Math.min(d.value / this.config.maxValue, 1);
       w.addColorStop(0, `rgba(0,0,0,${b})`), w.addColorStop(1, "rgba(0,0,0,0)"), e.fillStyle = w, e.beginPath(), e.arc(m, p, y, 0, Math.PI * 2), e.fill();
     }), this._applyGradient();
   }
@@ -23331,7 +23766,7 @@ var kr = {
   defaultYField: "y",
   defaultValueField: "value",
   plugins: {}
-}, sE = function() {
+}, yE = function() {
   var e = function(i) {
     this._coordinator = {}, this._data = [], this._radi = [], this._min = 0, this._max = 1, this._xField = i.xField || i.defaultXField, this._yField = i.yField || i.defaultYField, this._valueField = i.valueField || i.defaultValueField, i.radius && (this._cfgRadius = i.radius);
   }, t = kr.defaultRadius;
@@ -23414,7 +23849,7 @@ var kr = {
       return this._unOrganizeData();
     }
   }, e;
-}(), oE = function() {
+}(), _E = function() {
   var e = function(a) {
     var l = a.gradient || a.defaultGradient, u = document.createElement("canvas"), f = u.getContext("2d");
     u.width = 256, u.height = 1;
@@ -23441,11 +23876,11 @@ var kr = {
   }, r = function(d) {
     for (var l = [], u = d.min, f = d.max, g = d.radi, d = d.data, m = Object.keys(d), p = m.length; p--; )
       for (var y = m[p], w = Object.keys(d[y]), b = w.length; b--; ) {
-        var M = w[b], k = d[y][M], S = g[y][M];
+        var k = w[b], I = d[y][k], S = g[y][k];
         l.push({
           x: y,
-          y: M,
-          value: k,
+          y: k,
+          value: I,
           radius: S
         });
       }
@@ -23485,22 +23920,22 @@ var kr = {
     },
     _drawAlpha: function(f) {
       for (var l = this._min = f.min, u = this._max = f.max, f = f.data || [], g = f.length, d = 1 - this._blur; g--; ) {
-        var m = f[g], p = m.x, y = m.y, w = m.radius, b = Math.min(m.value, u), M = p - w, k = y - w, S = this.shadowCtx, N;
-        this._templates[w] ? N = this._templates[w] : this._templates[w] = N = t(w, d), S.globalAlpha = (b - l) / (u - l), S.drawImage(N, M, k), M < this._renderBoundaries[0] && (this._renderBoundaries[0] = M), k < this._renderBoundaries[1] && (this._renderBoundaries[1] = k), M + 2 * w > this._renderBoundaries[2] && (this._renderBoundaries[2] = M + 2 * w), k + 2 * w > this._renderBoundaries[3] && (this._renderBoundaries[3] = k + 2 * w);
+        var m = f[g], p = m.x, y = m.y, w = m.radius, b = Math.min(m.value, u), k = p - w, I = y - w, S = this.shadowCtx, P;
+        this._templates[w] ? P = this._templates[w] : this._templates[w] = P = t(w, d), S.globalAlpha = (b - l) / (u - l), S.drawImage(P, k, I), k < this._renderBoundaries[0] && (this._renderBoundaries[0] = k), I < this._renderBoundaries[1] && (this._renderBoundaries[1] = I), k + 2 * w > this._renderBoundaries[2] && (this._renderBoundaries[2] = k + 2 * w), I + 2 * w > this._renderBoundaries[3] && (this._renderBoundaries[3] = I + 2 * w);
       }
     },
     _colorize: function() {
       var a = this._renderBoundaries[0], l = this._renderBoundaries[1], u = this._renderBoundaries[2] - a, f = this._renderBoundaries[3] - l, g = this._width, d = this._height, m = this._opacity, p = this._maxOpacity, y = this._minOpacity, w = this._useGradientOpacity;
       a < 0 && (a = 0), l < 0 && (l = 0), a + u > g && (u = g - a), l + f > d && (f = d - l);
-      for (var b = this.shadowCtx.getImageData(a, l, u, f), M = b.data, k = M.length, S = this._palette, N = 3; N < k; N += 4) {
-        var P = M[N], A = P * 4;
+      for (var b = this.shadowCtx.getImageData(a, l, u, f), k = b.data, I = k.length, S = this._palette, P = 3; P < I; P += 4) {
+        var N = k[P], A = N * 4;
         if (A) {
           var B;
-          m > 0 ? B = m : P < p ? P < y ? B = y : B = P : B = p, M[N - 3] = S[A], M[N - 2] = S[A + 1], M[N - 1] = S[A + 2], M[N] = w ? S[A + 3] : B;
+          m > 0 ? B = m : N < p ? N < y ? B = y : B = N : B = p, k[P - 3] = S[A], k[P - 2] = S[A + 1], k[P - 1] = S[A + 2], k[P] = w ? S[A + 3] : B;
         }
       }
       Object.defineProperty(b, "data", {
-        value: M,
+        value: k,
         writable: !0,
         configurable: !0,
         enumerable: !0
@@ -23514,10 +23949,10 @@ var kr = {
       return this.canvas.toDataURL();
     }
   }, i;
-}(), aE = function() {
+}(), wE = function() {
   var e = !1;
-  return kr.defaultRenderer === "canvas2d" && (e = oE), e;
-}(), xh = {
+  return kr.defaultRenderer === "canvas2d" && (e = _E), e;
+}(), Sh = {
   merge: function() {
     for (var n = {}, e = arguments.length, t = 0; t < e; t++) {
       var r = arguments[t];
@@ -23526,7 +23961,7 @@ var kr = {
     }
     return n;
   }
-}, lE = function() {
+}, xE = function() {
   var e = function() {
     function a() {
       this.cStore = {};
@@ -23558,7 +23993,7 @@ var kr = {
     }), u.setCoordinator(l);
   };
   function r() {
-    var i = this._config = xh.merge(kr, arguments[0] || {});
+    var i = this._config = Sh.merge(kr, arguments[0] || {});
     if (this._coordinator = new e(), i.plugin) {
       var a = i.plugin;
       if (kr.plugins[a]) {
@@ -23569,7 +24004,7 @@ var kr = {
           "Plugin '" + a + "' not found. Maybe it was not registered."
         );
     } else
-      this._renderer = new aE(i), this._store = new sE(i);
+      this._renderer = new wE(i), this._store = new yE(i);
     t(this);
   }
   return r.prototype = {
@@ -23589,7 +24024,7 @@ var kr = {
       return this._store.setDataMin.apply(this._store, arguments), this;
     },
     configure: function(i) {
-      return this._config = xh.merge(this._config, i), this._renderer.updateConfig(this._config), this._coordinator.emit("renderall", this._store._getInternalData()), this;
+      return this._config = Sh.merge(this._config, i), this._renderer.updateConfig(this._config), this._coordinator.emit("renderall", this._store._getInternalData()), this;
     },
     repaint: function() {
       return this._coordinator.emit("renderall", this._store._getInternalData()), this;
@@ -23604,28 +24039,28 @@ var kr = {
       return this._store.getValueAt ? this._store.getValueAt(i) : this._renderer.getValueAt ? this._renderer.getValueAt(i) : null;
     }
   }, r;
-}(), ld = {
+}(), hd = {
   create: function(n) {
-    return new lE(n);
+    return new xE(n);
   },
   register: function(n, e) {
     kr.plugins[n] = e;
   }
 };
-const uE = {
+const EE = {
   0.25: "rgb(0,0,255)",
   0.55: "rgb(0,255,0)",
   0.85: "rgb(255,255,0)",
   1: "rgb(255,0,0)"
-}, Yn = (n, e, t) => Math.min(t, Math.max(e, n));
-class cE {
+}, Xn = (n, e, t) => Math.min(t, Math.max(e, n));
+class bE {
   constructor(e, t = {}) {
     if (!e) throw new Error("Viewer is required.");
     this.viewer = e, this.config = {
       renderType: "primitive",
       radius: 54,
       blur: 0.82,
-      gradient: uE,
+      gradient: EE,
       maxOpacity: 0.88,
       minOpacity: 0,
       canvasSize: 1024,
@@ -23719,12 +24154,12 @@ class cE {
     if (Array.isArray(t) && t.length === 4 && t.every(Number.isFinite) && t[0] < t[2] && t[1] < t[3]) return [...t];
     const r = e.map((p) => p.longitude), i = e.map((p) => p.latitude);
     let a = Math.min(...r), l = Math.max(...r), u = Math.min(...i), f = Math.max(...i);
-    const g = l - a || 0.01, d = f - u || 0.01, m = Yn(Number(this.config.padding) || 0, 0, 1);
+    const g = l - a || 0.01, d = f - u || 0.01, m = Xn(Number(this.config.padding) || 0, 0, 1);
     return a === l && (a -= g / 2, l += g / 2), u === f && (u -= d / 2, f += d / 2), [
-      Yn(a - g * m, -180, 180),
-      Yn(u - d * m, -90, 90),
-      Yn(l + g * m, -180, 180),
-      Yn(f + d * m, -90, 90)
+      Xn(a - g * m, -180, 180),
+      Xn(u - d * m, -90, 90),
+      Xn(l + g * m, -180, 180),
+      Xn(f + d * m, -90, 90)
     ];
   }
   _createHeatmap(e, t) {
@@ -23743,7 +24178,7 @@ class cE {
       y: Math.round((g - S.latitude) / (g - u) * (i - 1)),
       value: S.value,
       radius: S.radius
-    })), m = e.map((S) => S.value), p = Number(this.config.minValue), y = Number(this.config.maxValue), w = this.config.minValue != null && Number.isFinite(p) ? p : Math.min(...m), b = Math.max(...m), M = this.config.maxValue != null && Number.isFinite(y) ? Math.max(y, w + 1) : Math.max(b, w + 1), k = ld.create({
+    })), m = e.map((S) => S.value), p = Number(this.config.minValue), y = Number(this.config.maxValue), w = this.config.minValue != null && Number.isFinite(p) ? p : Math.min(...m), b = Math.max(...m), k = this.config.maxValue != null && Number.isFinite(y) ? Math.max(y, w + 1) : Math.max(b, w + 1), I = hd.create({
       container: a,
       radius: this.config.radius,
       blur: this.config.blur,
@@ -23751,10 +24186,10 @@ class cE {
       maxOpacity: this.config.maxOpacity,
       minOpacity: this.config.minOpacity
     });
-    return k.setData({ min: w, max: M, data: d }), { container: a, heatmap: k, width: r, height: i };
+    return I.setData({ min: w, max: k, data: d }), { container: a, heatmap: I, width: r, height: i };
   }
   _resolveCanvasDimensions(e) {
-    const t = Yn(Math.round(Number(this.config.canvasSize) || 1024), 256, 2048), r = Yn(
+    const t = Xn(Math.round(Number(this.config.canvasSize) || 1024), 256, 2048), r = Xn(
       Math.round(Number(this.config.minCanvasSize) || 320),
       128,
       t
@@ -23903,19 +24338,19 @@ class cE {
     return !!(this.viewer && !((t = (e = this.viewer).isDestroyed) != null && t.call(e)));
   }
 }
-const hE = {
+const CE = {
   0.3: "#0000ff",
   0.5: "#00c853",
   0.7: "#fff200",
   0.95: "#ff2600"
-}, pn = (n, e, t) => Math.min(t, Math.max(e, n));
-class fE {
+}, yn = (n, e, t) => Math.min(t, Math.max(e, n));
+class SE {
   constructor(e, t = {}) {
     if (!e) throw new Error("Viewer is required.");
     this.viewer = e, this.config = {
       radius: 28,
       blur: 0.75,
-      gradient: hE,
+      gradient: CE,
       maxOpacity: 0.72,
       minOpacity: 0,
       canvasSize: 256,
@@ -24030,16 +24465,16 @@ class fE {
     if (Array.isArray(t) && t.length === 4 && t.every(Number.isFinite) && t[0] < t[2] && t[1] < t[3]) return [...t];
     const r = e.map((p) => p.longitude), i = e.map((p) => p.latitude);
     let a = Math.min(...r), l = Math.max(...r), u = Math.min(...i), f = Math.max(...i);
-    const g = l - a || 0.01, d = f - u || 0.01, m = pn(Number(this.config.padding) || 0, 0, 1);
+    const g = l - a || 0.01, d = f - u || 0.01, m = yn(Number(this.config.padding) || 0, 0, 1);
     return a === l && (a -= g / 2, l += g / 2), u === f && (u -= d / 2, f += d / 2), [
-      pn(a - g * m, -180, 180),
-      pn(u - d * m, -90, 90),
-      pn(l + g * m, -180, 180),
-      pn(f + d * m, -90, 90)
+      yn(a - g * m, -180, 180),
+      yn(u - d * m, -90, 90),
+      yn(l + g * m, -180, 180),
+      yn(f + d * m, -90, 90)
     ];
   }
   _createHeatmap(e, t) {
-    const r = pn(Math.round(Number(this.config.canvasSize) || 256), 64, 1024), i = document.createElement("div");
+    const r = yn(Math.round(Number(this.config.canvasSize) || 256), 64, 1024), i = document.createElement("div");
     i.className = "bmap-viewer-heatmap-3d-canvas", i.style.cssText = [
       `width:${r}px`,
       `height:${r}px`,
@@ -24049,12 +24484,12 @@ class fE {
       "pointer-events:none",
       "visibility:hidden"
     ].join(";"), this.viewer.container.appendChild(i);
-    const [a, l, u, f] = t, g = e.map((k) => ({
-      x: Math.round((k.longitude - a) / (u - a) * (r - 1)),
-      y: Math.round((f - k.latitude) / (f - l) * (r - 1)),
-      value: k.value,
-      radius: k.radius
-    })), d = e.map((k) => k.value), m = Number(this.config.minValue), p = Number(this.config.maxValue), y = this.config.minValue != null && Number.isFinite(m) ? m : 0, w = Math.max(...d), b = this.config.maxValue != null && Number.isFinite(p) ? Math.max(p, y + 1) : Math.max(w, y + 1), M = ld.create({
+    const [a, l, u, f] = t, g = e.map((I) => ({
+      x: Math.round((I.longitude - a) / (u - a) * (r - 1)),
+      y: Math.round((f - I.latitude) / (f - l) * (r - 1)),
+      value: I.value,
+      radius: I.radius
+    })), d = e.map((I) => I.value), m = Number(this.config.minValue), p = Number(this.config.maxValue), y = this.config.minValue != null && Number.isFinite(m) ? m : 0, w = Math.max(...d), b = this.config.maxValue != null && Number.isFinite(p) ? Math.max(p, y + 1) : Math.max(w, y + 1), k = hd.create({
       container: i,
       radius: this.config.radius,
       blur: this.config.blur,
@@ -24062,9 +24497,9 @@ class fE {
       maxOpacity: this.config.maxOpacity,
       minOpacity: this.config.minOpacity
     });
-    return M.setData({ min: y, max: b, data: g }), {
+    return k.setData({ min: y, max: b, data: g }), {
       container: i,
-      heatmap: M,
+      heatmap: k,
       valueRange: Math.max(0, b - y),
       canvasSize: r
     };
@@ -24106,26 +24541,26 @@ class fE {
     }));
   }
   _createGeometry(e, t) {
-    const r = pn(Math.round(Number(this.config.gridSize) || 128), 16, 255), i = r + 1, a = i * i, l = new Float64Array(a * 3), u = new Float32Array(a * 2), f = new Uint16Array(r * r * 6), [g, d, m, p] = t.bounds, y = this._resolveBaseHeight(e), w = Math.max(0, Number(this.config.heightScale) || 0), b = this._readHeatFields(t), M = pn(Number(this.config.heightExponent) || 1, 0.1, 4), k = Math.max(0, Number(this.config.peakBoost) || 0);
-    let S = 0, N = 0;
+    const r = yn(Math.round(Number(this.config.gridSize) || 128), 16, 255), i = r + 1, a = i * i, l = new Float64Array(a * 3), u = new Float32Array(a * 2), f = new Uint16Array(r * r * 6), [g, d, m, p] = t.bounds, y = this._resolveBaseHeight(e), w = Math.max(0, Number(this.config.heightScale) || 0), b = this._readHeatFields(t), k = yn(Number(this.config.heightExponent) || 1, 0.1, 4), I = Math.max(0, Number(this.config.peakBoost) || 0);
+    let S = 0, P = 0;
     for (let B = 0; B <= r; B += 1) {
       const F = B / r, C = p - (p - d) * F;
       for (let L = 0; L <= r; L += 1) {
-        const T = L / r, D = g + (m - g) * T, z = this._sampleAlpha(b == null ? void 0 : b.alpha, T, F, t), U = Math.pow(z, M), X = this._sampleChannel(
+        const T = L / r, D = g + (m - g) * T, z = this._sampleAlpha(b == null ? void 0 : b.alpha, T, F, t), q = Math.pow(z, k), X = this._sampleChannel(
           b == null ? void 0 : b.color,
           T,
           F,
           0,
           t.canvasSize
-        ), O = y + U * t.valueRange * w + X * k, H = x.Cartesian3.fromDegrees(D, C, O);
-        l[S] = H.x, l[S + 1] = H.y, l[S + 2] = H.z, S += 3, u[N] = T, u[N + 1] = 1 - F, N += 2;
+        ), O = y + q * t.valueRange * w + X * I, U = x.Cartesian3.fromDegrees(D, C, O);
+        l[S] = U.x, l[S + 1] = U.y, l[S + 2] = U.z, S += 3, u[P] = T, u[P + 1] = 1 - F, P += 2;
       }
     }
-    let P = 0;
+    let N = 0;
     for (let B = 0; B < r; B += 1)
       for (let F = 0; F < r; F += 1) {
         const C = B * i + F, L = C + 1, T = C + i, D = T + 1;
-        f[P] = C, f[P + 1] = T, f[P + 2] = L, f[P + 3] = L, f[P + 4] = T, f[P + 5] = D, P += 6;
+        f[N] = C, f[N + 1] = T, f[N + 2] = L, f[N + 3] = L, f[N + 4] = T, f[N + 5] = D, N += 6;
       }
     const A = new x.Geometry({
       attributes: new x.GeometryAttributes({
@@ -24177,24 +24612,24 @@ class fE {
     }
   }
   _sampleAlpha(e, t, r, i) {
-    var M;
+    var k;
     if (!e) {
-      const k = (M = i.heatmap) == null ? void 0 : M.getValueAt({
+      const I = (k = i.heatmap) == null ? void 0 : k.getValueAt({
         x: Math.round(t * (i.canvasSize - 1)),
         y: Math.round(r * (i.canvasSize - 1))
       });
-      return i.valueRange ? pn(Number(k) / i.valueRange, 0, 1) : 0;
+      return i.valueRange ? yn(Number(I) / i.valueRange, 0, 1) : 0;
     }
-    const a = t * (i.canvasSize - 1), l = r * (i.canvasSize - 1), u = Math.floor(a), f = Math.floor(l), g = Math.min(u + 1, i.canvasSize - 1), d = Math.min(f + 1, i.canvasSize - 1), m = a - u, p = l - f, y = (k, S) => e[(S * i.canvasSize + k) * 4 + 3] / 255, w = y(u, f) * (1 - m) + y(g, f) * m, b = y(u, d) * (1 - m) + y(g, d) * m;
+    const a = t * (i.canvasSize - 1), l = r * (i.canvasSize - 1), u = Math.floor(a), f = Math.floor(l), g = Math.min(u + 1, i.canvasSize - 1), d = Math.min(f + 1, i.canvasSize - 1), m = a - u, p = l - f, y = (I, S) => e[(S * i.canvasSize + I) * 4 + 3] / 255, w = y(u, f) * (1 - m) + y(g, f) * m, b = y(u, d) * (1 - m) + y(g, d) * m;
     return w * (1 - p) + b * p;
   }
   _sampleChannel(e, t, r, i, a) {
     if (!e) return 0;
-    const l = t * (a - 1), u = r * (a - 1), f = Math.floor(l), g = Math.floor(u), d = Math.min(f + 1, a - 1), m = Math.min(g + 1, a - 1), p = l - f, y = u - g, w = (k, S) => e[(S * a + k) * 4 + i] / 255, b = w(f, g) * (1 - p) + w(d, g) * p, M = w(f, m) * (1 - p) + w(d, m) * p;
-    return b * (1 - y) + M * y;
+    const l = t * (a - 1), u = r * (a - 1), f = Math.floor(l), g = Math.floor(u), d = Math.min(f + 1, a - 1), m = Math.min(g + 1, a - 1), p = l - f, y = u - g, w = (I, S) => e[(S * a + I) * 4 + i] / 255, b = w(f, g) * (1 - p) + w(d, g) * p, k = w(f, m) * (1 - p) + w(d, m) * p;
+    return b * (1 - y) + k * y;
   }
 }
-class gE {
+class IE {
   constructor(e, t = {}) {
     this.viewer = e, this.config = {
       position: [0, 0, 0],
@@ -24310,15 +24745,15 @@ class gE {
     this.clearLayer(), this.viewer = null;
   }
 }
-const dE = {
+const kE = {
   0: 1,
   0.2: 0.82,
   0.45: 0.56,
   0.7: 0.28,
   0.88: 0.1,
   1: 0
-}, gs = (n, e, t) => Math.min(t, Math.max(e, n));
-class mE {
+}, ms = (n, e, t) => Math.min(t, Math.max(e, n));
+class ME {
   constructor(e, t = {}) {
     if (!e) throw new Error("Viewer is required.");
     this.viewer = e, this.config = {
@@ -24327,7 +24762,7 @@ class mE {
       baseHeight: 0,
       opacity: 1,
       gradient: null,
-      opacityStops: dE,
+      opacityStops: kE,
       closed: !1,
       outline: !1,
       outlineColor: "#bffcff",
@@ -24359,16 +24794,16 @@ class mE {
         0,
         this._numberOrDefault(r.height, this.config.height, 900)
       ), p = [], y = [], w = [];
-      g.forEach((k) => {
-        p.push(k[0], k[1]);
-        const S = k[2];
+      g.forEach((I) => {
+        p.push(I[0], I[1]);
+        const S = I[2];
         y.push(d), w.push(
           Number.isFinite(S) ? Math.max(S, d) : d + m
         );
       });
       const b = this._uniqueEntityId(
         t.length === 1 ? String(i) : `${i}-${f + 1}`
-      ), M = this.viewer.entities.add({
+      ), k = this.viewer.entities.add({
         id: b,
         name: r.name || `渐变立体墙 ${i}`,
         show: this._visible,
@@ -24385,7 +24820,7 @@ class mE {
           )
         }
       });
-      M._bmapLayerId = i, M._bmapFeature = e, this.entities.push(M), l.push(M);
+      k._bmapLayerId = i, k._bmapFeature = e, this.entities.push(k), l.push(k);
     }), l.length ? l.length === 1 ? l[0] : l : null;
   }
   removeLayer(e) {
@@ -24467,7 +24902,7 @@ class mE {
   _createGradientCanvas(e) {
     const t = document.createElement("canvas");
     t.width = 2, t.height = 256;
-    const r = t.getContext("2d"), i = r.createLinearGradient(0, 0, 0, t.height), a = gs(
+    const r = t.getContext("2d"), i = r.createLinearGradient(0, 0, 0, t.height), a = ms(
       this._numberOrDefault(e.opacity, this.config.opacity, 1),
       0,
       1
@@ -24477,7 +24912,7 @@ class mE {
         const d = Number(f);
         if (!Number.isFinite(d)) return;
         const m = this._parseColor(g, x.Color.TRANSPARENT);
-        m.alpha *= a, u.push({ position: 1 - gs(d, 0, 1), color: m.toCssColorString() });
+        m.alpha *= a, u.push({ position: 1 - ms(d, 0, 1), color: m.toCssColorString() });
       });
     else {
       const f = this._parseColor(
@@ -24487,8 +24922,8 @@ class mE {
       Object.entries(g).forEach(([d, m]) => {
         const p = Number(d), y = Number(m);
         !Number.isFinite(p) || !Number.isFinite(y) || u.push({
-          position: 1 - gs(p, 0, 1),
-          color: f.withAlpha(f.alpha * a * gs(y, 0, 1)).toCssColorString()
+          position: 1 - ms(p, 0, 1),
+          color: f.withAlpha(f.alpha * a * ms(y, 0, 1)).toCssColorString()
         });
       });
     }
@@ -24514,7 +24949,7 @@ class mE {
     return t;
   }
 }
-const vE = `
+const LE = `
 in vec3 position3DHigh;
 in vec3 position3DLow;
 in vec3 normal;
@@ -24612,7 +25047,7 @@ void main() {
     v_bitangentEC = normalize(czm_normal * bitangent);
     gl_Position = czm_modelViewProjectionRelativeToEye * position;
 }
-`, pE = `
+`, NE = `
 in vec3 v_positionEC;
 in vec3 v_normalEC;
 in vec3 v_tangentEC;
@@ -24754,7 +25189,7 @@ void main() {
     color = czm_gammaCorrect(color);
     out_FragColor = vec4(color, clamp(u_alpha + crest * 0.14, 0.0, 1.0));
 }
-`, Xn = (n, e, t) => Math.min(t, Math.max(e, n)), ds = {
+`, Vn = (n, e, t) => Math.min(t, Math.max(e, n)), vs = {
   autoStart: !0,
   animate: !0,
   timeScale: 1,
@@ -24778,10 +25213,10 @@ void main() {
   allowPicking: !1,
   idPrefix: "bmap-viewer-dynamic-water"
 };
-class yE {
+class PE {
   constructor(e, t = {}) {
     if (!e) throw new Error("Viewer is required.");
-    this.viewer = e, this.config = { ...ds, ...t }, this.data = [], this.resources = [], this._visible = !0, this._running = !1, this._lastFrameTime = null, this._preRenderListener = this._update.bind(this);
+    this.viewer = e, this.config = { ...vs, ...t }, this.data = [], this.resources = [], this._visible = !0, this._running = !1, this._lastFrameTime = null, this._preRenderListener = this._update.bind(this);
   }
   setData(e) {
     return Array.isArray(e) ? (this._removeAllResources(), this.data = e, e.forEach((t) => this.addLayer(t, !1)), this.config.autoStart ? this.start() : this.viewer.scene.requestRender(), this) : (console.error("DynamicWaterLayer data must be an array."), this);
@@ -25005,15 +25440,15 @@ class yE {
       ),
       choppy: Math.max(0.1, this._numberOrDefault(t.choppy, 4.2, 4.2)),
       speed: this._numberOrDefault(t.speed, 0.72, 0.72),
-      foam: Xn(this._numberOrDefault(t.foam, 0.58, 0.58), 0, 1),
+      foam: Vn(this._numberOrDefault(t.foam, 0.58, 0.58), 0, 1),
       normalStrength: Math.max(
         0,
         this._numberOrDefault(t.normalStrength, 1.9, 1.9)
       ),
       fresnel: Math.max(0, this._numberOrDefault(t.fresnel, 0.78, 0.78)),
       specular: Math.max(0, this._numberOrDefault(t.specular, 2.35, 2.35)),
-      alpha: Xn(this._numberOrDefault(t.alpha, 0.92, 0.92), 0, 1),
-      meshSegments: Xn(
+      alpha: Vn(this._numberOrDefault(t.alpha, 0.92, 0.92), 0, 1),
+      meshSegments: Vn(
         Math.round(this._numberOrDefault(t.meshSegments, 128, 128)),
         8,
         260
@@ -25028,8 +25463,8 @@ class yE {
     const l = this._createMeshGeometry(r, i);
     if (!l) return null;
     const u = this._createUniforms(r), f = new x.Appearance({
-      vertexShaderSource: vE,
-      fragmentShaderSource: pE,
+      vertexShaderSource: LE,
+      fragmentShaderSource: NE,
       renderState: x.Appearance.getDefaultRenderState(!0, !1, {
         depthTest: { enabled: !0 },
         depthMask: !1,
@@ -25066,12 +25501,12 @@ class yE {
       u_fresnelPower: e.fresnel,
       u_specularStrength: e.specular,
       u_alpha: e.alpha,
-      u_deepColor: this._colorToCartesian4(e.deepColor, ds.deepColor),
+      u_deepColor: this._colorToCartesian4(e.deepColor, vs.deepColor),
       u_shallowColor: this._colorToCartesian4(
         e.shallowColor,
-        ds.shallowColor
+        vs.shallowColor
       ),
-      u_foamColor: this._colorToCartesian4(e.foamColor, ds.foamColor),
+      u_foamColor: this._colorToCartesian4(e.foamColor, vs.foamColor),
       u_vertexTime: 0,
       u_vertexWaveScale: e.waveScale,
       u_vertexWaveHeight: e.waveHeight,
@@ -25084,11 +25519,11 @@ class yE {
   _createMeshGeometry(e, t) {
     const r = e.meshSegments, i = t.width / t.depth, a = i >= 1 ? r : Math.max(8, Math.round(r * i)), l = i >= 1 ? Math.max(8, Math.round(r / i)) : r, u = /* @__PURE__ */ new Map(), f = [], g = [], d = [], m = [], p = [], y = [], w = [];
     for (let S = 0; S <= l; S += 1) {
-      const N = S / l;
-      for (let P = 0; P <= a; P += 1) {
-        const A = P / a, B = t.minX + A * t.width, F = t.minY + N * t.depth;
+      const P = S / l;
+      for (let N = 0; N <= a; N += 1) {
+        const A = N / a, B = t.minX + A * t.width, F = t.minY + P * t.depth;
         if (t.mode === "polygon" && !this._shouldKeepPolygonVertex(
-          P,
+          N,
           S,
           a,
           l,
@@ -25097,16 +25532,16 @@ class yE {
           F
         )) continue;
         const C = f.length / 3;
-        u.set(`${P}:${S}`, C), f.push(B, F, 0), d.push(0, 0, 1), m.push(1, 0, 0), p.push(0, 1, 0), g.push(A, N), y.push(0);
+        u.set(`${N}:${S}`, C), f.push(B, F, 0), d.push(0, 0, 1), m.push(1, 0, 0), p.push(0, 1, 0), g.push(A, P), y.push(0);
       }
     }
     for (let S = 0; S < l; S += 1)
-      for (let N = 0; N < a; N += 1) {
-        const P = u.get(`${N}:${S}`), A = u.get(`${N + 1}:${S}`), B = u.get(`${N}:${S + 1}`), F = u.get(`${N + 1}:${S + 1}`);
-        [P, A, B, F].some(Number.isNaN) || [P, A, B, F].some((C) => C == null) || w.push(P, B, A, A, B, F);
+      for (let P = 0; P < a; P += 1) {
+        const N = u.get(`${P}:${S}`), A = u.get(`${P + 1}:${S}`), B = u.get(`${P}:${S + 1}`), F = u.get(`${P + 1}:${S + 1}`);
+        [N, A, B, F].some(Number.isNaN) || [N, A, B, F].some((C) => C == null) || w.push(N, B, A, A, B, F);
       }
     if (!w.length) return null;
-    const b = new Float64Array(f), k = f.length / 3 > 65535 ? new Uint32Array(w) : new Uint16Array(w);
+    const b = new Float64Array(f), I = f.length / 3 > 65535 ? new Uint32Array(w) : new Uint16Array(w);
     return new x.Geometry({
       attributes: new x.GeometryAttributes({
         position: new x.GeometryAttribute({
@@ -25140,7 +25575,7 @@ class yE {
           values: new Float32Array(y)
         })
       }),
-      indices: k,
+      indices: I,
       primitiveType: x.PrimitiveType.TRIANGLES,
       boundingSphere: x.BoundingSphere.fromVertices(b)
     });
@@ -25179,10 +25614,10 @@ class yE {
     if (Array.isArray(e) && e.length >= 3) {
       const i = e.some((a) => Number(a) > 1) ? 255 : 1;
       return new x.Cartesian4(
-        Xn(Number(e[0]) / i, 0, 1),
-        Xn(Number(e[1]) / i, 0, 1),
-        Xn(Number(e[2]) / i, 0, 1),
-        Xn(Number(e[3] ?? i) / i, 0, 1)
+        Vn(Number(e[0]) / i, 0, 1),
+        Vn(Number(e[1]) / i, 0, 1),
+        Vn(Number(e[2]) / i, 0, 1),
+        Vn(Number(e[3] ?? i) / i, 0, 1)
       );
     }
     const r = x.Color.fromCssColorString(
@@ -25211,41 +25646,41 @@ class yE {
     return !!(this.viewer && !((t = (e = this.viewer).isDestroyed) != null && t.call(e)));
   }
 }
-const di = Object.freeze([-179.999, -89.9, 179.999, 89.9]);
-function _E(n, e, t, r = e) {
+const vi = Object.freeze([-179.999, -89.9, 179.999, 89.9]);
+function TE(n, e, t, r = e) {
   const i = Number(n);
   return Number.isFinite(i) ? Math.min(t, Math.max(e, i)) : r;
 }
-function Eh(n, e, t = 1) {
-  return (x.Color.fromCssColorString(n || e) || x.Color.fromCssColorString(e) || x.Color.WHITE).withAlpha(_E(t, 0, 1, 1));
+function Ih(n, e, t = 1) {
+  return (x.Color.fromCssColorString(n || e) || x.Color.fromCssColorString(e) || x.Color.WHITE).withAlpha(TE(t, 0, 1, 1));
 }
-function wE(n, e) {
+function AE(n, e) {
   return (n == null ? void 0 : n[0]) === (e == null ? void 0 : e[0]) && (n == null ? void 0 : n[1]) === (e == null ? void 0 : e[1]);
 }
-function Sl(n) {
+function kl(n) {
   if (!Array.isArray(n)) return [];
   const e = n.filter((t) => Array.isArray(t) && Number.isFinite(Number(t[0])) && Number.isFinite(Number(t[1]))).map((t) => [Number(t[0]), Number(t[1])]);
-  return e.length > 3 && wE(e[0], e.at(-1)) && e.pop(), e.length >= 3 ? e : [];
+  return e.length > 3 && AE(e[0], e.at(-1)) && e.pop(), e.length >= 3 ? e : [];
 }
-function Ys(n, e = 0) {
-  return Sl(n).map(([t, r]) => x.Cartesian3.fromDegrees(t, r, e));
+function Vs(n, e = 0) {
+  return kl(n).map(([t, r]) => x.Cartesian3.fromDegrees(t, r, e));
 }
-function xE(n, e = 0) {
-  const t = Sl(n);
+function RE(n, e = 0) {
+  const t = kl(n);
   return t.length ? [...t, t[0]].map(([r, i]) => x.Cartesian3.fromDegrees(r, i, e)) : [];
 }
-function bh(n, e = 0) {
+function kh(n, e = 0) {
   if (!Array.isArray(n) || !n.length) return null;
-  const t = Ys(n[0], e);
+  const t = Vs(n[0], e);
   if (t.length < 3) return null;
-  const r = n.slice(1).map((i) => Ys(i, e)).filter((i) => i.length >= 3).map((i) => new x.PolygonHierarchy(i));
+  const r = n.slice(1).map((i) => Vs(i, e)).filter((i) => i.length >= 3).map((i) => new x.PolygonHierarchy(i));
   return new x.PolygonHierarchy(t, r);
 }
-function pr(n) {
+function yr(n) {
   const e = n == null ? void 0 : n.geometry;
   return e != null && e.coordinates ? e.type === "Polygon" ? [e.coordinates] : e.type === "MultiPolygon" ? e.coordinates : [] : [];
 }
-function mi([n, e, t, r]) {
+function pi([n, e, t, r]) {
   return [
     [n, e],
     [t, e],
@@ -25253,8 +25688,8 @@ function mi([n, e, t, r]) {
     [n, r]
   ];
 }
-function EE(n) {
-  const e = n.flatMap((i) => pr(i).flatMap((a) => a.flatMap((l) => Sl(l))));
+function OE(n) {
+  const e = n.flatMap((i) => yr(i).flatMap((a) => a.flatMap((l) => kl(l))));
   if (!e.length) return null;
   const t = e.map((i) => i[0]), r = e.map((i) => i[1]);
   return [
@@ -25264,19 +25699,19 @@ function EE(n) {
     Math.max(...r)
   ];
 }
-function bE(n) {
+function DE(n) {
   const [e, t, r, i] = n, a = r - e, l = i - t;
   if (a >= 160 || l >= 160)
     throw new Error("MaskLayer inverse polygons must span less than 160 degrees.");
   const u = Math.max(40, a * 0.25), f = Math.max(30, l * 0.25);
   return [
-    Math.max(di[0], e - u),
-    Math.max(di[1], t - f),
-    Math.min(di[2], r + u),
-    Math.min(di[3], i + f)
+    Math.max(vi[0], e - u),
+    Math.max(vi[1], t - f),
+    Math.min(vi[2], r + u),
+    Math.min(vi[3], i + f)
   ];
 }
-function Ch(n, e, t = 120) {
+function Mh(n, e, t = 120) {
   const r = e - n;
   if (r <= 0) return [];
   const i = Math.max(1, Math.ceil(r / t));
@@ -25285,7 +25720,7 @@ function Ch(n, e, t = 120) {
     n + r * (l + 1) / i
   ]);
 }
-function Sh(n, e, t = 60) {
+function Lh(n, e, t = 60) {
   const r = e - n;
   if (r <= 0) return [];
   const i = Math.max(1, Math.ceil(r / t));
@@ -25294,36 +25729,36 @@ function Sh(n, e, t = 60) {
     n + r * (l + 1) / i
   ]);
 }
-function CE(n) {
-  const [e, t, r, i] = di, [a, l, u, f] = n, g = [];
-  return Ch(e, a).forEach(([d, m]) => {
-    Sh(t, i).forEach(([p, y]) => {
+function FE(n) {
+  const [e, t, r, i] = vi, [a, l, u, f] = n, g = [];
+  return Mh(e, a).forEach(([d, m]) => {
+    Lh(t, i).forEach(([p, y]) => {
       g.push({
-        ring: mi([d, p, m, y]),
+        ring: pi([d, p, m, y]),
         arcType: x.ArcType.GEODESIC
       });
     });
-  }), Ch(u, r).forEach(([d, m]) => {
-    Sh(t, i).forEach(([p, y]) => {
+  }), Mh(u, r).forEach(([d, m]) => {
+    Lh(t, i).forEach(([p, y]) => {
       g.push({
-        ring: mi([d, p, m, y]),
+        ring: pi([d, p, m, y]),
         arcType: x.ArcType.GEODESIC
       });
     });
   }), l > t && g.push({
-    ring: mi([a, t, u, l]),
+    ring: pi([a, t, u, l]),
     arcType: x.ArcType.GEODESIC
   }), f < i && g.push({
-    ring: mi([a, f, u, i]),
+    ring: pi([a, f, u, i]),
     arcType: x.ArcType.GEODESIC
   }), g;
 }
-function SE(n) {
+function BE(n) {
   if (typeof n == "number") return n;
   const e = String(n || "both").toLowerCase();
   return e === "terrain" ? x.ClassificationType.TERRAIN : e === "3dtiles" || e === "3d-tiles" || e === "cesium-3d-tiles" ? x.ClassificationType.CESIUM_3D_TILE : x.ClassificationType.BOTH;
 }
-class kE {
+class zE {
   constructor(e, t = {}) {
     if (!e) throw new Error("Viewer is required.");
     this.viewer = e, this.config = {
@@ -25343,11 +25778,11 @@ class kE {
     }, this.data = [], this.layer = null, this.outlineLayer = null, this._fillIds = /* @__PURE__ */ new Set();
   }
   setData(e) {
-    return Array.isArray(e) ? (this.data = e.filter((t) => pr(t).length), this._render(), this) : (console.error("data must be an array."), this);
+    return Array.isArray(e) ? (this.data = e.filter((t) => yr(t).length), this._render(), this) : (console.error("data must be an array."), this);
   }
   addLayer(e) {
     var t;
-    return pr(e).length ? (this.data.push(e), this._render(), this.getLayerById(((t = e.properties) == null ? void 0 : t.id) || this.config.id)) : (console.error("MaskLayer requires Polygon or MultiPolygon coordinates."), null);
+    return yr(e).length ? (this.data.push(e), this._render(), this.getLayerById(((t = e.properties) == null ? void 0 : t.id) || this.config.id)) : (console.error("MaskLayer requires Polygon or MultiPolygon coordinates."), null);
   }
   setOptions(e = {}) {
     return this.config = { ...this.config, ...e }, this._render(), this;
@@ -25360,19 +25795,19 @@ class kE {
     r.length && (this.layer = this._createFillPrimitive(r)), t.length && (this.outlineLayer = this._createOutlinePrimitive(t));
   }
   _buildInverseInstances(e, t) {
-    const i = this.data[0].properties || {}, a = i.height ?? this.config.height, l = this.data.flatMap((m) => pr(m).map((p) => bh(p, a)).filter(Boolean));
+    const i = this.data[0].properties || {}, a = i.height ?? this.config.height, l = this.data.flatMap((m) => yr(m).map((p) => kh(p, a)).filter(Boolean));
     if (!l.length) return;
-    const u = EE(this.data);
+    const u = OE(this.data);
     if (!u) return;
-    const f = bE(u), g = new x.PolygonHierarchy(
-      Ys(mi(f), a),
+    const f = DE(u), g = new x.PolygonHierarchy(
+      Vs(pi(f), a),
       l
     ), d = i.id || this.config.id || rt();
-    e.push(this._createFillInstance(d, g, i)), this._fillIds.add(d), CE(f).forEach(({ ring: m, arcType: p }, y) => {
+    e.push(this._createFillInstance(d, g, i)), this._fillIds.add(d), FE(f).forEach(({ ring: m, arcType: p }, y) => {
       const w = `${d}:outside:${y}`;
       e.push(this._createFillInstance(
         w,
-        new x.PolygonHierarchy(Ys(m, a)),
+        new x.PolygonHierarchy(Vs(m, a)),
         i,
         p,
         x.Math.toRadians(5)
@@ -25382,8 +25817,8 @@ class kE {
   _buildPolygonInstances(e, t) {
     this.data.forEach((r) => {
       const i = r.properties || {}, a = i.height ?? this.config.height, l = i.id || rt();
-      pr(r).forEach((u, f) => {
-        const g = bh(u, a);
+      yr(r).forEach((u, f) => {
+        const g = kh(u, a);
         if (!g) return;
         const d = f === 0 ? l : `${l}:${f}`;
         e.push(this._createFillInstance(d, g, i)), this._fillIds.add(d);
@@ -25401,7 +25836,7 @@ class kE {
       id: e,
       geometry: new x.PolygonGeometry(f),
       attributes: {
-        color: x.ColorGeometryInstanceAttribute.fromColor(Eh(
+        color: x.ColorGeometryInstanceAttribute.fromColor(Ih(
           r.color || this.config.color,
           this.config.color,
           r.opacity ?? this.config.opacity
@@ -25424,15 +25859,15 @@ class kE {
   }
   _appendOutlineInstances(e, t, r = {}, i = this.data) {
     if (!(r.outline ?? this.config.outline)) return;
-    const a = this.config.clampToGround !== !1, l = r.height ?? this.config.height, u = Eh(
+    const a = this.config.clampToGround !== !1, l = r.height ?? this.config.height, u = Ih(
       r.outlineColor || this.config.outlineColor,
       this.config.outlineColor,
       r.outlineOpacity ?? this.config.outlineOpacity
     ), f = Math.max(1, Number(r.outlineWidth ?? this.config.outlineWidth) || 1);
     let g = 0;
     i.forEach((d) => {
-      pr(d).forEach((m) => {
-        const p = xE(m[0], l);
+      yr(d).forEach((m) => {
+        const p = RE(m[0], l);
         if (p.length < 4) return;
         const y = a ? new x.GroundPolylineGeometry({ positions: p, width: f }) : new x.PolylineGeometry({ positions: p, width: f });
         e.push(new x.GeometryInstance({
@@ -25462,7 +25897,7 @@ class kE {
       show: this.config.show !== !1
     }, i = t ? new x.GroundPrimitive({
       ...r,
-      classificationType: SE(this.config.classificationType)
+      classificationType: BE(this.config.classificationType)
     }) : new x.Primitive({ ...r, asynchronous: !1 });
     return this.viewer.scene.primitives.add(i);
   }
@@ -25516,36 +25951,37 @@ class kE {
     this.clearLayer(), this.viewer = null;
   }
 }
-const NC = {
-  IconGroupLayer: M0,
-  IconClusterLayer: R0,
-  LabelGroupLayer: O0,
-  LineGroupLayer: D0,
-  LinePrimitiveLayer: F0,
-  Build3DLayer: B0,
-  BubbleLayer: z0,
-  BubbleGroupLayer: Xx,
-  CircleGroupLayer: Vx,
-  CircleWaveLayer: Zx,
-  CircleExplosionLayer: Qx,
-  PointRippleLayer: tE,
-  PolygonPrimitiveLayer: nE,
-  LineMaterialLayer: rE,
-  HeatmapLayer: iE,
-  HeatmapPrimitiveLayer: cE,
-  Heatmap3DLayer: fE,
-  RadarScanner3DLayer: gE,
-  GradientWallLayer: mE,
-  DynamicWaterLayer: yE,
-  MaskLayer: kE
-}, ms = 3.141592653589793 * 3e3 / 180, wt = 3.141592653589793, kh = 6378245, Ih = 0.006693421622965943;
-class Zn {
+const QC = {
+  IconGroupLayer: T0,
+  IconClusterLayer: B0,
+  LabelGroupLayer: z0,
+  TextGroupLayer: $0,
+  LineGroupLayer: Z0,
+  LinePrimitiveLayer: K0,
+  Build3DLayer: J0,
+  BubbleLayer: Q0,
+  BubbleGroupLayer: iE,
+  CircleGroupLayer: sE,
+  CircleWaveLayer: lE,
+  CircleExplosionLayer: hE,
+  PointRippleLayer: dE,
+  PolygonPrimitiveLayer: mE,
+  LineMaterialLayer: vE,
+  HeatmapLayer: pE,
+  HeatmapPrimitiveLayer: bE,
+  Heatmap3DLayer: SE,
+  RadarScanner3DLayer: IE,
+  GradientWallLayer: ME,
+  DynamicWaterLayer: PE,
+  MaskLayer: zE
+}, ps = 3.141592653589793 * 3e3 / 180, xt = 3.141592653589793, Nh = 6378245, Ph = 0.006693421622965943;
+class Kn {
   static BD09ToGCJ02(e, t) {
-    const r = Number(e) - 65e-4, i = Number(t) - 6e-3, a = Math.sqrt(r * r + i * i) - 2e-5 * Math.sin(i * ms), l = Math.atan2(i, r) - 3e-6 * Math.cos(r * ms);
+    const r = Number(e) - 65e-4, i = Number(t) - 6e-3, a = Math.sqrt(r * r + i * i) - 2e-5 * Math.sin(i * ps), l = Math.atan2(i, r) - 3e-6 * Math.cos(r * ps);
     return [a * Math.cos(l), a * Math.sin(l)];
   }
   static GCJ02ToBD09(e, t) {
-    const r = Number(e), i = Number(t), a = Math.sqrt(r ** 2 + i ** 2) + 2e-5 * Math.sin(i * ms), l = Math.atan2(i, r) + 3e-6 * Math.cos(r * ms);
+    const r = Number(e), i = Number(t), a = Math.sqrt(r ** 2 + i ** 2) + 2e-5 * Math.sin(i * ps), l = Math.atan2(i, r) + 3e-6 * Math.cos(r * ps);
     return [a * Math.cos(l) + 65e-4, a * Math.sin(l) + 6e-3];
   }
   static WGS84ToGCJ02(e, t) {
@@ -25562,19 +25998,19 @@ class Zn {
   }
   static delta(e, t) {
     let r = this.transformLng(e - 105, t - 35), i = this.transformLat(e - 105, t - 35);
-    const a = t / 180 * wt;
+    const a = t / 180 * xt;
     let l = Math.sin(a);
-    l = 1 - Ih * l * l;
+    l = 1 - Ph * l * l;
     const u = Math.sqrt(l);
-    return r = r * 180 / (kh / u * Math.cos(a) * wt), i = i * 180 / (kh * (1 - Ih) / (l * u) * wt), [r, i];
+    return r = r * 180 / (Nh / u * Math.cos(a) * xt), i = i * 180 / (Nh * (1 - Ph) / (l * u) * xt), [r, i];
   }
   static transformLng(e, t) {
     let r = 300 + e + 2 * t + 0.1 * e ** 2 + 0.1 * e * t + 0.1 * Math.sqrt(Math.abs(e));
-    return r += (20 * Math.sin(6 * e * wt) + 20 * Math.sin(2 * e * wt)) * 2 / 3, r += (20 * Math.sin(e * wt) + 40 * Math.sin(e / 3 * wt)) * 2 / 3, r += (150 * Math.sin(e / 12 * wt) + 300 * Math.sin(e / 30 * wt)) * 2 / 3, r;
+    return r += (20 * Math.sin(6 * e * xt) + 20 * Math.sin(2 * e * xt)) * 2 / 3, r += (20 * Math.sin(e * xt) + 40 * Math.sin(e / 3 * xt)) * 2 / 3, r += (150 * Math.sin(e / 12 * xt) + 300 * Math.sin(e / 30 * xt)) * 2 / 3, r;
   }
   static transformLat(e, t) {
     let r = -100 + 2 * e + 3 * t + 0.2 * t ** 2 + 0.1 * e * t + 0.2 * Math.sqrt(Math.abs(e));
-    return r += (20 * Math.sin(6 * e * wt) + 20 * Math.sin(2 * e * wt)) * 2 / 3, r += (20 * Math.sin(t * wt) + 40 * Math.sin(t / 3 * wt)) * 2 / 3, r += (160 * Math.sin(t / 12 * wt) + 320 * Math.sin(t * wt / 30)) * 2 / 3, r;
+    return r += (20 * Math.sin(6 * e * xt) + 20 * Math.sin(2 * e * xt)) * 2 / 3, r += (20 * Math.sin(t * xt) + 40 * Math.sin(t / 3 * xt)) * 2 / 3, r += (160 * Math.sin(t / 12 * xt) + 320 * Math.sin(t * xt / 30)) * 2 / 3, r;
   }
   static outOfChina(e, t) {
     return !(e > 73.66 && e < 135.05 && t > 3.86 && t < 53.55);
@@ -25584,12 +26020,12 @@ class Zn {
     return this.outOfChina(e, t);
   }
 }
-class lo extends x.WebMercatorTilingScheme {
+class co extends x.WebMercatorTilingScheme {
   constructor(e = {}) {
     super(e);
     const t = new x.WebMercatorProjection();
     this._projection.project = (r) => {
-      const [i, a] = Zn.WGS84ToGCJ02(
+      const [i, a] = Kn.WGS84ToGCJ02(
         x.Math.toDegrees(r.longitude),
         x.Math.toDegrees(r.latitude)
       ), l = t.project(new x.Cartographic(
@@ -25598,7 +26034,7 @@ class lo extends x.WebMercatorTilingScheme {
       ));
       return new x.Cartesian2(l.x, l.y);
     }, this._projection.unproject = (r) => {
-      const i = t.unproject(r), [a, l] = Zn.GCJ02ToWGS84(
+      const i = t.unproject(r), [a, l] = Kn.GCJ02ToWGS84(
         x.Math.toDegrees(i.longitude),
         x.Math.toDegrees(i.latitude)
       );
@@ -25609,35 +26045,83 @@ class lo extends x.WebMercatorTilingScheme {
     };
   }
 }
-const Mh = {
-  img: "//webst{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
-  elec: "//webrd{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}",
-  cva: "//webst{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"
-};
-class ud extends x.UrlTemplateImageryProvider {
+const GE = Object.freeze({
+  img: "img",
+  image: "img",
+  imagery: "img",
+  satellite: "img",
+  elec: "elec",
+  vec: "elec",
+  vector: "elec",
+  normal: "elec",
+  cva: "cva",
+  label: "cva",
+  labels: "cva"
+}), qE = Object.freeze({
+  img: 6,
+  elec: 7,
+  cva: 8
+}), HE = "//wprd0{s}.is.autonavi.com";
+function UE(n = "elec") {
+  const e = String(n).toLowerCase(), t = GE[e];
+  if (t) return t;
+  const r = Number(e);
+  if (Number.isInteger(r) && r >= 6 && r <= 10)
+    return r;
+}
+function fd(n) {
+  return typeof n == "number" ? n : qE[n];
+}
+function YE(n, e) {
+  if (!e) return n;
+  const t = String(e).replace(/:\/\/$/, "").replace(/:$/, "");
+  return n.startsWith("//") ? `${t}:${n}` : n.replace(/^https?:/, `${t}:`);
+}
+function XE(n) {
+  return encodeURIComponent(String(n)).replace(/%7B([a-zA-Z0-9_]+)%7D/gi, "{$1}");
+}
+function VE(n) {
+  return Object.entries(n).filter(([, e]) => e != null && e !== "").map(([e, t]) => `${encodeURIComponent(e)}=${XE(t)}`).join("&");
+}
+function WE(n, e) {
+  const t = {
+    lang: e.lang ?? "zh_cn",
+    size: e.size ?? 1,
+    scl: e.scl ?? 1,
+    style: fd(n),
+    x: "{x}",
+    y: "{y}",
+    z: "{z}"
+  };
+  return e.scale !== void 0 && (t.scale = e.scale), e.ltype !== void 0 && (t.ltype = e.ltype), Object.assign(t, e.queryParameters || {}), `${HE}/appmaptile?${VE(t)}`;
+}
+class gd extends x.UrlTemplateImageryProvider {
   constructor(e = {}) {
-    var r;
-    const t = {
+    var u;
+    const t = UE(e.style);
+    if (!e.url && !t)
+      throw new Error(`Unsupported AMap style: ${e.style}`);
+    const r = e.url || WE(t, e), i = YE(r, e.protocol), a = (u = e.subdomains) != null && u.length ? e.subdomains : ["1", "2", "3", "4"], l = {
       ...e,
-      url: e.url || `${e.protocol || ""}${Mh[e.style] || Mh.elec}`,
-      subdomains: (r = e.subdomains) != null && r.length ? e.subdomains : ["01", "02", "03", "04"]
+      url: i,
+      subdomains: a
     };
-    e.crs === "WGS84" && !e.tilingScheme && (t.tilingScheme = new lo()), super(t);
+    e.crs === "WGS84" && !e.tilingScheme && (l.tilingScheme = new co()), super(l), this._templateUrl = i, this._style = t || "custom", this._styleCode = t ? fd(t) : null, this._scl = Number(e.scl ?? 1), this._scale = Number(e.scale ?? 1);
   }
 }
-const cd = "https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer";
-function IE(n, e) {
+const dd = "https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer";
+function $E(n, e) {
   const t = String(n).replace(/\/$/, ""), i = t.includes("{z}") && t.includes("{x}") && (t.includes("{y}") || t.includes("{reverseY}")) ? t : `${t}/tile/{z}/{y}/{x}`;
   if (!e) return i;
   const a = i.includes("?") ? "&" : "?";
   return `${i}${a}token=${encodeURIComponent(e)}`;
 }
-class hd extends x.UrlTemplateImageryProvider {
+class md extends x.UrlTemplateImageryProvider {
   constructor(e = {}) {
-    const t = e.url || cd;
+    const t = e.url || dd;
     super({
       ...e,
-      url: IE(t, e.accessToken),
+      url: $E(t, e.accessToken),
       minimumLevel: e.minimumLevel ?? 0,
       maximumLevel: e.maximumLevel ?? 23,
       credit: e.credit || new x.Credit("© Esri World Imagery")
@@ -25647,14 +26131,14 @@ class hd extends x.UrlTemplateImageryProvider {
     return this._serviceUrl;
   }
 }
-const ME = 637099681e-2, LE = [1289059486e-2, 836237787e-2, 5591021, 348198983e-2, 167804312e-2, 0], Lh = [75, 60, 45, 30, 15, 0], Ph = [
+const ZE = 637099681e-2, KE = [1289059486e-2, 836237787e-2, 5591021, 348198983e-2, 167804312e-2, 0], Th = [75, 60, 45, 30, 15, 0], Ah = [
   [1410526172116255e-23, 898305509648872e-20, -1.9939833816331, 200.9824383106796, -187.2403703815547, 91.6087516669843, -23.38765649603339, 2.57121317296198, -0.03801003308653, 173379812e-1],
   [-7435856389565537e-24, 8983055097726239e-21, -0.78625201886289, 96.32687599759846, -1.85204757529826, -59.36935905485877, 47.40033549296737, -16.50741931063887, 2.28786674699375, 1026014486e-2],
   [-3030883460898826e-23, 898305509983578e-20, 0.30071316287616, 59.74293618442277, 7.357984074871, -25.38371002664745, 13.45380521110908, -3.29883767235584, 0.32710905363475, 685681737e-2],
   [-1981981304930552e-23, 8983055099779535e-21, 0.03278182852591, 40.31678527705744, 0.65659298677277, -4.44255534477492, 0.85341911805263, 0.12923347998204, -0.04625736007561, 448277706e-2],
   [309191371068437e-23, 8983055096812155e-21, 6995724062e-14, 23.10934304144901, -23663490511e-14, -0.6321817810242, -0.00663494467273, 0.03430082397953, -0.00466043876332, 25551644e-1],
   [2890871144776878e-24, 8983055095805407e-21, -3068298e-14, 7.47137025468032, -353937994e-14, -0.02145144861037, -1234426596e-14, 10322952773e-14, -323890364e-14, 826088.5]
-], Nh = [
+], Rh = [
   [-0.0015702102444, 111320.7020616939, 1704480524535203, -10338987376042340, 26112667856603880, -35149665666353700, 26595700718403920, -10725012458148240, 1800819912950474, 82.5],
   [8277824516172526e-19, 111320.7020463578, 6477955746671607e-7, -4082003173641316e-6, 1077490566351142e-5, -1517187553151559e-5, 1205306533862167e-5, -5124939663577472e-6, 9133119352032032e-7, 67.5],
   [0.00337398766765, 111320.7020202162, 4481351045890365e-9, -2339375119931662e-8, 79682215475871e-6, -1159649932795258e-7, 9723671115621457e-8, -4366194367355427e-8, 8477230501135234e-9, 52.5],
@@ -25662,7 +26146,7 @@ const ME = 637099681e-2, LE = [1289059486e-2, 836237787e-2, 5591021, 348198983e-
   [-3441963504388392e-19, 111320.7020576856, 278.2353398772752, 2485758690035394e-9, 6070.750963243378, 54821.18355235118, 9540.606633304236, -2710.55326745, 1405.483844121726, 22.5],
   [-3218135878613132e-19, 111320.7020701615, 0.00369383431289, 823725.6402795718, 0.46104986909093, 2351.343141331292, 1.58060784298199, 8.77738589078284, 0.37238884252424, 7.45]
 ];
-class fd {
+class vd {
   constructor(e = {}) {
     this.isWgs84 = !!e.isWgs84;
   }
@@ -25672,7 +26156,7 @@ class fd {
       const a = e.lng / 2003750834e-2 * 180, l = e.lat / 2003750834e-2 * 180, u = 180 / Math.PI * (2 * Math.atan(Math.exp(l * Math.PI / 180)) - Math.PI / 2);
       return { lng: Number(a.toFixed(6)), lat: Number(u.toFixed(6)) };
     }
-    const t = Math.abs(e.lat), r = Ph[LE.findIndex((a) => t >= a)] || Ph.at(-1), i = this.convertor(e, r);
+    const t = Math.abs(e.lat), r = Ah[KE.findIndex((a) => t >= a)] || Ah.at(-1), i = this.convertor(e, r);
     return { lng: Number(i.lng.toFixed(6)), lat: Number(i.lat.toFixed(6)) };
   }
   convertLL2MC(e) {
@@ -25686,9 +26170,9 @@ class fd {
       lng: this.getLoop(e.lng, -180, 180),
       lat: this.getRange(e.lat, -74, 74)
     };
-    let r = Lh.findIndex((a) => t.lat >= a);
-    r < 0 && (r = Lh.findIndex((a) => t.lat <= -a));
-    const i = this.convertor(t, Nh[r < 0 ? Nh.length - 1 : r]);
+    let r = Th.findIndex((a) => t.lat >= a);
+    r < 0 && (r = Th.findIndex((a) => t.lat <= -a));
+    const i = this.convertor(t, Rh[r < 0 ? Rh.length - 1 : r]);
     return { lng: Number(i.lng.toFixed(2)), lat: Number(i.lat.toFixed(2)) };
   }
   convertor(e, t) {
@@ -25719,7 +26203,7 @@ class fd {
     );
   }
   getDistance(e, t, r, i) {
-    return ME * Math.acos(Math.sin(r) * Math.sin(i) + Math.cos(r) * Math.cos(i) * Math.cos(t - e));
+    return ZE * Math.acos(Math.sin(r) * Math.sin(i) + Math.cos(r) * Math.cos(i) * Math.cos(t - e));
   }
   toRadians(e) {
     return Math.PI * e / 180;
@@ -25769,21 +26253,21 @@ class fd {
     return 2 ** (18 - e);
   }
 }
-class gd extends x.WebMercatorTilingScheme {
+class pd extends x.WebMercatorTilingScheme {
   constructor(e = {}) {
     super(e);
-    const t = new fd();
+    const t = new vd();
     this._projection.project = (r) => {
-      let i = Zn.WGS84ToGCJ02(
+      let i = Kn.WGS84ToGCJ02(
         x.Math.toDegrees(r.longitude),
         x.Math.toDegrees(r.latitude)
       );
-      i = Zn.GCJ02ToBD09(i[0], i[1]), i[0] = Math.min(180, Math.max(-180, i[0])), i[1] = Math.min(74.000022, Math.max(-71.988531, i[1]));
+      i = Kn.GCJ02ToBD09(i[0], i[1]), i[0] = Math.min(180, Math.max(-180, i[0])), i[1] = Math.min(74.000022, Math.max(-71.988531, i[1]));
       const a = t.lngLatToPoint({ lng: i[0], lat: i[1] });
       return new x.Cartesian2(a.x, a.y);
     }, this._projection.unproject = (r) => {
       let i = t.mercatorToLngLat({ lng: r.x, lat: r.y });
-      return i = Zn.BD09ToGCJ02(i.lng, i.lat), i = Zn.GCJ02ToWGS84(i[0], i[1]), new x.Cartographic(
+      return i = Kn.BD09ToGCJ02(i.lng, i.lat), i = Kn.GCJ02ToWGS84(i[0], i[1]), new x.Cartographic(
         x.Math.toRadians(i[0]),
         x.Math.toRadians(i[1])
       );
@@ -25801,13 +26285,13 @@ class gd extends x.WebMercatorTilingScheme {
     return x.defined(r) ? (r.x = l, r.y = u, r) : new x.Cartesian2(l, u);
   }
 }
-const Th = {
+const Oh = {
   free: "https://maponline{s}.bdimg.com",
   authorized: "https://apimaponline{s}.bdimg.com"
-}, PE = {
+}, JE = {
   vec: "/tile/",
   img: "/starpic/"
-}, dd = Object.freeze({
+}, yd = Object.freeze({
   normal: "vec",
   vec: "vec",
   vector: "vec",
@@ -25818,22 +26302,22 @@ const Th = {
   satellite: "img",
   custom: "custom"
 });
-function NE(n = "normal") {
-  return dd[String(n).toLowerCase()];
+function QE(n = "normal") {
+  return yd[String(n).toLowerCase()];
 }
-function TE(n, e) {
+function jE(n, e) {
   if (!e) return n;
   const t = String(e).replace(/:\/\/$/, "").replace(/:$/, "");
   return n.replace(/^https?:/, `${t}:`);
 }
-function AE(n) {
+function eb(n) {
   return encodeURIComponent(String(n)).replace(/%7B([a-zA-Z0-9_]+)%7D/gi, "{$1}");
 }
-function RE(n) {
-  return Object.entries(n).filter(([, e]) => e != null && e !== "").map(([e, t]) => `${encodeURIComponent(e)}=${AE(t)}`).join("&");
+function tb(n) {
+  return Object.entries(n).filter(([, e]) => e != null && e !== "").map(([e, t]) => `${encodeURIComponent(e)}=${eb(t)}`).join("&");
 }
-function OE(n, e) {
-  const t = e.key ? Th.authorized : Th.free, r = n === "img" ? {
+function nb(n, e) {
+  const t = e.key ? Oh.authorized : Oh.free, r = n === "img" ? {
     qt: "satepc",
     u: `x={x};y={y};z={z};v=${e.v ?? "009"};type=${e.satelliteType ?? "sate"}`,
     fm: 46
@@ -25847,26 +26331,26 @@ function OE(n, e) {
   };
   for (const i of ["qt", "styles", "scaler", "udt", "fm"])
     e[i] !== void 0 && (r[i] = e[i]);
-  return Object.assign(r, e.queryParameters || {}), delete r.ak, e.key && (r.ak = e.key), `${t}${PE[n]}?${RE(r)}`;
+  return Object.assign(r, e.queryParameters || {}), delete r.ak, e.key && (r.ak = e.key), `${t}${JE[n]}?${tb(r)}`;
 }
-function DE(n) {
+function rb(n) {
   return n.replace(/([?&]u=)([^&]*)/i, (e, t, r) => {
     const i = r.replace(/%3d/gi, "=").replace(/%3b/gi, ";");
     return `${t}${i.replaceAll("=", "%3D").replaceAll(";", "%3B")}`;
   });
 }
-class md extends x.UrlTemplateImageryProvider {
+class _d extends x.UrlTemplateImageryProvider {
   constructor(e = {}) {
-    const t = NE(e.style);
+    const t = QE(e.style);
     if (!e.url && !t)
       throw new Error(`Unsupported Baidu map style: ${e.style}`);
     if (!e.url && t === "custom")
       throw new Error("Baidu custom map style requires an authorized custom url.");
-    const r = e.url || OE(t, e), i = e.customId || e.style || "", a = TE(r, e.protocol).replaceAll("{customId}", encodeURIComponent(i)).replaceAll("{style}", encodeURIComponent(i)), l = t === "img" ? DE(a) : a;
+    const r = e.url || nb(t, e), i = e.customId || e.style || "", a = jE(r, e.protocol).replaceAll("{customId}", encodeURIComponent(i)).replaceAll("{style}", encodeURIComponent(i)), l = t === "img" ? rb(a) : a;
     let u = e.tilingScheme;
     if (!u && e.crs === "WGS84") {
       const g = Array.from({ length: 19 }, (d, m) => 256 * 2 ** (18 - m));
-      u = new gd({
+      u = new pd({
         resolutions: g,
         rectangleSouthwestInMeters: new x.Cartesian2(-2003772637e-2, -1247410417e-2),
         rectangleNortheastInMeters: new x.Cartesian2(2003772637e-2, 1247410417e-2)
@@ -25894,10 +26378,10 @@ class md extends x.UrlTemplateImageryProvider {
     return x.ImageryProvider.loadImage(this, this._buildImageUrl(e, t, r));
   }
 }
-const FE = "//tiles{s}.geovisearth.com/base/v1/{style}/{z}/{x}/{y}?format={format}&tmsIds=w&token={key}";
-class vd extends x.UrlTemplateImageryProvider {
+const ib = "//tiles{s}.geovisearth.com/base/v1/{style}/{z}/{x}/{y}?format={format}&tmsIds=w&token={key}";
+class wd extends x.UrlTemplateImageryProvider {
   constructor(e = {}) {
-    const t = e.url || `${e.protocol || ""}${FE.replaceAll("{style}", e.style || "vec").replaceAll("{format}", e.format || "png").replaceAll("{key}", e.key || "")}`;
+    const t = e.url || `${e.protocol || ""}${ib.replaceAll("{style}", e.style || "vec").replaceAll("{format}", e.format || "png").replaceAll("{key}", e.key || "")}`;
     super({
       ...e,
       url: t,
@@ -25905,7 +26389,7 @@ class vd extends x.UrlTemplateImageryProvider {
     });
   }
 }
-const pd = Object.freeze({
+const xd = Object.freeze({
   normal: "m",
   vec: "m",
   vector: "m",
@@ -25922,35 +26406,35 @@ const pd = Object.freeze({
   terrain: "p",
   img_cva: "y",
   hybrid: "y"
-}), BE = "https://mt{s}.google.com/vt/lyrs={style}&hl={language}&gl={region}&x={x}&y={y}&z={z}", zE = "https://tile.googleapis.com/v1/2dtiles/{z}/{x}/{y}?session={sessionToken}&key={key}";
-function GE(n, e) {
+}), sb = "https://mt{s}.google.com/vt/lyrs={style}&hl={language}&gl={region}&x={x}&y={y}&z={z}", ob = "https://tile.googleapis.com/v1/2dtiles/{z}/{x}/{y}?session={sessionToken}&key={key}";
+function ab(n, e) {
   if (n.url) return n.url;
   if (n.key || n.sessionToken) {
     if (!n.key || !n.sessionToken)
       throw new Error("Google Maps Tile API requires both key and sessionToken.");
-    return zE.replace("{key}", encodeURIComponent(n.key)).replace("{sessionToken}", encodeURIComponent(n.sessionToken));
+    return ob.replace("{key}", encodeURIComponent(n.key)).replace("{sessionToken}", encodeURIComponent(n.sessionToken));
   }
-  return BE.replace("{style}", e).replace("{language}", encodeURIComponent(n.language || "zh-CN")).replace("{region}", encodeURIComponent(n.region || "cn"));
+  return sb.replace("{style}", e).replace("{language}", encodeURIComponent(n.language || "zh-CN")).replace("{region}", encodeURIComponent(n.region || "cn"));
 }
-class yd extends x.UrlTemplateImageryProvider {
+class Ed extends x.UrlTemplateImageryProvider {
   constructor(e = {}) {
-    const t = String(e.style || "normal").toLowerCase(), r = pd[t];
+    const t = String(e.style || "normal").toLowerCase(), r = xd[t];
     if (!e.url && !r)
       throw new Error(`Unsupported Google map style: ${e.style}`);
     const i = {
       ...e,
-      url: GE(e, r),
+      url: ab(e, r),
       subdomains: e.subdomains || ["0", "1", "2", "3"],
       maximumLevel: e.maximumLevel ?? 22,
       credit: e.credit || new x.Credit("© Google")
     };
-    e.crs === "WGS84" && !e.tilingScheme && !(e.key && e.sessionToken) && (i.tilingScheme = new lo()), super(i), this._style = t;
+    e.crs === "WGS84" && !e.tilingScheme && !(e.key && e.sessionToken) && (i.tilingScheme = new co()), super(i), this._style = t;
   }
 }
-const qE = "//t{s}.tianditu.gov.cn/DataServer?T={style}_w&x={x}&y={y}&l={z}&tk={key}";
-class _d extends x.UrlTemplateImageryProvider {
+const lb = "//t{s}.tianditu.gov.cn/DataServer?T={style}_w&x={x}&y={y}&l={z}&tk={key}";
+class bd extends x.UrlTemplateImageryProvider {
   constructor(e = {}) {
-    const t = e.url || `${e.protocol || ""}${qE.replaceAll("{style}", e.style || "vec").replaceAll("{key}", e.key || "")}`;
+    const t = e.url || `${e.protocol || ""}${lb.replaceAll("{style}", e.style || "vec").replaceAll("{key}", e.key || "")}`;
     super({
       ...e,
       url: t,
@@ -25959,14 +26443,14 @@ class _d extends x.UrlTemplateImageryProvider {
     });
   }
 }
-const Ah = {
+const Dh = {
   img: "//p{s}.map.gtimg.com/sateTiles/{z}/{sx}/{sy}/{x}_{reverseY}.jpg?version=400",
   elec: "//rt{s}.map.gtimg.com/tile?z={z}&x={x}&y={reverseY}&styleid={style}&scene=0&version=347"
 };
-class wd extends x.UrlTemplateImageryProvider {
+class Cd extends x.UrlTemplateImageryProvider {
   constructor(e = {}) {
     var a;
-    const t = e.style || "1", r = (e.url || `${e.protocol || ""}${Ah[e.style] || Ah.elec}`).replace("{style}", t), i = {
+    const t = e.style || "1", r = (e.url || `${e.protocol || ""}${Dh[e.style] || Dh.elec}`).replace("{style}", t), i = {
       ...e,
       url: r,
       subdomains: (a = e.subdomains) != null && a.length ? e.subdomains : ["0", "1", "2"]
@@ -25978,15 +26462,15 @@ class wd extends x.UrlTemplateImageryProvider {
     }), super(i);
   }
 }
-const xd = {
-  amap: ud,
-  arcgis: hd,
-  baidu: md,
-  geovis: vd,
-  google: yd,
-  tdt: _d,
-  tencent: wd
-}, UE = /* @__PURE__ */ new Set([
+const Sd = {
+  amap: gd,
+  arcgis: md,
+  baidu: _d,
+  geovis: wd,
+  google: Ed,
+  tdt: bd,
+  tencent: Cd
+}, ub = /* @__PURE__ */ new Set([
   "type",
   "provider",
   "providerOptions",
@@ -25997,33 +26481,33 @@ const xd = {
   "coordinateSystem",
   "token"
 ]);
-function HE(n) {
+function cb(n) {
   const e = { ...n, ...n.providerOptions || {} }, t = e.coordinateSystem;
-  return UE.forEach((r) => delete e[r]), e.crs === void 0 && t !== void 0 && (e.crs = t), e;
+  return ub.forEach((r) => delete e[r]), e.crs === void 0 && t !== void 0 && (e.crs = t), e;
 }
-function YE(n) {
+function hb(n) {
   return String(n || "").replace(/[\s_-]/g, "").toUpperCase();
 }
-function Ed(n = {}) {
+function Id(n = {}) {
   if (n.provider) return n.provider;
-  const e = String(n.type || "url-template").toLowerCase(), t = HE(n);
+  const e = String(n.type || "url-template").toLowerCase(), t = cb(n);
   if (e === "url-template" || e === "offline") {
     if (!t.url) throw new Error("Base map URL is required.");
     return n.token && (t.url = new x.Resource({
       url: t.url,
       headers: { Authorization: n.token }
-    })), !t.tilingScheme && YE(t.crs) === "GCJ02" && (t.tilingScheme = new lo()), new x.UrlTemplateImageryProvider(t);
+    })), !t.tilingScheme && hb(t.crs) === "GCJ02" && (t.tilingScheme = new co()), new x.UrlTemplateImageryProvider(t);
   }
-  const r = xd[e];
+  const r = Sd[e];
   if (!r)
     throw new Error(`Unsupported base map type: ${e}`);
   return new r(t);
 }
-const XE = Object.freeze([
+const fb = Object.freeze([
   "url-template",
-  ...Object.keys(xd)
+  ...Object.keys(Sd)
 ]);
-class VE {
+class gb {
   constructor(e, t = {}) {
     if (!e) throw new Error("Viewer is required.");
     this.viewer = e, this.config = {}, this.imageryLayer = null, this.theme = null, this.destroyed = !1, this.load(t);
@@ -26035,7 +26519,7 @@ class VE {
       show: !0,
       ...e
     };
-    const t = Ed(this.config), r = {
+    const t = Id(this.config), r = {
       show: this.config.show,
       ...this.config.layerOptions || {}
     };
@@ -26054,7 +26538,7 @@ class VE {
     return ((e = this.imageryLayer) == null ? void 0 : e.imageryProvider) || null;
   }
   setTheme(e) {
-    this.ensureUsable(), this.removeColor(), e && (this.theme = new I0(this.viewer), this.theme.addColor({ invertColor: !0, filterRGB: e }));
+    this.ensureUsable(), this.removeColor(), e && (this.theme = new P0(this.viewer), this.theme.addColor({ invertColor: !0, filterRGB: e }));
   }
   removeColor() {
     var e;
@@ -26081,12 +26565,12 @@ class VE {
       throw new Error("Viewer is unavailable.");
   }
 }
-const bd = 1;
-async function Cd(n = {}) {
+const kd = 1;
+async function Md(n = {}) {
   const e = n.token ?? n.accessToken ?? "";
   if (!e)
     throw new x.DeveloperError("Cesium ion token is required.");
-  const t = Number(n.assetId ?? bd);
+  const t = Number(n.assetId ?? kd);
   if (!Number.isInteger(t) || t <= 0)
     throw new x.DeveloperError("Cesium ion assetId must be a positive integer.");
   const r = { accessToken: e };
@@ -26101,7 +26585,7 @@ async function Cd(n = {}) {
     ...n.providerOptions || {}
   });
 }
-class WE {
+class db {
   constructor(e, t = {}) {
     if (!e) throw new Error("Viewer is required.");
     this.viewer = e, this.config = {}, this.provider = null, this.readyPromise = Promise.resolve(null), this.destroyed = !1, this._shouldShow = !0, this._loadVersion = 0, this._previousProvider = e.terrainProvider, this._previousDepthTest = e.scene.globe.depthTestAgainstTerrain, this.readyPromise = this.load(t);
@@ -26111,7 +26595,7 @@ class WE {
       depthTestAgainstTerrain: !0,
       ...e
     }, this.provider = null, this._shouldShow = !0;
-    const t = ++this._loadVersion, r = this.config.provider ? Promise.resolve(this.config.provider) : Cd(this.config);
+    const t = ++this._loadVersion, r = this.config.provider ? Promise.resolve(this.config.provider) : Md(this.config);
     return this.readyPromise = r.then((i) => this.destroyed || t !== this._loadVersion ? null : (this.provider = i, this._shouldShow && this._applyTerrain(), i)), this.readyPromise;
   }
   switch(e = {}) {
@@ -26150,24 +26634,24 @@ class WE {
       throw new Error("Viewer is unavailable.");
   }
 }
-function Br(n) {
+function zr(n) {
   let e = n.length;
   for (; --e >= 0; )
     n[e] = 0;
 }
-const $E = 3, ZE = 258, Sd = 29, KE = 256, JE = KE + 1 + Sd, kd = 30, QE = 512, jE = new Array((JE + 2) * 2);
-Br(jE);
-const eb = new Array(kd * 2);
-Br(eb);
-const tb = new Array(QE);
-Br(tb);
-const nb = new Array(ZE - $E + 1);
-Br(nb);
-const rb = new Array(Sd);
-Br(rb);
-const ib = new Array(kd);
-Br(ib);
-const sb = (n, e, t, r) => {
+const mb = 3, vb = 258, Ld = 29, pb = 256, yb = pb + 1 + Ld, Nd = 30, _b = 512, wb = new Array((yb + 2) * 2);
+zr(wb);
+const xb = new Array(Nd * 2);
+zr(xb);
+const Eb = new Array(_b);
+zr(Eb);
+const bb = new Array(vb - mb + 1);
+zr(bb);
+const Cb = new Array(Ld);
+zr(Cb);
+const Sb = new Array(Nd);
+zr(Sb);
+const Ib = (n, e, t, r) => {
   let i = n & 65535 | 0, a = n >>> 16 & 65535 | 0, l = 0;
   for (; t !== 0; ) {
     l = t > 2e3 ? 2e3 : t, t -= l;
@@ -26178,8 +26662,8 @@ const sb = (n, e, t, r) => {
   }
   return i | a << 16 | 0;
 };
-var qa = sb;
-const ob = () => {
+var Ua = Ib;
+const kb = () => {
   let n, e = [];
   for (var t = 0; t < 256; t++) {
     n = t;
@@ -26188,14 +26672,14 @@ const ob = () => {
     e[t] = n;
   }
   return e;
-}, ab = new Uint32Array(ob()), lb = (n, e, t, r) => {
-  const i = ab, a = r + t;
+}, Mb = new Uint32Array(kb()), Lb = (n, e, t, r) => {
+  const i = Mb, a = r + t;
   n ^= -1;
   for (let l = r; l < a; l++)
     n = n >>> 8 ^ i[(n ^ e[l]) & 255];
   return n ^ -1;
 };
-var en = lb, Ua = {
+var tn = Lb, Ya = {
   2: "need dictionary",
   /* Z_NEED_DICT       2  */
   1: "stream end",
@@ -26214,7 +26698,7 @@ var en = lb, Ua = {
   /* Z_BUF_ERROR     (-5) */
   "-6": "incompatible version"
   /* Z_VERSION_ERROR (-6) */
-}, Id = {
+}, Pd = {
   /* Allowed flush values; see deflate() and inflate() below for details */
   Z_NO_FLUSH: 0,
   Z_FINISH: 4,
@@ -26234,8 +26718,8 @@ var en = lb, Ua = {
   Z_DEFLATED: 8
   //Z_NULL:                 null // Use -1 or null inline, depending on var type
 };
-const ub = (n, e) => Object.prototype.hasOwnProperty.call(n, e);
-var cb = function(n) {
+const Nb = (n, e) => Object.prototype.hasOwnProperty.call(n, e);
+var Pb = function(n) {
   const e = Array.prototype.slice.call(arguments, 1);
   for (; e.length; ) {
     const t = e.shift();
@@ -26243,11 +26727,11 @@ var cb = function(n) {
       if (typeof t != "object")
         throw new TypeError(t + "must be non-object");
       for (const r in t)
-        ub(t, r) && (n[r] = t[r]);
+        Nb(t, r) && (n[r] = t[r]);
     }
   }
   return n;
-}, hb = (n) => {
+}, Tb = (n) => {
   let e = 0;
   for (let r = 0, i = n.length; r < i; r++)
     e += n[r].length;
@@ -26257,21 +26741,21 @@ var cb = function(n) {
     t.set(l, i), i += l.length;
   }
   return t;
-}, Md = {
-  assign: cb,
-  flattenChunks: hb
+}, Td = {
+  assign: Pb,
+  flattenChunks: Tb
 };
-let Ld = !0;
+let Ad = !0;
 try {
   String.fromCharCode.apply(null, new Uint8Array(1));
 } catch {
-  Ld = !1;
+  Ad = !1;
 }
-const Mi = new Uint8Array(256);
+const Ni = new Uint8Array(256);
 for (let n = 0; n < 256; n++)
-  Mi[n] = n >= 252 ? 6 : n >= 248 ? 5 : n >= 240 ? 4 : n >= 224 ? 3 : n >= 192 ? 2 : 1;
-Mi[254] = Mi[255] = 1;
-var fb = (n) => {
+  Ni[n] = n >= 252 ? 6 : n >= 248 ? 5 : n >= 240 ? 4 : n >= 224 ? 3 : n >= 192 ? 2 : 1;
+Ni[254] = Ni[255] = 1;
+var Ab = (n) => {
   if (typeof TextEncoder == "function" && TextEncoder.prototype.encode)
     return new TextEncoder().encode(n);
   let e, t, r, i, a, l = n.length, u = 0;
@@ -26281,15 +26765,15 @@ var fb = (n) => {
     t = n.charCodeAt(i), (t & 64512) === 55296 && i + 1 < l && (r = n.charCodeAt(i + 1), (r & 64512) === 56320 && (t = 65536 + (t - 55296 << 10) + (r - 56320), i++)), t < 128 ? e[a++] = t : t < 2048 ? (e[a++] = 192 | t >>> 6, e[a++] = 128 | t & 63) : t < 65536 ? (e[a++] = 224 | t >>> 12, e[a++] = 128 | t >>> 6 & 63, e[a++] = 128 | t & 63) : (e[a++] = 240 | t >>> 18, e[a++] = 128 | t >>> 12 & 63, e[a++] = 128 | t >>> 6 & 63, e[a++] = 128 | t & 63);
   return e;
 };
-const gb = (n, e) => {
-  if (e < 65534 && n.subarray && Ld)
+const Rb = (n, e) => {
+  if (e < 65534 && n.subarray && Ad)
     return String.fromCharCode.apply(null, n.length === e ? n : n.subarray(0, e));
   let t = "";
   for (let r = 0; r < e; r++)
     t += String.fromCharCode(n[r]);
   return t;
 };
-var db = (n, e) => {
+var Ob = (n, e) => {
   const t = e || n.length;
   if (typeof TextDecoder == "function" && TextDecoder.prototype.decode)
     return new TextDecoder().decode(n.subarray(0, e));
@@ -26301,7 +26785,7 @@ var db = (n, e) => {
       a[i++] = l;
       continue;
     }
-    let u = Mi[l];
+    let u = Ni[l];
     if (u > 4) {
       a[i++] = 65533, r += u - 1;
       continue;
@@ -26314,75 +26798,75 @@ var db = (n, e) => {
     }
     l < 65536 ? a[i++] = l : (l -= 65536, a[i++] = 55296 | l >> 10 & 1023, a[i++] = 56320 | l & 1023);
   }
-  return gb(a, i);
-}, mb = (n, e) => {
+  return Rb(a, i);
+}, Db = (n, e) => {
   e = e || n.length, e > n.length && (e = n.length);
   let t = e - 1;
   for (; t >= 0 && (n[t] & 192) === 128; )
     t--;
-  return t < 0 || t === 0 ? e : t + Mi[n[t]] > e ? t : e;
-}, Ha = {
-  string2buf: fb,
-  buf2string: db,
-  utf8border: mb
+  return t < 0 || t === 0 ? e : t + Ni[n[t]] > e ? t : e;
+}, Xa = {
+  string2buf: Ab,
+  buf2string: Ob,
+  utf8border: Db
 };
-function vb() {
+function Fb() {
   this.input = null, this.next_in = 0, this.avail_in = 0, this.total_in = 0, this.output = null, this.next_out = 0, this.avail_out = 0, this.total_out = 0, this.msg = "", this.state = null, this.data_type = 2, this.adler = 0;
 }
-var pb = vb;
-const vs = 16209, yb = 16191;
-var _b = function(e, t) {
-  let r, i, a, l, u, f, g, d, m, p, y, w, b, M, k, S, N, P, A, B, F, C, L, T;
+var Bb = Fb;
+const ys = 16209, zb = 16191;
+var Gb = function(e, t) {
+  let r, i, a, l, u, f, g, d, m, p, y, w, b, k, I, S, P, N, A, B, F, C, L, T;
   const D = e.state;
-  r = e.next_in, L = e.input, i = r + (e.avail_in - 5), a = e.next_out, T = e.output, l = a - (t - e.avail_out), u = a + (e.avail_out - 257), f = D.dmax, g = D.wsize, d = D.whave, m = D.wnext, p = D.window, y = D.hold, w = D.bits, b = D.lencode, M = D.distcode, k = (1 << D.lenbits) - 1, S = (1 << D.distbits) - 1;
+  r = e.next_in, L = e.input, i = r + (e.avail_in - 5), a = e.next_out, T = e.output, l = a - (t - e.avail_out), u = a + (e.avail_out - 257), f = D.dmax, g = D.wsize, d = D.whave, m = D.wnext, p = D.window, y = D.hold, w = D.bits, b = D.lencode, k = D.distcode, I = (1 << D.lenbits) - 1, S = (1 << D.distbits) - 1;
   e:
     do {
-      w < 15 && (y += L[r++] << w, w += 8, y += L[r++] << w, w += 8), N = b[y & k];
+      w < 15 && (y += L[r++] << w, w += 8, y += L[r++] << w, w += 8), P = b[y & I];
       t:
         for (; ; ) {
-          if (P = N >>> 24, y >>>= P, w -= P, P = N >>> 16 & 255, P === 0)
-            T[a++] = N & 65535;
-          else if (P & 16) {
-            A = N & 65535, P &= 15, P && (w < P && (y += L[r++] << w, w += 8), A += y & (1 << P) - 1, y >>>= P, w -= P), w < 15 && (y += L[r++] << w, w += 8, y += L[r++] << w, w += 8), N = M[y & S];
+          if (N = P >>> 24, y >>>= N, w -= N, N = P >>> 16 & 255, N === 0)
+            T[a++] = P & 65535;
+          else if (N & 16) {
+            A = P & 65535, N &= 15, N && (w < N && (y += L[r++] << w, w += 8), A += y & (1 << N) - 1, y >>>= N, w -= N), w < 15 && (y += L[r++] << w, w += 8, y += L[r++] << w, w += 8), P = k[y & S];
             n:
               for (; ; ) {
-                if (P = N >>> 24, y >>>= P, w -= P, P = N >>> 16 & 255, P & 16) {
-                  if (B = N & 65535, P &= 15, w < P && (y += L[r++] << w, w += 8, w < P && (y += L[r++] << w, w += 8)), B += y & (1 << P) - 1, B > f) {
-                    e.msg = "invalid distance too far back", D.mode = vs;
+                if (N = P >>> 24, y >>>= N, w -= N, N = P >>> 16 & 255, N & 16) {
+                  if (B = P & 65535, N &= 15, w < N && (y += L[r++] << w, w += 8, w < N && (y += L[r++] << w, w += 8)), B += y & (1 << N) - 1, B > f) {
+                    e.msg = "invalid distance too far back", D.mode = ys;
                     break e;
                   }
-                  if (y >>>= P, w -= P, P = a - l, B > P) {
-                    if (P = B - P, P > d && D.sane) {
-                      e.msg = "invalid distance too far back", D.mode = vs;
+                  if (y >>>= N, w -= N, N = a - l, B > N) {
+                    if (N = B - N, N > d && D.sane) {
+                      e.msg = "invalid distance too far back", D.mode = ys;
                       break e;
                     }
                     if (F = 0, C = p, m === 0) {
-                      if (F += g - P, P < A) {
-                        A -= P;
+                      if (F += g - N, N < A) {
+                        A -= N;
                         do
                           T[a++] = p[F++];
-                        while (--P);
+                        while (--N);
                         F = a - B, C = T;
                       }
-                    } else if (m < P) {
-                      if (F += g + m - P, P -= m, P < A) {
-                        A -= P;
+                    } else if (m < N) {
+                      if (F += g + m - N, N -= m, N < A) {
+                        A -= N;
                         do
                           T[a++] = p[F++];
-                        while (--P);
+                        while (--N);
                         if (F = 0, m < A) {
-                          P = m, A -= P;
+                          N = m, A -= N;
                           do
                             T[a++] = p[F++];
-                          while (--P);
+                          while (--N);
                           F = a - B, C = T;
                         }
                       }
-                    } else if (F += m - P, P < A) {
-                      A -= P;
+                    } else if (F += m - N, N < A) {
+                      A -= N;
                       do
                         T[a++] = p[F++];
-                      while (--P);
+                      while (--N);
                       F = a - B, C = T;
                     }
                     for (; A > 2; )
@@ -26395,25 +26879,25 @@ var _b = function(e, t) {
                     while (A > 2);
                     A && (T[a++] = T[F++], A > 1 && (T[a++] = T[F++]));
                   }
-                } else if (P & 64) {
-                  e.msg = "invalid distance code", D.mode = vs;
+                } else if (N & 64) {
+                  e.msg = "invalid distance code", D.mode = ys;
                   break e;
                 } else {
-                  N = M[(N & 65535) + (y & (1 << P) - 1)];
+                  P = k[(P & 65535) + (y & (1 << N) - 1)];
                   continue n;
                 }
                 break;
               }
-          } else if (P & 64)
-            if (P & 32) {
-              D.mode = yb;
+          } else if (N & 64)
+            if (N & 32) {
+              D.mode = zb;
               break e;
             } else {
-              e.msg = "invalid literal/length code", D.mode = vs;
+              e.msg = "invalid literal/length code", D.mode = ys;
               break e;
             }
           else {
-            N = b[(N & 65535) + (y & (1 << P) - 1)];
+            P = b[(P & 65535) + (y & (1 << N) - 1)];
             continue t;
           }
           break;
@@ -26421,7 +26905,7 @@ var _b = function(e, t) {
     } while (r < i && a < u);
   A = w >> 3, r -= A, w -= A << 3, y &= (1 << w) - 1, e.next_in = r, e.next_out = a, e.avail_in = r < i ? 5 + (i - r) : 5 - (r - i), e.avail_out = a < u ? 257 + (u - a) : 257 - (a - u), D.hold = y, D.bits = w;
 };
-const gr = 15, Rh = 852, Oh = 592, Dh = 0, na = 1, Fh = 2, wb = new Uint16Array([
+const dr = 15, Fh = 852, Bh = 592, zh = 0, ia = 1, Gh = 2, qb = new Uint16Array([
   /* Length codes 257..285 base */
   3,
   4,
@@ -26454,7 +26938,7 @@ const gr = 15, Rh = 852, Oh = 592, Dh = 0, na = 1, Fh = 2, wb = new Uint16Array(
   258,
   0,
   0
-]), xb = new Uint8Array([
+]), Hb = new Uint8Array([
   /* Length codes 257..285 extra */
   16,
   16,
@@ -26487,7 +26971,7 @@ const gr = 15, Rh = 852, Oh = 592, Dh = 0, na = 1, Fh = 2, wb = new Uint16Array(
   16,
   199,
   75
-]), Eb = new Uint16Array([
+]), Ub = new Uint16Array([
   /* Distance codes 0..29 base */
   1,
   2,
@@ -26521,7 +27005,7 @@ const gr = 15, Rh = 852, Oh = 592, Dh = 0, na = 1, Fh = 2, wb = new Uint16Array(
   24577,
   0,
   0
-]), bb = new Uint8Array([
+]), Yb = new Uint8Array([
   /* Distance codes 0..29 extra */
   16,
   16,
@@ -26555,104 +27039,104 @@ const gr = 15, Rh = 852, Oh = 592, Dh = 0, na = 1, Fh = 2, wb = new Uint16Array(
   29,
   64,
   64
-]), Cb = (n, e, t, r, i, a, l, u) => {
+]), Xb = (n, e, t, r, i, a, l, u) => {
   const f = u.bits;
-  let g = 0, d = 0, m = 0, p = 0, y = 0, w = 0, b = 0, M = 0, k = 0, S = 0, N, P, A, B, F, C = null, L;
-  const T = new Uint16Array(gr + 1), D = new Uint16Array(gr + 1);
-  let z = null, U, X, O;
-  for (g = 0; g <= gr; g++)
+  let g = 0, d = 0, m = 0, p = 0, y = 0, w = 0, b = 0, k = 0, I = 0, S = 0, P, N, A, B, F, C = null, L;
+  const T = new Uint16Array(dr + 1), D = new Uint16Array(dr + 1);
+  let z = null, q, X, O;
+  for (g = 0; g <= dr; g++)
     T[g] = 0;
   for (d = 0; d < r; d++)
     T[e[t + d]]++;
-  for (y = f, p = gr; p >= 1 && T[p] === 0; p--)
+  for (y = f, p = dr; p >= 1 && T[p] === 0; p--)
     ;
   if (y > p && (y = p), p === 0)
     return i[a++] = 1 << 24 | 64 << 16 | 0, i[a++] = 1 << 24 | 64 << 16 | 0, u.bits = 1, 0;
   for (m = 1; m < p && T[m] === 0; m++)
     ;
-  for (y < m && (y = m), M = 1, g = 1; g <= gr; g++)
-    if (M <<= 1, M -= T[g], M < 0)
+  for (y < m && (y = m), k = 1, g = 1; g <= dr; g++)
+    if (k <<= 1, k -= T[g], k < 0)
       return -1;
-  if (M > 0 && (n === Dh || p !== 1))
+  if (k > 0 && (n === zh || p !== 1))
     return -1;
-  for (D[1] = 0, g = 1; g < gr; g++)
+  for (D[1] = 0, g = 1; g < dr; g++)
     D[g + 1] = D[g] + T[g];
   for (d = 0; d < r; d++)
     e[t + d] !== 0 && (l[D[e[t + d]]++] = d);
-  if (n === Dh ? (C = z = l, L = 20) : n === na ? (C = wb, z = xb, L = 257) : (C = Eb, z = bb, L = 0), S = 0, d = 0, g = m, F = a, w = y, b = 0, A = -1, k = 1 << y, B = k - 1, n === na && k > Rh || n === Fh && k > Oh)
+  if (n === zh ? (C = z = l, L = 20) : n === ia ? (C = qb, z = Hb, L = 257) : (C = Ub, z = Yb, L = 0), S = 0, d = 0, g = m, F = a, w = y, b = 0, A = -1, I = 1 << y, B = I - 1, n === ia && I > Fh || n === Gh && I > Bh)
     return 1;
   for (; ; ) {
-    U = g - b, l[d] + 1 < L ? (X = 0, O = l[d]) : l[d] >= L ? (X = z[l[d] - L], O = C[l[d] - L]) : (X = 96, O = 0), N = 1 << g - b, P = 1 << w, m = P;
+    q = g - b, l[d] + 1 < L ? (X = 0, O = l[d]) : l[d] >= L ? (X = z[l[d] - L], O = C[l[d] - L]) : (X = 96, O = 0), P = 1 << g - b, N = 1 << w, m = N;
     do
-      P -= N, i[F + (S >> b) + P] = U << 24 | X << 16 | O | 0;
-    while (P !== 0);
-    for (N = 1 << g - 1; S & N; )
-      N >>= 1;
-    if (N !== 0 ? (S &= N - 1, S += N) : S = 0, d++, --T[g] === 0) {
+      N -= P, i[F + (S >> b) + N] = q << 24 | X << 16 | O | 0;
+    while (N !== 0);
+    for (P = 1 << g - 1; S & P; )
+      P >>= 1;
+    if (P !== 0 ? (S &= P - 1, S += P) : S = 0, d++, --T[g] === 0) {
       if (g === p)
         break;
       g = e[t + l[d]];
     }
     if (g > y && (S & B) !== A) {
-      for (b === 0 && (b = y), F += m, w = g - b, M = 1 << w; w + b < p && (M -= T[w + b], !(M <= 0)); )
-        w++, M <<= 1;
-      if (k += 1 << w, n === na && k > Rh || n === Fh && k > Oh)
+      for (b === 0 && (b = y), F += m, w = g - b, k = 1 << w; w + b < p && (k -= T[w + b], !(k <= 0)); )
+        w++, k <<= 1;
+      if (I += 1 << w, n === ia && I > Fh || n === Gh && I > Bh)
         return 1;
       A = S & B, i[A] = y << 24 | w << 16 | F - a | 0;
     }
   }
   return S !== 0 && (i[F + S] = g - b << 24 | 64 << 16 | 0), u.bits = y, 0;
 };
-var vi = Cb;
-const Sb = 0, Pd = 1, Nd = 2, {
-  Z_FINISH: Bh,
-  Z_BLOCK: kb,
-  Z_TREES: ps,
-  Z_OK: er,
-  Z_STREAM_END: Ib,
-  Z_NEED_DICT: Mb,
-  Z_STREAM_ERROR: Ht,
-  Z_DATA_ERROR: Td,
-  Z_MEM_ERROR: Ad,
-  Z_BUF_ERROR: Lb,
-  Z_DEFLATED: zh
-} = Id, uo = 16180, Gh = 16181, qh = 16182, Uh = 16183, Hh = 16184, Yh = 16185, Xh = 16186, Vh = 16187, Wh = 16188, $h = 16189, Xs = 16190, yn = 16191, ra = 16192, Zh = 16193, ia = 16194, Kh = 16195, Jh = 16196, Qh = 16197, jh = 16198, ys = 16199, _s = 16200, ef = 16201, tf = 16202, nf = 16203, rf = 16204, sf = 16205, sa = 16206, of = 16207, af = 16208, $e = 16209, Rd = 16210, Od = 16211, Pb = 852, Nb = 592, Tb = 15, Ab = Tb, lf = (n) => (n >>> 24 & 255) + (n >>> 8 & 65280) + ((n & 65280) << 8) + ((n & 255) << 24);
-function Rb() {
+var yi = Xb;
+const Vb = 0, Rd = 1, Od = 2, {
+  Z_FINISH: qh,
+  Z_BLOCK: Wb,
+  Z_TREES: _s,
+  Z_OK: tr,
+  Z_STREAM_END: $b,
+  Z_NEED_DICT: Zb,
+  Z_STREAM_ERROR: Yt,
+  Z_DATA_ERROR: Dd,
+  Z_MEM_ERROR: Fd,
+  Z_BUF_ERROR: Kb,
+  Z_DEFLATED: Hh
+} = Pd, ho = 16180, Uh = 16181, Yh = 16182, Xh = 16183, Vh = 16184, Wh = 16185, $h = 16186, Zh = 16187, Kh = 16188, Jh = 16189, Ws = 16190, _n = 16191, sa = 16192, Qh = 16193, oa = 16194, jh = 16195, ef = 16196, tf = 16197, nf = 16198, ws = 16199, xs = 16200, rf = 16201, sf = 16202, of = 16203, af = 16204, lf = 16205, aa = 16206, uf = 16207, cf = 16208, Ze = 16209, Bd = 16210, zd = 16211, Jb = 852, Qb = 592, jb = 15, eC = jb, hf = (n) => (n >>> 24 & 255) + (n >>> 8 & 65280) + ((n & 65280) << 8) + ((n & 255) << 24);
+function tC() {
   this.strm = null, this.mode = 0, this.last = !1, this.wrap = 0, this.havedict = !1, this.flags = 0, this.dmax = 0, this.check = 0, this.total = 0, this.head = null, this.wbits = 0, this.wsize = 0, this.whave = 0, this.wnext = 0, this.window = null, this.hold = 0, this.bits = 0, this.length = 0, this.offset = 0, this.extra = 0, this.lencode = null, this.distcode = null, this.lenbits = 0, this.distbits = 0, this.ncode = 0, this.nlen = 0, this.ndist = 0, this.have = 0, this.next = null, this.lens = new Uint16Array(320), this.work = new Uint16Array(288), this.lendyn = null, this.distdyn = null, this.sane = 0, this.back = 0, this.was = 0;
 }
-const tr = (n) => {
+const nr = (n) => {
   if (!n)
     return 1;
   const e = n.state;
-  return !e || e.strm !== n || e.mode < uo || e.mode > Od ? 1 : 0;
-}, Dd = (n) => {
-  if (tr(n))
-    return Ht;
+  return !e || e.strm !== n || e.mode < ho || e.mode > zd ? 1 : 0;
+}, Gd = (n) => {
+  if (nr(n))
+    return Yt;
   const e = n.state;
-  return n.total_in = n.total_out = e.total = 0, n.msg = "", e.wrap && (n.adler = e.wrap & 1), e.mode = uo, e.last = 0, e.havedict = 0, e.flags = -1, e.dmax = 32768, e.head = null, e.hold = 0, e.bits = 0, e.lencode = e.lendyn = new Int32Array(Pb), e.distcode = e.distdyn = new Int32Array(Nb), e.sane = 1, e.back = -1, er;
-}, Fd = (n) => {
-  if (tr(n))
-    return Ht;
+  return n.total_in = n.total_out = e.total = 0, n.msg = "", e.wrap && (n.adler = e.wrap & 1), e.mode = ho, e.last = 0, e.havedict = 0, e.flags = -1, e.dmax = 32768, e.head = null, e.hold = 0, e.bits = 0, e.lencode = e.lendyn = new Int32Array(Jb), e.distcode = e.distdyn = new Int32Array(Qb), e.sane = 1, e.back = -1, tr;
+}, qd = (n) => {
+  if (nr(n))
+    return Yt;
   const e = n.state;
-  return e.wsize = 0, e.whave = 0, e.wnext = 0, Dd(n);
-}, Bd = (n, e) => {
+  return e.wsize = 0, e.whave = 0, e.wnext = 0, Gd(n);
+}, Hd = (n, e) => {
   let t;
-  if (tr(n))
-    return Ht;
+  if (nr(n))
+    return Yt;
   const r = n.state;
-  return e < 0 ? (t = 0, e = -e) : (t = (e >> 4) + 5, e < 48 && (e &= 15)), e && (e < 8 || e > 15) ? Ht : (r.window !== null && r.wbits !== e && (r.window = null), r.wrap = t, r.wbits = e, Fd(n));
-}, zd = (n, e) => {
+  return e < 0 ? (t = 0, e = -e) : (t = (e >> 4) + 5, e < 48 && (e &= 15)), e && (e < 8 || e > 15) ? Yt : (r.window !== null && r.wbits !== e && (r.window = null), r.wrap = t, r.wbits = e, qd(n));
+}, Ud = (n, e) => {
   if (!n)
-    return Ht;
-  const t = new Rb();
-  n.state = t, t.strm = n, t.window = null, t.mode = uo;
-  const r = Bd(n, e);
-  return r !== er && (n.state = null), r;
-}, Ob = (n) => zd(n, Ab);
-let uf = !0, oa, aa;
-const Db = (n) => {
-  if (uf) {
-    oa = new Int32Array(512), aa = new Int32Array(32);
+    return Yt;
+  const t = new tC();
+  n.state = t, t.strm = n, t.window = null, t.mode = ho;
+  const r = Hd(n, e);
+  return r !== tr && (n.state = null), r;
+}, nC = (n) => Ud(n, eC);
+let ff = !0, la, ua;
+const rC = (n) => {
+  if (ff) {
+    la = new Int32Array(512), ua = new Int32Array(32);
     let e = 0;
     for (; e < 144; )
       n.lens[e++] = 8;
@@ -26662,32 +27146,32 @@ const Db = (n) => {
       n.lens[e++] = 7;
     for (; e < 288; )
       n.lens[e++] = 8;
-    for (vi(Pd, n.lens, 0, 288, oa, 0, n.work, { bits: 9 }), e = 0; e < 32; )
+    for (yi(Rd, n.lens, 0, 288, la, 0, n.work, { bits: 9 }), e = 0; e < 32; )
       n.lens[e++] = 5;
-    vi(Nd, n.lens, 0, 32, aa, 0, n.work, { bits: 5 }), uf = !1;
+    yi(Od, n.lens, 0, 32, ua, 0, n.work, { bits: 5 }), ff = !1;
   }
-  n.lencode = oa, n.lenbits = 9, n.distcode = aa, n.distbits = 5;
-}, Gd = (n, e, t, r) => {
+  n.lencode = la, n.lenbits = 9, n.distcode = ua, n.distbits = 5;
+}, Yd = (n, e, t, r) => {
   let i;
   const a = n.state;
   return a.window === null && (a.window = new Uint8Array(1 << a.wbits)), a.wsize === 0 && (a.wsize = 1 << a.wbits, a.wnext = 0, a.whave = 0), r >= a.wsize ? (a.window.set(e.subarray(t - a.wsize, t), 0), a.wnext = 0, a.whave = a.wsize) : (i = a.wsize - a.wnext, i > r && (i = r), a.window.set(e.subarray(t - r, t - r + i), a.wnext), r -= i, r ? (a.window.set(e.subarray(t - r, t), 0), a.wnext = r, a.whave = a.wsize) : (a.wnext += i, a.wnext === a.wsize && (a.wnext = 0), a.whave < a.wsize && (a.whave += i))), 0;
-}, Fb = (n, e) => {
-  let t, r, i, a, l, u, f, g, d, m, p, y, w, b, M = 0, k, S, N, P, A, B, F, C;
+}, iC = (n, e) => {
+  let t, r, i, a, l, u, f, g, d, m, p, y, w, b, k = 0, I, S, P, N, A, B, F, C;
   const L = new Uint8Array(4);
   let T, D;
   const z = (
     /* permutation of code lengths */
     new Uint8Array([16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15])
   );
-  if (tr(n) || !n.output || !n.input && n.avail_in !== 0)
-    return Ht;
-  t = n.state, t.mode === yn && (t.mode = ra), l = n.next_out, i = n.output, f = n.avail_out, a = n.next_in, r = n.input, u = n.avail_in, g = t.hold, d = t.bits, m = u, p = f, C = er;
+  if (nr(n) || !n.output || !n.input && n.avail_in !== 0)
+    return Yt;
+  t = n.state, t.mode === _n && (t.mode = sa), l = n.next_out, i = n.output, f = n.avail_out, a = n.next_in, r = n.input, u = n.avail_in, g = t.hold, d = t.bits, m = u, p = f, C = tr;
   e:
     for (; ; )
       switch (t.mode) {
-        case uo:
+        case ho:
           if (t.wrap === 0) {
-            t.mode = ra;
+            t.mode = sa;
             break;
           }
           for (; d < 16; ) {
@@ -26696,64 +27180,64 @@ const Db = (n) => {
             u--, g += r[a++] << d, d += 8;
           }
           if (t.wrap & 2 && g === 35615) {
-            t.wbits === 0 && (t.wbits = 15), t.check = 0, L[0] = g & 255, L[1] = g >>> 8 & 255, t.check = en(t.check, L, 2, 0), g = 0, d = 0, t.mode = Gh;
+            t.wbits === 0 && (t.wbits = 15), t.check = 0, L[0] = g & 255, L[1] = g >>> 8 & 255, t.check = tn(t.check, L, 2, 0), g = 0, d = 0, t.mode = Uh;
             break;
           }
           if (t.head && (t.head.done = !1), !(t.wrap & 1) || /* check if zlib header allowed */
           (((g & 255) << 8) + (g >> 8)) % 31) {
-            n.msg = "incorrect header check", t.mode = $e;
+            n.msg = "incorrect header check", t.mode = Ze;
             break;
           }
-          if ((g & 15) !== zh) {
-            n.msg = "unknown compression method", t.mode = $e;
+          if ((g & 15) !== Hh) {
+            n.msg = "unknown compression method", t.mode = Ze;
             break;
           }
           if (g >>>= 4, d -= 4, F = (g & 15) + 8, t.wbits === 0 && (t.wbits = F), F > 15 || F > t.wbits) {
-            n.msg = "invalid window size", t.mode = $e;
+            n.msg = "invalid window size", t.mode = Ze;
             break;
           }
-          t.dmax = 1 << t.wbits, t.flags = 0, n.adler = t.check = 1, t.mode = g & 512 ? $h : yn, g = 0, d = 0;
+          t.dmax = 1 << t.wbits, t.flags = 0, n.adler = t.check = 1, t.mode = g & 512 ? Jh : _n, g = 0, d = 0;
           break;
-        case Gh:
-          for (; d < 16; ) {
-            if (u === 0)
-              break e;
-            u--, g += r[a++] << d, d += 8;
-          }
-          if (t.flags = g, (t.flags & 255) !== zh) {
-            n.msg = "unknown compression method", t.mode = $e;
-            break;
-          }
-          if (t.flags & 57344) {
-            n.msg = "unknown header flags set", t.mode = $e;
-            break;
-          }
-          t.head && (t.head.text = g >> 8 & 1), t.flags & 512 && t.wrap & 4 && (L[0] = g & 255, L[1] = g >>> 8 & 255, t.check = en(t.check, L, 2, 0)), g = 0, d = 0, t.mode = qh;
-        case qh:
-          for (; d < 32; ) {
-            if (u === 0)
-              break e;
-            u--, g += r[a++] << d, d += 8;
-          }
-          t.head && (t.head.time = g), t.flags & 512 && t.wrap & 4 && (L[0] = g & 255, L[1] = g >>> 8 & 255, L[2] = g >>> 16 & 255, L[3] = g >>> 24 & 255, t.check = en(t.check, L, 4, 0)), g = 0, d = 0, t.mode = Uh;
         case Uh:
           for (; d < 16; ) {
             if (u === 0)
               break e;
             u--, g += r[a++] << d, d += 8;
           }
-          t.head && (t.head.xflags = g & 255, t.head.os = g >> 8), t.flags & 512 && t.wrap & 4 && (L[0] = g & 255, L[1] = g >>> 8 & 255, t.check = en(t.check, L, 2, 0)), g = 0, d = 0, t.mode = Hh;
-        case Hh:
+          if (t.flags = g, (t.flags & 255) !== Hh) {
+            n.msg = "unknown compression method", t.mode = Ze;
+            break;
+          }
+          if (t.flags & 57344) {
+            n.msg = "unknown header flags set", t.mode = Ze;
+            break;
+          }
+          t.head && (t.head.text = g >> 8 & 1), t.flags & 512 && t.wrap & 4 && (L[0] = g & 255, L[1] = g >>> 8 & 255, t.check = tn(t.check, L, 2, 0)), g = 0, d = 0, t.mode = Yh;
+        case Yh:
+          for (; d < 32; ) {
+            if (u === 0)
+              break e;
+            u--, g += r[a++] << d, d += 8;
+          }
+          t.head && (t.head.time = g), t.flags & 512 && t.wrap & 4 && (L[0] = g & 255, L[1] = g >>> 8 & 255, L[2] = g >>> 16 & 255, L[3] = g >>> 24 & 255, t.check = tn(t.check, L, 4, 0)), g = 0, d = 0, t.mode = Xh;
+        case Xh:
+          for (; d < 16; ) {
+            if (u === 0)
+              break e;
+            u--, g += r[a++] << d, d += 8;
+          }
+          t.head && (t.head.xflags = g & 255, t.head.os = g >> 8), t.flags & 512 && t.wrap & 4 && (L[0] = g & 255, L[1] = g >>> 8 & 255, t.check = tn(t.check, L, 2, 0)), g = 0, d = 0, t.mode = Vh;
+        case Vh:
           if (t.flags & 1024) {
             for (; d < 16; ) {
               if (u === 0)
                 break e;
               u--, g += r[a++] << d, d += 8;
             }
-            t.length = g, t.head && (t.head.extra_len = g), t.flags & 512 && t.wrap & 4 && (L[0] = g & 255, L[1] = g >>> 8 & 255, t.check = en(t.check, L, 2, 0)), g = 0, d = 0;
+            t.length = g, t.head && (t.head.extra_len = g), t.flags & 512 && t.wrap & 4 && (L[0] = g & 255, L[1] = g >>> 8 & 255, t.check = tn(t.check, L, 2, 0)), g = 0, d = 0;
           } else t.head && (t.head.extra = null);
-          t.mode = Yh;
-        case Yh:
+          t.mode = Wh;
+        case Wh:
           if (t.flags & 1024 && (y = t.length, y > u && (y = u), y && (t.head && (F = t.head.extra_len - t.length, t.head.extra || (t.head.extra = new Uint8Array(t.head.extra_len)), t.head.extra.set(
             r.subarray(
               a,
@@ -26763,10 +27247,10 @@ const Db = (n) => {
             ),
             /*len + copy > state.head.extra_max - len ? state.head.extra_max : copy,*/
             F
-          )), t.flags & 512 && t.wrap & 4 && (t.check = en(t.check, r, y, a)), u -= y, a += y, t.length -= y), t.length))
+          )), t.flags & 512 && t.wrap & 4 && (t.check = tn(t.check, r, y, a)), u -= y, a += y, t.length -= y), t.length))
             break e;
-          t.length = 0, t.mode = Xh;
-        case Xh:
+          t.length = 0, t.mode = $h;
+        case $h:
           if (t.flags & 2048) {
             if (u === 0)
               break e;
@@ -26774,11 +27258,11 @@ const Db = (n) => {
             do
               F = r[a + y++], t.head && F && t.length < 65536 && (t.head.name += String.fromCharCode(F));
             while (F && y < u);
-            if (t.flags & 512 && t.wrap & 4 && (t.check = en(t.check, r, y, a)), u -= y, a += y, F)
+            if (t.flags & 512 && t.wrap & 4 && (t.check = tn(t.check, r, y, a)), u -= y, a += y, F)
               break e;
           } else t.head && (t.head.name = null);
-          t.length = 0, t.mode = Vh;
-        case Vh:
+          t.length = 0, t.mode = Zh;
+        case Zh:
           if (t.flags & 4096) {
             if (u === 0)
               break e;
@@ -26786,11 +27270,11 @@ const Db = (n) => {
             do
               F = r[a + y++], t.head && F && t.length < 65536 && (t.head.comment += String.fromCharCode(F));
             while (F && y < u);
-            if (t.flags & 512 && t.wrap & 4 && (t.check = en(t.check, r, y, a)), u -= y, a += y, F)
+            if (t.flags & 512 && t.wrap & 4 && (t.check = tn(t.check, r, y, a)), u -= y, a += y, F)
               break e;
           } else t.head && (t.head.comment = null);
-          t.mode = Wh;
-        case Wh:
+          t.mode = Kh;
+        case Kh:
           if (t.flags & 512) {
             for (; d < 16; ) {
               if (u === 0)
@@ -26798,30 +27282,30 @@ const Db = (n) => {
               u--, g += r[a++] << d, d += 8;
             }
             if (t.wrap & 4 && g !== (t.check & 65535)) {
-              n.msg = "header crc mismatch", t.mode = $e;
+              n.msg = "header crc mismatch", t.mode = Ze;
               break;
             }
             g = 0, d = 0;
           }
-          t.head && (t.head.hcrc = t.flags >> 9 & 1, t.head.done = !0), n.adler = t.check = 0, t.mode = yn;
+          t.head && (t.head.hcrc = t.flags >> 9 & 1, t.head.done = !0), n.adler = t.check = 0, t.mode = _n;
           break;
-        case $h:
+        case Jh:
           for (; d < 32; ) {
             if (u === 0)
               break e;
             u--, g += r[a++] << d, d += 8;
           }
-          n.adler = t.check = lf(g), g = 0, d = 0, t.mode = Xs;
-        case Xs:
+          n.adler = t.check = hf(g), g = 0, d = 0, t.mode = Ws;
+        case Ws:
           if (t.havedict === 0)
-            return n.next_out = l, n.avail_out = f, n.next_in = a, n.avail_in = u, t.hold = g, t.bits = d, Mb;
-          n.adler = t.check = 1, t.mode = yn;
-        case yn:
-          if (e === kb || e === ps)
+            return n.next_out = l, n.avail_out = f, n.next_in = a, n.avail_in = u, t.hold = g, t.bits = d, Zb;
+          n.adler = t.check = 1, t.mode = _n;
+        case _n:
+          if (e === Wb || e === _s)
             break e;
-        case ra:
+        case sa:
           if (t.last) {
-            g >>>= d & 7, d -= d & 7, t.mode = sa;
+            g >>>= d & 7, d -= d & 7, t.mode = aa;
             break;
           }
           for (; d < 3; ) {
@@ -26831,57 +27315,57 @@ const Db = (n) => {
           }
           switch (t.last = g & 1, g >>>= 1, d -= 1, g & 3) {
             case 0:
-              t.mode = Zh;
+              t.mode = Qh;
               break;
             case 1:
-              if (Db(t), t.mode = ys, e === ps) {
+              if (rC(t), t.mode = ws, e === _s) {
                 g >>>= 2, d -= 2;
                 break e;
               }
               break;
             case 2:
-              t.mode = Jh;
+              t.mode = ef;
               break;
             case 3:
-              n.msg = "invalid block type", t.mode = $e;
+              n.msg = "invalid block type", t.mode = Ze;
           }
           g >>>= 2, d -= 2;
           break;
-        case Zh:
+        case Qh:
           for (g >>>= d & 7, d -= d & 7; d < 32; ) {
             if (u === 0)
               break e;
             u--, g += r[a++] << d, d += 8;
           }
           if ((g & 65535) !== (g >>> 16 ^ 65535)) {
-            n.msg = "invalid stored block lengths", t.mode = $e;
+            n.msg = "invalid stored block lengths", t.mode = Ze;
             break;
           }
-          if (t.length = g & 65535, g = 0, d = 0, t.mode = ia, e === ps)
+          if (t.length = g & 65535, g = 0, d = 0, t.mode = oa, e === _s)
             break e;
-        case ia:
-          t.mode = Kh;
-        case Kh:
+        case oa:
+          t.mode = jh;
+        case jh:
           if (y = t.length, y) {
             if (y > u && (y = u), y > f && (y = f), y === 0)
               break e;
             i.set(r.subarray(a, a + y), l), u -= y, a += y, f -= y, l += y, t.length -= y;
             break;
           }
-          t.mode = yn;
+          t.mode = _n;
           break;
-        case Jh:
+        case ef:
           for (; d < 14; ) {
             if (u === 0)
               break e;
             u--, g += r[a++] << d, d += 8;
           }
           if (t.nlen = (g & 31) + 257, g >>>= 5, d -= 5, t.ndist = (g & 31) + 1, g >>>= 5, d -= 5, t.ncode = (g & 15) + 4, g >>>= 4, d -= 4, t.nlen > 286 || t.ndist > 30) {
-            n.msg = "too many length or distance symbols", t.mode = $e;
+            n.msg = "too many length or distance symbols", t.mode = Ze;
             break;
           }
-          t.have = 0, t.mode = Qh;
-        case Qh:
+          t.have = 0, t.mode = tf;
+        case tf:
           for (; t.have < t.ncode; ) {
             for (; d < 3; ) {
               if (u === 0)
@@ -26892,105 +27376,105 @@ const Db = (n) => {
           }
           for (; t.have < 19; )
             t.lens[z[t.have++]] = 0;
-          if (t.lencode = t.lendyn, t.lenbits = 7, T = { bits: t.lenbits }, C = vi(Sb, t.lens, 0, 19, t.lencode, 0, t.work, T), t.lenbits = T.bits, C) {
-            n.msg = "invalid code lengths set", t.mode = $e;
+          if (t.lencode = t.lendyn, t.lenbits = 7, T = { bits: t.lenbits }, C = yi(Vb, t.lens, 0, 19, t.lencode, 0, t.work, T), t.lenbits = T.bits, C) {
+            n.msg = "invalid code lengths set", t.mode = Ze;
             break;
           }
-          t.have = 0, t.mode = jh;
-        case jh:
+          t.have = 0, t.mode = nf;
+        case nf:
           for (; t.have < t.nlen + t.ndist; ) {
-            for (; M = t.lencode[g & (1 << t.lenbits) - 1], k = M >>> 24, S = M >>> 16 & 255, N = M & 65535, !(k <= d); ) {
+            for (; k = t.lencode[g & (1 << t.lenbits) - 1], I = k >>> 24, S = k >>> 16 & 255, P = k & 65535, !(I <= d); ) {
               if (u === 0)
                 break e;
               u--, g += r[a++] << d, d += 8;
             }
-            if (N < 16)
-              g >>>= k, d -= k, t.lens[t.have++] = N;
+            if (P < 16)
+              g >>>= I, d -= I, t.lens[t.have++] = P;
             else {
-              if (N === 16) {
-                for (D = k + 2; d < D; ) {
+              if (P === 16) {
+                for (D = I + 2; d < D; ) {
                   if (u === 0)
                     break e;
                   u--, g += r[a++] << d, d += 8;
                 }
-                if (g >>>= k, d -= k, t.have === 0) {
-                  n.msg = "invalid bit length repeat", t.mode = $e;
+                if (g >>>= I, d -= I, t.have === 0) {
+                  n.msg = "invalid bit length repeat", t.mode = Ze;
                   break;
                 }
                 F = t.lens[t.have - 1], y = 3 + (g & 3), g >>>= 2, d -= 2;
-              } else if (N === 17) {
-                for (D = k + 3; d < D; ) {
+              } else if (P === 17) {
+                for (D = I + 3; d < D; ) {
                   if (u === 0)
                     break e;
                   u--, g += r[a++] << d, d += 8;
                 }
-                g >>>= k, d -= k, F = 0, y = 3 + (g & 7), g >>>= 3, d -= 3;
+                g >>>= I, d -= I, F = 0, y = 3 + (g & 7), g >>>= 3, d -= 3;
               } else {
-                for (D = k + 7; d < D; ) {
+                for (D = I + 7; d < D; ) {
                   if (u === 0)
                     break e;
                   u--, g += r[a++] << d, d += 8;
                 }
-                g >>>= k, d -= k, F = 0, y = 11 + (g & 127), g >>>= 7, d -= 7;
+                g >>>= I, d -= I, F = 0, y = 11 + (g & 127), g >>>= 7, d -= 7;
               }
               if (t.have + y > t.nlen + t.ndist) {
-                n.msg = "invalid bit length repeat", t.mode = $e;
+                n.msg = "invalid bit length repeat", t.mode = Ze;
                 break;
               }
               for (; y--; )
                 t.lens[t.have++] = F;
             }
           }
-          if (t.mode === $e)
+          if (t.mode === Ze)
             break;
           if (t.lens[256] === 0) {
-            n.msg = "invalid code -- missing end-of-block", t.mode = $e;
+            n.msg = "invalid code -- missing end-of-block", t.mode = Ze;
             break;
           }
-          if (t.lenbits = 9, T = { bits: t.lenbits }, C = vi(Pd, t.lens, 0, t.nlen, t.lencode, 0, t.work, T), t.lenbits = T.bits, C) {
-            n.msg = "invalid literal/lengths set", t.mode = $e;
+          if (t.lenbits = 9, T = { bits: t.lenbits }, C = yi(Rd, t.lens, 0, t.nlen, t.lencode, 0, t.work, T), t.lenbits = T.bits, C) {
+            n.msg = "invalid literal/lengths set", t.mode = Ze;
             break;
           }
-          if (t.distbits = 6, t.distcode = t.distdyn, T = { bits: t.distbits }, C = vi(Nd, t.lens, t.nlen, t.ndist, t.distcode, 0, t.work, T), t.distbits = T.bits, C) {
-            n.msg = "invalid distances set", t.mode = $e;
+          if (t.distbits = 6, t.distcode = t.distdyn, T = { bits: t.distbits }, C = yi(Od, t.lens, t.nlen, t.ndist, t.distcode, 0, t.work, T), t.distbits = T.bits, C) {
+            n.msg = "invalid distances set", t.mode = Ze;
             break;
           }
-          if (t.mode = ys, e === ps)
+          if (t.mode = ws, e === _s)
             break e;
-        case ys:
-          t.mode = _s;
-        case _s:
+        case ws:
+          t.mode = xs;
+        case xs:
           if (u >= 6 && f >= 258) {
-            n.next_out = l, n.avail_out = f, n.next_in = a, n.avail_in = u, t.hold = g, t.bits = d, _b(n, p), l = n.next_out, i = n.output, f = n.avail_out, a = n.next_in, r = n.input, u = n.avail_in, g = t.hold, d = t.bits, t.mode === yn && (t.back = -1);
+            n.next_out = l, n.avail_out = f, n.next_in = a, n.avail_in = u, t.hold = g, t.bits = d, Gb(n, p), l = n.next_out, i = n.output, f = n.avail_out, a = n.next_in, r = n.input, u = n.avail_in, g = t.hold, d = t.bits, t.mode === _n && (t.back = -1);
             break;
           }
-          for (t.back = 0; M = t.lencode[g & (1 << t.lenbits) - 1], k = M >>> 24, S = M >>> 16 & 255, N = M & 65535, !(k <= d); ) {
+          for (t.back = 0; k = t.lencode[g & (1 << t.lenbits) - 1], I = k >>> 24, S = k >>> 16 & 255, P = k & 65535, !(I <= d); ) {
             if (u === 0)
               break e;
             u--, g += r[a++] << d, d += 8;
           }
           if (S && !(S & 240)) {
-            for (P = k, A = S, B = N; M = t.lencode[B + ((g & (1 << P + A) - 1) >> P)], k = M >>> 24, S = M >>> 16 & 255, N = M & 65535, !(P + k <= d); ) {
+            for (N = I, A = S, B = P; k = t.lencode[B + ((g & (1 << N + A) - 1) >> N)], I = k >>> 24, S = k >>> 16 & 255, P = k & 65535, !(N + I <= d); ) {
               if (u === 0)
                 break e;
               u--, g += r[a++] << d, d += 8;
             }
-            g >>>= P, d -= P, t.back += P;
+            g >>>= N, d -= N, t.back += N;
           }
-          if (g >>>= k, d -= k, t.back += k, t.length = N, S === 0) {
-            t.mode = sf;
+          if (g >>>= I, d -= I, t.back += I, t.length = P, S === 0) {
+            t.mode = lf;
             break;
           }
           if (S & 32) {
-            t.back = -1, t.mode = yn;
+            t.back = -1, t.mode = _n;
             break;
           }
           if (S & 64) {
-            n.msg = "invalid literal/length code", t.mode = $e;
+            n.msg = "invalid literal/length code", t.mode = Ze;
             break;
           }
-          t.extra = S & 15, t.mode = ef;
-        case ef:
+          t.extra = S & 15, t.mode = rf;
+        case rf:
           if (t.extra) {
             for (D = t.extra; d < D; ) {
               if (u === 0)
@@ -26999,27 +27483,27 @@ const Db = (n) => {
             }
             t.length += g & (1 << t.extra) - 1, g >>>= t.extra, d -= t.extra, t.back += t.extra;
           }
-          t.was = t.length, t.mode = tf;
-        case tf:
-          for (; M = t.distcode[g & (1 << t.distbits) - 1], k = M >>> 24, S = M >>> 16 & 255, N = M & 65535, !(k <= d); ) {
+          t.was = t.length, t.mode = sf;
+        case sf:
+          for (; k = t.distcode[g & (1 << t.distbits) - 1], I = k >>> 24, S = k >>> 16 & 255, P = k & 65535, !(I <= d); ) {
             if (u === 0)
               break e;
             u--, g += r[a++] << d, d += 8;
           }
           if (!(S & 240)) {
-            for (P = k, A = S, B = N; M = t.distcode[B + ((g & (1 << P + A) - 1) >> P)], k = M >>> 24, S = M >>> 16 & 255, N = M & 65535, !(P + k <= d); ) {
+            for (N = I, A = S, B = P; k = t.distcode[B + ((g & (1 << N + A) - 1) >> N)], I = k >>> 24, S = k >>> 16 & 255, P = k & 65535, !(N + I <= d); ) {
               if (u === 0)
                 break e;
               u--, g += r[a++] << d, d += 8;
             }
-            g >>>= P, d -= P, t.back += P;
+            g >>>= N, d -= N, t.back += N;
           }
-          if (g >>>= k, d -= k, t.back += k, S & 64) {
-            n.msg = "invalid distance code", t.mode = $e;
+          if (g >>>= I, d -= I, t.back += I, S & 64) {
+            n.msg = "invalid distance code", t.mode = Ze;
             break;
           }
-          t.offset = N, t.extra = S & 15, t.mode = nf;
-        case nf:
+          t.offset = P, t.extra = S & 15, t.mode = of;
+        case of:
           if (t.extra) {
             for (D = t.extra; d < D; ) {
               if (u === 0)
@@ -27029,16 +27513,16 @@ const Db = (n) => {
             t.offset += g & (1 << t.extra) - 1, g >>>= t.extra, d -= t.extra, t.back += t.extra;
           }
           if (t.offset > t.dmax) {
-            n.msg = "invalid distance too far back", t.mode = $e;
+            n.msg = "invalid distance too far back", t.mode = Ze;
             break;
           }
-          t.mode = rf;
-        case rf:
+          t.mode = af;
+        case af:
           if (f === 0)
             break e;
           if (y = p - f, t.offset > y) {
             if (y = t.offset - y, y > t.whave && t.sane) {
-              n.msg = "invalid distance too far back", t.mode = $e;
+              n.msg = "invalid distance too far back", t.mode = Ze;
               break;
             }
             y > t.wnext ? (y -= t.wnext, w = t.wsize - y) : w = t.wnext - y, y > t.length && (y = t.length), b = t.window;
@@ -27048,14 +27532,14 @@ const Db = (n) => {
           do
             i[l++] = b[w++];
           while (--y);
-          t.length === 0 && (t.mode = _s);
+          t.length === 0 && (t.mode = xs);
           break;
-        case sf:
+        case lf:
           if (f === 0)
             break e;
-          i[l++] = t.length, f--, t.mode = _s;
+          i[l++] = t.length, f--, t.mode = xs;
           break;
-        case sa:
+        case aa:
           if (t.wrap) {
             for (; d < 32; ) {
               if (u === 0)
@@ -27063,14 +27547,14 @@ const Db = (n) => {
               u--, g |= r[a++] << d, d += 8;
             }
             if (p -= f, n.total_out += p, t.total += p, t.wrap & 4 && p && (n.adler = t.check = /*UPDATE_CHECK(state.check, put - _out, _out);*/
-            t.flags ? en(t.check, i, p, l - p) : qa(t.check, i, p, l - p)), p = f, t.wrap & 4 && (t.flags ? g : lf(g)) !== t.check) {
-              n.msg = "incorrect data check", t.mode = $e;
+            t.flags ? tn(t.check, i, p, l - p) : Ua(t.check, i, p, l - p)), p = f, t.wrap & 4 && (t.flags ? g : hf(g)) !== t.check) {
+              n.msg = "incorrect data check", t.mode = Ze;
               break;
             }
             g = 0, d = 0;
           }
-          t.mode = of;
-        case of:
+          t.mode = uf;
+        case uf:
           if (t.wrap && t.flags) {
             for (; d < 32; ) {
               if (u === 0)
@@ -27078,139 +27562,139 @@ const Db = (n) => {
               u--, g += r[a++] << d, d += 8;
             }
             if (t.wrap & 4 && g !== (t.total & 4294967295)) {
-              n.msg = "incorrect length check", t.mode = $e;
+              n.msg = "incorrect length check", t.mode = Ze;
               break;
             }
             g = 0, d = 0;
           }
-          t.mode = af;
-        case af:
-          C = Ib;
+          t.mode = cf;
+        case cf:
+          C = $b;
           break e;
-        case $e:
-          C = Td;
+        case Ze:
+          C = Dd;
           break e;
-        case Rd:
-          return Ad;
-        case Od:
+        case Bd:
+          return Fd;
+        case zd:
         default:
-          return Ht;
+          return Yt;
       }
-  return n.next_out = l, n.avail_out = f, n.next_in = a, n.avail_in = u, t.hold = g, t.bits = d, (t.wsize || p !== n.avail_out && t.mode < $e && (t.mode < sa || e !== Bh)) && Gd(n, n.output, n.next_out, p - n.avail_out), m -= n.avail_in, p -= n.avail_out, n.total_in += m, n.total_out += p, t.total += p, t.wrap & 4 && p && (n.adler = t.check = /*UPDATE_CHECK(state.check, strm.next_out - _out, _out);*/
-  t.flags ? en(t.check, i, p, n.next_out - p) : qa(t.check, i, p, n.next_out - p)), n.data_type = t.bits + (t.last ? 64 : 0) + (t.mode === yn ? 128 : 0) + (t.mode === ys || t.mode === ia ? 256 : 0), (m === 0 && p === 0 || e === Bh) && C === er && (C = Lb), C;
-}, Bb = (n) => {
-  if (tr(n))
-    return Ht;
+  return n.next_out = l, n.avail_out = f, n.next_in = a, n.avail_in = u, t.hold = g, t.bits = d, (t.wsize || p !== n.avail_out && t.mode < Ze && (t.mode < aa || e !== qh)) && Yd(n, n.output, n.next_out, p - n.avail_out), m -= n.avail_in, p -= n.avail_out, n.total_in += m, n.total_out += p, t.total += p, t.wrap & 4 && p && (n.adler = t.check = /*UPDATE_CHECK(state.check, strm.next_out - _out, _out);*/
+  t.flags ? tn(t.check, i, p, n.next_out - p) : Ua(t.check, i, p, n.next_out - p)), n.data_type = t.bits + (t.last ? 64 : 0) + (t.mode === _n ? 128 : 0) + (t.mode === ws || t.mode === oa ? 256 : 0), (m === 0 && p === 0 || e === qh) && C === tr && (C = Kb), C;
+}, sC = (n) => {
+  if (nr(n))
+    return Yt;
   let e = n.state;
-  return e.window && (e.window = null), n.state = null, er;
-}, zb = (n, e) => {
-  if (tr(n))
-    return Ht;
+  return e.window && (e.window = null), n.state = null, tr;
+}, oC = (n, e) => {
+  if (nr(n))
+    return Yt;
   const t = n.state;
-  return t.wrap & 2 ? (t.head = e, e.done = !1, er) : Ht;
-}, Gb = (n, e) => {
+  return t.wrap & 2 ? (t.head = e, e.done = !1, tr) : Yt;
+}, aC = (n, e) => {
   const t = e.length;
   let r, i, a;
-  return tr(n) || (r = n.state, r.wrap !== 0 && r.mode !== Xs) ? Ht : r.mode === Xs && (i = 1, i = qa(i, e, t, 0), i !== r.check) ? Td : (a = Gd(n, e, t, t), a ? (r.mode = Rd, Ad) : (r.havedict = 1, er));
+  return nr(n) || (r = n.state, r.wrap !== 0 && r.mode !== Ws) ? Yt : r.mode === Ws && (i = 1, i = Ua(i, e, t, 0), i !== r.check) ? Dd : (a = Yd(n, e, t, t), a ? (r.mode = Bd, Fd) : (r.havedict = 1, tr));
 };
-var qb = Fd, Ub = Bd, Hb = Dd, Yb = Ob, Xb = zd, Vb = Fb, Wb = Bb, $b = zb, Zb = Gb, Kb = "pako inflate (from Nodeca project)", rn = {
-  inflateReset: qb,
-  inflateReset2: Ub,
-  inflateResetKeep: Hb,
-  inflateInit: Yb,
-  inflateInit2: Xb,
-  inflate: Vb,
-  inflateEnd: Wb,
-  inflateGetHeader: $b,
-  inflateSetDictionary: Zb,
-  inflateInfo: Kb
+var lC = qd, uC = Hd, cC = Gd, hC = nC, fC = Ud, gC = iC, dC = sC, mC = oC, vC = aC, pC = "pako inflate (from Nodeca project)", sn = {
+  inflateReset: lC,
+  inflateReset2: uC,
+  inflateResetKeep: cC,
+  inflateInit: hC,
+  inflateInit2: fC,
+  inflate: gC,
+  inflateEnd: dC,
+  inflateGetHeader: mC,
+  inflateSetDictionary: vC,
+  inflateInfo: pC
 };
-function Jb() {
+function yC() {
   this.text = 0, this.time = 0, this.xflags = 0, this.os = 0, this.extra = null, this.extra_len = 0, this.name = "", this.comment = "", this.hcrc = 0, this.done = !1;
 }
-var Qb = Jb;
-const qd = Object.prototype.toString, {
-  Z_NO_FLUSH: jb,
-  Z_FINISH: cf,
-  Z_OK: Ir,
-  Z_STREAM_END: la,
-  Z_NEED_DICT: ua,
-  Z_STREAM_ERROR: eC,
-  Z_DATA_ERROR: hf,
-  Z_MEM_ERROR: tC,
-  Z_BUF_ERROR: ff
-} = Id, nC = {
+var _C = yC;
+const Xd = Object.prototype.toString, {
+  Z_NO_FLUSH: wC,
+  Z_FINISH: gf,
+  Z_OK: Mr,
+  Z_STREAM_END: ca,
+  Z_NEED_DICT: ha,
+  Z_STREAM_ERROR: xC,
+  Z_DATA_ERROR: df,
+  Z_MEM_ERROR: EC,
+  Z_BUF_ERROR: mf
+} = Pd, bC = {
   chunkSize: 1024 * 64,
   windowBits: 15,
   to: ""
 };
-function co(n) {
-  this.options = Md.assign({}, nC, n || {});
+function fo(n) {
+  this.options = Td.assign({}, bC, n || {});
   const e = this.options;
-  e.raw && e.windowBits >= 0 && e.windowBits < 16 && (e.windowBits = -e.windowBits, e.windowBits === 0 && (e.windowBits = -15)), e.windowBits >= 0 && e.windowBits < 16 && !(n && n.windowBits) && (e.windowBits += 32), e.windowBits > 15 && e.windowBits < 48 && (e.windowBits & 15 || (e.windowBits |= 15)), this.err = 0, this.msg = "", this.ended = !1, this.chunks = [], this.strm = new pb(), this.strm.avail_out = 0;
-  let t = rn.inflateInit2(
+  e.raw && e.windowBits >= 0 && e.windowBits < 16 && (e.windowBits = -e.windowBits, e.windowBits === 0 && (e.windowBits = -15)), e.windowBits >= 0 && e.windowBits < 16 && !(n && n.windowBits) && (e.windowBits += 32), e.windowBits > 15 && e.windowBits < 48 && (e.windowBits & 15 || (e.windowBits |= 15)), this.err = 0, this.msg = "", this.ended = !1, this.chunks = [], this.strm = new Bb(), this.strm.avail_out = 0;
+  let t = sn.inflateInit2(
     this.strm,
     e.windowBits
   );
-  if (t !== Ir)
-    throw new Error(Ua[t]);
-  if (this.header = new Qb(), rn.inflateGetHeader(this.strm, this.header), e.dictionary && (typeof e.dictionary == "string" ? e.dictionary = Ha.string2buf(e.dictionary) : qd.call(e.dictionary) === "[object ArrayBuffer]" && (e.dictionary = new Uint8Array(e.dictionary)), e.raw && (t = rn.inflateSetDictionary(this.strm, e.dictionary), t !== Ir)))
-    throw new Error(Ua[t]);
+  if (t !== Mr)
+    throw new Error(Ya[t]);
+  if (this.header = new _C(), sn.inflateGetHeader(this.strm, this.header), e.dictionary && (typeof e.dictionary == "string" ? e.dictionary = Xa.string2buf(e.dictionary) : Xd.call(e.dictionary) === "[object ArrayBuffer]" && (e.dictionary = new Uint8Array(e.dictionary)), e.raw && (t = sn.inflateSetDictionary(this.strm, e.dictionary), t !== Mr)))
+    throw new Error(Ya[t]);
 }
-co.prototype.push = function(n, e) {
+fo.prototype.push = function(n, e) {
   const t = this.strm, r = this.options.chunkSize, i = this.options.dictionary;
   let a, l, u;
   if (this.ended) return !1;
-  for (e === ~~e ? l = e : l = e === !0 ? cf : jb, qd.call(n) === "[object ArrayBuffer]" ? t.input = new Uint8Array(n) : t.input = n, t.next_in = 0, t.avail_in = t.input.length; ; ) {
-    for (t.avail_out === 0 && (t.output = new Uint8Array(r), t.next_out = 0, t.avail_out = r), a = rn.inflate(t, l), a === ua && i && (a = rn.inflateSetDictionary(t, i), a === Ir ? a = rn.inflate(t, l) : a === hf && (a = ua)); t.avail_in > 0 && a === la && t.state.wrap & 2 && t.state.flags !== 0 && t.input[t.next_in] !== 0; )
-      rn.inflateReset(t), a = rn.inflate(t, l);
+  for (e === ~~e ? l = e : l = e === !0 ? gf : wC, Xd.call(n) === "[object ArrayBuffer]" ? t.input = new Uint8Array(n) : t.input = n, t.next_in = 0, t.avail_in = t.input.length; ; ) {
+    for (t.avail_out === 0 && (t.output = new Uint8Array(r), t.next_out = 0, t.avail_out = r), a = sn.inflate(t, l), a === ha && i && (a = sn.inflateSetDictionary(t, i), a === Mr ? a = sn.inflate(t, l) : a === df && (a = ha)); t.avail_in > 0 && a === ca && t.state.wrap & 2 && t.state.flags !== 0 && t.input[t.next_in] !== 0; )
+      sn.inflateReset(t), a = sn.inflate(t, l);
     switch (a) {
-      case eC:
-      case hf:
-      case ua:
-      case tC:
+      case xC:
+      case df:
+      case ha:
+      case EC:
         return this.onEnd(a), this.ended = !0, !1;
     }
-    if (u = t.avail_out, t.next_out && (t.avail_out === 0 || a === la || l > 0))
+    if (u = t.avail_out, t.next_out && (t.avail_out === 0 || a === ca || l > 0))
       if (this.options.to === "string") {
-        let f = Ha.utf8border(t.output, t.next_out), g = t.next_out - f, d = Ha.buf2string(t.output, f);
+        let f = Xa.utf8border(t.output, t.next_out), g = t.next_out - f, d = Xa.buf2string(t.output, f);
         t.next_out = g, t.avail_out = r - g, g && t.output.set(t.output.subarray(f, f + g), 0), this.onData(d);
       } else
         this.onData(t.output.length === t.next_out ? t.output : t.output.subarray(0, t.next_out)), t.avail_out = 0, t.next_out = 0;
-    if (!((a === Ir || a === ff) && u === 0)) {
-      if (a === la)
-        return a = rn.inflateEnd(this.strm), this.onEnd(a), this.ended = !0, !0;
+    if (!((a === Mr || a === mf) && u === 0)) {
+      if (a === ca)
+        return a = sn.inflateEnd(this.strm), this.onEnd(a), this.ended = !0, !0;
       if (t.avail_in === 0) {
-        if (l === cf)
-          return a = rn.inflateEnd(this.strm), this.onEnd(a === Ir ? ff : a), this.ended = !0, !1;
+        if (l === gf)
+          return a = sn.inflateEnd(this.strm), this.onEnd(a === Mr ? mf : a), this.ended = !0, !1;
         break;
       }
     }
   }
   return !0;
 };
-co.prototype.onData = function(n) {
+fo.prototype.onData = function(n) {
   this.chunks.push(n);
 };
-co.prototype.onEnd = function(n) {
-  n === Ir && (this.options.to === "string" ? this.result = this.chunks.join("") : this.result = Md.flattenChunks(this.chunks)), this.chunks = [], this.err = n, this.msg = this.strm.msg;
+fo.prototype.onEnd = function(n) {
+  n === Mr && (this.options.to === "string" ? this.result = this.chunks.join("") : this.result = Td.flattenChunks(this.chunks)), this.chunks = [], this.err = n, this.msg = this.strm.msg;
 };
-function rC(n, e) {
-  const t = new co(e);
-  if (t.push(n, !0), t.err) throw t.msg || Ua[t.err];
+function CC(n, e) {
+  const t = new fo(e);
+  if (t.push(n, !0), t.err) throw t.msg || Ya[t.err];
   return t.result;
 }
-var iC = rC, sC = {
-  inflate: iC
+var SC = CC, IC = {
+  inflate: SC
 };
-const { inflate: oC } = sC;
-var aC = oC;
-const Ud = "https://t{s}.tianditu.gov.cn/mapservice/swdx?T=elv_c&x={x}&y={y}&l={z}&tk={key}", Hd = Object.freeze(["0", "1", "2", "3", "4", "5", "6", "7"]), ti = 150, Lt = 64;
-function ca(n, e) {
+const { inflate: kC } = IC;
+var MC = kC;
+const Vd = "https://t{s}.tianditu.gov.cn/mapservice/swdx?T=elv_c&x={x}&y={y}&l={z}&tk={key}", Wd = Object.freeze(["0", "1", "2", "3", "4", "5", "6", "7"]), ni = 150, Nt = 64;
+function fa(n, e) {
   const t = Number(n);
   return Number.isFinite(t) ? Math.round(t) : e;
 }
-class Yd extends x.CustomHeightmapTerrainProvider {
+class $d extends x.CustomHeightmapTerrainProvider {
   constructor(e = {}) {
     var i;
     const t = e.key ?? e.token ?? "";
@@ -27222,14 +27706,14 @@ class Yd extends x.CustomHeightmapTerrainProvider {
     super({
       callback: () => {
       },
-      width: Lt,
-      height: Lt,
+      width: Nt,
+      height: Nt,
       tilingScheme: r,
       credit: e.credit || new x.Credit("© 天地图三维地形")
-    }), this._url = e.url || Ud, this._key = t, this._subdomains = (i = e.subdomains) != null && i.length ? [...e.subdomains] : [...Hd], this._dataType = e.dataType === "float" ? "float" : "int16", this._minimumDataLevel = Math.max(0, ca(e.minimumDataLevel, 5)), this._maximumDataLevel = Math.max(
+    }), this._url = e.url || Vd, this._key = t, this._subdomains = (i = e.subdomains) != null && i.length ? [...e.subdomains] : [...Wd], this._dataType = e.dataType === "float" ? "float" : "int16", this._minimumDataLevel = Math.max(0, fa(e.minimumDataLevel, 5)), this._maximumDataLevel = Math.max(
       this._minimumDataLevel,
-      ca(e.maximumDataLevel ?? e.maximumLevel, 11)
-    ), this._requestLevelOffset = ca(e.requestLevelOffset, 1), this._skirtHeight = Math.max(0, Number(e.skirtHeight ?? 6e3)), this._flatHeightBuffer = new Float32Array(Lt * Lt);
+      fa(e.maximumDataLevel ?? e.maximumLevel, 11)
+    ), this._requestLevelOffset = fa(e.requestLevelOffset, 1), this._skirtHeight = Math.max(0, Number(e.skirtHeight ?? 6e3)), this._flatHeightBuffer = new Float32Array(Nt * Nt);
   }
   requestTileGeometry(e, t, r, i) {
     if (r > this._maximumDataLevel) return;
@@ -27240,7 +27724,7 @@ class Yd extends x.CustomHeightmapTerrainProvider {
       return l.then((u) => {
         if (!(u != null && u.byteLength))
           throw new Error(`Tdt terrain returned empty data: ${r}/${e}/${t}`);
-        const f = aC(new Uint8Array(u)), g = this._transformHeightBuffer(f);
+        const f = MC(new Uint8Array(u)), g = this._transformHeightBuffer(f);
         return this._createTerrainData(g, r);
       });
   }
@@ -27254,19 +27738,19 @@ class Yd extends x.CustomHeightmapTerrainProvider {
     return this._url.replaceAll("{s}", i).replaceAll("{key}", encodeURIComponent(this._key)).replaceAll("{token}", encodeURIComponent(this._key)).replaceAll("{x}", String(e)).replaceAll("{y}", String(t)).replaceAll("{z}", String(r + this._requestLevelOffset)).replaceAll("{l}", String(r + this._requestLevelOffset));
   }
   _transformHeightBuffer(e) {
-    const t = this._dataType === "float" ? 4 : 2, r = ti * ti * t;
+    const t = this._dataType === "float" ? 4 : 2, r = ni * ni * t;
     if (e.length !== r)
       throw new Error(
         `Unexpected Tdt terrain tile size: ${e.length}, expected ${r}.`
       );
-    const i = new DataView(e.buffer, e.byteOffset, e.byteLength), a = new Float32Array(Lt * Lt);
-    for (let l = 0; l < Lt; l += 1) {
-      const u = Math.floor((ti - 1) * l / (Lt - 1));
-      for (let f = 0; f < Lt; f += 1) {
+    const i = new DataView(e.buffer, e.byteOffset, e.byteLength), a = new Float32Array(Nt * Nt);
+    for (let l = 0; l < Nt; l += 1) {
+      const u = Math.floor((ni - 1) * l / (Nt - 1));
+      for (let f = 0; f < Nt; f += 1) {
         const g = Math.floor(
-          (ti - 1) * f / (Lt - 1)
-        ), d = (u * ti + g) * t, m = this._dataType === "float" ? i.getFloat32(d, !0) : i.getInt16(d, !0);
-        a[l * Lt + f] = Number.isFinite(m) && m >= -2e3 && m <= 1e4 ? m : 0;
+          (ni - 1) * f / (Nt - 1)
+        ), d = (u * ni + g) * t, m = this._dataType === "float" ? i.getFloat32(d, !0) : i.getInt16(d, !0);
+        a[l * Nt + f] = Number.isFinite(m) && m >= -2e3 && m <= 1e4 ? m : 0;
       }
     }
     return a;
@@ -27274,14 +27758,14 @@ class Yd extends x.CustomHeightmapTerrainProvider {
   _createTerrainData(e, t) {
     const r = new x.HeightmapTerrainData({
       buffer: e === this._flatHeightBuffer ? new Float32Array(e) : e,
-      width: Lt,
-      height: Lt,
+      width: Nt,
+      height: Nt,
       childTileMask: t < this._maximumDataLevel ? 15 : 0
     });
     return r._skirtHeight = this._skirtHeight, r;
   }
 }
-class lC {
+class LC {
   constructor(e, t = {}) {
     if (!e) throw new Error("Viewer is required.");
     this.viewer = e, this.config = {}, this.provider = null, this.destroyed = !1, this._visible = !1, this._previousProvider = e.terrainProvider, this._previousDepthTest = e.scene.globe.depthTestAgainstTerrain, this.load(t);
@@ -27290,7 +27774,7 @@ class lC {
     return this.ensureUsable(), this.hide(), this.config = {
       depthTestAgainstTerrain: !0,
       ...e
-    }, this.provider = this.config.provider || new Yd(this.config), this.show(), this.provider;
+    }, this.provider = this.config.provider || new $d(this.config), this.show(), this.provider;
   }
   switch(e = {}) {
     return this.load({ ...this.config, ...e });
@@ -27321,7 +27805,7 @@ class lC {
       throw new Error("Viewer is unavailable.");
   }
 }
-class uC extends x.GeographicTilingScheme {
+class NC extends x.GeographicTilingScheme {
   constructor(e = {}) {
     super(e), this._origin = e.origin || [-180, 90], this._zoomOffset = e.zoomOffset || 0, this._tileSize = e.tileSize || 256, this._resolutions = e.resolutions || [];
   }
@@ -27341,7 +27825,7 @@ class uC extends x.GeographicTilingScheme {
     return x.defined(r) ? (r.x = f, r.y = g, r) : new x.Cartesian2(Math.max(0, f), Math.max(0, g));
   }
 }
-class cC extends x.WebMercatorTilingScheme {
+class PC extends x.WebMercatorTilingScheme {
   constructor(e = {}) {
     super(e), this._origin = e.origin || [-200375083427892e-7, 200375083427892e-7], this._zoomOffset = e.zoomOffset || 0, this._tileSize = e.tileSize || 256, this._resolutions = e.resolutions || [];
   }
@@ -27362,39 +27846,39 @@ class cC extends x.WebMercatorTilingScheme {
     return x.defined(r) ? (r.x = u, r.y = f, r) : new x.Cartesian2(Math.max(0, u), Math.max(0, f));
   }
 }
-const TC = {
-  BaseMap: VE,
-  CesiumTerrain: WE,
-  TdtTerrain: lC,
-  createCesiumTerrainProvider: Cd,
-  CESIUM_WORLD_TERRAIN_ASSET_ID: bd,
-  createImageryProvider: Ed,
-  imageryProviderTypes: XE,
-  AMapImageryProvider: ud,
-  ArcGISImageryProvider: hd,
-  arcgisWorldImageryUrl: cd,
-  BaiduImageryProvider: md,
-  baiduImageryStyles: dd,
-  TencentImageryProvider: wd,
-  TdtImageryProvider: _d,
-  TdtTerrainProvider: Yd,
-  tdtTerrainUrl: Ud,
-  tdtTerrainSubdomains: Hd,
-  GoogleImageryProvider: yd,
-  googleImageryStyles: pd,
-  GeoVisImageryProvider: vd,
-  GCJ02TilingScheme: lo,
-  BD09TilingScheme: gd,
-  CustomGeographicTilingScheme: uC,
-  CustomMercatorTilingScheme: cC,
-  BD09Projection: fd,
-  CoordTransform: Zn
+const jC = {
+  BaseMap: gb,
+  CesiumTerrain: db,
+  TdtTerrain: LC,
+  createCesiumTerrainProvider: Md,
+  CESIUM_WORLD_TERRAIN_ASSET_ID: kd,
+  createImageryProvider: Id,
+  imageryProviderTypes: fb,
+  AMapImageryProvider: gd,
+  ArcGISImageryProvider: md,
+  arcgisWorldImageryUrl: dd,
+  BaiduImageryProvider: _d,
+  baiduImageryStyles: yd,
+  TencentImageryProvider: Cd,
+  TdtImageryProvider: bd,
+  TdtTerrainProvider: $d,
+  tdtTerrainUrl: Vd,
+  tdtTerrainSubdomains: Wd,
+  GoogleImageryProvider: Ed,
+  googleImageryStyles: xd,
+  GeoVisImageryProvider: wd,
+  GCJ02TilingScheme: co,
+  BD09TilingScheme: pd,
+  CustomGeographicTilingScheme: NC,
+  CustomMercatorTilingScheme: PC,
+  BD09Projection: vd,
+  CoordTransform: Kn
 };
-let gf = 0;
-function hC(n) {
-  return gf += 1, `bmap-viewer-weather-${n}-${gf}`;
+let vf = 0;
+function TC(n) {
+  return vf += 1, `bmap-viewer-weather-${n}-${vf}`;
 }
-class nr {
+class rr {
   constructor(e, t, r = {}, i = {}) {
     var a;
     if (!((a = e == null ? void 0 : e.scene) != null && a.postProcessStages))
@@ -27402,7 +27886,7 @@ class nr {
     this.viewer = e, this.type = t, this.defaults = { ...r }, this.config = { ...r, ...i }, this.stage = null, this.destroyed = !1, this.colorCache = /* @__PURE__ */ new Map();
   }
   load(e = {}) {
-    return this.ensureUsable(), this.remove(), this.config = { ...this.defaults, ...this.config, ...e }, this.colorCache.clear(), this.stage = this.createStage(hC(this.type)), this.viewer.scene.postProcessStages.add(this.stage), this.viewer.scene.requestRender(), this.stage;
+    return this.ensureUsable(), this.remove(), this.config = { ...this.defaults, ...this.config, ...e }, this.colorCache.clear(), this.stage = this.createStage(TC(this.type)), this.viewer.scene.postProcessStages.add(this.stage), this.viewer.scene.requestRender(), this.stage;
   }
   createStage() {
     throw new Error("createStage must be implemented by the weather effect.");
@@ -27458,7 +27942,7 @@ class nr {
       throw new Error("Viewer is unavailable.");
   }
 }
-const fC = (
+const AC = (
   /* glsl */
   `
 uniform sampler2D colorTexture;
@@ -27499,7 +27983,7 @@ void main() {
   out_FragColor = vec4(mix(sceneColor.rgb, rainColor, blend), sceneColor.a);
 }
 `
-), gC = (
+), RC = (
   /* glsl */
   `
 uniform sampler2D colorTexture;
@@ -27596,7 +28080,7 @@ void main() {
   out_FragColor = vec4(mix(sceneColor.rgb, lightningColor, blend), sceneColor.a);
 }
 `
-), dC = (
+), OC = (
   /* glsl */
   `
 uniform sampler2D colorTexture;
@@ -27650,7 +28134,7 @@ void main() {
   out_FragColor = vec4(mix(sceneColor.rgb, snowColor, blend), sceneColor.a);
 }
 `
-), mC = (
+), DC = (
   /* glsl */
   `
 uniform sampler2D colorTexture;
@@ -27692,7 +28176,7 @@ void main() {
   out_FragColor = vec4(mix(sceneColor.rgb, fogColor.rgb, fogFactor), sceneColor.a);
 }
 `
-), vC = (
+), FC = (
   /* glsl */
   `
 uniform sampler2D colorTexture;
@@ -27732,7 +28216,7 @@ void main() {
   out_FragColor = vec4(mix(desaturated, sandColor.rgb, mixAmount), sceneColor.a);
 }
 `
-), pC = (
+), BC = (
   /* glsl */
   `
 uniform sampler2D colorTexture;
@@ -27918,7 +28402,7 @@ void main() {
   out_FragColor = vec4(composited, sceneColor.a);
 }
 `
-), yC = (
+), zC = (
   /* glsl */
   `
 uniform sampler2D colorTexture;
@@ -27959,7 +28443,7 @@ void main() {
   out_FragColor = vec4(mix(flashed, flashColor.rgb, lightning), sceneColor.a);
 }
 `
-), tn = {
+), nn = {
   intensity: 0.5,
   density: 1,
   speed: 1,
@@ -27971,37 +28455,37 @@ void main() {
   lightningMixFactor: 0.35,
   lightningFallInterval: 0.8
 };
-class Xd extends nr {
+class Zd extends rr {
   constructor(e, t = {}) {
-    super(e, "rain", tn, t), this.rainStage = null, this.lightningStage = null, this.load();
+    super(e, "rain", nn, t), this.rainStage = null, this.lightningStage = null, this.load();
   }
   createStage(e) {
     return this.rainStage = new x.PostProcessStage({
       name: `${e}-rain`,
-      fragmentShader: fC,
+      fragmentShader: AC,
       uniforms: {
-        intensity: () => this.getNumber("intensity", tn.intensity, 0, 1),
-        density: () => this.getNumber("density", tn.density, 0.1, 3),
-        speed: () => this.getNumber("speed", tn.speed, 0.05, 5),
-        size: () => this.getNumber("size", tn.size, 0.1, 3),
-        angle: () => this.getNumber("angle", tn.angle, -180, 180),
-        wind: () => this.getNumber("wind", tn.wind, -2, 2),
-        tint: () => this.getColor("color", tn.color)
+        intensity: () => this.getNumber("intensity", nn.intensity, 0, 1),
+        density: () => this.getNumber("density", nn.density, 0.1, 3),
+        speed: () => this.getNumber("speed", nn.speed, 0.05, 5),
+        size: () => this.getNumber("size", nn.size, 0.1, 3),
+        angle: () => this.getNumber("angle", nn.angle, -180, 180),
+        wind: () => this.getNumber("wind", nn.wind, -2, 2),
+        tint: () => this.getColor("color", nn.color)
       }
     }), this.lightningStage = new x.PostProcessStage({
       name: `${e}-lightning`,
-      fragmentShader: gC,
+      fragmentShader: RC,
       uniforms: {
         enabled: () => this.config.lightning ? 1 : 0,
         mixFactor: () => this.getNumber(
           "lightningMixFactor",
-          tn.lightningMixFactor,
+          nn.lightningMixFactor,
           0,
           1
         ),
         fallInterval: () => this.getNumber(
           "lightningFallInterval",
-          tn.lightningFallInterval,
+          nn.lightningFallInterval,
           0.01,
           1
         )
@@ -28025,14 +28509,14 @@ const Pn = {
   drift: 1,
   color: "#ffffffff"
 };
-class Vd extends nr {
+class Kd extends rr {
   constructor(e, t = {}) {
     super(e, "snow", Pn, t), this.load();
   }
   createStage(e) {
     return new x.PostProcessStage({
       name: e,
-      fragmentShader: dC,
+      fragmentShader: OC,
       uniforms: {
         intensity: () => this.getNumber("intensity", Pn.intensity, 0, 1),
         density: () => this.getNumber("density", Pn.density, 0.1, 3),
@@ -28045,7 +28529,7 @@ class Vd extends nr {
     });
   }
 }
-const Vn = {
+const Wn = {
   mode: "depth",
   intensity: 0.5,
   depthStart: 0.22,
@@ -28054,64 +28538,64 @@ const Vn = {
   skyAmount: 0.55,
   color: "#ccccccff"
 };
-function ha(n = {}) {
+function ga(n = {}) {
   const e = { ...n };
   return e.mode == null && (e.near != null || e.far != null || e.visibility != null) && (e.mode = "distance"), e.far == null && e.visibility != null && (e.far = e.visibility), delete e.visibility, e;
 }
-class Wd extends nr {
+class Jd extends rr {
   constructor(e, t = {}) {
-    super(e, "fog", Vn, ha(t)), this.load();
+    super(e, "fog", Wn, ga(t)), this.load();
   }
   load(e = {}) {
-    return super.load(ha(e));
+    return super.load(ga(e));
   }
   setOptions(e = {}) {
-    return super.setOptions(ha(e));
+    return super.setOptions(ga(e));
   }
   createStage(e) {
     return new x.PostProcessStage({
       name: e,
-      fragmentShader: mC,
+      fragmentShader: DC,
       uniforms: {
-        intensity: () => this.getNumber("intensity", Vn.intensity, 0, 2),
+        intensity: () => this.getNumber("intensity", Wn.intensity, 0, 2),
         depthMode: () => String(this.config.mode).toLowerCase() === "distance" ? 0 : 1,
-        depthStart: () => this.getNumber("depthStart", Vn.depthStart, 0, 1),
-        depthRange: () => this.getNumber("depthRange", Vn.depthRange, 1e-6, 1),
+        depthStart: () => this.getNumber("depthStart", Wn.depthStart, 0, 1),
+        depthRange: () => this.getNumber("depthRange", Wn.depthRange, 1e-6, 1),
         nearDistance: () => this.getNumber("near", 500, 0, 1e7),
         farDistance: () => this.getNumber("far", 12e3, 1, 1e7),
-        density: () => this.getNumber("density", Vn.density, 0.01, 10),
-        skyAmount: () => this.getNumber("skyAmount", Vn.skyAmount, 0, 1),
-        fogColor: () => this.getColor("color", Vn.color)
+        density: () => this.getNumber("density", Wn.density, 0.01, 10),
+        skyAmount: () => this.getNumber("skyAmount", Wn.skyAmount, 0, 1),
+        fogColor: () => this.getColor("color", Wn.color)
       }
     });
   }
 }
-const dr = {
+const mr = {
   intensity: 0.72,
   density: 0.9,
   speed: 1,
   wind: 0.8,
   color: "#c8894de6"
 };
-class Ya extends nr {
+class Va extends rr {
   constructor(e, t = {}) {
-    super(e, "sandstorm", dr, t), this.load();
+    super(e, "sandstorm", mr, t), this.load();
   }
   createStage(e) {
     return new x.PostProcessStage({
       name: e,
-      fragmentShader: vC,
+      fragmentShader: FC,
       uniforms: {
-        intensity: () => this.getNumber("intensity", dr.intensity, 0, 2),
-        density: () => this.getNumber("density", dr.density, 0.05, 2.5),
-        speed: () => this.getNumber("speed", dr.speed, 0.01, 5),
-        wind: () => this.getNumber("wind", dr.wind, -2, 2),
-        sandColor: () => this.getColor("color", dr.color)
+        intensity: () => this.getNumber("intensity", mr.intensity, 0, 2),
+        density: () => this.getNumber("density", mr.density, 0.05, 2.5),
+        speed: () => this.getNumber("speed", mr.speed, 0.01, 5),
+        wind: () => this.getNumber("wind", mr.wind, -2, 2),
+        sandColor: () => this.getColor("color", mr.color)
       }
     });
   }
 }
-const Bt = {
+const zt = {
   intensity: 1,
   coverage: 0.52,
   baseHeight: 4800,
@@ -28123,7 +28607,7 @@ const Bt = {
   steps: 72,
   color: "#f1f4f6e6"
 };
-function fa(n = {}) {
+function da(n = {}) {
   const e = { ...n };
   if (e.baseHeight == null && e.cloudBase != null && (e.baseHeight = e.cloudBase), e.topHeight == null && e.cloudTop != null && (e.topHeight = e.cloudTop), e.windDirection == null && e.windAngle != null && (e.windDirection = e.windAngle), e.altitude != null && e.baseHeight == null && e.topHeight == null) {
     const t = Math.min(1, Math.max(0, Number(e.altitude) || 0));
@@ -28131,15 +28615,15 @@ function fa(n = {}) {
   }
   return delete e.cloudBase, delete e.cloudTop, delete e.windAngle, delete e.altitude, e;
 }
-class $d extends nr {
+class Qd extends rr {
   constructor(e, t = {}) {
-    super(e, "cloud", Bt, fa(t)), this.surfaceCartographic = new x.Cartographic(), this.surfacePosition = new x.Cartesian3(), this.windVector = new x.Cartesian3(), this.windEast = new x.Cartesian3(), this.windNorth = new x.Cartesian3(), this.initializeWindBasis(), this.load();
+    super(e, "cloud", zt, da(t)), this.surfaceCartographic = new x.Cartographic(), this.surfacePosition = new x.Cartesian3(), this.windVector = new x.Cartesian3(), this.windEast = new x.Cartesian3(), this.windNorth = new x.Cartesian3(), this.initializeWindBasis(), this.load();
   }
   load(e = {}) {
-    return super.load(fa(e));
+    return super.load(da(e));
   }
   setOptions(e = {}) {
-    return super.setOptions(fa(e));
+    return super.setOptions(da(e));
   }
   initializeWindBasis() {
     const e = this.viewer.camera.positionCartographic, t = (e == null ? void 0 : e.longitude) || 0, r = (e == null ? void 0 : e.latitude) || 0, i = Math.sin(t), a = Math.cos(t), l = Math.sin(r), u = Math.cos(r);
@@ -28162,7 +28646,7 @@ class $d extends nr {
   }
   getWindVector() {
     const e = x.Math.toRadians(
-      this.getNumber("windDirection", Bt.windDirection, -360, 360)
+      this.getNumber("windDirection", zt.windDirection, -360, 360)
     );
     return x.Cartesian3.multiplyByScalar(this.windEast, Math.cos(e), this.windVector), x.Cartesian3.multiplyByScalar(
       this.windNorth,
@@ -28173,69 +28657,69 @@ class $d extends nr {
   createStage(e) {
     return new x.PostProcessStage({
       name: e,
-      fragmentShader: pC,
+      fragmentShader: BC,
       uniforms: {
-        intensity: () => this.getNumber("intensity", Bt.intensity, 0, 2),
-        coverage: () => this.getNumber("coverage", Bt.coverage, 0, 1),
-        baseHeight: () => this.getNumber("baseHeight", Bt.baseHeight, 100, 5e4),
+        intensity: () => this.getNumber("intensity", zt.intensity, 0, 2),
+        coverage: () => this.getNumber("coverage", zt.coverage, 0, 1),
+        baseHeight: () => this.getNumber("baseHeight", zt.baseHeight, 100, 5e4),
         topHeight: () => Math.max(
-          this.getNumber("topHeight", Bt.topHeight, 200, 6e4),
-          this.getNumber("baseHeight", Bt.baseHeight, 100, 5e4) + 100
+          this.getNumber("topHeight", zt.topHeight, 200, 6e4),
+          this.getNumber("baseHeight", zt.baseHeight, 100, 5e4) + 100
         ),
         planetRadius: () => this.getPlanetRadius(),
-        scale: () => this.getNumber("scale", Bt.scale, 0.2, 8),
-        speed: () => this.getNumber("speed", Bt.speed, -5, 5),
+        scale: () => this.getNumber("scale", zt.scale, 0.2, 8),
+        speed: () => this.getNumber("speed", zt.speed, -5, 5),
         windDirectionWC: () => this.getWindVector(),
-        maxDistance: () => this.getNumber("maxDistance", Bt.maxDistance, 1e4, 5e5),
-        marchSteps: () => this.getNumber("steps", Bt.steps, 16, 72),
-        cloudColor: () => this.getColor("color", Bt.color)
+        maxDistance: () => this.getNumber("maxDistance", zt.maxDistance, 1e4, 5e5),
+        marchSteps: () => this.getNumber("steps", zt.steps, 16, 72),
+        cloudColor: () => this.getColor("color", zt.color)
       }
     });
   }
 }
-const mr = {
+const vr = {
   intensity: 1,
   frequency: 0.42,
   brightness: 1.15,
   width: 0.012,
   color: "#e7edffff"
 };
-class Zd extends nr {
+class jd extends rr {
   constructor(e, t = {}) {
-    super(e, "lightning", mr, t), this.load();
+    super(e, "lightning", vr, t), this.load();
   }
   createStage(e) {
     return new x.PostProcessStage({
       name: e,
-      fragmentShader: yC,
+      fragmentShader: zC,
       uniforms: {
-        intensity: () => this.getNumber("intensity", mr.intensity, 0, 2),
-        frequency: () => this.getNumber("frequency", mr.frequency, 0.01, 5),
-        brightness: () => this.getNumber("brightness", mr.brightness, 0, 3),
-        width: () => this.getNumber("width", mr.width, 1e-3, 0.08),
-        flashColor: () => this.getColor("color", mr.color)
+        intensity: () => this.getNumber("intensity", vr.intensity, 0, 2),
+        frequency: () => this.getNumber("frequency", vr.frequency, 0.01, 5),
+        brightness: () => this.getNumber("brightness", vr.brightness, 0, 3),
+        width: () => this.getNumber("width", vr.width, 1e-3, 0.08),
+        flashColor: () => this.getColor("color", vr.color)
       }
     });
   }
 }
-const _C = Object.freeze({
-  rain: Xd,
-  snow: Vd,
-  fog: Wd,
-  sandstorm: Ya,
-  sand: Ya,
-  cloud: $d,
-  lightning: Zd
+const GC = Object.freeze({
+  rain: Zd,
+  snow: Kd,
+  fog: Jd,
+  sandstorm: Va,
+  sand: Va,
+  cloud: Qd,
+  lightning: jd
 });
-function Kd(n, e, t = {}) {
+function em(n, e, t = {}) {
   let r = e, i = t;
   e && typeof e == "object" && (r = e.type, i = { ...e }, delete i.type);
-  const a = String(r || "").toLowerCase(), l = _C[a];
+  const a = String(r || "").toLowerCase(), l = GC[a];
   if (!l)
     throw new Error(`Unsupported weather effect type: ${r}`);
   return new l(n, i);
 }
-const wC = Object.freeze([
+const qC = Object.freeze([
   "rain",
   "snow",
   "fog",
@@ -28243,7 +28727,7 @@ const wC = Object.freeze([
   "cloud",
   "lightning"
 ]);
-class xC {
+class HC {
   constructor(e, t = {}) {
     if (!e) throw new Error("Viewer is required.");
     this.viewer = e, this.effect = null, this.type = null, this.config = null, this.destroyed = !1, t.type && this.load(t.type, t);
@@ -28251,7 +28735,7 @@ class xC {
   load(e, t = {}) {
     this.ensureUsable(), this.remove();
     const r = { ...t };
-    return delete r.type, this.type = String(e).toLowerCase(), this.config = { ...r }, this.effect = Kd(this.viewer, this.type, r), this.effect;
+    return delete r.type, this.type = String(e).toLowerCase(), this.config = { ...r }, this.effect = em(this.viewer, this.type, r), this.effect;
   }
   switch(e, t = {}) {
     return this.load(e, t);
@@ -28287,70 +28771,70 @@ class xC {
       throw new Error("Viewer is unavailable.");
   }
 }
-const AC = {
-  WeatherSystem: xC,
-  createWeatherEffect: Kd,
-  weatherEffectTypes: wC,
-  BaseWeatherEffect: nr,
-  RainEffect: Xd,
-  SnowEffect: Vd,
-  FogEffect: Wd,
-  SandstormEffect: Ya,
-  CloudEffect: $d,
-  LightningEffect: Zd
+const eS = {
+  WeatherSystem: HC,
+  createWeatherEffect: em,
+  weatherEffectTypes: qC,
+  BaseWeatherEffect: rr,
+  RainEffect: Zd,
+  SnowEffect: Kd,
+  FogEffect: Jd,
+  SandstormEffect: Va,
+  CloudEffect: Qd,
+  LightningEffect: jd
 };
-ga.install = (n) => {
-  n.component("BMapViewer", ga);
+ma.install = (n) => {
+  n.component("BMapViewer", ma);
 };
-const RC = {
+const tS = {
   install(n) {
-    n.use(ga);
+    n.use(ma);
   }
 };
 export {
-  ud as AMapImageryProvider,
-  hd as ArcGISImageryProvider,
-  fd as BD09Projection,
-  gd as BD09TilingScheme,
-  ga as BMapViewer,
-  md as BaiduImageryProvider,
-  VE as BaseMap,
-  TC as BaseMaps,
-  nr as BaseWeatherEffect,
-  bd as CESIUM_WORLD_TERRAIN_ASSET_ID,
-  WE as CesiumTerrain,
-  $d as CloudEffect,
-  Zn as CoordTransform,
-  uC as CustomGeographicTilingScheme,
-  cC as CustomMercatorTilingScheme,
-  I0 as EarthColor,
-  Wd as FogEffect,
-  lo as GCJ02TilingScheme,
-  vd as GeoVisImageryProvider,
-  yd as GoogleImageryProvider,
-  Zd as LightningEffect,
-  NC as MapLayers,
-  CC as PickTools,
-  Xd as RainEffect,
-  Ya as SandstormEffect,
-  Vd as SnowEffect,
-  _d as TdtImageryProvider,
-  lC as TdtTerrain,
-  Yd as TdtTerrainProvider,
-  wd as TencentImageryProvider,
-  AC as WeatherEffects,
-  xC as WeatherSystem,
-  cd as arcgisWorldImageryUrl,
-  dd as baiduImageryStyles,
-  Cd as createCesiumTerrainProvider,
-  Ed as createImageryProvider,
-  Kd as createWeatherEffect,
-  RC as default,
-  pd as googleImageryStyles,
-  XE as imageryProviderTypes,
-  Hd as tdtTerrainSubdomains,
-  Ud as tdtTerrainUrl,
-  PC as turf,
-  w0 as useCesium,
-  wC as weatherEffectTypes
+  gd as AMapImageryProvider,
+  md as ArcGISImageryProvider,
+  vd as BD09Projection,
+  pd as BD09TilingScheme,
+  ma as BMapViewer,
+  _d as BaiduImageryProvider,
+  gb as BaseMap,
+  jC as BaseMaps,
+  rr as BaseWeatherEffect,
+  kd as CESIUM_WORLD_TERRAIN_ASSET_ID,
+  db as CesiumTerrain,
+  Qd as CloudEffect,
+  Kn as CoordTransform,
+  NC as CustomGeographicTilingScheme,
+  PC as CustomMercatorTilingScheme,
+  P0 as EarthColor,
+  Jd as FogEffect,
+  co as GCJ02TilingScheme,
+  wd as GeoVisImageryProvider,
+  Ed as GoogleImageryProvider,
+  jd as LightningEffect,
+  QC as MapLayers,
+  XC as PickTools,
+  Zd as RainEffect,
+  Va as SandstormEffect,
+  Kd as SnowEffect,
+  bd as TdtImageryProvider,
+  LC as TdtTerrain,
+  $d as TdtTerrainProvider,
+  Cd as TencentImageryProvider,
+  eS as WeatherEffects,
+  HC as WeatherSystem,
+  dd as arcgisWorldImageryUrl,
+  yd as baiduImageryStyles,
+  Md as createCesiumTerrainProvider,
+  Id as createImageryProvider,
+  em as createWeatherEffect,
+  tS as default,
+  xd as googleImageryStyles,
+  fb as imageryProviderTypes,
+  Wd as tdtTerrainSubdomains,
+  Vd as tdtTerrainUrl,
+  JC as turf,
+  C0 as useCesium,
+  qC as weatherEffectTypes
 };

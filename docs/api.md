@@ -5,7 +5,7 @@
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `id` | `String` | `undefined` | 可选的内部容器 id |
-| `camera` | `Object` | `{}` | 初始相机参数 |
+| `camera` | `Object \| null` | `null` | 初始相机参数；有有效值时组件挂载后自动初始化，否则等待调用 `initMap` |
 | `sceneMode` | `Number` | `0` | `0` 为 2D，其他值为 3D |
 | `baseColor` | `String` | `#112441` | 无影像时的地球基础颜色 |
 
@@ -34,8 +34,8 @@
 
 | 方法 | 说明 |
 | --- | --- |
-| `initMap(camera?)` | 幂等初始化 Viewer；初始化中复用同一 Promise，完成后重复调用返回现有实例 |
-| `reinitializeMap(camera?)` | 显式销毁并重建 Viewer；返回新实例，但不会重复触发 `ready` |
+| `initMap(camera)` | 传入相机参数并幂等初始化 Viewer；初始化中复用同一 Promise，完成后重复调用返回现有实例 |
+| `reinitializeMap(camera)` | 传入相机参数，显式销毁并重建 Viewer；返回新实例，但不会重复触发 `ready` |
 | `flyTo(destination, duration?)` | 飞行到经纬度位置 |
 | `startClick()` | 开启左键拾取 |
 | `stopClick()` | 关闭左键拾取 |
@@ -55,6 +55,41 @@ mapRef.value.setCameraHeightRange({
   maxHeight: 120000,
 })
 ```
+
+### 初始化方式
+
+传入有效的 `camera` 时，组件会在 `onMounted` 后自动初始化：
+
+```vue
+<BMapViewer :camera="camera" @ready="handleReady" />
+```
+
+不传 `camera` 时，组件只渲染地图容器，不会创建 `Cesium.Viewer`。使用者需要通过组件 `ref` 主动调用 `initMap(camera)`：
+
+```vue
+<script setup>
+import { onMounted, ref } from 'vue'
+import { BMapViewer } from 'b-map-viewer'
+
+const mapRef = ref(null)
+
+onMounted(async () => {
+  const viewer = await mapRef.value.initMap({
+    longitude: 125.8337,
+    latitude: 44.1471,
+    height: 12000,
+    pitch: -45,
+  })
+  // viewer 可在这里直接使用；组件仍会正常触发一次 ready 事件。
+})
+</script>
+
+<template>
+  <BMapViewer ref="mapRef" :scene-mode="1" @ready="handleReady" />
+</template>
+```
+
+首次初始化时如果没有传入有效参数，`initMap` 返回 `null` 并触发 `error` 事件。Viewer 已存在时重复调用 `initMap` 会直接返回当前实例，不会重复创建 Viewer 或触发 `ready`。
 
 ## SDK 模块导出
 

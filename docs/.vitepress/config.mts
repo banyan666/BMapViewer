@@ -74,6 +74,7 @@ export default defineConfig({
           { text: 'IconGroupLayer 图标', link: '/layers/icon-group' },
           { text: 'IconClusterLayer 图标聚合', link: '/layers/icon-cluster' },
           { text: 'LabelGroupLayer 文字', link: '/layers/label-group' },
+          { text: 'TextGroupLayer Canvas 文字', link: '/layers/text-group' },
           { text: 'BubbleGroupLayer 气泡', link: '/layers/bubble-group' },
           { text: 'BubbleLayer DOM 广告牌', link: '/layers/bubble-dom' },
           { text: 'CircleExplosionLayer 圆爆炸', link: '/layers/circle-explosion' },

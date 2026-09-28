@@ -1,6 +1,7 @@
 import IconGroupLayer from "./IconGroupLayer.js";
 import IconClusterLayer from './IconClusterLayer.js'
 import LabelGroupLayer from "./LabelGroupLayer.js";
+import TextGroupLayer from './TextGroupLayer.js'
 import LineGroupLayer from "./LineGroupLayer.js";
 import LinePrimitiveLayer from "./LinePrimitiveLayer.js";
 import Build3DLayer from "./Build3DLayer.js";
@@ -24,6 +25,7 @@ export default {
     IconGroupLayer,
     IconClusterLayer,
     LabelGroupLayer,
+    TextGroupLayer,
     LineGroupLayer,
     LinePrimitiveLayer,
     Build3DLayer,

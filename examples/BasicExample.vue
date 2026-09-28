@@ -1,12 +1,12 @@
 <script setup>
-import { exampleModules, projectLinks } from './modules.js'
+import { exampleCounts, exampleModules, projectLinks } from './modules.js'
 
 const emit = defineEmits(['navigate'])
 
 const productFacts = [
   { value: 'Vue 3', label: '组件化 Viewer 生命周期' },
   { value: '07', label: '多源底图 Provider' },
-  { value: '17', label: '内置可视化图层' },
+  { value: String(exampleCounts.layers).padStart(2, '0'), label: '内置可视化图层' },
   { value: 'GeoJSON', label: '统一业务数据结构' },
 ]
 

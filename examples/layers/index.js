@@ -1,6 +1,7 @@
 import iconGroup from './icon-group.js'
 import iconCluster from './icon-cluster.js'
 import labelGroup from './label-group.js'
+import textGroup from './text-group.js'
 import lineGroup from './line-group.js'
 import linePrimitive from './line-primitive.js'
 import build3d from './build-3d.js'
@@ -24,6 +25,7 @@ export const layerExamples = [
   iconGroup,
   iconCluster,
   labelGroup,
+  textGroup,
   lineGroup,
   linePrimitive,
   build3d,

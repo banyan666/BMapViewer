@@ -17,7 +17,7 @@ const props = defineProps({
   },
   camera: {
     type: Object,
-    default: () => ({})
+    default: null
   },
   sceneMode:{
     type: Number,
@@ -49,8 +49,14 @@ const {
 
 // 初始化 Cesium
 onMounted(async () => {
-  await initMap(props.camera)
+  if (hasCameraConfig(props.camera)) await initMap(props.camera)
 })
+
+const hasCameraConfig = (config) => {
+  if (!config || typeof config !== 'object' || Array.isArray(config)) return false
+  return Object.values(config).some((value) =>
+    value !== undefined && value !== null && value !== '')
+}
 
 const initMap = async (mapConfig, options = {}) =>{
   if (initPromise) return initPromise
@@ -58,6 +64,13 @@ const initMap = async (mapConfig, options = {}) =>{
   const force = options?.force === true
   const currentViewer = viewer && !viewer.isDestroyed() ? viewer : null
   if (currentViewer && !force) return currentViewer
+
+  const nextMapConfig = mapConfig === undefined ? props.camera : mapConfig
+  if (!hasCameraConfig(nextMapConfig)) {
+    const error = new TypeError('初始化地图需要传入有效的 camera 配置')
+    if (!isUnmounted) emit('error', error)
+    return null
+  }
 
   const initialization = (async () => {
     await nextTick() // 确保 DOM 已渲染
@@ -69,7 +82,7 @@ const initMap = async (mapConfig, options = {}) =>{
 
     const nextViewer = await initCesium(cesiumContainer.value, {
       ...props,
-      mapConfig: mapConfig ?? props.camera,
+      mapConfig: nextMapConfig,
     })
 
     if (isUnmounted) {

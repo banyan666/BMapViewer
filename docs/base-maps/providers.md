@@ -6,7 +6,7 @@
 
 | type | Provider | 常用配置 |
 | --- | --- | --- |
-| `amap` | `AMapImageryProvider` | `style: 'img' | 'elec' | 'cva'`、`crs: 'WGS84'` |
+| `amap` | `AMapImageryProvider` | `style: 6～10`、`scl: 1 | 2`、`crs: 'WGS84'` |
 | `baidu` | `BaiduImageryProvider` | `style: 'img' | 'vec' | 'normal' | 'dark'`、`crs: 'WGS84'` |
 | `tencent` | `TencentImageryProvider` | `style: '1' | 'img'` |
 | `arcgis` | `ArcGISImageryProvider` | `url`、`accessToken`、`minimumLevel`、`maximumLevel` |
@@ -31,7 +31,8 @@
 ```js
 const baseMap = new BaseMaps.BaseMap(viewer, {
   type: 'amap',
-  style: 'img', // img、elec、cva
+  style: 7, // 6～10，也可使用 img、elec、cva
+  scl: 1,
   crs: 'WGS84',
 })
 ```
