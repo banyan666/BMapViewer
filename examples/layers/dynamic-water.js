@@ -2,7 +2,7 @@ export default {
   id: 'dynamic-water',
   name: 'DynamicWaterLayer',
   title: '动态体积水',
-  group: '三维场景',
+  group: '动态效果',
   summary: '使用细分真实网格、顶点位移与水面光照构建具有波峰起伏的动态水域。',
   code: `const layer = new MapLayers.DynamicWaterLayer(viewer, {
   autoStart: true,

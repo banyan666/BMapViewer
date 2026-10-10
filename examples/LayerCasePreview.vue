@@ -45,7 +45,7 @@ async function runExample() {
   await destroyResult(activeResult)
   activeResult = null
 
-  if (example.value.id !== 'build-3d') mapRef.value?.flyTo(HOME_CAMERA, 0)
+  if (example.value.id !== 'build-3d') mapRef.value?.flyTo(example.value.camera || HOME_CAMERA, 0)
 
   try {
     const execute = new AsyncFunction(
@@ -64,7 +64,7 @@ async function runExample() {
 
 async function handleViewerReady(readyViewer) {
   viewer = readyViewer
-  baseMap = new BaseMaps.BaseMap(viewer, {
+  baseMap = new BaseMaps.BaseMap(viewer, example.value.baseMap || {
     type: 'offline',
     url: tileUrl,
     crs: 'GCJ02',
@@ -94,7 +94,7 @@ onBeforeUnmount(() => {
     <BMapViewer
       id="layer-case-map"
       ref="mapRef"
-      :camera="HOME_CAMERA"
+      :camera="example.camera || HOME_CAMERA"
       :scene-mode="1"
       @ready="handleViewerReady"
       @error="handleMapError"

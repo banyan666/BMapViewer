@@ -30,6 +30,13 @@ const DEFAULT_CONFIG = {
   clusterStrokeColor: '#d9f8ffff',
   clusterStrokeWidth: 2,
   clusterFontSize: 15,
+  clusterShowText: true,
+  clusterText: '{count}',
+  clusterTextPosition: 'top',
+  clusterTextGap: 6,
+  clusterTextOffset: [0, 0],
+  clusterTextOutlineColor: '#071b28',
+  clusterTextOutlineWidth: 2,
 }
 
 function toFiniteNumber(value, fallback) {
@@ -65,6 +72,16 @@ function normalizeClusterStyles(styles) {
       strokeWidth: style.strokeWidth,
       textColor: style.textColor,
       fontSize: style.fontSize,
+      icon: style.icon,
+      width: style.width,
+      height: style.height,
+      showText: style.showText,
+      text: style.text,
+      textPosition: style.textPosition,
+      textGap: style.textGap,
+      textOffset: style.textOffset,
+      textOutlineColor: style.textOutlineColor,
+      textOutlineWidth: style.textOutlineWidth,
     }))
     .sort((first, second) => first.min - second.min)
 }
@@ -121,15 +138,19 @@ class IconClusterLayer {
       (clusteredEntities, cluster) => {
         const count = clusteredEntities.length
         const style = this.getClusterStyle(count)
-        const size = style.size
+        const text = this.formatClusterText(count, style, clusteredEntities)
+        const width = style.icon ? Math.max(1, toFiniteNumber(style.width, style.size)) : style.size
+        const height = style.icon ? Math.max(1, toFiniteNumber(style.height, style.size)) : style.size
 
         cluster.label.show = false
         cluster.point.show = false
         cluster.billboard.show = true
-        cluster.billboard.image = this.createClusterImage(count, style)
-        cluster.billboard.width = size
-        cluster.billboard.height = size
+        cluster.billboard.image = style.icon || this.createClusterImage(count, style, text)
+        cluster.billboard.width = width
+        cluster.billboard.height = height
         cluster.billboard.color = Cesium.Color.WHITE
+        cluster.billboard.pixelOffset = new Cesium.Cartesian2(0, 0)
+        cluster.billboard.scale = 1
         cluster.billboard.horizontalOrigin = Cesium.HorizontalOrigin.CENTER
         cluster.billboard.verticalOrigin = Cesium.VerticalOrigin.CENTER
         cluster.billboard.disableDepthTestDistance = this.config.disableDepthTestDistance
@@ -139,6 +160,8 @@ class IconClusterLayer {
           count,
           entities: clusteredEntities,
         }
+        cluster.label.properties = cluster.billboard.properties
+        if (style.icon) this.applyClusterLabel(cluster.label, text, style, width, height)
       },
     )
   }
@@ -151,15 +174,64 @@ class IconClusterLayer {
     return selected
   }
 
-  createClusterImage(count, style = this.getClusterStyle(count)) {
+  formatClusterText(count, style = this.getClusterStyle(count), entities = []) {
+    const format = style.text ?? this.config.clusterText
+    const text = typeof format === 'function'
+      ? format(count, entities)
+      : String(format ?? '{count}').replaceAll('{count}', String(count))
+    return text == null ? '' : String(text)
+  }
+
+  applyClusterLabel(label, text, style, width, height) {
+    label.show = Boolean(this.config.clusterShowText !== false && style.showText !== false && text)
+    label.text = text
+    label.font = `700 ${Math.max(1, toFiniteNumber(style.fontSize, this.config.clusterFontSize))}px "Cascadia Code", "Microsoft YaHei", sans-serif`
+    label.fillColor = toColor(style.textColor || this.config.clusterTextColor)
+    label.style = Cesium.LabelStyle.FILL_AND_OUTLINE
+    label.outlineColor = toColor(style.textOutlineColor || this.config.clusterTextOutlineColor)
+    label.outlineWidth = Math.max(0, toFiniteNumber(style.textOutlineWidth, this.config.clusterTextOutlineWidth))
+    label.showBackground = false
+    label.scale = 1
+    label.disableDepthTestDistance = this.config.disableDepthTestDistance
+
+    const gap = Math.max(0, toFiniteNumber(style.textGap, this.config.clusterTextGap))
+    const position = style.textPosition ?? this.config.clusterTextPosition
+    const extraOffset = toPixelOffset(style.textOffset ?? this.config.clusterTextOffset)
+    let x = 0
+    let y = 0
+    label.horizontalOrigin = Cesium.HorizontalOrigin.CENTER
+    label.verticalOrigin = Cesium.VerticalOrigin.CENTER
+    switch (position) {
+      case 'bottom':
+        y = height / 2 + gap
+        label.verticalOrigin = Cesium.VerticalOrigin.TOP
+        break
+      case 'left':
+        x = -(width / 2 + gap)
+        label.horizontalOrigin = Cesium.HorizontalOrigin.RIGHT
+        break
+      case 'right':
+        x = width / 2 + gap
+        label.horizontalOrigin = Cesium.HorizontalOrigin.LEFT
+        break
+      default:
+        y = -(height / 2 + gap)
+        label.verticalOrigin = Cesium.VerticalOrigin.BOTTOM
+        break
+    }
+    label.pixelOffset = new Cesium.Cartesian2(x + extraOffset.x, y + extraOffset.y)
+  }
+
+  createClusterImage(count, style = this.getClusterStyle(count), text = this.formatClusterText(count, style)) {
     const strokeColor = style.strokeColor || this.config.clusterStrokeColor
     const strokeWidth = Math.max(
       0,
       toFiniteNumber(style.strokeWidth, this.config.clusterStrokeWidth),
     )
     const textColor = style.textColor || this.config.clusterTextColor
+    const showText = this.config.clusterShowText !== false && style.showText !== false
     const cacheKey = JSON.stringify([
-      count,
+      showText ? text : '',
       style.size,
       style.color,
       strokeColor,
@@ -199,14 +271,15 @@ class IconClusterLayer {
     context.lineWidth = 1
     context.stroke()
 
-    const text = String(count)
-    const configuredFontSize = toFiniteNumber(style.fontSize, this.config.clusterFontSize)
-    const fittedFontSize = Math.max(10, Math.min(configuredFontSize, size / Math.max(2.2, text.length * 0.68)))
-    context.fillStyle = textColor
-    context.font = `700 ${fittedFontSize}px "Cascadia Code", "Microsoft YaHei", sans-serif`
-    context.textAlign = 'center'
-    context.textBaseline = 'middle'
-    context.fillText(text, center, center + 0.5)
+    if (showText && text) {
+      const configuredFontSize = toFiniteNumber(style.fontSize, this.config.clusterFontSize)
+      const fittedFontSize = Math.max(10, Math.min(configuredFontSize, size / Math.max(2.2, text.length * 0.68)))
+      context.fillStyle = textColor
+      context.font = `700 ${fittedFontSize}px "Cascadia Code", "Microsoft YaHei", sans-serif`
+      context.textAlign = 'center'
+      context.textBaseline = 'middle'
+      context.fillText(text, center, center + 0.5)
+    }
 
     const image = canvas.toDataURL('image/png')
     this.clusterIconCache.set(cacheKey, image)
@@ -352,7 +425,7 @@ class IconClusterLayer {
     if (!this.dataSource || !this.viewer || this.viewer.isDestroyed()) return
     const clustering = this.dataSource.clustering
     const pixelRange = clustering.pixelRange
-    clustering.pixelRange = 0
+    clustering.pixelRange = pixelRange === 0 ? 1 : 0
     clustering.pixelRange = pixelRange
     this.viewer.scene.requestRender()
   }

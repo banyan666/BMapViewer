@@ -15,7 +15,7 @@
 
 ## 底图示例模块
 
-示例底图统一读取 `public/tiles` 目录：
+示例默认读取 `public/tiles` 目录作为离线底图；流动线案例使用 ArcGIS 卫星影像展示城市路网：
 
 ```text
 public/tiles/{z}/{x}/{reverseY}.png
@@ -32,9 +32,9 @@ public/tiles/{z}/{x}/{reverseY}.png
 | 分类 | 示例模块 |
 | --- | --- |
 | 点位标注 | `IconGroupLayer`、`IconClusterLayer`、`LabelGroupLayer`、`TextGroupLayer`、`BubbleLayer`、`BubbleGroupLayer` |
-| 线面图层 | `LineGroupLayer`、`LinePrimitiveLayer`、`PolygonPrimitiveLayer`、`LineMaterialLayer`、`CircleGroupLayer`、`MaskLayer` |
-| 三维场景 | `Build3DLayer`、`GradientWallLayer`、`DynamicWaterLayer`、`Heatmap3DLayer`、`RadarScanner3DLayer` |
-| 动态效果 | `CircleWaveLayer`、`CircleExplosionLayer`、`PointRippleLayer` |
+| 线面图层 | `LineGroupLayer`、`LinePrimitiveLayer`、`PolygonPrimitiveLayer`、`LineMaterialLayer`、`FlowLineLayer`、`CircleGroupLayer`、`MaskLayer` |
+| 三维场景 | `Build3DLayer`、`GradientWallLayer`、`Heatmap3DLayer`、`RadarScanner3DLayer` |
+| 动态效果 | `DynamicWaterLayer`、`CircleWaveLayer`、`CircleExplosionLayer`、`PointRippleLayer`、`RadarScanLayer` |
 | 专题分析 | `HeatmapLayer`、`HeatmapPrimitiveLayer` |
 
 `Build3DLayer` 直接使用 `public/3d-tiles/tileset.json` 及其关联的本地 GLB 数据，不依赖远程 3D Tiles 服务。

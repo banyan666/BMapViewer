@@ -1,7 +1,7 @@
 export default {
   id: 'line-group',
   name: 'LineGroupLayer',
-  title: '动态线路',
+  title: '发光线',
   group: '线面图层',
   summary: '以 Entity 绘制发光与轮廓线路。',
   code: `const layer = new MapLayers.LineGroupLayer(viewer, {

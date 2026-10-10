@@ -11,8 +11,10 @@ import circleGroup from './circle-group.js'
 import circleWave from './circle-wave.js'
 import circleExplosion from './circle-explosion.js'
 import pointRipple from './point-ripple.js'
+import radarScan from './radar-scan.js'
 import polygonPrimitive from './polygon-primitive.js'
 import lineMaterial from './line-material.js'
+import flowLine from './flow-line.js'
 import heatmap from './heatmap.js'
 import heatmapPrimitive from './heatmap-primitive.js'
 import heatmap3d from './heatmap-3d.js'
@@ -35,9 +37,11 @@ export const layerExamples = [
   circleWave,
   circleExplosion,
   pointRipple,
+  radarScan,
   polygonPrimitive,
   mask,
   lineMaterial,
+  flowLine,
   heatmap,
   heatmapPrimitive,
   heatmap3d,

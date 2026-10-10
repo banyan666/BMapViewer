@@ -1,7 +1,7 @@
 export default {
   id: 'polygon-primitive',
   name: 'PolygonPrimitiveLayer',
-  title: '高性能区域',
+  title: '高性能面',
   group: '线面图层',
   summary: '使用 Primitive API 渲染带描边的业务区域。',
   code: `const layer = new MapLayers.PolygonPrimitiveLayer(viewer, {

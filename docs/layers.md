@@ -11,9 +11,9 @@ import { MapLayers } from 'b-map-viewer'
 | 分类 | 图层 |
 | --- | --- |
 | 点位与标注 | `IconGroupLayer`、`IconClusterLayer`、`LabelGroupLayer`、`TextGroupLayer`、`BubbleLayer`、`BubbleGroupLayer` |
-| 线与面 | `LineGroupLayer`、`LinePrimitiveLayer`、`LineMaterialLayer`、`PolygonPrimitiveLayer`、`CircleGroupLayer`、`MaskLayer` |
-| 动态效果 | `CircleWaveLayer`、`CircleExplosionLayer`、`PointRippleLayer` |
-| 三维场景 | `Build3DLayer`、`GradientWallLayer`、`DynamicWaterLayer`、`Heatmap3DLayer`、`RadarScanner3DLayer` |
+| 线与面 | `LineGroupLayer`、`LinePrimitiveLayer`、`LineMaterialLayer`、`FlowLineLayer`、`PolygonPrimitiveLayer`、`CircleGroupLayer`、`MaskLayer` |
+| 动态效果 | `DynamicWaterLayer`、`CircleWaveLayer`、`CircleExplosionLayer`、`PointRippleLayer`、`RadarScanLayer` |
+| 三维场景 | `Build3DLayer`、`GradientWallLayer`、`Heatmap3DLayer`、`RadarScanner3DLayer` |
 | 专题分析 | `HeatmapLayer`、`HeatmapPrimitiveLayer` |
 
 图层构造函数的第一个参数统一为 `Cesium.Viewer`。多数图层提供 `setData`、`show`、`hide`、`clearLayer` 或 `destroy` 中的一组生命周期方法，具体以对应源码为准。

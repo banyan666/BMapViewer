@@ -11,8 +11,10 @@ import CircleGroupLayer from "./CircleGroupLayer.js";
 import CircleWaveLayer from "./CircleWaveLayer.js";
 import CircleExplosionLayer from "./CircleExplosionLayer.js";
 import PointRippleLayer from "./PointRippleLayer.js";
+import RadarScanLayer from './RadarScanLayer.js'
 import PolygonPrimitiveLayer from './PolygonPrimitiveLayer.js'
 import LineMaterialLayer from "./LineMaterialLayer.js";
+import FlowLineLayer from './FlowLineLayer.js'
 import HeatmapLayer from "./HeatmapLayer.js";
 import HeatmapPrimitiveLayer from "./HeatmapPrimitiveLayer.js";
 import Heatmap3DLayer from './Heatmap3DLayer.js'
@@ -35,8 +37,10 @@ export default {
     CircleWaveLayer,
     CircleExplosionLayer,
     PointRippleLayer,
+    RadarScanLayer,
     PolygonPrimitiveLayer,
     LineMaterialLayer,
+    FlowLineLayer,
     HeatmapLayer,
     HeatmapPrimitiveLayer,
     Heatmap3DLayer,

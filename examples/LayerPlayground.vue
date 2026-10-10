@@ -18,6 +18,14 @@ const publicRoot = new URL(import.meta.env.BASE_URL, window.location.href)
 const tileUrl = new URL('tiles/{z}/{x}/{reverseY}.png', publicRoot).href
 const buildingTilesetUrl = new URL('3d-tiles/tileset.json', publicRoot).href
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
+const OFFLINE_BASE_MAP = {
+  type: 'offline',
+  url: tileUrl,
+  crs: 'GCJ02',
+  minimumLevel: 1,
+  maximumLevel: 12,
+  themeColor: '#34A4FF',
+}
 
 const mapRef = ref(null)
 const viewerReady = ref(false)
@@ -160,7 +168,7 @@ async function disposeActive() {
 
 function flyHome(duration = 0.7) {
   if (!viewerReady.value) return
-  mapRef.value?.flyTo(HOME_CAMERA, duration)
+  mapRef.value?.flyTo(activeExample.value.camera || HOME_CAMERA, duration)
 }
 
 async function runCode() {
@@ -173,6 +181,9 @@ async function runCode() {
 
   await disposeActive()
   if (currentRun !== runVersion) return
+
+  const baseMapConfig = activeExample.value.baseMap || OFFLINE_BASE_MAP
+  if (baseMap.config.type !== baseMapConfig.type) baseMap.load(baseMapConfig)
 
   if (activeExample.value.id !== 'build-3d') flyHome(0)
   const snapshot = takeResourceSnapshot()
@@ -233,14 +244,7 @@ function resetCode() {
 async function handleViewerReady(readyViewer) {
   viewer = readyViewer
   viewerReady.value = true
-  baseMap = new BaseMaps.BaseMap(viewer, {
-    type: 'offline',
-    url: tileUrl,
-    crs: 'GCJ02',
-    minimumLevel: 1,
-    maximumLevel: 12,
-    themeColor: '#34A4FF',
-  })
+  baseMap = new BaseMaps.BaseMap(viewer, OFFLINE_BASE_MAP)
   // viewer.scene.globe.depthTestAgainstTerrain = false
   runMessage.value = '离线瓦片已就绪'
   await nextTick()
@@ -292,7 +296,7 @@ onBeforeUnmount(() => {
 
       <div class="header-metrics" aria-label="项目状态">
         <div><span>图层示例</span><strong>{{ layerExamples.length }}/{{ layerExamples.length }}</strong></div>
-        <div><span>底图来源</span><strong>PUBLIC / TMS</strong></div>
+        <div><span>底图来源</span><strong>{{ activeExample.baseMap?.type === 'arcgis' ? 'ARCGIS / IMAGE' : 'PUBLIC / TMS' }}</strong></div>
         <div class="runtime-dot" :class="runState"><i></i><strong>{{ statusLabel }}</strong></div>
       </div>
     </header>
@@ -398,7 +402,7 @@ onBeforeUnmount(() => {
         <button type="button" class="home-button" title="返回示例中心" @click="flyHome()">◎</button>
 
         <div class="map-footer">
-          <span><i></i> OFFLINE TILES · Z1—Z12</span>
+          <span><i></i> {{ activeExample.baseMap?.type === 'arcgis' ? 'ARCGIS WORLD IMAGERY' : 'OFFLINE TILES · Z1—Z12' }}</span>
           <span v-if="coordinate">{{ coordinate }}</span>
           <span v-else>点击地图读取坐标</span>
         </div>
