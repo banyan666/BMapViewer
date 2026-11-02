@@ -1,5 +1,7 @@
 import BMapViewer from './components/BMapViewer.vue'
 import PickTools from './utils/PickTools.js'
+import SpatialAnalysis from './utils/SpatialAnalysis.js'
+import TerrainAnalysis from './utils/TerrainAnalysis.js'
 import EarthColor from './utils/EarthColor.js'
 import MapLayers from './layer/index.js'
 import BaseMaps from './base-map/index.js'
@@ -25,6 +27,8 @@ export {
     TdtTerrain,
     createCesiumTerrainProvider,
     CESIUM_WORLD_TERRAIN_ASSET_ID,
+    createCesiumImageryProvider,
+    cesiumImageryStyles,
     createImageryProvider,
     imageryProviderTypes,
     AMapImageryProvider,
@@ -55,11 +59,13 @@ export {
     RainEffect,
     SnowEffect,
     FogEffect,
+    HeightFogEffect,
     SandstormEffect,
     CloudEffect,
+    CloudUltraEffect,
     LightningEffect,
 } from './weather/index.js'
-export { PickTools, EarthColor, turf }
+export { PickTools, SpatialAnalysis, TerrainAnalysis, EarthColor, turf }
 export { useCesium } from './composables/useCesium'
 export { BMapViewer }
 export default BMapViewerPlugin

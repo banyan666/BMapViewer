@@ -89,14 +89,15 @@ async function runCode() {
       `'use strict';\n${code.value}`,
     )
     const result = await execute(Cesium, BaseMaps, viewer, tileUrl)
+    const createdLayers = readImageryLayers().filter((layer) => !before.has(layer))
     const cleanup = async () => {
       if (typeof result === 'function') await result()
       else if (typeof result?.destroy === 'function') result.destroy()
       else if (typeof result?.remove === 'function') result.remove()
 
       if (!viewer || viewer.isDestroyed()) return
-      readImageryLayers()
-        .filter((layer) => !before.has(layer))
+      createdLayers
+        .filter((layer) => viewer.imageryLayers.contains(layer))
         .forEach((layer) => viewer.imageryLayers.remove(layer, true))
     }
 
@@ -106,10 +107,14 @@ async function runCode() {
     }
 
     activeCleanup = cleanup
+    if (result?.readyPromise) await result.readyPromise
+    if (currentRun !== runVersion) { await cleanup(); return }
     runState.value = 'success'
     runMessage.value = `${activeExample.value.title} 已加载`
     runDuration.value = Math.round(performance.now() - startTime)
   } catch (error) {
+    if (currentRun !== runVersion) return
+    await disposeActive()
     readImageryLayers()
       .filter((layer) => !before.has(layer))
       .forEach((layer) => viewer.imageryLayers.remove(layer, true))

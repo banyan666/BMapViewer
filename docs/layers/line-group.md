@@ -20,6 +20,7 @@
 | type | string | 'default' | 默认线类型（材质类型） |
 | color | string | '#ffffff' | 默认线条颜色 |
 | width | number | 2         | 默认线条宽度 |
+| height | number | 0 | 默认线条椭球面高度（米），坐标第三维高度优先 |
 
 ## 材质类型 (Type)
 

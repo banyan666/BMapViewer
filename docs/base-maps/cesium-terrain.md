@@ -20,7 +20,7 @@ await terrain.readyPromise
 terrain.destroy()
 ```
 
-Cesium World Terrain 需要有效的 ion Token。公开文档不会嵌入凭证；请进入在线示例的“底图模块 → Cesium World Terrain”，填写自己的 Token 后运行。
+Cesium World Terrain 需要有效的 ion Token。在线示例的“底图模块 → Cesium World Terrain”已配置示例 Token，可直接运行，也可在代码编辑器中替换为自己的 Token。接入项目时请使用自己的凭证。
 
 ## 构造参数
 

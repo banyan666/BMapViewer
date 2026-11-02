@@ -4,8 +4,6 @@
 
 ## 组件案例
 
-闪电按程序化概率出现，初次进入页面后可能需要等待片刻。
-
 <SdkExamplePreview category="weather" example="lightning" title="RainEffect 雷雨闪电" height="500px" />
 
 ## 配置参数

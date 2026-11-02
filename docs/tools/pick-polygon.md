@@ -42,6 +42,8 @@ tools.pickPolygon((coordinates) => {
 
 回调返回的是顶点数组，可以直接转换为 GeoJSON Polygon；构造 GeoJSON 时需要将首个坐标再次追加到末尾形成闭合环。
 
+构造时设置 `includeHeight: true`，拾取及拖拽回调返回三维顶点数组 `[[longitude, latitude, height], ...]`，高度单位固定为米，并默认拾取当前地形表面。不设置时保持原来的二维坐标格式。
+
 ```js
 const ring = [...coordinates, coordinates[0]]
 const polygon = {

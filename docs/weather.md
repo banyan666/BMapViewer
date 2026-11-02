@@ -1,10 +1,10 @@
 # 天气粒子系统
 
-`WeatherEffects` 是 BMapViewer 的屏幕空间天气模块。它基于 Cesium `PostProcessStage` 在场景渲染完成后合成天气画面，不需要为每个粒子创建 Entity，适合大范围地图中的雨、雪、雾、沙尘、云层和闪电表现。
+`WeatherEffects` 是 BMapViewer 的天气模块，提供雨、雪、距离雾、高度雾、沙尘、体积云和闪电。常规效果使用 Cesium 后处理；`CloudUltraEffect` 使用独立的多阶段世界空间体积云管线，加入大气散射、级联阴影和时间抗锯齿。
 
 [打开在线天气示例](https://banyan666.github.io/BMapViewer/#/weather)
 
-天气实验室中的六个效果统一使用 ArcGIS World Imagery 作为演示底图，便于在全球影像场景中观察降水、能见度和光照变化。
+天气实验室使用 ArcGIS World Imagery 影像；高度雾案例额外通过 `BaseMaps.CesiumTerrain` 加载 Cesium World Terrain，并默认定位到山地，便于观察山谷积雾和山峰露出雾层的效果。
 
 ## 天气案例目录
 
@@ -13,8 +13,10 @@
 | 降雨 | `RainEffect` | 方向、速度、密度、粗细和风偏 | [查看降雨](/weather/rain) |
 | 降雪 | `SnowEffect` | 多尺度雪花、飘移和粒径 | [查看降雪](/weather/snow) |
 | 距离雾 | `FogEffect` | 深度距离、能见度和雾色 | [查看距离雾](/weather/fog) |
+| 高度雾 | `HeightFogEffect` | 沿视线积分、雾层高程、密度和透明度 | [查看高度雾](/weather/height-fog) |
 | 沙尘 | `SandstormEffect` | 暖色颗粒、扰动和低能见度 | [查看沙尘](/weather/sandstorm) |
 | 体积云 | `CloudEffect` | 世界空间云壳、视差、云量和风场 | [查看体积云](/weather/cloud) |
+| 体积云 Ultra | `CloudUltraEffect` | 多层云、大气散射、级联云影与时间抗锯齿 | [查看 Ultra 体积云](/weather/cloud-ultra) |
 | 雷雨闪电 | `RainEffect` | 细雨与程序化闪电组合 | [查看雷雨闪电](/weather/lightning) |
 
 ## 快速开始
@@ -79,8 +81,10 @@ fog.destroy()
 | `rain` | `RainEffect` | `intensity`、`density`、`speed`、`size`、`angle`、`wind`、`lightning`、`color` | 可调整方向、粗细和风偏，并可启用闪电的透视雨线 |
 | `snow` | `SnowEffect` | `intensity`、`density`、`speed`、`angle`、`size`、`drift`、`color` | 多尺度飘雪与横向漂移 |
 | `fog` | `FogEffect` | `intensity`、`depthStart`、`depthRange`、`density`、`skyAmount`、`color` | 按深度阈值混合雾色，并兼容旧版米制距离模式 |
+| `height-fog` | `HeightFogEffect` | `fogHeight`、`density`、`brightness`、`startDistance`、`maxOpacity`、`color` | 视线投影积分产生山谷积雾，并统一调整场景与雾色亮度 |
 | `sandstorm` | `SandstormEffect` | `intensity`、`density`、`speed`、`wind`、`color` | 暖色颗粒、扰动与低能见度合成 |
 | `cloud` | `CloudEffect` | `coverage`、`baseHeight`、`topHeight`、`scale`、`speed`、`windDirection`、`steps` | 世界空间光线步进生成具有视差的体积云 |
+| `cloud-ultra` | `CloudUltraEffect` | `coverage`、`layers`、`windSpeed`、`steps`、`temporalUpscale` | 自动管理资源的高质量多阶段体积云 |
 | `lightning` | `LightningEffect` | `intensity`、`frequency`、`brightness`、`width`、`color` | 随机闪光和分叉闪电纹理 |
 
 `createWeatherEffect(viewer, type, options)` 也可以按类型创建效果；`sand` 是 `sandstorm` 的别名。
@@ -167,6 +171,8 @@ rain.setOptions({ lightning: true })  // 再次开启闪电
 | `destroy()` | - | 永久销毁实例并释放引用 |
 | `isDestroyed()` | `boolean` | 判断实例是否已销毁 |
 
+`CloudUltraEffect` 沿用上述方法名称，但 `load()` 返回 Promise，需通过 `readyPromise` 等待异步准备；`getStage()` 返回多阶段管线。其 `hide()` 会暂停管线并恢复原天空和光照，`remove()` 会释放纹理与 Worker。详见 [Ultra 体积云](/weather/cloud-ultra)。
+
 ## WeatherSystem API
 
 ```js
@@ -187,10 +193,10 @@ system.destroy()
 
 - 强度、密度等数值会在 SDK 内部限制到安全范围，编辑示例时仍建议逐步调整。
 - 雾效果会读取深度纹理；浏览器和显卡需要支持 Cesium WebGL 深度纹理能力。
-- 天气属于全屏后处理。叠加多个高密度效果会增加片元着色开销，移动设备建议同时启用不超过两个效果。
+- 常规天气使用全屏后处理，Ultra 体积云使用多阶段渲染管线。叠加多个高密度效果会增加片元着色开销，移动设备建议同时启用不超过两个效果。
 - 颜色支持 CSS 色值和带透明度的十六进制色值，例如 `#99b3ccff`。
 - Vue 组件应在 `onBeforeUnmount` 中调用 `destroy()`，避免路由切换后保留后处理阶段。
 
-天气实验室为每种效果提供可编辑代码。左侧展开代码面板后，可直接修改参数并使用 `Ctrl + Enter` 重新运行。六类案例统一采用低空斜视镜头，并保留地平线以上的天空区域，便于同时观察天气效果、空间纵深和地表底图。
+天气实验室为每种效果提供可编辑代码。左侧展开代码面板后，可直接修改参数并使用 `Ctrl + Enter` 重新运行。常规天气采用低空斜视镜头，高度雾采用山地斜视镜头；均保留天空区域，便于观察天气效果、空间纵深和地表底图。
 
 雨、雪、雾的着色器结构参考并扩展自 [Cesium-Examples weatherEffects.js](https://github.com/jiawanlong/Cesium-Examples/blob/main/examples/cesiumEx/weatherEffects.js)：保留屏幕空间雨线、多尺度雪层和深度雾的思路，同时适配 Cesium 1.118 的 WebGL 2 后处理语法，并将固定常量改为可更新的 uniform。

@@ -12,7 +12,9 @@
 tools.pickEllipse(callback, data?)
 ```
 
-回调包含 `eastRadius`、`northRadius`、`semiMajorAxis`、`semiMinorAxis`、`rotation`、`center` 和 `control`。半轴单位为米，`rotation` 单位为弧度。
+回调包含 `eastRadius`、`northRadius`、`semiMajorAxis`、`semiMinorAxis`、`rotation`、`center`、`control` 和 `unit`。半轴与方向半径按配置 `unit: 'm' / 'km'` 返回，默认米；`rotation` 仍为弧度。
+
+使用尺寸初始化椭圆时，半轴和方向半径采用实例配置的 `unit`，也可以通过初始数据的 `unit` 单独指定。
 
 ```js
 const tools = new PickTools(viewer, {

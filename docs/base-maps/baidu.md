@@ -1,10 +1,37 @@
 # BaiduImageryProvider 百度地图
 
-`BaiduImageryProvider` 处理百度瓦片坐标、BD-09 投影和样式地址。设置 `crs: 'WGS84'` 时，会自动使用 `BD09TilingScheme` 完成场景坐标对齐。
+`BaiduImageryProvider` 处理百度墨卡托投影、瓦片编号和样式地址。`crs` 指定叠加业务数据使用的经纬度坐标系：`BD09` 不加偏，`GCJ02` 和 `WGS84` 执行对应的转换。
 
 ## 组件案例
 
 <SdkExamplePreview category="base-map" example="baidu" title="BaiduImageryProvider 百度地图" />
+
+## 坐标系 crs
+
+| `crs` | 作用 |
+| --- | --- |
+| `BD09`（默认） | 直接使用百度经纬度，不执行任何经纬度加偏/纠偏 |
+| `GCJ02` | 投影前将 GCJ-02 转为 BD-09，反投影时转回 GCJ-02 |
+| `WGS84` | 投影前按 WGS84 → GCJ-02 → BD-09 转换，反投影时执行逆向转换 |
+
+三种模式都使用百度墨卡托投影与百度瓦片编号。投影是加载瓦片所必需的步骤，不等于对经纬度再次加偏。
+
+百度官网拾取的 BD-09 经纬度可直接配合以下底图使用，无需再次转换点位：
+
+```js
+const provider = new BaseMaps.BaiduImageryProvider({
+  style: 'normal',
+  crs: 'BD09',
+})
+
+// 将百度拾取的经度、纬度原样交给业务图层。
+const pointData = [{
+  geometry: { type: 'Point', coordinates: [116.404, 39.915] },
+  properties: { id: 'baidu-point' },
+}]
+```
+
+这里的 `BD09` 表示经纬度（BD-09LL），不是米制百度墨卡托（BD-09MC）。Provider 不修改业务实体数据，混用 WGS84 地形、3D Tiles 或其他坐标系的数据时，应先统一坐标系。显式传入的 `tilingScheme` 优先于自动切片配置。
 
 ## BaseMap 用法
 

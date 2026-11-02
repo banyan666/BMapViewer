@@ -3,6 +3,7 @@ import { computed, nextTick, onBeforeUnmount, ref } from 'vue'
 import * as Cesium from 'cesium'
 import { BaseMaps, BMapViewer, WeatherEffects } from '../src/sdk/index.js'
 import { weatherExamples } from './weather/index.js'
+import { createWeatherExampleSession } from './weather/runtime.js'
 
 const HOME_CAMERA = {
   longitude: 125.83372000975274,
@@ -15,38 +16,32 @@ const HOME_CAMERA = {
 
 const queryId = new URLSearchParams(window.location.search).get('weather-preview')
 const example = computed(() => weatherExamples.find((item) => item.id === queryId) || weatherExamples[0])
-const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
 
 const mapRef = ref(null)
 let viewer = null
 let baseMap = null
-let activeEffect = null
+let activeSession = null
+let version = 0
 
 function destroyEffect() {
-  try {
-    if (typeof activeEffect === 'function') activeEffect()
-    else if (typeof activeEffect?.destroy === 'function') activeEffect.destroy()
-    else if (typeof activeEffect?.remove === 'function') activeEffect.remove()
-  } catch (error) {
-    console.warn('天气案例资源清理失败：', error)
-  }
-  activeEffect = null
+  activeSession?.destroy()
+  activeSession = null
 }
 
 async function runExample() {
   if (!viewer || viewer.isDestroyed()) return
+  const current = ++version
   destroyEffect()
-  mapRef.value?.flyTo(HOME_CAMERA, 0)
-
+  mapRef.value?.flyTo(example.value.camera || HOME_CAMERA, 0)
+  const session = createWeatherExampleSession({ WeatherEffects, BaseMaps, terrain: example.value.terrain, viewer, time: example.value.time,
+    onError(error) { if (current === version) console.error('天气案例运行失败：', error) },
+  })
+  activeSession = session
   try {
-    const execute = new AsyncFunction(
-      'WeatherEffects',
-      'viewer',
-      `'use strict';\n${example.value.codeText}`,
-    )
-    activeEffect = await execute(WeatherEffects, viewer)
+    await session.execute(example.value.codeText)
+    if (current !== version) session.destroy()
   } catch (error) {
-    console.error('天气案例运行失败：', error)
+    if (current === version && error.name !== 'AbortError') console.error('天气案例运行失败：', error)
   }
 }
 
@@ -68,6 +63,7 @@ function handleViewerError(error) {
 }
 
 onBeforeUnmount(() => {
+  version += 1
   destroyEffect()
   baseMap?.destroy()
   baseMap = null

@@ -22,6 +22,7 @@ const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
 const mapRef = ref(null)
 let viewer = null
 let activeBaseMap = null
+let version = 0
 
 function destroyBaseMap() {
   try {
@@ -36,6 +37,7 @@ function destroyBaseMap() {
 
 async function runExample() {
   if (!viewer || viewer.isDestroyed()) return
+  const current = ++version
   destroyBaseMap()
   mapRef.value?.flyTo(HOME_CAMERA, 0)
 
@@ -47,8 +49,17 @@ async function runExample() {
       'tileUrl',
       `'use strict';\n${example.value.code}`,
     )
-    activeBaseMap = await execute(Cesium, BaseMaps, viewer, tileUrl)
+    const result = await execute(Cesium, BaseMaps, viewer, tileUrl)
+    if (current !== version) {
+      if (typeof result === 'function') result()
+      else result?.destroy?.()
+      return
+    }
+    activeBaseMap = result
+    if (result?.readyPromise) await result.readyPromise
   } catch (error) {
+    if (current !== version) return
+    destroyBaseMap()
     console.error('底图案例运行失败：', error)
   }
 }
@@ -64,6 +75,7 @@ function handleViewerError(error) {
 }
 
 onBeforeUnmount(() => {
+  version += 1
   destroyBaseMap()
   viewer = null
 })

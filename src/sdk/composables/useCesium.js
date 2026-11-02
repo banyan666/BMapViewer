@@ -3,7 +3,7 @@ import * as Cesium from 'cesium'
 import { printBMapViewerWelcome } from '../utils/welcome.js'
 export function useCesium() {
     const DEFAULT_MINIMUM_HEIGHT = 1
-    const DEFAULT_MAXIMUM_HEIGHT = 1500000
+    const DEFAULT_MAXIMUM_HEIGHT = 15000000
     let viewer = null
     let minimumHeight = DEFAULT_MINIMUM_HEIGHT
     let maximumHeight = DEFAULT_MAXIMUM_HEIGHT

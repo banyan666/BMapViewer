@@ -12,7 +12,7 @@
 tools.pickSquare(callback, data?)
 ```
 
-回调结果包含 `center`、`sideLength` 和四个 WGS84 顶点 `coordinates`，长度单位为米。设置 `isReserve: true` 后，可拖拽两个对角控制点继续编辑。
+回调结果包含 `center`、`sideLength`、`width`、`height`、四个 WGS84 顶点 `coordinates` 和 `unit`。边长与宽高按配置 `unit: 'm' / 'km'` 返回，默认米；经纬度坐标不变。设置 `isReserve: true` 后，可拖拽两个对角控制点继续编辑。
 
 ```js
 const tools = new PickTools(viewer, {

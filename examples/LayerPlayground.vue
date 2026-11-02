@@ -4,6 +4,7 @@ import * as Cesium from 'cesium'
 import { BaseMaps, BMapViewer, MapLayers } from '../src/sdk/index.js'
 import CodeExampleEditor from './CodeExampleEditor.vue'
 import { layerExamples, layerGroups } from './layers/index.js'
+import { createLayerExampleEnvironment } from './layers/environment.js'
 
 const HOME_CAMERA = {
   longitude: 125.83372000975274,
@@ -40,6 +41,7 @@ const coordinate = ref(null)
 let viewer = null
 let baseMap = null
 let activeCleanup = null
+let activeEnvironment = null
 let runVersion = 0
 let resizeTimer = null
 
@@ -156,6 +158,8 @@ async function removeResourcesAfter(snapshot) {
 }
 
 async function disposeActive() {
+  activeEnvironment?.destroy()
+  activeEnvironment = null
   if (!activeCleanup) return
   const cleanup = activeCleanup
   activeCleanup = null
@@ -188,7 +192,13 @@ async function runCode() {
   if (activeExample.value.id !== 'build-3d') flyHome(0)
   const snapshot = takeResourceSnapshot()
 
+  let environment = null
   try {
+    environment = createLayerExampleEnvironment({ BaseMaps, viewer, terrain: activeExample.value.terrain })
+    activeEnvironment = environment
+    if (activeExample.value.terrain) runMessage.value = '正在加载 Cesium World Terrain…'
+    await environment.readyPromise
+    if (currentRun !== runVersion) { environment.destroy(); return }
     const execute = new AsyncFunction(
       'Cesium',
       'MapLayers',
@@ -202,6 +212,7 @@ async function runCode() {
       try {
         await cleanResult(result)
       } finally {
+        environment.destroy()
         await removeResourcesAfter(snapshot)
       }
     }
@@ -216,6 +227,8 @@ async function runCode() {
     runState.value = 'success'
     runMessage.value = `${activeExample.value.name} 已挂载到地图`
   } catch (error) {
+    environment?.destroy()
+    if (currentRun !== runVersion || error.name === 'AbortError') return
     await removeResourcesAfter(snapshot)
     runDuration.value = Math.round(performance.now() - startTime)
     runState.value = 'error'
@@ -296,7 +309,7 @@ onBeforeUnmount(() => {
 
       <div class="header-metrics" aria-label="项目状态">
         <div><span>图层示例</span><strong>{{ layerExamples.length }}/{{ layerExamples.length }}</strong></div>
-        <div><span>底图来源</span><strong>{{ activeExample.baseMap?.type === 'arcgis' ? 'ARCGIS / IMAGE' : 'PUBLIC / TMS' }}</strong></div>
+        <div><span>底图来源</span><strong>{{ activeExample.terrain ? 'WORLD TERRAIN' : activeExample.baseMap?.type === 'arcgis' ? 'ARCGIS / IMAGE' : 'PUBLIC / TMS' }}</strong></div>
         <div class="runtime-dot" :class="runState"><i></i><strong>{{ statusLabel }}</strong></div>
       </div>
     </header>
@@ -402,7 +415,7 @@ onBeforeUnmount(() => {
         <button type="button" class="home-button" title="返回示例中心" @click="flyHome()">◎</button>
 
         <div class="map-footer">
-          <span><i></i> {{ activeExample.baseMap?.type === 'arcgis' ? 'ARCGIS WORLD IMAGERY' : 'OFFLINE TILES · Z1—Z12' }}</span>
+          <span><i></i> {{ activeExample.terrain ? 'CESIUM WORLD TERRAIN · ARCGIS IMAGERY' : activeExample.baseMap?.type === 'arcgis' ? 'ARCGIS WORLD IMAGERY' : 'OFFLINE TILES · Z1—Z12' }}</span>
           <span v-if="coordinate">{{ coordinate }}</span>
           <span v-else>点击地图读取坐标</span>
         </div>

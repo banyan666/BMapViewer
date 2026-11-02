@@ -20,6 +20,9 @@
 | color | string | '#ffffff' | 默认填充及描边颜色 |
 | opacity | number | 0.6 | 面的透明度 (0-1) |
 | lineWidth | number | 2 | 描边线条宽度（单位：像素） |
+| height | number | 0 | 面及描边相对于地球椭球面的高度（单位：米），可用于错开叠加面的渲染高度 |
+| clampToGround | boolean | false | 将面及描边贴合真实地形，启用后忽略 `height` |
+| showOutline | boolean | true | 是否显示边界描边 |
 
 ## 方法说明
 

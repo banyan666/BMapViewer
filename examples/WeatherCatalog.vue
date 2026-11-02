@@ -5,6 +5,7 @@ import { BaseMaps, BMapViewer, WeatherEffects } from '../src/sdk/index.js'
 import CodeExampleEditor from './CodeExampleEditor.vue'
 import { weatherExamples } from './weather/index.js'
 import { exampleModules } from './modules.js'
+import { createWeatherExampleSession } from './weather/runtime.js'
 
 const HOME_CAMERA = {
   longitude: 125.83372000975274,
@@ -16,7 +17,6 @@ const HOME_CAMERA = {
 }
 
 const weatherDocs = exampleModules.find((module) => module.id === 'weather')?.docs
-const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
 
 const mapRef = ref(null)
 const activeId = ref(weatherExamples[0].id)
@@ -31,7 +31,8 @@ const stageCount = ref(0)
 
 let viewer = null
 let baseMap = null
-let activeCleanup = null
+let activeSession = null
+let activeEffect = null
 let runVersion = 0
 let resizeTimer = null
 
@@ -57,69 +58,41 @@ function readPostProcessStages() {
 function updateStageCount() {
   stageCount.value = readPostProcessStages()
     .filter((stage) => stage?.name?.startsWith('bmap-viewer-weather-'))
-    .length
+    .length + (activeEffect?.type === 'cloud-ultra' && activeEffect.ready ? 4 : 0)
 }
 
-async function disposeActive() {
-  if (!activeCleanup) return
-  const cleanup = activeCleanup
-  activeCleanup = null
-  try {
-    await cleanup()
-  } catch (error) {
-    console.warn('天气示例清理失败：', error)
-  } finally {
-    updateStageCount()
-  }
+function disposeActive() {
+  activeSession?.destroy()
+  activeSession = null
+  activeEffect = null
+  updateStageCount()
 }
 
 async function runCode() {
   if (!viewer || viewer.isDestroyed() || runState.value === 'running') return
-
   const startTime = performance.now()
   const currentRun = ++runVersion
   runState.value = 'running'
   runDuration.value = null
-  runMessage.value = `正在生成 ${activeExample.value.title}`
-
-  await disposeActive()
-  if (currentRun !== runVersion) return
-
-  mapRef.value?.flyTo(HOME_CAMERA, 0)
-  const before = new Set(readPostProcessStages())
-
+  runMessage.value = activeExample.value.terrain ? '正在加载 Cesium World Terrain…' : `正在生成 ${activeExample.value.title}`
+  disposeActive()
+  mapRef.value?.flyTo(activeExample.value.camera || HOME_CAMERA, 0)
+  const session = createWeatherExampleSession({
+    WeatherEffects, BaseMaps, terrain: activeExample.value.terrain, viewer, time: activeExample.value.time,
+    onProgress(value) { if (currentRun === runVersion) runMessage.value = `Ultra 体积云资源准备 ${value}%` },
+    onError(error) { if (currentRun === runVersion) { runState.value = 'error'; runMessage.value = error.message } },
+  })
+  activeSession = session
   try {
-    const execute = new AsyncFunction(
-      'WeatherEffects',
-      'viewer',
-      `'use strict';\n${code.value}`,
-    )
-    const result = await execute(WeatherEffects, viewer)
-    const cleanup = async () => {
-      if (typeof result === 'function') await result()
-      else if (typeof result?.destroy === 'function') result.destroy()
-      else if (typeof result?.remove === 'function') result.remove()
-
-      if (!viewer || viewer.isDestroyed()) return
-      readPostProcessStages()
-        .filter((stage) => !before.has(stage))
-        .forEach((stage) => viewer.scene.postProcessStages.remove(stage))
-    }
-
-    if (currentRun !== runVersion) {
-      await cleanup()
-      return
-    }
-
-    activeCleanup = cleanup
+    const result = await session.execute(code.value)
+    if (currentRun !== runVersion) { session.destroy(); return }
+    activeEffect = result
     runState.value = 'success'
     runMessage.value = `${activeExample.value.title}效果已加载`
     runDuration.value = Math.round(performance.now() - startTime)
     updateStageCount()
   } catch (error) {
-    readPostProcessStages()
-      .filter((stage) => !before.has(stage))
-      .forEach((stage) => viewer.scene.postProcessStages.remove(stage))
+    if (currentRun !== runVersion || error.name === 'AbortError') return
     runState.value = 'error'
     runMessage.value = error?.message || String(error)
     runDuration.value = Math.round(performance.now() - startTime)
@@ -192,11 +165,11 @@ onBeforeUnmount(() => {
     <header class="lab-header">
       <div class="brand-block">
         <span class="brand-mark" aria-hidden="true"><i></i><b></b></span>
-        <div><strong>WeatherEffects</strong><p>Cesium 屏幕空间天气粒子实验室</p></div>
+        <div><strong>WeatherEffects</strong><p>Cesium 天气与世界空间体积云实验室</p></div>
       </div>
       <div class="header-metrics">
         <div><span>天气效果</span><strong>{{ weatherExamples.length }}</strong></div>
-        <div><span>渲染方式</span><strong>POST PROCESS</strong></div>
+        <div><span>渲染方式</span><strong>{{ activeExample.renderMode || 'POST PROCESS' }}</strong></div>
         <div><span>活动阶段</span><strong>{{ String(stageCount).padStart(2, '0') }}</strong></div>
         <div class="runtime-dot" :class="runState"><i></i><strong>{{ statusLabel }}</strong></div>
       </div>
@@ -273,9 +246,9 @@ onBeforeUnmount(() => {
           <small>{{ activeExample.name }}</small>
         </div>
         <div class="weather-scale" aria-hidden="true"><span></span><span></span><span></span><span></span><b>{{ activeExample.code }}</b></div>
-        <div class="map-guide">◇ 底图统一使用 ArcGIS World Imagery；修改左侧参数后运行，切换示例会自动销毁上一效果。</div>
+        <div class="map-guide">◇ {{ activeExample.terrain ? 'Cesium World Terrain 地形 + ArcGIS 影像，山地高度雾。' : 'ArcGIS World Imagery 影像。' }} 修改左侧参数后运行，切换示例会自动清理上一效果和示例地形。</div>
         <div class="map-footer">
-          <span>ARCGIS WORLD IMAGERY · WGS84</span>
+          <span>{{ activeExample.terrain ? 'CESIUM WORLD TERRAIN + ARCGIS' : 'ARCGIS WORLD IMAGERY' }} · WGS84</span>
           <span>{{ coordinate || `${stageCount} ACTIVE WEATHER STAGE` }}</span>
         </div>
       </section>

@@ -1,0 +1,2 @@
+// 仅供公开示例使用的浏览器 Token，不作为 SDK 的默认凭证。
+export const CESIUM_ION_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4ZTk0MjhhZS0yOTU3LTQ5ZTEtYTViZi00NWQyZjY0Zjc2NmYiLCJpZCI6MjkyNjk2LCJpYXQiOjE3NDQyNjgxNjh9.88UosGfRuhDc92uCCDR3CcnCfVpk1gxa7-rPCFQDzyk'

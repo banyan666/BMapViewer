@@ -4,7 +4,9 @@ Cesium 场景使用 WGS84。国内互联网地图通常使用 GCJ-02 或 BD-09�
 
 ## GCJ-02
 
-高德和部分国内地图模板可以使用：
+`AMapImageryProvider` 默认 `crs: 'GCJ02'`，使用标准 Web Mercator 投影，不进行坐标纠偏。配置 `WGS84` 或 `BD09` 时使用 `GCJ02TilingScheme`，分别将业务坐标转换为 GCJ02 后投影。
+
+独立创建 `new BaseMaps.GCJ02TilingScheme()` 时保留默认 `WGS84` 行为；可通过 `{ crs: 'BD09' }` 接收百度经纬度，或通过 `{ crs: 'GCJ02' }` 关闭纠偏。高德和部分国内地图模板可以使用：
 
 ```js
 const tilingScheme = new BaseMaps.GCJ02TilingScheme()
@@ -18,7 +20,9 @@ const provider = BaseMaps.createImageryProvider({
 
 ## BD-09
 
-`BaiduImageryProvider` 在 `crs: 'WGS84'` 时会自动创建 `BD09TilingScheme`，通常无需手动配置。模块同时公开 `BD09Projection`，可用于百度经纬度、百度墨卡托和像素坐标之间的转换。
+`BaiduImageryProvider` 对 `BD09`、`GCJ02` 和 `WGS84` 均使用 `BD09TilingScheme`。`BD09` 仅执行百度墨卡托投影，不对经纬度加偏；另外两种模式执行相应的坐标转换，通常无需手动配置切片方案。模块同时公开 `BD09Projection`，可用于百度经纬度、百度墨卡托和像素坐标之间的转换。
+
+独立创建 `new BaseMaps.BD09TilingScheme()` 时保留默认 `WGS84` 行为，原生百度经纬度可显式配置 `{ crs: 'BD09' }`。
 
 ## 坐标转换
 

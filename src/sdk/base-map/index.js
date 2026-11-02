@@ -16,6 +16,7 @@ import createCesiumTerrainProvider, {
   CESIUM_WORLD_TERRAIN_ASSET_ID,
 } from './terrain/cesium/createCesiumTerrainProvider.js'
 import TencentImageryProvider from './imagery/tencent/TencentImageryProvider.js'
+import createCesiumImageryProvider, { cesiumImageryStyles } from './imagery/cesium/createCesiumImageryProvider.js'
 import BD09TilingScheme from './imagery/tiling-scheme/BD09TilingScheme.js'
 import CustomGeographicTilingScheme from './imagery/tiling-scheme/CustomGeographicTilingScheme.js'
 import CustomMercatorTilingScheme from './imagery/tiling-scheme/CustomMercatorTilingScheme.js'
@@ -29,6 +30,8 @@ const BaseMaps = {
   TdtTerrain,
   createCesiumTerrainProvider,
   CESIUM_WORLD_TERRAIN_ASSET_ID,
+  createCesiumImageryProvider,
+  cesiumImageryStyles,
   createImageryProvider,
   imageryProviderTypes,
   AMapImageryProvider,
@@ -58,6 +61,8 @@ export {
   TdtTerrain,
   createCesiumTerrainProvider,
   CESIUM_WORLD_TERRAIN_ASSET_ID,
+  createCesiumImageryProvider,
+  cesiumImageryStyles,
   createImageryProvider,
   imageryProviderTypes,
   AMapImageryProvider,

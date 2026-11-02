@@ -21,6 +21,8 @@ tools.pickLine(callback, data?)
 
 回调结果为 WGS84 坐标数组：
 
+默认只包含经纬度；构造时设置 `includeHeight: true`，拾取及拖拽回调中的每个顶点变为 `[longitude, latitude, height]`，高度单位固定为米，并默认拾取当前地形表面。
+
 ```js
 [
   [125.82, 44.14],

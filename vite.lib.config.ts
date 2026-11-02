@@ -2,15 +2,17 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { copyFile } from 'node:fs/promises'
 import { fileURLToPath, URL } from 'node:url'
+import { cloudUltraAssets } from './scripts/cloud-ultra-assets.mjs'
 
 export default defineConfig({
   publicDir: false,
   plugins: [
     vue(),
+    cloudUltraAssets({ library: true }),
     {
       name: 'copy-library-readme',
-      closeBundle() {
-        return copyFile(
+      async closeBundle() {
+        await copyFile(
           fileURLToPath(new URL('./README.md', import.meta.url)),
           fileURLToPath(new URL('./BMapViewer/README.md', import.meta.url)),
         )

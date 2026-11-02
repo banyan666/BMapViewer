@@ -11,10 +11,14 @@ const routeComponents = {
   'pick-preview': defineAsyncComponent(() => import('../examples/PickCasePreview.vue')),
   'weather-preview': defineAsyncComponent(() => import('../examples/WeatherCasePreview.vue')),
   'pick-tools': defineAsyncComponent(() => import('../examples/PickToolsPlayground.vue')),
+  'spatial-analysis': defineAsyncComponent(() => import('../examples/SpatialAnalysisPlayground.vue')),
+  'analysis-preview': defineAsyncComponent(() => import('../examples/AnalysisCasePreview.vue')),
+  'terrain-analysis': defineAsyncComponent(() => import('../examples/TerrainAnalysisPlayground.vue')),
+  'terrain-preview': defineAsyncComponent(() => import('../examples/TerrainCasePreview.vue')),
   weather: defineAsyncComponent(() => import('../examples/WeatherCatalog.vue')),
 }
 
-const previewRoutes = new Set(['base-map-preview', 'layer-preview', 'pick-preview', 'weather-preview'])
+const previewRoutes = new Set(['base-map-preview', 'layer-preview', 'pick-preview', 'weather-preview', 'analysis-preview', 'terrain-preview'])
 
 const currentRoute = ref(readRoute())
 const currentModule = computed(() => findExampleModule(currentRoute.value))
@@ -25,6 +29,8 @@ function readRoute() {
   if (new URLSearchParams(window.location.search).has('layer-preview')) return 'layer-preview'
   if (new URLSearchParams(window.location.search).has('pick-preview')) return 'pick-preview'
   if (new URLSearchParams(window.location.search).has('weather-preview')) return 'weather-preview'
+  if (new URLSearchParams(window.location.search).has('analysis-preview')) return 'analysis-preview'
+  if (new URLSearchParams(window.location.search).has('terrain-preview')) return 'terrain-preview'
   return window.location.hash.replace(/^#\/?/, '').split('/')[0] || 'home'
 }
 

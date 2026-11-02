@@ -96,7 +96,7 @@ const initMap = async (mapConfig, options = {}) =>{
     // 关闭太阳月亮天空盒
     viewer.scene.moon.show =  false
     viewer.scene.fog.enabled = false
-    viewer.scene.sun.show = false
+    // viewer.scene.sun.show = false
     //抗锯齿
     // viewer.scene.fxaa = true;
     // viewer.scene.postProcessStages.fxaa.enabled = true;

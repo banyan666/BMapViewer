@@ -1,11 +1,13 @@
+import { CESIUM_ION_TOKEN } from '../config/cesium.js'
+
 export default {
   id: 'cesium-terrain',
   name: 'CesiumTerrain',
   title: 'Cesium World Terrain',
   group: '三维地形',
-  summary: '加载 Cesium ion 官方全球地形；请替换 Access Token 后运行。',
+  summary: '加载 Cesium ion 官方全球地形，已配置示例 Token，可直接运行。',
   code: `// 申请token地址https://ion.cesium.com/tokens
-const token = '替换为你的 Cesium ion Token'
+const token = ${JSON.stringify(CESIUM_ION_TOKEN)}
   
 if (token.startsWith('替换')) {
   throw new Error('请先填写 Cesium ion Token')

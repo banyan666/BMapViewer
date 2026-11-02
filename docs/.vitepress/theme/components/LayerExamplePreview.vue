@@ -5,10 +5,11 @@ const props = defineProps({
   example: { type: String, required: true },
   title: { type: String, required: true },
   height: { type: [Number, String], default: 430 },
+  mobileHeight: { type: [Number, String], default: 340 },
   category: {
     type: String,
     default: 'layer',
-    validator: (value) => ['layer', 'base-map', 'pick', 'weather'].includes(value),
+    validator: (value) => ['layer', 'base-map', 'pick', 'weather', 'analysis', 'terrain'].includes(value),
   },
 })
 
@@ -17,6 +18,8 @@ const previewParams = {
   'base-map': 'base-map-preview',
   pick: 'pick-preview',
   weather: 'weather-preview',
+  analysis: 'analysis-preview',
+  terrain: 'terrain-preview',
 }
 
 const mounted = ref(false)
@@ -46,7 +49,8 @@ const previewUrl = computed(() => {
 
 const panelHeight = computed(() => {
   const value = typeof props.height === 'number' ? `${props.height}px` : props.height
-  return { '--preview-height': value }
+  const mobileValue = typeof props.mobileHeight === 'number' ? `${props.mobileHeight}px` : props.mobileHeight
+  return { '--preview-height': value, '--preview-mobile-height': mobileValue }
 })
 
 onMounted(() => {
@@ -87,6 +91,6 @@ onMounted(() => {
 }
 
 @media (max-width: 640px) {
-  .layer-example { --preview-height: 340px !important; }
+  .layer-example { height: var(--preview-mobile-height); }
 }
 </style>

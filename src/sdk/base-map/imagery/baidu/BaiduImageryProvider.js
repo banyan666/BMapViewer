@@ -1,5 +1,5 @@
 import * as Cesium from 'cesium'
-import BD09TilingScheme from '../tiling-scheme/BD09TilingScheme.js'
+import BD09TilingScheme, { normalizeBaiduCrs } from '../tiling-scheme/BD09TilingScheme.js'
 
 const TILE_HOST = {
   free: 'https://maponline{s}.bdimg.com',
@@ -106,19 +106,15 @@ class BaiduImageryProvider extends Cesium.UrlTemplateImageryProvider {
       .replaceAll('{customId}', encodeURIComponent(customStyle))
       .replaceAll('{style}', encodeURIComponent(customStyle))
     const url = style === 'img' ? encodeSatelliteQueryValue(normalizedUrl) : normalizedUrl
+    const crs = normalizeBaiduCrs(options.crs ?? 'BD09')
     let tilingScheme = options.tilingScheme
-
-    if (!tilingScheme && options.crs === 'WGS84') {
+    if (!tilingScheme) {
       const resolutions = Array.from({ length: 19 }, (_, index) => 256 * 2 ** (18 - index))
       tilingScheme = new BD09TilingScheme({
+        crs,
         resolutions,
         rectangleSouthwestInMeters: new Cesium.Cartesian2(-20037726.37, -12474104.17),
         rectangleNortheastInMeters: new Cesium.Cartesian2(20037726.37, 12474104.17),
-      })
-    } else if (!tilingScheme) {
-      tilingScheme = new Cesium.WebMercatorTilingScheme({
-        rectangleSouthwestInMeters: new Cesium.Cartesian2(-33554054, -33746824),
-        rectangleNortheastInMeters: new Cesium.Cartesian2(33554054, 33746824),
       })
     }
 
@@ -132,10 +128,12 @@ class BaiduImageryProvider extends Cesium.UrlTemplateImageryProvider {
       credit: options.credit || new Cesium.Credit('© Baidu Maps'),
     })
     this._templateUrl = url
-    this._crs = options.crs || 'BD09'
+    this._crs = crs
+    // 默认三种 CRS 统一使用百度原点/有符号瓦片编号；自定义切片方案保留原有编号规则。
+    this._nativeTileCoordinates = tilingScheme instanceof BD09TilingScheme || crs === 'WGS84'
     this._style = style || 'custom'
     this._subdomains = Array.isArray(subdomains) ? subdomains : String(subdomains).split('')
-    this._rectangle = this._tilingScheme.rectangle
+    this._rectangle = options.rectangle || this._tilingScheme.rectangle
   }
 
   _buildImageUrl(x, y, level) {
@@ -146,7 +144,7 @@ class BaiduImageryProvider extends Cesium.UrlTemplateImageryProvider {
       .replaceAll('{z}', String(level))
       .replaceAll('{s}', subdomain)
 
-    if (this._crs === 'WGS84') {
+    if (this._nativeTileCoordinates) {
       url = url.replaceAll('{x}', String(x)).replaceAll('{y}', String(-y))
     } else {
       url = url

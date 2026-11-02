@@ -1,266 +1,262 @@
-/**
- * 3D楼宇图层类 - 用于加载和管理3D Tileset楼宇数据
- * @class Build3DLayer
- */
 import * as Cesium from 'cesium'
-// import {GUI} from 'lil-gui'
-class Build3DLayer {
-    /**
-     * 创建3D楼宇图层实例
-     * @param {Cesium.Viewer} viewer - Cesium Viewer实例
-     * @param {Object} config - 图层配置
-     * @param {string} config.url - 3D Tileset的URL
-     * @param {boolean} [config.show=true] - 是否显示图层
-     */
-    constructor(viewer, config) {
-        if (!viewer) {
-            throw new Error("Viewer is required.");
-        }
+import FeatureColors, { featureKey } from './build3d/FeatureColors.js'
+import { normalizeBuildShader, buildShaderUniforms, createBuildShader } from './material/build3d.js'
 
-        if (!config || !config.url) {
-            throw new Error("URL is required in config.");
-        }
-
-        this.viewer = viewer;
-        this.config = {
-            ...config
-        };
-
-        this.tileset = null;
-        this.name = this.config.name || 'Build3DLayer';
-    }
-
-    /**
-     * 加载3D Tileset
-     * @returns {Promise<Cesium.Cesium3DTileset>}
-     */
-    async load(url) {
-
-        try {
-            // 创建3D Tileset
-            this.tileset = await Cesium.Cesium3DTileset.fromUrl(url || this.config.url, {
-                show: this.config.show||true,
-                ...this.config.options // 允许传入其他Cesium3DTileset选项
-            });
-
-            this.tileset.tileLoad.addEventListener((tile) => {
-                // 触发瓦片加载事件
-                const batchTable = tile.content?.batchTable;
-                if (!batchTable) return;
-                const tileData = batchTable.featuresLength;
-                for (let i = 0; i < tileData; i++) {
-                    const buildingId = batchTable.getProperty(i,'id');// 获取楼宇 ID
-                    if(this.config.alertList && this.config.alertList.length>0 && this.config.alertKey){
-                        let findObj = {}
-                        if(this.config.alertList.some(item=>{
-                            if(buildingId === String(item.id)){
-                                findObj = item
-                                return true
-                            }
-                        })){
-                            batchTable.setProperty(i,this.config.alertKey, findObj[this.config.alertKey]);
-                        }
-                    }
-                }
-
-            });
-            console.log(this.tileset,'this.tileset')
-            // 添加到场景
-            this.viewer.scene.primitives.add(this.tileset);
-
-            let customShader = new Cesium.CustomShader({
-                // 不考虑光照模型
-                lightingModel: Cesium.LightingModel.UNLIT,
-                fragmentShaderText: `
-        void fragmentMain(FragmentInput fsInput, inout czm_modelMaterial material) {
-            float _baseHeight = 20.0; // 物体的基础高度
-            float _heightRange = 100.0; // 高亮的范围
-            float _glowRange = 50.0; // 光环的移动范围(高度)
-            
-            float vtxf_height = fsInput.attributes.positionMC.z - _baseHeight;
-
-            // 计算高亮强度，移除动态时间因素
-            float vtxf_h = clamp(vtxf_height / _glowRange, 0.0, 1.0);
-            float staticGlowIntensity = 0.5; // 固定的光强度（可以根据需要调整）
-
-            // 根据高度计算 diffuse 值
-            material.diffuse *= vec3(vtxf_h * staticGlowIntensity);
-
-            // 确保高于一定高度的对象显示光环效果
-            if (vtxf_h > 0.01) {
-                material.diffuse += material.diffuse * (1.0 - step(0.01, vtxf_h));
-            }
-        }
-    `,
-            });
-
-            // 将自定义着色器应用到 tileset
-            this.tileset.customShader = customShader;
-
-
-
-            console.log(`loaded successfully.`);
-            return this.tileset;
-
-        } catch (error) {
-            console.error(`Failed to load:`, error);
-            throw error;
-        }
-    }
-    setStyle(style) {
-        let conditions = style || []
-        if (this.tileset) {
-            this.tileset.style = new Cesium.Cesium3DTileStyle({
-                color: {
-                    conditions: conditions
-                }
-            });
-        }
-    }
-    /**
-     * 设置3D Tileset的着色器
-     * @param obj
-     */
-    setShader(obj) {
-        const config = {
-            sweepColor: obj?.sweepColor || '#00aeeb',
-            minColor: obj?.minColor || '#09090EFF',
-            maxColor: obj?.maxColor || '#0080FFFF',
-            sweepWidth: obj?.sweepWidth || 0.02,
-            modelHeight: obj?.modelHeight || 100,
-            heightOffset: obj?.heightOffset || 0,
-            minInterval: obj?.minInterval || 0.0,
-            maxInterval: obj?.maxInterval || 1.0,
-            speed: obj?.speed || 2.0,
-            active: obj?.active || true,
-        }
-        // 创建自定义着色器
-        const uniforms = {
-            u_sweep_color: { value: Cesium.Color.fromCssColorString(config.sweepColor), type: Cesium.UniformType.VEC3 },
-            u_mix_color1: { value: Cesium.Color.fromCssColorString(config.minColor), type: Cesium.UniformType.VEC3 },
-            u_mix_color2: { value: Cesium.Color.fromCssColorString(config.maxColor), type: Cesium.UniformType.VEC3 },
-            u_sweep_width: { value: config.sweepWidth, type: Cesium.UniformType.FLOAT },
-            u_time: { value: 0, type: Cesium.UniformType.FLOAT },
-            u_model_height: { value: config.modelHeight, type: Cesium.UniformType.FLOAT },
-            u_height_offset: { value: config.heightOffset, type: Cesium.UniformType.FLOAT },
-            u_min_interval : { value: config.minInterval, type: Cesium.UniformType.FLOAT },
-            u_max_interval : { value: config.maxInterval, type: Cesium.UniformType.FLOAT },
-            u_speed: { value: config.speed, type: Cesium.UniformType.FLOAT },
-        }
-       /* const gui = new GUI()
-        gui.addColor({ sweepColor: '#2ba7ff' }, 'sweepColor').onChange(v => {
-            const hex = v.replace('#', '')
-            const r = parseInt(hex.substring(0, 2), 16)
-            const g = parseInt(hex.substring(2, 4), 16)
-            const b = parseInt(hex.substring(4, 6), 16)
-            uniforms.u_sweep_color.value = Cesium.Color.fromBytes(r, g, b, 255)
-        })
-
-        gui.addColor({ mixColor1: '#09090e' }, 'mixColor1').onChange(v => {
-            const hex = v.replace('#', '')
-            const r = parseInt(hex.substring(0, 2), 16)
-            const g = parseInt(hex.substring(2, 4), 16)
-            const b = parseInt(hex.substring(4, 6), 16)
-            uniforms.u_mix_color1.value = Cesium.Color.fromBytes(r, g, b, 255)
-        })
-        gui.addColor({ mixColor2: '#0080ff' }, 'mixColor2').onChange(v => {
-            const hex = v.replace('#', '')
-            const r = parseInt(hex.substring(0, 2), 16)
-            const g = parseInt(hex.substring(2, 4), 16)
-            const b = parseInt(hex.substring(4, 6), 16)
-            uniforms.u_mix_color2.value = Cesium.Color.fromBytes(r, g, b, 255)
-        })
-
-        gui.add({ sweepWidth: 0.02 }, 'sweepWidth', 0.0001, 1.0).onChange(v => {
-            uniforms.u_sweep_width.value = v
-        })
-        gui.add({ modelHeight: 600 }, 'modelHeight', 10, 2000).name('模型高度').onChange(v =>  uniforms.u_model_height.value = v)
-        gui.add({ heightOffset: 0.0 }, 'heightOffset', -50, 50).name('高度偏移').onChange(v => uniforms.u_height_offset.value = v)
-        gui.add({ maxInterval: 1.0 }, 'maxInterval', 0.0, 10.0).name('最大间隔').onChange(v => uniforms.u_max_interval.value = v)
-        gui.add({ speed: 2.0 }, 'speed', 0.01, 5.0).name('速度').onChange(v => uniforms.u_speed.value = v)*/
-        const customShader = new Cesium.CustomShader({
-            //不考虑光照模型
-            // lightingModel: Cesium.LightingModel.PBR,
-            vertexShaderText: `void vertexMain(VertexInput vsInput, inout czm_modelVertexOutput vsOutput) {
-            float adjustedZ = vsInput.attributes.positionMC.z + u_height_offset;
-            float normalizedHeight = clamp(adjustedZ / u_model_height, u_min_interval, u_max_interval);
-            float enhancedHeight = sqrt(normalizedHeight);
-            v_uv = vec2(enhancedHeight, enhancedHeight);
-        }`,
-            fragmentShaderText: `float random(vec2 st) {
-            return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
-        }
-        
-        void fragmentMain(FragmentInput fsInput, inout czm_modelMaterial material) {
-            float gradientFactor = smoothstep(0.0, 1.0, v_uv.y);
-            vec3 originColor = mix(u_mix_color1, u_mix_color2, gradientFactor);
-            float t = fract(u_time * u_speed) * 2.;
-            vec2 absUv = abs(v_uv - t);
-            
-            vec2 st = v_uv * 15.;
-            vec2 ipos = floor(st + u_time * 5.);
-            float r = random(ipos) + .2;
-            
-            float d = clamp(distance(0., absUv.y) / u_sweep_width, 0., 1.);
-            float diffuse = clamp(-dot(czm_sunDirectionEC, fsInput.attributes.normalEC), 0., .45);
-            
-            vec3 color = mix(u_sweep_color * r + u_sweep_color * .8, originColor, d);
-            material.diffuse = color;
-            material.emissive = vec3(diffuse) * (1. - d);
-        }`,
-            uniforms,
-            varyings: { v_uv: Cesium.VaryingType.VEC2 }
-        })
-        console.log(performance.now(),'performance.now()')
-        config.active && this.viewer.scene.preRender.addEventListener(function(scene, time) {
-            customShader.setUniform("u_time", performance.now() * 0.0001);
-        });
-
-// 将自定义着色器应用到tileset
-        this.tileset.customShader = customShader;
-    }
-    /**
-     * 显示图层
-     */
-    show() {
-        if (this.tileset) {
-            this.tileset.show = true;
-        }
-        this.config.show = true;
-    }
-
-    /**
-     * 隐藏图层
-     */
-    hide() {
-        if (this.tileset) {
-            this.tileset.show = false;
-        }
-        this.config.show = false;
-    }
-
-    /**
-     * 销毁图层，释放资源
-     */
-    clearLayer() {
-        // 从场景中移除
-        if (this.tileset) {
-            this.viewer.scene.primitives.remove(this.tileset);
-            this.tileset = null;
-        }
-        console.log(`Build3DLayer destroyed.`);
-    }
-    /**
-     * 销毁
-     */
-    destroy() {
-        this.clearLayer();
-        this.viewer = null;
-        this.config = null;
-        this.tileset = null;
-    }
-
+function urlKey(url) {
+  const key = url instanceof Cesium.Resource ? url.url : url
+  if (typeof key !== 'string' || !key.trim()) throw new TypeError('A tileset URL is required.')
+  return key
 }
 
+function nativeStyle(value) {
+  if (value == null) return undefined
+  if (value instanceof Cesium.Cesium3DTileStyle) return value
+  if (Array.isArray(value)) return new Cesium.Cesium3DTileStyle({ color: { conditions: value } })
+  if (typeof value !== 'object') throw new TypeError('style must be conditions, a style object or Cesium3DTileStyle.')
+  return new Cesium.Cesium3DTileStyle(value)
+}
 
-export default Build3DLayer;
+function disposeTileset(tileset, viewer) {
+  if (!tileset || tileset.isDestroyed()) return
+  if (viewer && !viewer.isDestroyed?.()) viewer.scene.primitives.remove(tileset)
+  if (!tileset.isDestroyed()) tileset.destroy()
+}
+
+/** 3D Tiles 建筑图层：加载、按标识改色、高度渐变与动态扫光。 */
+export default class Build3DLayer {
+  constructor(viewer, config = {}) {
+    if (!viewer?.scene?.primitives || !viewer.clock?.onTick || viewer.isDestroyed?.()) throw new Error('An active Cesium Viewer is required.')
+    urlKey(config.url)
+    const show = config.show ?? config.options?.show ?? true
+    if (typeof show !== 'boolean') throw new TypeError('show must be a boolean.')
+    const property = config.featureIdProperty ?? 'id'
+    if (typeof property !== 'string' || !property.trim()) throw new TypeError('featureIdProperty must be a nonempty string.')
+    if (config.options?.customShader) throw new Error('Use the shader option instead of options.customShader.')
+    const shader = normalizeBuildShader(typeof config.shader === 'boolean' ? { enabled: config.shader } : config.shader)
+    this.config = { url: config.url, name: config.name ?? 'Build3DLayer', show, featureIdProperty: property, options: { ...config.options }, shader }
+    this.name = this.config.name
+    this.viewer = viewer
+    this.tileset = null
+    this.readyPromise = null
+    this._loadedKey = null
+    this._pending = null
+    this._version = 0
+    this._destroyed = false
+    this._style = nativeStyle(config.style)
+    this._shader = null
+    this._colors = new FeatureColors(property)
+    this._events = []
+    this._removeTick = null
+    this._elapsed = 0
+    this._startedAt = null
+  }
+
+  _assertAlive() {
+    if (this._destroyed || this.viewer?.isDestroyed?.()) throw new Error('Build3DLayer or its Viewer has been destroyed.')
+  }
+
+  _requestRender() {
+    if (this.viewer && !this.viewer.isDestroyed?.()) this.viewer.scene.requestRender()
+  }
+
+  _time() { return this._elapsed + (this._startedAt === null ? 0 : (performance.now() - this._startedAt) * 0.0001) }
+
+  /** 相同地址的并发加载复用 Promise；被后续加载/清理取代的请求以 AbortError 结束。 */
+  load(url = this.config.url) {
+    this._assertAlive()
+    const key = urlKey(url)
+    if (this._pending?.key === key) return this._pending.promise
+    if (this.tileset && this._loadedKey === key) {
+      this._version++
+      this._pending = null
+      this.readyPromise = Promise.resolve(this.tileset)
+      return this.readyPromise
+    }
+    const version = ++this._version
+    const options = { ...this.config.options, show: this.config.show }
+    const cancelled = () => this._destroyed || version !== this._version || this.viewer?.isDestroyed?.()
+    const abortError = () => new DOMException('Tileset load was superseded or cancelled.', 'AbortError')
+    const promise = Promise.resolve().then(() => {
+      if (cancelled()) throw abortError()
+      return Cesium.Cesium3DTileset.fromUrl(url, options)
+    }).then((tileset) => {
+      if (cancelled()) {
+        disposeTileset(tileset)
+        throw abortError()
+      }
+      this._releaseTileset()
+      this.tileset = tileset
+      try {
+        this.viewer.scene.primitives.add(tileset)
+        tileset.show = this.config.show
+        tileset.colorBlendMode = Cesium.Cesium3DTileColorBlendMode.REPLACE
+        this._events = [
+          tileset.tileLoad.addEventListener((tile) => this._colors.track(tile)),
+          tileset.tileVisible.addEventListener((tile) => { if (this._colors.visible(tile)) this._requestRender() }),
+          tileset.tileUnload.addEventListener((tile) => this._colors.unload(tile)),
+        ]
+        this._applyShader()
+        this.config.url = url
+        this._loadedKey = key
+        this._requestRender()
+        return tileset
+      } catch (error) {
+        this._releaseTileset()
+        throw error
+      }
+    }).catch((error) => {
+      if (cancelled()) throw abortError()
+      throw error
+    }).finally(() => {
+      if (this._pending?.version === version) this._pending = null
+    })
+    this._pending = { key, version, promise }
+    this.readyPromise = promise
+    return promise
+  }
+
+  /** 使用原生样式时关闭内置着色器；再次开启着色器时暂停原生样式。 */
+  setStyle(style) {
+    this._assertAlive()
+    this._style = nativeStyle(style)
+    this.config.shader.enabled = false
+    this._applyShader()
+    this._requestRender()
+    return this
+  }
+
+  /** 合并着色参数。false 关闭效果，true 按当前参数开启。 */
+  setShader(options = {}) {
+    this._assertAlive()
+    if (typeof options !== 'boolean' && (!options || typeof options !== 'object' || Array.isArray(options))) throw new TypeError('shader must be an object or boolean.')
+    const patch = typeof options === 'boolean' ? { enabled: options } : options
+    this.config.shader = normalizeBuildShader({ ...this.config.shader, enabled: true, ...patch })
+    this._applyShader()
+    this._requestRender()
+    return this
+  }
+
+  getShaderOptions() { return normalizeBuildShader(this.config.shader) }
+
+  _applyShader() {
+    if (!this.tileset) return
+    const config = this.config.shader
+    const enabled = config.enabled && (config.gradientEnabled || config.sweepEnabled)
+    const style = enabled ? undefined : this._style
+    if (this.tileset.style !== style) {
+      this.tileset.style = style
+      this._colors.styleChanged(style)
+    }
+    this._colors.setShaderActive(enabled)
+    if (enabled) {
+      if (!this._shader) this._shader = createBuildShader(config, this._time())
+      else for (const [name, uniform] of Object.entries(buildShaderUniforms(config, this._time()))) this._shader.setUniform(name, uniform.value)
+      this.tileset.customShader = this._shader
+    } else {
+      this.tileset.customShader = undefined
+      if (this._shader && !this._shader.isDestroyed()) this._shader.destroy()
+      this._shader = null
+    }
+    this._syncAnimation()
+  }
+
+  _syncAnimation() {
+    this._removeTick?.()
+    this._removeTick = null
+    const config = this.config.shader
+    const animated = this._shader && this.tileset?.show && config.active && config.sweepEnabled && config.speed > 0
+    if (animated && this._startedAt === null) this._startedAt = performance.now()
+    else if (!animated && this._startedAt !== null) {
+      this._elapsed = this._time()
+      this._startedAt = null
+    }
+    this._shader?.setUniform('u_time', this._time())
+    if (animated) this._removeTick = this.viewer.clock.onTick.addEventListener(() => {
+      if (this.viewer.isDestroyed?.()) { this.destroy(); return }
+      this._shader.setUniform('u_time', this._time())
+      this._requestRender()
+    })
+  }
+
+  start() { this._assertAlive(); this.config.shader.active = true; this._syncAnimation(); this._requestRender(); return this }
+  stop() { this._assertAlive(); this.config.shader.active = false; this._syncAnimation(); this._requestRender(); return this }
+  resetTime() {
+    this._assertAlive()
+    this._elapsed = 0
+    if (this._startedAt !== null) this._startedAt = performance.now()
+    this._shader?.setUniform('u_time', 0)
+    this._requestRender()
+    return this
+  }
+
+  /** 按标识改色；渐变开启时仅替换该建筑的 maxColor，不改变渐变底色或扫光。 */
+  setFeatureColor(id, color) { this._assertAlive(); this._colors.set(id, color); this._requestRender(); return this }
+  /** 全量替换改色列表，遵循 setFeatureColor 的着色规则；传空数组可恢复，支持加载前调用。 */
+  setFeatureColors(items) { this._assertAlive(); this._colors.replace(items); this._requestRender(); return this }
+  clearFeatureColor(id) { this._assertAlive(); this._colors.clear(featureKey(id)); this._requestRender(); return this }
+  clearFeatureColors() { this._assertAlive(); this._colors.clear(); this._requestRender(); return this }
+  getFeatureColor(id) { return this._colors.get(id) }
+  getFeaturesById(id) { return this._colors.getFeatures(id) }
+  getTileset() { return this.tileset }
+  isDestroyed() { return this._destroyed }
+
+  show() {
+    this._assertAlive()
+    this.config.show = true
+    if (this.tileset) this.tileset.show = true
+    this._syncAnimation(); this._requestRender()
+    return this
+  }
+
+  hide() {
+    this._assertAlive()
+    this.config.show = false
+    if (this.tileset) this.tileset.show = false
+    this._syncAnimation(); this._requestRender()
+    return this
+  }
+
+  flyTo(duration = 1.2, options = {}) {
+    this._assertAlive()
+    if (this.tileset) this.viewer.camera.flyToBoundingSphere(this.tileset.boundingSphere, {
+      duration,
+      offset: new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(-45), this.tileset.boundingSphere.radius * 3),
+      ...options,
+    })
+    return this
+  }
+
+  _releaseTileset() {
+    this._removeTick?.()
+    this._removeTick = null
+    for (const remove of this._events) remove()
+    this._events = []
+    this._colors.detach()
+    if (this.tileset && !this.tileset.isDestroyed()) this.tileset.customShader = undefined
+    disposeTileset(this.tileset, this.viewer)
+    if (this._shader && !this._shader.isDestroyed()) this._shader.destroy()
+    this.tileset = null
+    this._shader = null
+    this._loadedKey = null
+    this._elapsed = 0
+    this._startedAt = null
+  }
+
+  /** 清理渲染资源，保留配置及改色列表，之后可重新 load。 */
+  clearLayer() {
+    this._version++
+    this._pending = null
+    this.readyPromise = null
+    this._releaseTileset()
+    this._requestRender()
+    return this
+  }
+
+  destroy() {
+    if (this._destroyed) return
+    this.clearLayer()
+    this._colors.clear()
+    this._destroyed = true
+    this.viewer = null
+  }
+}

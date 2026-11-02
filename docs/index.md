@@ -15,21 +15,6 @@ hero:
     - theme: alt
       text: 在线预览
       link: https://banyan666.github.io/BMapViewer/
-    - theme: alt
-      text: 组件 API
-      link: /api
-    - theme: alt
-      text: 底图文档
-      link: /base-maps
-    - theme: alt
-      text: 图层文档
-      link: /layers
-    - theme: alt
-      text: 拾取与绘制
-      link: /tools/pick-tool
-    - theme: alt
-      text: 天气粒子
-      link: /weather
 
 features:
   - icon: 🧩
@@ -43,15 +28,18 @@ features:
     details: 内置点、线、面、气泡、热力图、雷达和动态材质图层。
   - icon: 🛠️
     title: 交互与空间分析
-    details: 提供 PickTools、Turf 与统一的 GeoJSON 数据约定。
+    details: 提供 PickTools 拾取绘制，以及 SpatialAnalysis 测量、缓冲区、空间查询与区域运算。
   - icon: 🌦️
     title: 天气粒子系统
     details: 提供雨、雪、雾、沙尘、云层和闪电屏幕空间效果。
+  - icon: ⛰️
+    title: 三维地形分析
+    details: 基于真实地形完成高程剖面、贴地测量、坡度坡向、通视、挖填方和淹没估算，支持动态水位展示。
 ---
 
 ## 从一个 Viewer 开始
 
-BMapViewer 负责场景初始化与生命周期，`BaseMaps` 管理地理背景，`MapLayers` 组织业务图层，`PickTools` 处理地图交互，Turf 提供空间计算，`WeatherEffects` 合成天气画面。各模块可以独立使用，也可以围绕同一个 Viewer 组合。
+BMapViewer 负责场景初始化与生命周期，`BaseMaps` 管理地理背景，`MapLayers` 组织业务图层，`PickTools` 处理地图交互，`SpatialAnalysis` 基于 Turf 提供空间计算，`TerrainAnalysis` 采样真实地形进行三维分析，`WeatherEffects` 合成天气画面。各模块可以独立使用，也可以围绕同一个 Viewer 组合。
 
 ## 在线资源
 

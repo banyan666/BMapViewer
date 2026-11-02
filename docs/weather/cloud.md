@@ -2,6 +2,8 @@
 
 `CloudEffect` 在地球上空构建具有真实高度的球形云壳，从相机向云层进行世界空间光线步进，并通过三维噪声计算每个采样点的云密度。移动或旋转镜头时，云体保持在地理空间中并产生视差。
 
+需要多层云、大气散射、级联阴影和时间抗锯齿时，可使用独立的 [CloudUltraEffect 体积云 Ultra](/weather/cloud-ultra)。本类继续保留轻量后处理方案。
+
 ## 组件案例
 
 <SdkExamplePreview category="weather" example="cloud" title="CloudEffect 体积云" height="500px" />

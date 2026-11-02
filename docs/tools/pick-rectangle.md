@@ -12,7 +12,7 @@
 tools.pickRectangle(callback, data?)
 ```
 
-回调包含 `west`、`south`、`east`、`north`、`center`、`width`、`height` 和 `coordinates`。边界与顶点采用 WGS84，经纬向宽高单位为米。
+回调包含 `west`、`south`、`east`、`north`、`center`、`width`、`height`、`coordinates` 和 `unit`。边界与顶点采用 WGS84，经纬向宽高按配置 `unit: 'm' / 'km'` 返回，默认米。
 
 ```js
 const tools = new PickTools(viewer, {

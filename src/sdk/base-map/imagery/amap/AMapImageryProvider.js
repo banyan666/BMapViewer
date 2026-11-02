@@ -1,5 +1,5 @@
 import * as Cesium from 'cesium'
-import GCJ02TilingScheme from '../tiling-scheme/GCJ02TilingScheme.js'
+import GCJ02TilingScheme, { normalizeGCJ02Crs } from '../tiling-scheme/GCJ02TilingScheme.js'
 
 const STYLE_ALIASES = Object.freeze({
   img: 'img',
@@ -77,6 +77,7 @@ function createDefaultTemplate(style, options) {
 
 class AMapImageryProvider extends Cesium.UrlTemplateImageryProvider {
   constructor(options = {}) {
+    const crs = normalizeGCJ02Crs(options.crs ?? 'GCJ02')
     const style = normalizeStyle(options.style)
     if (!options.url && !style) {
       throw new Error(`Unsupported AMap style: ${options.style}`)
@@ -90,10 +91,12 @@ class AMapImageryProvider extends Cesium.UrlTemplateImageryProvider {
       url,
       subdomains,
     }
-    if (options.crs === 'WGS84' && !options.tilingScheme) {
-      providerOptions.tilingScheme = new GCJ02TilingScheme()
+    // 原生高德坐标直接使用标准墨卡托；仅转换 WGS84 和 BD09 业务坐标。
+    if (crs !== 'GCJ02' && !options.tilingScheme) {
+      providerOptions.tilingScheme = new GCJ02TilingScheme({ crs, ellipsoid: options.ellipsoid })
     }
     super(providerOptions)
+    this._crs = crs
     this._templateUrl = url
     this._style = style || 'custom'
     this._styleCode = style ? getStyleCode(style) : null

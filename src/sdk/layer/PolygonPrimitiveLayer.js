@@ -12,6 +12,9 @@ class PolygonPrimitiveLayer {
             color: '#ffffff',
             lineWidth: 2,
             opacity: 0.6,
+            height: 0,
+            clampToGround: false,
+            showOutline: true,
             ...config
         }
         this.polygonPrimitive = null;//面
@@ -30,6 +33,7 @@ class PolygonPrimitiveLayer {
 
         this.data = data
         this.clearLayer()
+        if (!data.length) return
 
         let instances = []
         let lineInstances = []
@@ -55,6 +59,7 @@ class PolygonPrimitiveLayer {
                 })
 
                 const polygonGeometry = new Cesium.PolygonGeometry({
+                    height: Number(this.config.height) || 0,
                     polygonHierarchy: new Cesium.PolygonHierarchy(
                         Cesium.Cartesian3.fromDegreesArray(outerPositions),
                         holeHierarchies
@@ -75,16 +80,19 @@ class PolygonPrimitiveLayer {
                     }
                 }))
 
+                if (!this.config.showOutline) return
+
                 const makeLine = (ring) => {
                     const pos = []
-                    ring.forEach(p => pos.push(p[0], p[1]))
-                    pos.push(ring[0][0], ring[0][1])
-                    return Cesium.Cartesian3.fromDegreesArray(pos)
+                    const height = Number(this.config.height) || 0
+                    ring.forEach(p => pos.push(p[0], p[1], height))
+                    pos.push(ring[0][0], ring[0][1], height)
+                    return Cesium.Cartesian3.fromDegreesArrayHeights(pos)
                 }
 
                 // 外环描边
                 lineInstances.push(new Cesium.GeometryInstance({
-                    geometry: new Cesium.PolylineGeometry({
+                    geometry: new (this.config.clampToGround ? Cesium.GroundPolylineGeometry : Cesium.PolylineGeometry)({
                         positions: makeLine(outerRing),
                         width: this.config.lineWidth || 2
                     }),
@@ -99,7 +107,7 @@ class PolygonPrimitiveLayer {
                 // 洞描边
                 holes.forEach(hole => {
                     lineInstances.push(new Cesium.GeometryInstance({
-                        geometry: new Cesium.PolylineGeometry({
+                        geometry: new (this.config.clampToGround ? Cesium.GroundPolylineGeometry : Cesium.PolylineGeometry)({
                             positions: makeLine(hole),
                             width: this.config.lineWidth || 2
                         }),
@@ -124,6 +132,25 @@ class PolygonPrimitiveLayer {
             }
         })
 
+        if (!instances.length) return
+        this._primitiveCollection = this.config.clampToGround ? this.viewer.scene.groundPrimitives : this.viewer.scene.primitives
+
+        if (this.config.clampToGround) {
+            this.polygonPrimitive = this._primitiveCollection.add(new Cesium.GroundPrimitive({
+                geometryInstances: instances,
+                appearance: new Cesium.PerInstanceColorAppearance({ flat: true, translucent: true }),
+                classificationType: Cesium.ClassificationType.TERRAIN,
+                asynchronous: true,
+            }))
+            if (lineInstances.length) this.linePrimitive = this._primitiveCollection.add(new Cesium.GroundPolylinePrimitive({
+                geometryInstances: lineInstances,
+                appearance: new Cesium.PolylineColorAppearance({ translucent: true }),
+                classificationType: Cesium.ClassificationType.TERRAIN,
+                asynchronous: true,
+            }))
+            return
+        }
+
         // 面外观
         const appearance = new Cesium.PerInstanceColorAppearance({
             translucent: false,
@@ -146,7 +173,7 @@ class PolygonPrimitiveLayer {
         // 线外观
         const lineAppearance = new Cesium.PolylineColorAppearance({ translucent: false })
 
-        this.linePrimitive = this.viewer.scene.primitives.add(
+        if (lineInstances.length) this.linePrimitive = this.viewer.scene.primitives.add(
             new Cesium.Primitive({
                 geometryInstances: lineInstances,
                 appearance: lineAppearance,
@@ -160,9 +187,9 @@ class PolygonPrimitiveLayer {
      */
     clearLayer() {
         if (this.polygonPrimitive) {
-            this.viewer.scene.primitives.remove(this.polygonPrimitive)
+            this._primitiveCollection.remove(this.polygonPrimitive)
             this.polygonPrimitive = null
-            this.viewer.scene.primitives.remove(this.linePrimitive)
+            if (this.linePrimitive) this._primitiveCollection.remove(this.linePrimitive)
             this.linePrimitive = null
         }
     }
@@ -173,7 +200,7 @@ class PolygonPrimitiveLayer {
     show() {
         if (!this.polygonPrimitive) return
         this.polygonPrimitive.show = true
-        this.linePrimitive.show = true
+        if (this.linePrimitive) this.linePrimitive.show = true
     }
 
     /**
@@ -182,7 +209,7 @@ class PolygonPrimitiveLayer {
     hide() {
         if (!this.polygonPrimitive) return
         this.polygonPrimitive.show = false
-        this.linePrimitive.show = false
+        if (this.linePrimitive) this.linePrimitive.show = false
     }
 
     /**

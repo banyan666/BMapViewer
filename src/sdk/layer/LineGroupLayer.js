@@ -10,6 +10,7 @@ class LineGroupLayer {
             type: 'default',
             color: '#ffffff',
             width: 2,
+            height: 0,
             ...config
         };
 
@@ -102,7 +103,7 @@ class LineGroupLayer {
         const positions = [];
 
         coordinates.forEach(coord => {
-            positions.push(coord[0], coord[1]);
+            positions.push(coord[0], coord[1], coord[2] ?? this.config.height);
         });
 
         const type = options.properties?.type || this.config.type;
@@ -110,7 +111,7 @@ class LineGroupLayer {
         const material = this.getMaterial(type, options.properties);
 
         const polyline = this.polylineCollection.add({
-            positions: Cesium.Cartesian3.fromDegreesArray(positions),
+            positions: Cesium.Cartesian3.fromDegreesArrayHeights(positions),
             width: options?.properties?.width ||this.config.width,
             material: material,
             id: options.properties?.id || uuid(),

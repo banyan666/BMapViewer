@@ -3,6 +3,7 @@ import { computed, nextTick, onBeforeUnmount, ref } from 'vue'
 import * as Cesium from 'cesium'
 import { BaseMaps, BMapViewer, MapLayers } from '../src/sdk/index.js'
 import { layerExamples } from './layers/index.js'
+import { createLayerExampleEnvironment } from './layers/environment.js'
 
 const HOME_CAMERA = {
   longitude: 125.83372000975274,
@@ -27,6 +28,8 @@ const mapRef = ref(null)
 let viewer = null
 let baseMap = null
 let activeResult = null
+let activeEnvironment = null
+let version = 0
 
 async function destroyResult(result) {
   if (!result) return
@@ -42,12 +45,20 @@ async function destroyResult(result) {
 
 async function runExample() {
   if (!viewer || viewer.isDestroyed()) return
+  const current = ++version
+  activeEnvironment?.destroy()
+  activeEnvironment = null
   await destroyResult(activeResult)
   activeResult = null
+  if (current !== version || !viewer || viewer.isDestroyed()) return
 
   if (example.value.id !== 'build-3d') mapRef.value?.flyTo(example.value.camera || HOME_CAMERA, 0)
 
   try {
+    const environment = createLayerExampleEnvironment({ BaseMaps, viewer, terrain: example.value.terrain })
+    activeEnvironment = environment
+    await environment.readyPromise
+    if (current !== version) { environment.destroy(); return }
     const execute = new AsyncFunction(
       'Cesium',
       'MapLayers',
@@ -56,8 +67,12 @@ async function runExample() {
       'buildingTilesetUrl',
       `'use strict';\n${example.value.code}`,
     )
-    activeResult = await execute(Cesium, MapLayers, viewer, tileUrl, buildingTilesetUrl)
+    const result = await execute(Cesium, MapLayers, viewer, tileUrl, buildingTilesetUrl)
+    if (current !== version) { await destroyResult(result); environment.destroy(); return }
+    activeResult = result
   } catch (error) {
+    if (current !== version || error.name === 'AbortError') return
+    activeEnvironment?.destroy()
     console.error('图层案例运行失败：', error)
   }
 }
@@ -81,6 +96,9 @@ function handleMapError(error) {
 }
 
 onBeforeUnmount(() => {
+  version += 1
+  activeEnvironment?.destroy()
+  activeEnvironment = null
   destroyResult(activeResult)
   activeResult = null
   baseMap?.destroy()

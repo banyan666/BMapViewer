@@ -147,7 +147,7 @@ function scrollToCapabilities() {
           <i>→</i>
           <span><b>03</b>MapLayers<small>组织可视化图层</small></span>
           <i>→</i>
-          <span><b>04</b>PickTools + Turf<small>交互与空间计算</small></span>
+          <span><b>04</b>PickTools + SpatialAnalysis<small>交互与空间计算</small></span>
         </div>
       </section>
     </main>
@@ -295,6 +295,7 @@ h1 span { display: block; margin-top: 17px; font-size: clamp(38px, 4vw, 58px); }
 .accent-blue { --module-accent: var(--blue); }
 .accent-green { --module-accent: var(--green); }
 .accent-amber { --module-accent: var(--amber); }
+.accent-terrain { --module-accent: #dbb68d; }
 .card-topline { justify-content: space-between; }
 .capability-code { color: var(--module-accent); font-size: 9px; letter-spacing: 0.16em; }
 .card-topline em { display: inline-flex; align-items: center; gap: 7px; color: #66838b; font-size: 9px; font-style: normal; }

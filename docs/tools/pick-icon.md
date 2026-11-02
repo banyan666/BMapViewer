@@ -51,6 +51,7 @@ tools.pickPointIcon((coordinates) => {
 ## 注意事项
 
 - 图标底部中心与拾取坐标对齐。
+- 构造时设置 `includeHeight: true`，拾取及拖拽回调返回 `[longitude, latitude, height]`，高度为当前地形的椭球高，单位固定为米。
 - `isReserve: true` 时才会在首次拾取后进入拖拽编辑状态。
 - 页面卸载时调用 `destroy()` 清理鼠标事件。
 

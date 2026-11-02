@@ -1,92 +1,168 @@
-# Build3DLayer 3D楼宇图层
+# Build3DLayer 三维建筑
 
-`Build3DLayer` 类用于加载和管理 Cesium 的 3D Tileset 数据（通常为 3D 楼宇）。该图层支持自定义着色器（CustomShader）以实现动态扫光、高度渐变等视觉效果，并支持在加载过程中根据业务数据动态注入楼宇属性。
+加载 3D Tiles 建筑数据，支持高度渐变、动态扫光，以及按建筑标识设置颜色。颜色可在运行时更新，适用于建筑分类、选中高亮和状态展示。
+
 ## 组件案例
 
-<LayerExamplePreview example="build-3d" title="Build3DLayer 三维建筑" height="500px" />
+<LayerExamplePreview example="build-3d" title="Build3DLayer 三维建筑" :height="500" />
 
-## 构造函数
+示例默认开启高度渐变、关闭扫光。左键点击修改该建筑的渐变顶部颜色，右键恢复全部建筑颜色。
 
-`new Build3DLayer(viewer, config)`
-
-| 参数 | 类型 | 描述 |
-| :--- | :--- | :--- |
-| viewer | object | Cesium Viewer 实例 |
-| config | object | 图层配置项 |
-
-### config 参数说明
-
-| 参数 | 类型 | 默认值 | 描述 |
-| :--- | :--- | :--- | :--- |
-| url | string | - | **必填**。3D Tileset 的 `tileset.json` 地址 |
-| name | string | 'Build3DLayer' | 图层名称 |
-| show | boolean | true | 是否默认显示 |
-| options | object | {} | 透传给 `Cesium3DTileset.fromUrl` 的其他原生选项 |
-| alertList | array | [] | 业务属性数据列表，用于在加载瓦片时通过 `id` 映射到楼宇 Feature 上 |
-| alertKey | string | - | 在 Feature 上设置业务属性的键名（对应 `alertList` 中的数据项） |
-
-## 方法说明
-
-### load(url)
-- 参数：`url` (string, 可选) - 覆盖构造函数中的 URL。
-- 返回值：`Promise<Cesium.Cesium3DTileset>`
-- 描述：执行 3D Tileset 的异步加载，并应用内置的基础 CustomShader 效果（高度相关的静态光影）。
-
-### setStyle(conditions)
-- 参数：`conditions` (Array) - 符合 `Cesium3DTileStyle` 规范的颜色条件数组。
-- 描述：设置楼宇的整体样式（如根据高度、ID 过滤颜色）。
-
-### setShader(options)
-- 参数：`options` (Object) - 高级着色器配置。
-  - `sweepColor`: 扫光颜色（默认 `#00aeeb`）。
-  - `minColor`/`maxColor`: 高度渐变底色（默认黑色到蓝色）。
-  - `sweepWidth`: 扫光条带宽度（默认 `0.02`）。
-  - `modelHeight`: 模型总高度，用于计算渐变比例（默认 `100`）。
-  - `speed`: 扫光移动速度（默认 `2.0`）。
-  - `active`: 是否启用时间驱动的动画。
-- 描述：应用更高级的自定义着色器，实现动态向上扫光的科技感视觉效果。
-
-### show() / hide()
-- 描述：显示或隐藏图层。
-
-### clearLayer()
-- 描述：从场景中移除 3D Tileset 并释放内部引用。
-
-### destroy()
-- 描述：彻底销毁图层并清理所有资源。
-
-## 使用示例
+## 创建图层
 
 ```js
-import { MapLayers } from "b-map-viewer";
+import { MapLayers } from 'b-map-viewer'
 
-// 1. 初始化 3D 楼宇图层
-const buildLayer = new MapLayers.Build3DLayer(viewer, {
-    url: 'http://example.com/tileset/tileset.json',
-    alertList: [{ id: 'building_01', status: 'warning' }],
-    alertKey: 'status'
-});
+const layer = new MapLayers.Build3DLayer(viewer, {
+  url: '/3d-tiles/tileset.json',
+  featureIdProperty: 'id',
+  show: true,
+  shader: {
+    enabled: true,
+    gradientEnabled: true,
+    sweepEnabled: false,
+    minColor: '#09213c',
+    maxColor: '#36caff',
+    sweepColor: '#a5f6ff',
+    modelHeight: 100,
+    heightOffset: 0,
+    sweepWidth: 0.04,
+    speed: 2,
+    active: true
+  }
+})
 
-// 2. 执行加载
-await buildLayer.load();
-
-// 3. 应用科技感动态扫光
-buildLayer.setShader({
-    sweepColor: '#00ff00',
-    speed: 3.0,
-    modelHeight: 200
-});
-
-// 4. 根据业务属性设置样式
-buildLayer.setStyle([
-    ["${status} === 'warning'", "color('red')"],
-    ["true", "color('rgba(0, 128, 255, 0.5)')"]
-]);
+await layer.load()
+layer.flyTo()
 ```
 
-## 实现细节
-- **属性注入**：通过监听 `tileset.tileLoad` 事件，在每一块瓦片加载完成时，遍历其中的 Features，根据 `batchTable` 中的 `id` 与 `alertList` 进行比对，将业务数据挂载到 Feature 的属性中，以便后续通过 `setStyle` 进行按需渲染。
-- **自定义着色器 (CustomShader)**：
-    - `load` 时应用一个简单的片段着色器，增加高度光感。
-    - `setShader` 时应用更复杂的顶点和片段着色器，通过 `czm_modelMaterial` 修改 `diffuse` 和 `emissive` 分量实现扫光和自发光效果。
-- **性能**：图层内部使用 `performance.now()` 驱动着色器的时间 Uniform，确保在高帧率下动画平滑。
+### 构造参数
+
+| 字段 | 默认值 | 作用 |
+| --- | --- | --- |
+| `url` | 必填 | `tileset.json` 地址，支持字符串或 `Cesium.Resource` |
+| `name` | `'Build3DLayer'` | 图层名称 |
+| `show` | `true` | 是否显示 |
+| `featureIdProperty` | `'id'` | 建筑标识对应的元数据字段 |
+| `options` | `{}` | `Cesium3DTileset.fromUrl` 的加载参数，如 `maximumScreenSpaceError` |
+| `shader` | `false` | 内置着色效果；可传布尔值或下表配置 |
+| `style` | 无 | 原生 3D Tiles 样式；仅在内置着色效果关闭时应用 |
+
+不配置 `shader` 时保留模型原有材质。加载白膜数据即可显示白膜；不会将已有纹理的模型强制改白。
+
+### shader 参数
+
+| 字段 | 默认值 | 作用 |
+| --- | --- | --- |
+| `enabled` | `false` | 开启内置着色效果 |
+| `gradientEnabled` | `true` | 开启高度渐变 |
+| `sweepEnabled` | `false` | 开启扫光条带 |
+| `active` | `true` | 播放扫光动画；关闭时停留在当前帧 |
+| `minColor` | `'#09090e'` | 低处颜色 |
+| `maxColor` | `'#0080ff'` | 高处颜色 |
+| `sweepColor` | `'#00aeeb'` | 扫光颜色 |
+| `modelHeight` | `100` | 渐变高度范围，必须大于 0 |
+| `heightOffset` | `0` | 高度计算偏移，可为负数 |
+| `sweepWidth` | `0.02` | 扫光条带宽度，必须大于 0 |
+| `speed` | `2` | 扫光速度；值越大越快，0 表示静止，2 约为每 5 秒循环一次 |
+
+三种着色颜色支持 CSS 颜色或 `Cesium.Color`，使用其 RGB 分量。高度按模型局部 Z 轴计算；`heightOffset` 只调整着色位置，不移动模型。
+
+## 按建筑标识改色
+
+```js
+// ID 取自 3D Tiles 元数据中的 featureIdProperty 字段。
+// 渐变开启时，修改的是该建筑的 maxColor。
+layer.setFeatureColor('building-001', '#ffb347')
+layer.setFeatureColor('building-002', 'rgba(255, 90, 90, 0.8)')
+
+// 全量替换改色列表，未出现在新列表中的建筑恢复原色。
+layer.setFeatureColors([
+  { id: 'building-001', color: '#ffb347' },
+  { id: 'building-003', color: '#38d9a9' }
+])
+
+layer.clearFeatureColor('building-001')
+layer.clearFeatureColors()
+```
+
+改色方法可以在加载前调用；瓦片重新进入视野后仍会应用已设置的颜色。数字和字符串标识统一按字符串匹配；相同标识的建筑一并改色。没有对应元数据标识的建筑不会被匹配。
+
+渐变开启时，改色只替换对应建筑的 `maxColor`，保留 `minColor`、高度渐变和扫光效果，不影响其他建筑。清除后恢复图层配置的 `maxColor`。
+
+渐变关闭时，改色作为建筑的基础颜色；若扫光开启，仍会叠加扫光。内置着色器关闭时则直接使用建筑颜色。图层只接收标识与颜色，状态与颜色的对应关系由调用方组织。
+
+```js
+// 将外部数据转换成颜色列表。
+const colors = records.map((item) => ({
+  id: item.id,
+  color: colorByCategory[item.category]
+}))
+layer.setFeatureColors(colors)
+
+// 返回已配置的 Cesium.Color 副本；未配置时返回 undefined。
+const color = layer.getFeatureColor('building-001')
+
+// 仅返回当前已加载的 Feature；瓦片卸载后应重新获取，不要长期持有。
+const features = layer.getFeaturesById('building-001')
+```
+
+## 动态调整效果
+
+```js
+layer.setShader({ sweepEnabled: true, speed: 3, sweepWidth: 0.06, sweepColor: '#ffffff' })
+layer.setShader({ gradientEnabled: true, sweepEnabled: false })
+layer.setShader({ gradientEnabled: false, sweepEnabled: true })
+layer.stop()           // 暂停动画
+layer.start()          // 继续动画
+layer.resetTime()      // 从起始帧播放
+layer.setShader(false) // 关闭全部内置效果，保留建筑改色
+layer.setShader(true)  // 使用当前配置重新开启
+const options = layer.getShaderOptions()
+```
+
+`setShader(options)` 合并当前配置，并默认开启效果；显式传入 `enabled: false` 可保持关闭。
+
+首次调用 `setShader()` 或使用 `shader: true` 时仅开启渐变，扫光需要显式设置 `sweepEnabled: true`。`start()` 只恢复动画，不会自动开启已关闭的扫光。
+
+## 原生样式
+
+```js
+// 可传颜色条件数组、原生样式对象或 Cesium3DTileStyle。
+layer.setStyle([
+  ["${Height} >= 60", "color('#36caff')"],
+  ['true', "color('#d6e5f5')"]
+])
+layer.setStyle(null) // 清除原生样式
+```
+
+`setStyle` 切换到原生样式模式并关闭内置着色器；`setShader` 开启后暂停原生样式，再次关闭则恢复原生样式。两种模式下都可使用建筑改色方法。
+
+## 加载与清理
+
+| 方法 | 作用 |
+| --- | --- |
+| `load(url?)` | 加载并返回 Tileset；相同地址不重复创建 |
+| `getTileset()` | 获取当前 Tileset，未加载时返回 null |
+| `flyTo(duration?, options?)` | 定位图层，默认飞行 1.2 秒；options 支持原生包围球飞行配置 |
+| `show() / hide()` | 显示或隐藏图层；隐藏时暂停内部动画更新 |
+| `clearLayer()` | 移除模型并释放监听和着色器，保留配置及改色列表，可再次加载 |
+| `destroy()` | 销毁图层并清空改色列表 |
+| `isDestroyed()` | 判断图层是否已销毁 |
+
+新地址加载成功后替换旧模型；请求失败保留旧模型。清理、销毁或后续加载会使尚未结束的旧请求失效，旧请求以 `AbortError` 结束。
+
+```js
+try {
+  await layer.load()
+} catch (error) {
+  if (error.name !== 'AbortError') throw error
+}
+
+// 页面卸载或切换示例时：
+layer.destroy()
+```
+
+## 旧版调用迁移
+
+不再接收 `alertList`、`alertKey` 或写入建筑业务属性。请将外部数据映射为 `{ id, color }`，使用 `setFeatureColors` 更新。旧版 `minInterval`、`maxInterval` 改为固定的 0–1 归一化范围，可通过 `modelHeight` 与 `heightOffset` 调整渐变。

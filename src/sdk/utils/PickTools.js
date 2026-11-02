@@ -5,6 +5,14 @@ import * as Cesium from 'cesium'
 import icon from '../assets/position.png'
 
 const MIN_SHAPE_SIZE = 0.1
+const SHAPE_DISTANCE_FIELDS = ['radius', 'sideLength', 'width', 'height', 'eastRadius', 'northRadius', 'semiMajorAxis', 'semiMinorAxis']
+
+const normalizeUnit = (unit) => {
+    if (unit !== 'm' && unit !== 'km') {
+        throw new RangeError('PickTools unit must be m or km.')
+    }
+    return unit
+}
 
 const isCoordinate = (value) => (
     Array.isArray(value)
@@ -15,14 +23,16 @@ const isCoordinate = (value) => (
 
 const cloneCoordinate = (value) => [Number(value[0]), Number(value[1])]
 
-const toCartesian = (coordinate) => Cesium.Cartesian3.fromDegrees(coordinate[0], coordinate[1])
+const toCartesian = (coordinate) => Cesium.Cartesian3.fromDegrees(coordinate[0], coordinate[1], coordinate[2] ?? 0)
 
-const toCoordinate = (cartesian) => {
+const toCoordinate = (cartesian, includeHeight = false) => {
     const cartographic = Cesium.Cartographic.fromCartesian(cartesian)
-    return [
+    const coordinate = [
         Cesium.Math.toDegrees(cartographic.longitude),
         Cesium.Math.toDegrees(cartographic.latitude),
     ]
+    if (includeHeight) coordinate.push(cartographic.height)
+    return coordinate
 }
 
 const getLocalOffset = (origin, target) => {
@@ -49,9 +59,28 @@ const getSurfaceDistance = (start, end) => {
 }
 
 export default class PickTools {
+    // 默认仍按椭球拾取；山区可显式启用地形交点拾取。
+    _pickPosition(position, ellipsoid = this.viewer.scene.globe?.ellipsoid || Cesium.Ellipsoid.WGS84) {
+        if (this.config.pickSurface === 'terrain') {
+            const ray = this.viewer.scene.camera.getPickRay(position)
+            return ray ? this.viewer.scene.globe.pick(ray, this.viewer.scene) : undefined
+        }
+        return this.viewer.scene.camera.pickEllipsoid(position, ellipsoid)
+    }
+
+    // 点、图标、折线和多边形可选返回椭球高（米）；不受规则图形 unit 影响。
+    _toCoordinate(cartesian) {
+        return toCoordinate(cartesian, this.config.includeHeight)
+    }
+
     constructor(viewer,config) {
+        if (config?.pickSurface != null && !['ellipsoid', 'terrain'].includes(config.pickSurface)) throw new RangeError('PickTools pickSurface must be ellipsoid or terrain.')
         this.viewer = viewer
         this.config = {
+            // 规则图形尺寸的输入/输出单位；Cesium 内部始终使用米。
+            unit: normalizeUnit(config?.unit ?? 'm'),
+            pickSurface: config?.pickSurface ?? (config?.includeHeight === true ? 'terrain' : 'ellipsoid'),
+            includeHeight: config?.includeHeight === true,
             // 几何-边框宽度
             lineWidth: config?.lineWidth || 2,
             color: config?.color || "#00ffff",
@@ -75,7 +104,8 @@ export default class PickTools {
     moveLabel(){
         if(this.handler && this.config.mouseHints.show){
             this.handler.setInputAction( (e)=>{
-                const movePosition = this.viewer.scene.camera.pickEllipsoid(e.endPosition);
+                const movePosition = this._pickPosition(e.endPosition);
+                if (!movePosition) return;
                 const randiansPos = Cesium.Cartographic.fromCartesian(movePosition);
                 const lon= Cesium.Math.toDegrees(randiansPos.longitude)
                 const lat= Cesium.Math.toDegrees(randiansPos.latitude)
@@ -95,8 +125,9 @@ export default class PickTools {
             // 创建点实例
             if(!pointEntity){
                 pointEntity = this.viewer.entities.add({
-                    position: Cesium.Cartesian3.fromDegrees(point[0], point[1]),
+                    position: toCartesian(point),
                     point: {
+                        heightReference: this.config.pickSurface === 'terrain' ? Cesium.HeightReference.CLAMP_TO_GROUND : Cesium.HeightReference.NONE,
                         pixelSize: this.config.pointSize,
                         color: Cesium.Color.fromCssColorString(this.config.color),
                         outlineColor: Cesium.Color.WHITE,
@@ -104,7 +135,7 @@ export default class PickTools {
                     }
                 });
             }else{
-                pointEntity.position = Cesium.Cartesian3.fromDegrees(point[0], point[1])
+                pointEntity.position = toCartesian(point)
             }
         }
         //开启拖拽点位编辑
@@ -119,14 +150,14 @@ export default class PickTools {
                         this.viewer.scene.screenSpaceCameraController.enableTranslate = false;
                         this.viewer.scene.screenSpaceCameraController.enableZoom = false;
                         this.handler.setInputAction((e)=>{
-                            const movePosition = this.viewer.scene.camera.pickEllipsoid(e.endPosition);
+                            const movePosition = this._pickPosition(e.endPosition);
                             if (!movePosition) return; // 如果没有点击到地面，返回
 
                             const randiansPos = Cesium.Cartographic.fromCartesian(movePosition);
                             const lon = Cesium.Math.toDegrees(randiansPos.longitude);
                             const lat = Cesium.Math.toDegrees(randiansPos.latitude);
-                            point = [lon,lat]
-                            pointEntity.position = Cesium.Cartesian3.fromDegrees(point[0], point[1])
+                            point = this._toCoordinate(movePosition)
+                            pointEntity.position = toCartesian(point)
                         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE)
                     }
             }, Cesium.ScreenSpaceEventType.LEFT_DOWN)
@@ -150,16 +181,17 @@ export default class PickTools {
         this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         this.moveLabel()
         this.handler.setInputAction( (e)=>{
-            const clickPosition = this.viewer.scene.camera.pickEllipsoid(e.position);
+            const clickPosition = this._pickPosition(e.position);
+            if (!clickPosition) return;
             const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
             let lon= Cesium.Math.toDegrees(randiansPos.longitude)
             let lat = Cesium.Math.toDegrees(randiansPos.latitude)
-            point = [lon, lat]
+            point = this._toCoordinate(clickPosition)
             createPointEntity()
             !this.config.isReserve && this.viewer.entities.remove(pointEntity)
             this.destroy()
             this.removeLabel()
-            if(lon && lat){
+            if(Number.isFinite(lon) && Number.isFinite(lat)){
                 this.config.isReserve && startEdit()
                 callback && callback(point)
             }
@@ -177,7 +209,7 @@ export default class PickTools {
             // 创建点实例
             if(!pointEntity){
                 pointEntity = this.viewer.entities.add({
-                    position: Cesium.Cartesian3.fromDegrees(point[0], point[1]),
+                    position: toCartesian(point),
                     billboard: {
                         image: this.config.icon.url,
                         scaleByDistance: new Cesium.NearFarScalar(500000, 1, 1000000, 0.5),
@@ -190,7 +222,7 @@ export default class PickTools {
                     }
                 });
             }else{
-                pointEntity.position = Cesium.Cartesian3.fromDegrees(point[0], point[1])
+                pointEntity.position = toCartesian(point)
             }
         }
         //开启拖拽点位编辑
@@ -206,14 +238,14 @@ export default class PickTools {
                     this.viewer.scene.screenSpaceCameraController.enableTranslate = false;
                     this.viewer.scene.screenSpaceCameraController.enableZoom = false;
                     this.handler.setInputAction((e)=>{
-                        const movePosition = this.viewer.scene.camera.pickEllipsoid(e.endPosition);
+                        const movePosition = this._pickPosition(e.endPosition);
                         if (!movePosition) return; // 如果没有点击到地面，返回
 
                         const randiansPos = Cesium.Cartographic.fromCartesian(movePosition);
                         const lon = Cesium.Math.toDegrees(randiansPos.longitude);
                         const lat = Cesium.Math.toDegrees(randiansPos.latitude);
-                        point = [lon,lat]
-                        pointEntity.position = Cesium.Cartesian3.fromDegrees(point[0], point[1])
+                        point = this._toCoordinate(movePosition)
+                        pointEntity.position = toCartesian(point)
                     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE)
                 }
             }, Cesium.ScreenSpaceEventType.LEFT_DOWN)
@@ -236,16 +268,17 @@ export default class PickTools {
         this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         this.moveLabel()
         this.handler.setInputAction( (e)=>{
-            const clickPosition = this.viewer.scene.camera.pickEllipsoid(e.position);
+            const clickPosition = this._pickPosition(e.position);
+            if (!clickPosition) return;
             const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
             let lon= Cesium.Math.toDegrees(randiansPos.longitude)
             let lat = Cesium.Math.toDegrees(randiansPos.latitude)
-            point = [lon, lat]
+            point = this._toCoordinate(clickPosition)
             createPointEntity()
             !this.config.isReserve && this.viewer.entities.remove(pointEntity)
             this.destroy()
             this.removeLabel()
-            if(lon && lat){
+            if(Number.isFinite(lon) && Number.isFinite(lat)){
                 this.config.isReserve && startEdit()
                 callback && callback(point)
             }
@@ -272,7 +305,7 @@ export default class PickTools {
                         polyline: {
                             positions: new Cesium.CallbackProperty(() => {
                                 return points.map((point) => {
-                                    return Cesium.Cartesian3.fromDegrees(point[0], point[1]);
+                                    return toCartesian(point);
                                 });
                             }, false),
                             width: this.config.lineWidth,
@@ -285,7 +318,7 @@ export default class PickTools {
                     // 更新 polyline 的坐标点
                     polylineEntity.polyline.positions = new Cesium.CallbackProperty(() => {
                         return points.map((point) => {
-                            return Cesium.Cartesian3.fromDegrees(point[0], point[1]);
+                            return toCartesian(point);
                         });
                     }, false);
                 }
@@ -294,8 +327,9 @@ export default class PickTools {
         const createPointEntity = (position) => {
             // 创建点实例
             pointsEntity.push(this.viewer.entities.add({
-                position: Cesium.Cartesian3.fromDegrees(position[0], position[1]),
+                position: toCartesian(position),
                 point: {
+                    heightReference: this.config.pickSurface === 'terrain' ? Cesium.HeightReference.CLAMP_TO_GROUND : Cesium.HeightReference.NONE,
                     pixelSize:this.config.pointSize,
                     color: Cesium.Color.fromCssColorString(this.config.color),
                     outlineColor: Cesium.Color.WHITE,
@@ -321,20 +355,20 @@ export default class PickTools {
                         this.viewer.scene.screenSpaceCameraController.enableTranslate = false;
                         this.viewer.scene.screenSpaceCameraController.enableZoom = false;
                         this.handler.setInputAction((e)=>{
-                            const movePosition = this.viewer.scene.camera.pickEllipsoid(e.endPosition);
+                            const movePosition = this._pickPosition(e.endPosition);
                             if (!movePosition) return; // 如果没有点击到地面，返回
 
                             const randiansPos = Cesium.Cartographic.fromCartesian(movePosition);
                             const lon = Cesium.Math.toDegrees(randiansPos.longitude);
                             const lat = Cesium.Math.toDegrees(randiansPos.latitude);
-                            points[index] = [lon,lat]
+                            points[index] = this._toCoordinate(movePosition)
                             // 更新 polyline 的坐标点
                             polylineEntity.polyline.positions = new Cesium.CallbackProperty(() => {
                                 return points.map((point) => {
-                                    return Cesium.Cartesian3.fromDegrees(point[0], point[1]);
+                                    return toCartesian(point);
                                 });
                             }, false);
-                            pointsEntity[index].position.setValue(Cesium.Cartesian3.fromDegrees(lon, lat));
+                            pointsEntity[index].position.setValue(toCartesian(points[index]));
                         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE)
                     }
                 }
@@ -362,7 +396,7 @@ export default class PickTools {
         this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         // 监听鼠标移动，动态更新线段
         this.handler.setInputAction((e) => {
-            const movePosition = this.viewer.scene.camera.pickEllipsoid(e.endPosition);
+            const movePosition = this._pickPosition(e.endPosition);
             if (!movePosition) return; // 如果没有点击到地面，返回
 
             const randiansPos = Cesium.Cartographic.fromCartesian(movePosition);
@@ -378,8 +412,8 @@ export default class PickTools {
                                 // 在最后一个点击点和鼠标当前位置之间画线
                                 let lastPoint = points[points.length - 1];
                                 return [
-                                    Cesium.Cartesian3.fromDegrees(lastPoint[0], lastPoint[1]),
-                                    Cesium.Cartesian3.fromDegrees(lon, lat)
+                                    toCartesian(lastPoint),
+                                    toCartesian(this._toCoordinate(movePosition))
                                 ];
                             }, false),
                             width: this.config.lineWidth,
@@ -394,8 +428,8 @@ export default class PickTools {
                     tempPolylineEntity.polyline.positions = new Cesium.CallbackProperty(() => {
                         let lastPoint = points[points.length - 1];
                         return [
-                            Cesium.Cartesian3.fromDegrees(lastPoint[0], lastPoint[1]),
-                            Cesium.Cartesian3.fromDegrees(lon, lat)
+                            toCartesian(lastPoint),
+                            toCartesian(this._toCoordinate(movePosition))
                         ];
                     }, false);
                 }
@@ -403,7 +437,7 @@ export default class PickTools {
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
         // 监听左键点击，记录坐标并绘制线段
         this.handler.setInputAction((e) => {
-            const clickPosition = this.viewer.scene.camera.pickEllipsoid(e.position);
+            const clickPosition = this._pickPosition(e.position);
             if (!clickPosition) return; // 如果没有点击到地面，返回
 
             const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
@@ -416,11 +450,11 @@ export default class PickTools {
                     return;
                 }
             }
-            points.push([lon, lat]);  // 保存坐标
+            points.push(this._toCoordinate(clickPosition));  // 保存坐标（可选包含高度）
 
             // 绘制线段
             createLineEntity()
-            createPointEntity([lon, lat])
+            createPointEntity(points.at(-1))
 
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
@@ -468,7 +502,7 @@ export default class PickTools {
                         polyline: {
                             positions: new Cesium.CallbackProperty(() => {
                                 return points.map((point) => {
-                                    return Cesium.Cartesian3.fromDegrees(point[0], point[1]);
+                                    return toCartesian(point);
                                 });
                             }, false),
                             width: this.config.lineWidth,
@@ -481,7 +515,7 @@ export default class PickTools {
                     // 更新 polyline 的坐标点
                     polylineEntity.polyline.positions = new Cesium.CallbackProperty(() => {
                         return points.map((point) => {
-                            return Cesium.Cartesian3.fromDegrees(point[0], point[1]);
+                            return toCartesian(point);
                         });
                     }, false);
                 }
@@ -500,7 +534,7 @@ export default class PickTools {
                             hierarchy: new Cesium.CallbackProperty(() => {
                                 return new Cesium.PolygonHierarchy(Cesium.Cartesian3.fromDegreesArray(nowPoints));
                             }, false),
-                            material: Cesium.Color.fromCssColorString(this.config.color).withAlpha(0.5),
+                            material: Cesium.Color.fromCssColorString(this.config.color).withAlpha(this.config.fillOpacity),
                             outline: false
                         }
                     })
@@ -515,8 +549,9 @@ export default class PickTools {
         const createPointEntity = (position) => {
             // 创建点实例
             pointsEntity.push(this.viewer.entities.add({
-                position: Cesium.Cartesian3.fromDegrees(position[0], position[1]),
+                position: toCartesian(position),
                 point: {
+                    heightReference: this.config.pickSurface === 'terrain' ? Cesium.HeightReference.CLAMP_TO_GROUND : Cesium.HeightReference.NONE,
                     pixelSize:this.config.pointSize,
                     color: Cesium.Color.fromCssColorString(this.config.color),
                     outlineColor: Cesium.Color.WHITE,
@@ -542,13 +577,13 @@ export default class PickTools {
                         this.viewer.scene.screenSpaceCameraController.enableTranslate = false;
                         this.viewer.scene.screenSpaceCameraController.enableZoom = false;
                         this.handler.setInputAction((e)=>{
-                            const movePosition = this.viewer.scene.camera.pickEllipsoid(e.endPosition);
+                            const movePosition = this._pickPosition(e.endPosition);
                             if (!movePosition) return; // 如果没有点击到地面，返回
 
                             const randiansPos = Cesium.Cartographic.fromCartesian(movePosition);
                             const lon = Cesium.Math.toDegrees(randiansPos.longitude);
                             const lat = Cesium.Math.toDegrees(randiansPos.latitude);
-                            points[index] = [lon,lat]
+                            points[index] = this._toCoordinate(movePosition)
                             let linePoints = [...points,points[0]]
                             // 更新 polyline 的坐标点
                             createLineEntity(linePoints)
@@ -559,7 +594,7 @@ export default class PickTools {
                             polygonEntity.polygon.hierarchy = new Cesium.CallbackProperty(() => {
                                 return new Cesium.PolygonHierarchy(Cesium.Cartesian3.fromDegreesArray(nowPoints));
                             }, false)
-                            pointsEntity[index].position.setValue(Cesium.Cartesian3.fromDegrees(lon, lat));
+                            pointsEntity[index].position.setValue(toCartesian(points[index]));
                         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE)
                     }
                 }
@@ -589,7 +624,7 @@ export default class PickTools {
         this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         // 监听鼠标移动，动态更新线段
         this.handler.setInputAction((e) => {
-            const movePosition = this.viewer.scene.camera.pickEllipsoid(e.endPosition);
+            const movePosition = this._pickPosition(e.endPosition);
             if (!movePosition) return; // 如果没有点击到地面，返回
 
             const randiansPos = Cesium.Cartographic.fromCartesian(movePosition);
@@ -606,9 +641,9 @@ export default class PickTools {
                                 let firstPoint = points[0];
                                 let lastPoint = points[points.length - 1];
                                 return [
-                                    Cesium.Cartesian3.fromDegrees(lastPoint[0], lastPoint[1]),
-                                    Cesium.Cartesian3.fromDegrees(lon, lat),
-                                    Cesium.Cartesian3.fromDegrees(firstPoint[0], firstPoint[1])
+                                    toCartesian(lastPoint),
+                                    toCartesian(this._toCoordinate(movePosition)),
+                                    toCartesian(firstPoint)
                                 ];
                             }, false),
                             width: this.config.lineWidth,
@@ -624,9 +659,9 @@ export default class PickTools {
                         let lastPoint = points[points.length - 1];
                         let firstPoint = points[0];
                         return [
-                            Cesium.Cartesian3.fromDegrees(lastPoint[0], lastPoint[1]),
-                            Cesium.Cartesian3.fromDegrees(lon, lat),
-                            Cesium.Cartesian3.fromDegrees(firstPoint[0], firstPoint[1])
+                            toCartesian(lastPoint),
+                            toCartesian(this._toCoordinate(movePosition)),
+                            toCartesian(firstPoint)
                         ];
                     }, false);
                 }
@@ -647,7 +682,7 @@ export default class PickTools {
                                 }
                                 return new Cesium.PolygonHierarchy(Cesium.Cartesian3.fromDegreesArray(nowPoints));
                             }, false),
-                            material: Cesium.Color.fromCssColorString(this.config.color).withAlpha(0.5),
+                            material: Cesium.Color.fromCssColorString(this.config.color).withAlpha(this.config.fillOpacity),
                             outline: false
                         }
                     })
@@ -665,7 +700,7 @@ export default class PickTools {
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
         // 监听左键点击，记录坐标并绘制线段
         this.handler.setInputAction((e) => {
-            const clickPosition = this.viewer.scene.camera.pickEllipsoid(e.position);
+            const clickPosition = this._pickPosition(e.position);
             if (!clickPosition) return; // 如果没有点击到地面，返回
 
             const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
@@ -678,11 +713,12 @@ export default class PickTools {
                     return;
                 }
             }
-            points.push([lon, lat]);  // 保存坐标
+            points.push(this._toCoordinate(clickPosition));  // 保存坐标（可选包含高度）
 
             // 绘制线段
             createLineEntity(points)
-            createPointEntity([lon, lat])
+            createPolygonEntity()
+            createPointEntity(points.at(-1))
 
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
@@ -707,9 +743,9 @@ export default class PickTools {
                     // 更新 polyline 的坐标点
                     let linePoints = []
                     points.forEach(item=>{
-                        linePoints.push([item[0], item[1]])
+                        linePoints.push([...item])
                     })
-                    linePoints.push([points[0][0], points[0][1]])
+                    linePoints.push([...points[0]])
                     createLineEntity(linePoints)
                     startEdit()
                 }
@@ -738,7 +774,7 @@ export default class PickTools {
     }
 
     /**
-     * 绘制圆形。第一次单击确定圆心，第二次单击确定半径。
+     * 绘制圆形。第一次单击确定圆心，第二次单击确定半径，半径单位由 config.unit 指定。
      * @param {Function} callback 完成或编辑后的回调
      * @param {Object|Array} data 可选的初始图形数据
      */
@@ -767,6 +803,9 @@ export default class PickTools {
 
         if (typeof data !== 'object' || Array.isArray(data)) return null
 
+        // 带单位的回调结果可以重新传入；未指定 data.unit 时采用实例配置。
+        const metersPerUnit = normalizeUnit(data.unit ?? this.config.unit) === 'km' ? 1000 : 1
+
         let anchor = data.anchor || data.center || data.southwest
         let control = data.control || data.northeast
 
@@ -779,17 +818,17 @@ export default class PickTools {
         }
 
         if (isCoordinate(anchor) && !isCoordinate(control) && type === 'circle') {
-            const radius = Number(data.radius)
+            const radius = Number(data.radius) * metersPerUnit
             if (Number.isFinite(radius) && radius > 0) {
                 control = offsetCoordinate(anchor, radius, 0)
             }
         }
 
         if (isCoordinate(anchor) && !isCoordinate(control) && type === 'ellipse') {
-            const major = Number(data.semiMajorAxis)
-            const minor = Number(data.semiMinorAxis)
-            const eastRadius = Number(data.eastRadius)
-            const northRadius = Number(data.northRadius)
+            const major = Number(data.semiMajorAxis) * metersPerUnit
+            const minor = Number(data.semiMinorAxis) * metersPerUnit
+            const eastRadius = Number(data.eastRadius) * metersPerUnit
+            const northRadius = Number(data.northRadius) * metersPerUnit
             if (Number.isFinite(eastRadius) && Number.isFinite(northRadius)) {
                 control = offsetCoordinate(anchor, eastRadius, northRadius)
             } else if (Number.isFinite(major) && Number.isFinite(minor)) {
@@ -805,6 +844,7 @@ export default class PickTools {
         }
     }
 
+    // 内部几何尺寸保持米制，避免 unit: 'km' 导致绘制或拖拽的图形缩小 1000 倍。
     _buildShapeResult(type, anchor, control) {
         if (!isCoordinate(anchor) || !isCoordinate(control)) return null
 
@@ -886,6 +926,15 @@ export default class PickTools {
         }
     }
 
+    _formatShapeResult(result) {
+        const formatted = { ...result, unit: this.config.unit }
+        const metersPerUnit = this.config.unit === 'km' ? 1000 : 1
+        for (const field of SHAPE_DISTANCE_FIELDS) {
+            if (Number.isFinite(result[field])) formatted[field] = result[field] / metersPerUnit
+        }
+        return formatted
+    }
+
     _pickRegularShape(type, callback, data) {
         this.destroy()
 
@@ -902,7 +951,7 @@ export default class PickTools {
 
         const getResult = () => this._buildShapeResult(type, state.anchor, state.control)
         const screenToCoordinate = (position) => {
-            const cartesian = this.viewer.scene.camera.pickEllipsoid(
+            const cartesian = this._pickPosition(
                 position,
                 this.viewer.scene.globe?.ellipsoid || Cesium.Ellipsoid.WGS84,
             )
@@ -935,6 +984,7 @@ export default class PickTools {
                     return coordinate ? toCartesian(coordinate) : undefined
                 }, false),
                 point: {
+                    heightReference: this.config.pickSurface === 'terrain' ? Cesium.HeightReference.CLAMP_TO_GROUND : Cesium.HeightReference.NONE,
                     pixelSize: this.config.pointSize,
                     color: Cesium.Color.fromCssColorString(this.config.color),
                     outlineColor: Cesium.Color.WHITE,
@@ -1006,7 +1056,7 @@ export default class PickTools {
         }
         const emitResult = () => {
             const result = getResult()
-            if (result) callback && callback(result)
+            if (result) callback && callback(this._formatShapeResult(result))
         }
         const startEdit = () => {
             this.destroy()
@@ -1042,7 +1092,7 @@ export default class PickTools {
             this.destroy()
             if (this.config.isReserve) startEdit()
             else removeEntities()
-            callback && callback(result)
+            callback && callback(this._formatShapeResult(result))
         }
 
         if (initialState) {

@@ -30,10 +30,13 @@
 
 | 参数 | 类型 | 默认值 | 描述 |
 | :--- | :--- | :--- | :--- |
+| unit | `'m' / 'km'` | `'m'` | 规则图形尺寸的输入、输出单位：米或千米 |
+| pickSurface | `'ellipsoid' / 'terrain'` | `'ellipsoid'` | 拾取椭球交点或已加载地形交点；开启 `includeHeight` 且未指定本项时使用 `'terrain'`；天空不返回地形坐标 |
+| includeHeight | boolean | false | 点、图标、线和多边形回调是否包含第三维高度，固定为米 |
 | lineWidth | number | 2 | 线条或边界的宽度（像素） |
 | color | string | "#00ffff" | 几何体的主要颜色 |
 | pointSize | number | 10 | 节点点的大小（像素） |
-| fillOpacity | number | 0.35 | 规则图形填充透明度，取值范围 0～1 |
+| fillOpacity | number | 0.35 | 多边形和规则图形填充透明度，取值范围 0～1 |
 | isReserve | boolean | false | 绘制结束后是否保留几何体在地图上 |
 | mouseHints | object | - | 鼠标跟随提示配置 |
 | mouseHints.show | boolean | false | 是否显示鼠标提示标签 |
@@ -42,6 +45,19 @@
 | icon.url | string | - | 图标图片地址 |
 | icon.width | number | 32 | 图标显示宽度 |
 | icon.height | number | 32 | 图标显示高度 |
+
+`unit` 控制圆半径、正方形边长、矩形宽高和椭圆半轴；规则图形回调会携带 `unit` 字段。点、线、多边形的经纬度坐标，以及像素样式和旋转角度不受影响。
+
+圆和椭圆初始数据中的尺寸默认采用实例的 `unit`，也可以通过 `data.unit` 指定该数据的单位。带单位的回调结果可以直接传回对应绘制方法继续编辑。
+
+开启 `includeHeight: true` 后，`pickPoint` / `pickPointIcon` 返回 `[经度, 纬度, 高度]`，`pickLine` / `pickPolygon` 返回三维坐标组；首次绘制与拖拽编辑都保留高度。地形高度来自当前加载的地形表面，为 WGS84 椭球高，固定使用米，不受 `unit` 影响。正方形、矩形、圆和椭圆的几何回调格式保持不变。
+
+```js
+const tools = new PickTools(viewer, { includeHeight: true, isReserve: true })
+tools.pickLine((coordinates) => {
+  console.log(coordinates) // [[经度, 纬度, 高度米], ...]
+})
+```
 
 ## 核心方法
 
@@ -67,20 +83,20 @@
 
 ## pickSquare(callback, data) 正方形绘制
 - 交互：第一次单击确定角点，第二次单击确定对角方向。
-- 回调：返回 `type`、`anchor`、`control`、`center`、`sideLength`、`width`、`height` 和 `coordinates`。
+- 回调：返回 `type`、`anchor`、`control`、`center`、`sideLength`、`width`、`height`、`coordinates` 和 `unit`。
 - 描述：东西、南北跨度会自动取较大值，使四条边保持等长。
 
 ## pickRectangle(callback, data) 矩形绘制
 - 交互：两次单击确定一组对角点。
-- 回调：返回边界 `west/south/east/north`、中心点、米制宽高和四个顶点。
+- 回调：返回边界 `west/south/east/north`、中心点、宽高、四个顶点和 `unit`，宽高单位由 `unit` 指定。
 
 ## pickCircle(callback, data) 圆形绘制
 - 交互：第一次单击确定圆心，第二次单击确定半径。
-- 回调：返回 `{ type, center, control, radius }`，其中 `radius` 单位为米。
+- 回调：返回 `{ type, center, control, radius, unit }`，其中 `radius` 单位由 `unit` 指定。
 
 ## pickEllipse(callback, data) 椭圆绘制
 - 交互：第一次单击确定中心，第二次单击确定东西和南北方向半径。
-- 回调：返回长短半轴、方向半径、旋转角度、中心和控制点，长度单位均为米。
+- 回调：返回长短半轴、方向半径、旋转角度、中心、控制点和 `unit`，尺寸单位由 `unit` 指定。
 
 ### clear()
 - 描述：清空场景中由该工具创建的所有实体。
@@ -94,6 +110,7 @@
 import { PickTools } from "b-map-viewer";
 
 const tools = new PickTools(viewer, {
+    unit: 'km', // m / km，规则图形尺寸单位
     color: '#ff0000',
     isReserve: true,
     mouseHints: { show: true }
@@ -111,7 +128,7 @@ tools.pickPolygon((points) => {
 
 // 3. 绘制圆形
 tools.pickCircle((result) => {
-    console.log('圆心与半径：', result.center, result.radius);
+    console.log('圆心与半径：', result.center, result.radius, result.unit); // 半径单位 km
 });
 
 // 4. 销毁工具

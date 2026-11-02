@@ -22,6 +22,12 @@ import RadarScanner3DLayer from "./RadarScanner3DLayer.js";
 import GradientWallLayer from './GradientWallLayer.js'
 import DynamicWaterLayer from './DynamicWaterLayer.js'
 import MaskLayer from './MaskLayer.js'
+import FloodLayer from './FloodLayer.js'
+import WallTrailLayer from './WallTrailLayer.js'
+import DiffuseWallLayer from './DiffuseWallLayer.js'
+import CircleBlurLayer from './CircleBlurLayer.js'
+import LineLightingTrailLayer from './LineLightingTrailLayer.js'
+import WaterFlowLayer from './WaterFlowLayer.js'
 
 export default {
     IconGroupLayer,
@@ -47,5 +53,11 @@ export default {
     RadarScanner3DLayer,
     GradientWallLayer,
     DynamicWaterLayer,
-    MaskLayer
+    MaskLayer,
+    FloodLayer,
+    WallTrailLayer,
+    DiffuseWallLayer,
+    CircleBlurLayer,
+    LineLightingTrailLayer,
+    WaterFlowLayer
 }

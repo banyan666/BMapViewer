@@ -16,6 +16,7 @@ class BaseMap {
     this.imageryLayer = null
     this.theme = null
     this.destroyed = false
+    this.readyPromise = Promise.resolve(null)
     this.load(config)
   }
 
@@ -34,7 +35,15 @@ class BaseMap {
       show: this.config.show,
       ...(this.config.layerOptions || {}),
     }
-    this.imageryLayer = new Cesium.ImageryLayer(provider, layerOptions)
+    this.imageryLayer = typeof provider?.then === 'function'
+      ? Cesium.ImageryLayer.fromProviderAsync(provider, layerOptions)
+      : new Cesium.ImageryLayer(provider, layerOptions)
+    const layer = this.imageryLayer
+    this.readyPromise = Promise.resolve(provider).then((readyProvider) => (
+      !this.destroyed && this.imageryLayer === layer ? readyProvider : null
+    ))
+    // 保留 Promise 的拒绝状态供调用方 await，同时避免未等待时产生未处理拒绝。
+    this.readyPromise.catch(() => {})
 
     const collection = this.viewer.imageryLayers
     const index = Math.max(0, Math.min(this.config.index, collection.length))
@@ -88,6 +97,7 @@ class BaseMap {
       this.viewer.imageryLayers.remove(this.imageryLayer, true)
     }
     this.imageryLayer = null
+    this.readyPromise = Promise.resolve(null)
   }
 
   destroy() {

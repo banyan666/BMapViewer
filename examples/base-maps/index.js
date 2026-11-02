@@ -2,6 +2,7 @@ import offline from './offline.js'
 import customProvider from './custom-provider.js'
 import amap from './amap.js'
 import arcgis from './arcgis.js'
+import cesium from './cesium.js'
 import cesiumTerrain from './cesium-terrain.js'
 import baidu from './baidu.js'
 import tencent from './tencent.js'
@@ -14,6 +15,7 @@ export const baseMapExamples = [
   offline,
   customProvider,
   arcgis,
+  cesium,
   amap,
   cesiumTerrain,
   baidu,

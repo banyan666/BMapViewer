@@ -7,6 +7,7 @@ import GoogleImageryProvider from './imagery/google/GoogleImageryProvider.js'
 import TdtImageryProvider from './imagery/tdt/TdtImageryProvider.js'
 import TencentImageryProvider from './imagery/tencent/TencentImageryProvider.js'
 import GCJ02TilingScheme from './imagery/tiling-scheme/GCJ02TilingScheme.js'
+import createCesiumImageryProvider from './imagery/cesium/createCesiumImageryProvider.js'
 
 const PROVIDERS = {
   amap: AMapImageryProvider,
@@ -53,6 +54,10 @@ export function createImageryProvider(config = {}) {
   const type = String(config.type || 'url-template').toLowerCase()
   const options = getProviderOptions(config)
 
+  if (type === 'cesium') {
+    return createCesiumImageryProvider({ ...options, token: config.providerOptions?.token ?? config.token })
+  }
+
   if (type === 'url-template' || type === 'offline') {
     if (!options.url) throw new Error('Base map URL is required.')
     if (config.token) {
@@ -76,5 +81,6 @@ export function createImageryProvider(config = {}) {
 
 export const imageryProviderTypes = Object.freeze([
   'url-template',
+  'cesium',
   ...Object.keys(PROVIDERS),
 ])

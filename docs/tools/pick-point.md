@@ -44,7 +44,7 @@ tools.destroy()
 
 ## 注意事项
 
-- 点位通过 `camera.pickEllipsoid` 投影到椭球表面，不包含地形高度。
+- 默认拾取椭球表面并返回二维坐标；构造时设置 `includeHeight: true`，默认改为拾取地形并返回 `[longitude, latitude, height]`，高度单位为米。
 - 拖拽期间工具会暂时关闭相机旋转、平移和缩放，松开鼠标后自动恢复。
 - 不需要保留点位时，将 `isReserve` 设为 `false`。
 

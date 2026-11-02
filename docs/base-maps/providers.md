@@ -6,10 +6,11 @@
 
 | type | Provider | 常用配置 |
 | --- | --- | --- |
-| `amap` | `AMapImageryProvider` | `style: 6～10`、`scl: 1 | 2`、`crs: 'WGS84'` |
-| `baidu` | `BaiduImageryProvider` | `style: 'img' | 'vec' | 'normal' | 'dark'`、`crs: 'WGS84'` |
+| `amap` | `AMapImageryProvider` | `style: 6～10`、`scl: 1 / 2`、`crs: 'GCJ02' / 'WGS84' / 'BD09'` |
+| `baidu` | `BaiduImageryProvider` | `style: 'img' | 'vec' | 'normal' | 'dark'`、`crs: 'BD09' / 'GCJ02' / 'WGS84'` |
 | `tencent` | `TencentImageryProvider` | `style: '1' | 'img'` |
 | `arcgis` | `ArcGISImageryProvider` | `url`、`accessToken`、`minimumLevel`、`maximumLevel` |
+| `cesium` | `createCesiumImageryProvider`（异步） | `token`、`style: 'img' / 'img_cva' / 'elec'`、`language`、`tileProtocol`、`assetId` |
 | `tdt` | `TdtImageryProvider` | `style: 'vec' | 'cva' | 'img' | 'cia' | 'ter'`、`key` |
 | `google` | `GoogleImageryProvider` | `style: 'img' | 'elec' | 'ter' | 'cva' | 'img_cva'`、`key`、`sessionToken` |
 | `geovis` | `GeoVisImageryProvider` | `style: 'img' | 'vec' | 'ter' | 'cia' | 'cat'`、`format`、`key` |
@@ -20,6 +21,7 @@
 - [百度地图](/base-maps/baidu)
 - [腾讯地图](/base-maps/tencent)
 - [ArcGIS 全球影像](/base-maps/arcgis)
+- [Cesium 官方地图](/base-maps/cesium)
 - [Google 地图](/base-maps/google)
 - [天地图](/base-maps/tdt)
 - [星图地球 GeoVis](/base-maps/geovis)
@@ -82,6 +84,21 @@ const baseMap = new BaseMaps.BaseMap(viewer, {
 ```
 
 需要鉴权的 ArcGIS 服务可以传入 `accessToken`，Provider 会将其作为 `token` 查询参数追加到瓦片请求。ArcGIS 缓存地图的瓦片路径顺序是 `level/row/column`，对应 `{z}/{y}/{x}`。
+
+### Cesium 官方地图
+
+```js
+const baseMap = new BaseMaps.BaseMap(viewer, {
+  type: 'cesium',
+  token: import.meta.env.VITE_CESIUM_ION_TOKEN,
+  style: 'img_cva', // img、img_cva、elec
+  language: 'zh-CN',
+  tileProtocol: 'https',
+})
+await baseMap.readyPromise
+```
+
+使用独立 Token 加载 Cesium ion 影像，不修改全局凭证；`createImageryProvider({ type: 'cesium', ... })` 返回 Promise。字段和异步用法见 [Cesium 官方地图](/base-maps/cesium)。
 
 ### 天地图
 

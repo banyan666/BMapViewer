@@ -26,6 +26,7 @@
     "NOTICE"
   ],
   "scripts": {
+    "test": "node --test",
     "generate:demo-tiles": "node scripts/generate-demo-tiles.mjs",
     "dev": "vite",
     "build": "npm run build:lib && npm run build:demo",
