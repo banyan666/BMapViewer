@@ -1,6 +1,6 @@
 {
   "name": "b-map-viewer",
-  "version": "0.1.5",
+  "version": "1.0.0",
   "description": "面向 Vue 3 应用的 Cesium 地理信息可视化 SDK",
   "repository": {
     "type": "git",
@@ -11,6 +11,7 @@
     "url": "https://github.com/banyan666/BMapViewer/issues"
   },
   "type": "module",
+  "workspaces": ["packages/cloud-ultra"],
   "main": "./BMapViewer/b-map-viewer.umd.cjs",
   "module": "./BMapViewer/b-map-viewer.js",
   "exports": {
@@ -29,10 +30,12 @@
     "test": "node --test",
     "generate:demo-tiles": "node scripts/generate-demo-tiles.mjs",
     "dev": "vite",
-    "build": "npm run build:lib && npm run build:demo",
+    "build": "npm run build:lib && npm run build:cloud-ultra && npm run build:demo",
     "build:lib": "vite build --config vite.lib.config.ts",
+    "build:cloud-ultra": "npm run build --workspace=@b-map-viewer/cloud-ultra",
     "build:demo": "vite build",
     "pack:check": "npm pack --dry-run",
+    "pack:cloud-ultra": "npm pack --dry-run --workspace=@b-map-viewer/cloud-ultra",
     "prepublishOnly": "npm run build:lib",
     "preview": "vite preview",
     "docs:dev": "vitepress dev docs",

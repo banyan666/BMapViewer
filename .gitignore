@@ -1,4 +1,6 @@
 node_modules/
+packages/cloud-ultra/dist/
+packages/cloud-ultra/LICENSE
 demo-dist/
 output/
 /tests/

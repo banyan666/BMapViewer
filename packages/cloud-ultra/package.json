@@ -1,0 +1,36 @@
+{
+  "name": "@b-map-viewer/cloud-ultra",
+  "version": "1.0.0",
+  "description": "Cesium 世界空间 Ultra 体积云、大气散射与云阴影",
+  "type": "module",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/banyan666/BMapViewer.git",
+    "directory": "packages/cloud-ultra"
+  },
+  "homepage": "https://banyan666.github.io/BMapViewer/docs/weather/cloud-ultra",
+  "main": "./dist/cloud-ultra.umd.cjs",
+  "module": "./dist/cloud-ultra.js",
+  "exports": {
+    ".": {
+      "import": "./dist/cloud-ultra.js",
+      "require": "./dist/cloud-ultra.umd.cjs"
+    }
+  },
+  "files": ["dist", "README.md", "LICENSE"],
+  "scripts": {
+    "build": "vite build --config ../../vite.cloud-ultra.config.ts",
+    "prepack": "npm run build"
+  },
+  "peerDependencies": {
+    "cesium": ">=1.118.0 <2"
+  },
+  "devDependencies": {
+    "pako": "^2.2.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

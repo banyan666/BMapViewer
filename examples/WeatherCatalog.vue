@@ -79,6 +79,7 @@ async function runCode() {
   mapRef.value?.flyTo(activeExample.value.camera || HOME_CAMERA, 0)
   const session = createWeatherExampleSession({
     WeatherEffects, BaseMaps, terrain: activeExample.value.terrain, viewer, time: activeExample.value.time,
+    cloudUltra: activeExample.value.id === 'cloud-ultra',
     onProgress(value) { if (currentRun === runVersion) runMessage.value = `Ultra 体积云资源准备 ${value}%` },
     onError(error) { if (currentRun === runVersion) { runState.value = 'error'; runMessage.value = error.message } },
   })
@@ -212,7 +213,7 @@ onBeforeUnmount(() => {
           </div>
           <p>{{ activeExample.summary }}</p>
           <div class="parameter-line"><span>可调参数</span><code v-for="parameter in activeExample.parameters" :key="parameter">{{ parameter }}</code></div>
-          <div class="scope-line"><span>可用变量</span><code>WeatherEffects</code><code>viewer</code></div>
+          <div class="scope-line"><span>可用变量</span><code v-if="activeExample.id === 'cloud-ultra'">CloudUltraEffect</code><code v-else>WeatherEffects</code><code>viewer</code></div>
           <div class="editor-shell">
             <CodeExampleEditor
               v-model="code"

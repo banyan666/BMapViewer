@@ -9,6 +9,7 @@ export default defineConfig({
   plugins: [vue(), cesium(), cloudUltraAssets()],
   resolve: {
     alias: {
+      '@b-map-viewer/cloud-ultra': fileURLToPath(new URL('./packages/cloud-ultra/src/index.js', import.meta.url)),
       '@sdk': fileURLToPath(new URL('./src/sdk', import.meta.url)),
     },
   },

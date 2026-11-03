@@ -1,6 +1,6 @@
 # 天气系统
 
-`WeatherEffects` 是 BMapViewer 的天气模块，提供雨、雪、距离雾、高度雾、沙尘、体积云和闪电。常规效果使用 Cesium 后处理；`CloudUltraEffect` 使用独立的多阶段世界空间体积云管线，加入大气散射、级联阴影和时间抗锯齿。
+`WeatherEffects` 是 BMapViewer 的天气模块，提供雨、雪、距离雾、高度雾、沙尘、体积云和闪电。更高质量的多层云、大气散射、级联阴影和时间抗锯齿由独立包 `@b-map-viewer/cloud-ultra` 提供，主包不包含其代码及资源。
 
 [打开在线天气示例](https://banyan666.github.io/BMapViewer/#/weather)
 
@@ -74,7 +74,7 @@ fog.setOptions({ depthStart: 0.26, density: 0.8 })
 fog.destroy()
 ```
 
-模块提供以下类：
+`WeatherEffects` / `WeatherSystem` 支持以下常规效果，不包含独立包的 `CloudUltraEffect`：
 
 | 类型 | 类 | 主要参数 | 说明 |
 | --- | --- | --- | --- |
@@ -84,7 +84,6 @@ fog.destroy()
 | `height-fog` | `HeightFogEffect` | `fogHeight`、`density`、`brightness`、`startDistance`、`maxOpacity`、`color` | 视线投影积分产生山谷积雾，并统一调整场景与雾色亮度 |
 | `sandstorm` | `SandstormEffect` | `intensity`、`density`、`speed`、`wind`、`color` | 暖色颗粒、扰动与低能见度合成 |
 | `cloud` | `CloudEffect` | `coverage`、`baseHeight`、`topHeight`、`scale`、`speed`、`windDirection`、`steps` | 世界空间光线步进生成具有视差的体积云 |
-| `cloud-ultra` | `CloudUltraEffect` | `coverage`、`layers`、`windSpeed`、`steps`、`temporalUpscale` | 自动管理资源的高质量多阶段体积云 |
 | `lightning` | `LightningEffect` | `intensity`、`frequency`、`brightness`、`width`、`color` | 随机闪光和分叉闪电纹理 |
 
 `createWeatherEffect(viewer, type, options)` 也可以按类型创建效果；`sand` 是 `sandstorm` 的别名。
@@ -95,6 +94,23 @@ const effect = WeatherEffects.createWeatherEffect(viewer, 'cloud', {
   speed: 0.14,
 })
 ```
+
+### Ultra 独立包
+
+```bash
+npm install @b-map-viewer/cloud-ultra
+```
+
+```js
+import { CloudUltraEffect } from '@b-map-viewer/cloud-ultra'
+
+const cloud = new CloudUltraEffect(viewer, { coverage: 0.3 })
+await cloud.readyPromise
+// 切换天气或卸载页面时
+// cloud.destroy()
+```
+
+Ultra 不通过 `WeatherEffects.createWeatherEffect` 或 `WeatherSystem.load` 创建。完整参数与生命周期见 [Ultra 体积云](/weather/cloud-ultra)。
 
 ## 雨雪方向、大小、速度与密度
 

@@ -29,12 +29,14 @@ BMapViewer/
 ├─ src/sdk/base-map/        # BaseMaps 底图模块
 ├─ src/sdk/layer/           # MapLayers 业务图层
 ├─ src/sdk/weather/         # WeatherEffects 天气模块
+├─ packages/cloud-ultra/    # @b-map-viewer/cloud-ultra 独立包
 ├─ examples/                # 可编辑运行示例
 ├─ docs/                    # 接入、API 与开发文档
 ├─ BMapViewer/              # npm run build:lib 生成的库文件
 ├─ demo-dist/               # npm run build:demo 生成的示例站点
 ├─ vite.config.ts           # 示例工程配置
-└─ vite.lib.config.ts       # SDK 构建配置
+├─ vite.lib.config.ts       # 主包构建配置
+└─ vite.cloud-ultra.config.ts # Ultra 独立包构建配置
 ```
 
 ## 本地运行
@@ -71,14 +73,17 @@ npm run docs:dev
 # 同时构建 SDK 和示例站点
 npm run build
 
-# 只构建 SDK
+# 只构建主包（不包含 Ultra）
 npm run build:lib
+
+# 构建 Ultra 独立包
+npm run build:cloud-ultra
 
 # 只构建示例站点
 npm run build:demo
 ```
 
-SDK 构建结果位于 `BMapViewer/`，包含 ES Module、UMD 和样式文件。
+主包构建结果位于 `BMapViewer/`，包含 ES Module、UMD 和样式文件。Ultra 独立包产物位于 `packages/cloud-ultra/dist/`，两者分别发布。
 
 
 ## 在 Vue 3 项目中使用
@@ -151,6 +156,29 @@ function handleReady(viewer) {
 ```
 
 SDK 内部已经显式导入 Cesium，不需要再执行 `window.Cesium = Cesium`。
+
+## 可选：Ultra 体积云
+
+只有需要 Ultra 时才安装独立包：
+
+```bash
+npm install @b-map-viewer/cloud-ultra
+```
+
+```js
+import { CloudUltraEffect } from '@b-map-viewer/cloud-ultra'
+
+const cloud = new CloudUltraEffect(viewer, { coverage: 0.3 })
+await cloud.readyPromise
+cloud.setOptions({ windSpeed: 15 })
+// 页面卸载或切换效果时：cloud.destroy()
+```
+
+也可使用 `await import('@b-map-viewer/cloud-ultra')` 按需加载。资源由效果内部管理，不需要额外配置资源路径或 Vite 插件。
+
+主包不再包含 Ultra 代码和大气、噪声资源，也不依赖该独立包。旧的 `WeatherEffects.CloudUltraEffect`、主包直接导出和 `WeatherSystem.load('cloud-ultra')` 请迁移到独立包调用。普通 `WeatherEffects.CloudEffect` 保持不变。
+
+详见 [Ultra 文档](docs/weather/cloud-ultra.md) 和 [独立包发布步骤](docs/development.md#ultra-独立包发布)。
 
 ## 文档
 

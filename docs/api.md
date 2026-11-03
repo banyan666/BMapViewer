@@ -99,12 +99,20 @@ onMounted(async () => {
 | `useCesium` | Viewer 生命周期与相机 Hook |
 | `BaseMaps` | 底图管理器、Provider、样式别名、投影与切片方案 |
 | `MapLayers` | 点、线、面、气泡、热力图和三维业务图层 |
-| `WeatherEffects` | 雨、雪、距离雾、高度雾、沙尘、体积云 / Ultra、闪电效果与统一天气管理器 |
+| `WeatherEffects` | 雨、雪、距离雾、高度雾、沙尘、体积云、闪电效果与统一天气管理器 |
 | `PickTools` | 拾取与绘制工具 |
 | `SpatialAnalysis` | [同步空间分析工具](/analysis/)，支持测量、缓冲区、范围查询、最近距离、差集、合并、线面穿越和覆盖率；无需 Viewer |
 | `TerrainAnalysis` | [三维地形分析](/analysis/terrain)：高程、剖面、贴地距离、地表面积、坡度坡向、地形通视、挖填方和等水位淹没估算；配合 `FloodLayer` 动态展示 |
 | `EarthColor` | 场景颜色处理工具 |
 | `turf` | Turf 空间分析命名空间 |
+
+Ultra 体积云不属于主包导出，需单独安装 `@b-map-viewer/cloud-ultra`：
+
+```js
+import { CloudUltraEffect } from '@b-map-viewer/cloud-ultra'
+```
+
+详见 [Ultra 体积云](/weather/cloud-ultra)。
 
 ## Slot
 

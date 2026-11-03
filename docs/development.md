@@ -5,6 +5,7 @@
 - `src/sdk/`：可发布 SDK 源码，不能引用仓库外资源。
 - `src/sdk/base-map/`：独立 BaseMaps 模块，包含底图管理器、Provider、投影与切片方案。
 - `src/sdk/weather/`：WeatherEffects 后处理天气效果与生命周期管理器。
+- `packages/cloud-ultra/`：`@b-map-viewer/cloud-ultra` 独立 npm 包，包含 Ultra 源码、着色器和资源。
 - `examples/`：示例组件，开发服务器入口由 `src/App.vue` 提供。
 - `docs/`：Markdown 文档。
 - `docs/.vitepress/`：技术文档站点配置与主题。
@@ -16,6 +17,7 @@
 ```bash
 npm run dev
 npm run build:lib
+npm run build:cloud-ultra
 npm run build:demo
 npm run build
 npm run preview
@@ -29,6 +31,10 @@ npm run docs:preview
 库构建将 `vue` 与 `cesium` 外置，避免在应用中出现多个 Vue 或 Cesium 实例；`@turf/turf` 与 `uuid` 会随 SDK 打包，减少接入时的依赖配置。
 
 Cesium 的 Workers 等运行时资源由应用侧的 `vite-plugin-cesium` 负责处理。
+
+`vite.lib.config.ts` 仅构建主包到 `BMapViewer/`，不包含 Ultra。`vite.cloud-ultra.config.ts` 独立构建 Ultra 到 `packages/cloud-ultra/dist/`，仅将 `cesium` 外置；天气基类在构建时复用仓库源码并打入独立包，不形成主包运行时依赖。`cloudUltraAssets` 仅用于本仓库构建，接入方无需配置此插件。
+
+示例通过源码别名解析 `@b-map-viewer/cloud-ultra`，仅进入 Ultra 案例时动态导入；发布包通过自身 `exports` 解析构建产物。在仓库根目录执行 `npm install` / `npm ci` 会统一安装 workspace 的开发依赖。
 
 技术文档包含较多 GIF 演示资源，因此不会打入 npm SDK 包；它们随 Git 仓库和 VitePress 文档站点维护。
 
@@ -93,6 +99,36 @@ git push --follow-tags
 ```
 
 也可以根据语义化版本规则使用 `npm version minor` 或 `npm version major`。
+
+## Ultra 独立包发布
+
+`@b-map-viewer/cloud-ultra` 与 `b-map-viewer` 独立安装、独立版本、独立发布。主包不把 Ultra 声明为依赖或可选依赖，因此只安装主包不会下载 Ultra 资源。
+
+首次发布前，需要在 npm 创建或拥有 `b-map-viewer` 作用域，并确保登录账号有该作用域的包发布权限。公开包已设置 `publishConfig.access: public`。
+
+在仓库根目录执行：
+
+```bash
+npm login --registry=https://registry.npmjs.org/ --auth-type=web
+npm whoami --registry=https://registry.npmjs.org/
+npm run build:cloud-ultra
+npm run pack:cloud-ultra
+npm publish --workspace=@b-map-viewer/cloud-ultra --access public
+```
+
+`prepack` 会在打包或发布 Ultra 前重新构建，发布内容为 `dist`、README、LICENSE 与包元数据。第三方资源许可完整收录于 `dist/NOTICE`，不单独输出 `.txt`。`npm publish` 在根目录执行且不带 `--workspace` 时仍只发布主包。
+
+后续更新 Ultra 版本：
+
+```bash
+npm version patch --workspace=@b-map-viewer/cloud-ultra --no-git-tag-version
+npm run pack:cloud-ultra
+npm publish --workspace=@b-map-viewer/cloud-ultra --access public
+```
+
+提交独立包的 `package.json` 和根目录 `package-lock.json`，保持版本记录一致。已经发布的版本不能覆盖；主包同样需要升级版本后再发布拆分结果，原来已发布的包不会自动变小。
+
+自动发布使用 `.github/workflows/publish-cloud-ultra.yml`，标签格式为 `cloud-ultra-v1.0.0`（版本需匹配独立包）。首次手动发布后，在此包的 npm Trusted Publisher 中关联 `banyan666/BMapViewer` 和 `publish-cloud-ultra.yml`，再通过标签触发后续发布。主包的 `v*` 标签工作流不受影响。
 
 ## 社区 Fork 同步
 

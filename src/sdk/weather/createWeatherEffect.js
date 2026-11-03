@@ -4,7 +4,6 @@ import FogEffect from './FogEffect.js'
 import HeightFogEffect from './HeightFogEffect.js'
 import SandstormEffect from './SandstormEffect.js'
 import CloudEffect from './CloudEffect.js'
-import CloudUltraEffect from './CloudUltraEffect.js'
 import LightningEffect from './LightningEffect.js'
 
 const EFFECTS = Object.freeze({
@@ -15,7 +14,6 @@ const EFFECTS = Object.freeze({
   sandstorm: SandstormEffect,
   sand: SandstormEffect,
   cloud: CloudEffect,
-  'cloud-ultra': CloudUltraEffect,
   lightning: LightningEffect,
 })
 
@@ -30,6 +28,9 @@ export function createWeatherEffect(viewer, type, options = {}) {
   }
 
   const normalizedType = String(effectType || '').toLowerCase()
+  if (normalizedType === 'cloud-ultra') {
+    throw new Error('CloudUltraEffect is available separately: import { CloudUltraEffect } from "@b-map-viewer/cloud-ultra"')
+  }
   const Effect = EFFECTS[normalizedType]
   if (!Effect) {
     throw new Error(`Unsupported weather effect type: ${effectType}`)
@@ -44,6 +45,5 @@ export const weatherEffectTypes = Object.freeze([
   'height-fog',
   'sandstorm',
   'cloud',
-  'cloud-ultra',
   'lightning',
 ])

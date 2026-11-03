@@ -2,8 +2,8 @@ import { readFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { gzipSync } from 'node:zlib'
 
-const source = new URL('../src/sdk/weather/cloud-ultra/assets/', import.meta.url)
-const manifest = fileURLToPath(new URL('../src/sdk/weather/cloud-ultra/resources.js', import.meta.url)).replaceAll('\\', '/')
+const source = new URL('../packages/cloud-ultra/src/cloud-ultra/assets/', import.meta.url)
+const manifest = fileURLToPath(new URL('../packages/cloud-ultra/src/cloud-ultra/resources.js', import.meta.url)).replaceAll('\\', '/')
 const placeholder = '__BMAP_CLOUD_ULTRA_RESOURCE_LOADER__'
 const modulePath = './assets/cloud-ultra/resources.js'
 const noticeFiles = ['THIRD_PARTY_NOTICES.txt', 'NVIDIA-STBN-LICENSE.txt']

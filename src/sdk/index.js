@@ -62,7 +62,6 @@ export {
     HeightFogEffect,
     SandstormEffect,
     CloudEffect,
-    CloudUltraEffect,
     LightningEffect,
 } from './weather/index.js'
 export { PickTools, SpatialAnalysis, TerrainAnalysis, EarthColor, turf }

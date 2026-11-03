@@ -10,10 +10,18 @@
 
 ## 使用示例
 
-```js
-import { WeatherEffects } from 'b-map-viewer'
+Ultra 以独立 npm 包发布，按需安装：
 
-const cloud = new WeatherEffects.CloudUltraEffect(viewer, {
+```bash
+npm install @b-map-viewer/cloud-ultra
+```
+
+它可以与 `b-map-viewer` 配合使用，也可以直接使用已有的 Cesium Viewer；不依赖 Vue。
+
+```js
+import { CloudUltraEffect } from '@b-map-viewer/cloud-ultra'
+
+const cloud = new CloudUltraEffect(viewer, {
   coverage: 0.3,
   exposure: 10,
   windSpeed: 10,
@@ -41,12 +49,14 @@ try {
 // cloud.destroy()
 ```
 
-也可以直接 `import { CloudUltraEffect } from 'b-map-viewer'`。创建前可用 `CloudUltraEffect.isSupported(viewer)` 检查硬件能力。
+创建前可用 `CloudUltraEffect.isSupported(viewer)` 检查硬件能力。Ultra 需要 WebGL 2 及浮点渲染目标等能力。
+
+主包 `b-map-viewer` 不再导出 `CloudUltraEffect`，`WeatherEffects` 和 `WeatherSystem` 也不再包含 Ultra。升级旧代码时，请改为上面的独立包导入方式。
 
 
 ## 构造参数
 
-`new WeatherEffects.CloudUltraEffect(viewer, options)`
+`new CloudUltraEffect(viewer, options)`
 
 | 字段 | 默认值 | 作用 |
 | --- | --- | --- |
@@ -115,16 +125,23 @@ try {
 
 同一场景只允许一个 Ultra 管线。`hide` 不触发重新烘焙，`remove` / `destroy` 会释放噪声纹理、大气 LUT、帧缓冲、历史纹理、着色程序及 Worker。首次加载中切换示例或卸载页面也会中止当前任务。
 
-## WeatherSystem 用法
+## 按需加载与资源管理
+
+也可以在进入云场景时才加载代码：
 
 ```js
-const system = new WeatherEffects.WeatherSystem(viewer)
-const cloud = system.load('cloud-ultra', {
+const { CloudUltraEffect } = await import('@b-map-viewer/cloud-ultra')
+const cloud = new CloudUltraEffect(viewer, {
   temporalUpscale: true,
 })
 await cloud.readyPromise
-system.setOptions({ coverage: 0.4 })
-system.hide()
-system.show()
-system.switch('rain') // 自动销毁 Ultra 管线
+cloud.setOptions({ coverage: 0.4 })
+cloud.hide()
+cloud.show()
+// 离开云场景或切换到其他天气前释放
+cloud.destroy()
 ```
+
+噪声和大气资源随独立包发布，并由 `CloudUltraEffect` 自动加载，无需配置 `assetUrl`、复制资源或引入 `cloudUltraAssets` 插件。仅安装 `b-map-viewer` 不会下载这些资源；安装 Ultra 包后，其资源仍会占用本地空间，创建效果时才请求资源模块。
+
+Vite 应用继续使用 `vite-plugin-cesium` 处理 Cesium 自身的运行时资源。直接以 UMD 脚本使用时，全局入口为 `BMapViewerCloudUltra.CloudUltraEffect`，部署时需保留 `dist` 下入口脚本与 `assets` 的相对目录关系。

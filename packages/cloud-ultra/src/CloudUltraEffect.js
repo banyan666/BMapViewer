@@ -1,5 +1,5 @@
 import * as Cesium from 'cesium'
-import BaseWeatherEffect from './BaseWeatherEffect.js'
+import BaseWeatherEffect from '../../../src/sdk/weather/BaseWeatherEffect.js'
 import { CloudsPipeline } from './cloud-ultra/CloudsPipeline.js'
 import { cloudUltraDefaults, copyCloudUltraOptions, normalizeCloudUltraOptions } from './cloud-ultra/options.js'
 import { getCloudUltraResources } from './cloud-ultra/resources.js'

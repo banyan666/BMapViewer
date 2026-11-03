@@ -3,7 +3,9 @@ import { JulianDate } from 'cesium'
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
 
 // 仅属于示例工作台：构造后立即登记资源，异步加载期间切换/退出也可同步销毁。
-export function createWeatherExampleSession({ WeatherEffects, BaseMaps, terrain, viewer, time, onProgress = () => {}, onError = () => {} }) {
+export function createWeatherExampleSession({ WeatherEffects, BaseMaps, terrain, viewer, time,
+  cloudUltra = false, loadCloudUltra = () => import('@b-map-viewer/cloud-ultra'),
+  onProgress = () => {}, onError = () => {} }) {
   const clock = time ? { currentTime: JulianDate.clone(viewer.clock.currentTime), shouldAnimate: viewer.clock.shouldAnimate } : null
   if (time) { viewer.clock.currentTime = JulianDate.fromIso8601(time); viewer.clock.shouldAnimate = false }
   const resources = new Set()
@@ -14,14 +16,16 @@ export function createWeatherExampleSession({ WeatherEffects, BaseMaps, terrain,
     onProgress(value) { if (!disposed) { onProgress(value); config.onProgress?.(value) } },
     onError(error) { if (!disposed) { onError(error); config.onError?.(error) } },
   })
-  const scoped = Object.fromEntries(Object.entries(WeatherEffects).map(([name, value]) => [name, typeof value === 'function' && value.prototype?.destroy ? new Proxy(value, {
+  const scopeEffect = (value) => new Proxy(value, {
     construct(Target, args) {
       if (disposed) throw abort()
       const effect = Reflect.construct(Target, [args[0], options(args[1])])
       resources.add(effect)
       return effect
     },
-  }) : value]))
+  })
+  const scoped = Object.fromEntries(Object.entries(WeatherEffects).map(([name, value]) => [name,
+    typeof value === 'function' && value.prototype?.destroy ? scopeEffect(value) : value]))
   scoped.createWeatherEffect = (target, type, config) => {
     if (disposed) throw abort()
     const effect = typeof type === 'object'
@@ -47,7 +51,10 @@ export function createWeatherExampleSession({ WeatherEffects, BaseMaps, terrain,
           } finally { cancelTerrain = null }
           if (disposed) throw abort()
         }
-        returned = await new AsyncFunction('WeatherEffects', 'viewer', `'use strict';\n${code}`)(scoped, viewer)
+        // 仅 Ultra 案例加载独立包；加载完成后再次检查，避免快速切换创建过期实例。
+        const CloudUltraEffect = cloudUltra ? scopeEffect((await loadCloudUltra()).CloudUltraEffect) : undefined
+        if (disposed) throw abort()
+        returned = await new AsyncFunction('WeatherEffects', 'viewer', 'CloudUltraEffect', `'use strict';\n${code}`)(scoped, viewer, CloudUltraEffect)
         if (disposed) { if (typeof returned === 'function') returned(); else returned?.destroy?.(); throw abort() }
         if (returned?.readyPromise) await returned.readyPromise
         return returned

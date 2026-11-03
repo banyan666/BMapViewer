@@ -34,6 +34,7 @@ async function runExample() {
   destroyEffect()
   mapRef.value?.flyTo(example.value.camera || HOME_CAMERA, 0)
   const session = createWeatherExampleSession({ WeatherEffects, BaseMaps, terrain: example.value.terrain, viewer, time: example.value.time,
+    cloudUltra: example.value.id === 'cloud-ultra',
     onError(error) { if (current === version) console.error('天气案例运行失败：', error) },
   })
   activeSession = session
