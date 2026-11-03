@@ -1,6 +1,6 @@
 {
   "name": "b-map-viewer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "面向 Vue 3 应用的 Cesium 地理信息可视化 SDK",
   "repository": {
     "type": "git",
@@ -11,7 +11,9 @@
     "url": "https://github.com/banyan666/BMapViewer/issues"
   },
   "type": "module",
-  "workspaces": ["packages/cloud-ultra"],
+  "workspaces": [
+    "packages/cloud-ultra"
+  ],
   "main": "./BMapViewer/b-map-viewer.umd.cjs",
   "module": "./BMapViewer/b-map-viewer.js",
   "exports": {
