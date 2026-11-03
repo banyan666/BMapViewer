@@ -42,6 +42,8 @@ Cesium World Terrain 需要有效的 ion Token。在线示例的“底图模块 
 
 创建 ion 地形需要先解析资产地址，因此构造后应等待 `readyPromise`：
 
+`CesiumTerrain` 只管理地形，不主动移动相机。组合影像和地形时，可在加载前设置一次目标视角；等待就绪期间保持该视角，无需在 `readyPromise` 完成后再次调用相机定位。
+
 ```js
 const terrain = new BaseMaps.CesiumTerrain(viewer, { token })
 

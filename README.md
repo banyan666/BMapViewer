@@ -19,7 +19,7 @@ BMapViewer 是面向 Vue 3 应用的 Cesium 地理信息可视化 SDK。它统�
 | 拾取与绘制 | 支持点、图标点、线、多边形、正方形、矩形、圆形、椭圆绘制及控制点拖拽编辑 |
 | 空间分析 | SpatialAnalysis 基于 Turf 提供测量、缓冲区、范围统计、周边查询、最近距离、区域差集/合并、线面穿越和几何覆盖，含可编辑拾取示例 |
 | 三维分析 | TerrainAnalysis 采样真实地形，支持高程、剖面、贴地测量、坡度坡向、地形通视、挖填方与淹没估算，配合 FloodLayer 动态展示水位升降 |
-| 天气粒子 | 通过 `WeatherEffects` 提供雨、雪、距离雾、高度雾、沙尘、云层和闪电效果 |
+| 天气系统 | 通过 `WeatherEffects` 提供雨、雪、距离雾、高度雾、沙尘、云层和闪电效果 |
 | 离线资源 | 支持本地 TMS 瓦片、3D Tiles 与自定义静态资源 |
 
 ## 目录结构
@@ -161,7 +161,7 @@ SDK 内部已经显式导入 Cesium，不需要再执行 `window.Cesium = Cesium
 - [组件 API](docs/api.md)
 - [底图模块](docs/base-maps.md)
 - [图层模块](docs/layers.md)
-- [天气粒子系统](docs/weather.md)
+- [天气系统](docs/weather.md)
 - [开发与构建](docs/development.md)
 
 ## 兼容性

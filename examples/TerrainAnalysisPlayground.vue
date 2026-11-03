@@ -121,10 +121,10 @@ function selectExample(example) {
   runCode()
 }
 
-function resetCamera() {
+function resetCamera(duration = 1) {
   if (!viewer || viewer.isDestroyed()) return
   viewer.camera.flyToBoundingSphere(new Cesium.BoundingSphere(Cesium.Cartesian3.fromDegrees(117.93234, 43.78764, 1400), 1800), {
-    offset: new Cesium.HeadingPitchRange(Cesium.Math.toRadians(12), Cesium.Math.toRadians(-42), 5500), duration: 1,
+    offset: new Cesium.HeadingPitchRange(Cesium.Math.toRadians(12), Cesium.Math.toRadians(-42), 5500), duration,
   })
 }
 
@@ -140,7 +140,7 @@ async function loadTerrain() {
   try {
     await terrain.readyPromise
     if (current !== loadVersion || !viewer || viewer.isDestroyed()) return
-    ready.value = true; resetCamera()
+    ready.value = true
     await runCode()
   } catch (error) {
     if (current !== loadVersion) return
@@ -150,6 +150,7 @@ async function loadTerrain() {
 
 async function handleReady(value) {
   viewer = value
+  resetCamera(0)
   imagery = new BaseMaps.BaseMap(viewer, { type: 'arcgis', url: 'https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer', maximumLevel: 23 })
   viewer.scene.globe.enableLighting = false
   await loadTerrain()
@@ -198,7 +199,7 @@ onBeforeUnmount(() => {
       <section class="map-panel" aria-label="三维分析地图">
         <BMapViewer :camera="camera" :scene-mode="1" @ready="handleReady" @error="state = 'error'; message = $event?.message || '地图初始化失败'" />
         <div class="map-title"><small>LIVE TERRAIN ANALYSIS</small><strong>{{ activeExample.title }}</strong><span>{{ labels[state] }}</span></div>
-        <div class="map-actions"><button v-if="!ready && state === 'error'" type="button" @click="loadTerrain">重试加载地形</button><template v-else><button type="button" :disabled="!ready || !canPick" @click="runCode">重新绘制</button><button type="button" :disabled="!ready" @click="resetCamera">复位视角</button></template></div>
+        <div class="map-actions"><button v-if="!ready && state === 'error'" type="button" @click="loadTerrain">重试加载地形</button><template v-else><button type="button" :disabled="!ready || !canPick" @click="runCode">重新绘制</button><button type="button" :disabled="!ready" @click="resetCamera()">复位视角</button></template></div>
         <aside v-if="(summary && !props.preview) || activeExample.flood" class="result-panel" :class="{ 'flood-panel': activeExample.flood }" aria-label="三维分析结果">
           <form v-if="activeExample.flood" class="flood-controls" @submit.prevent="controlFlood('start')">
             <div class="water-level"><span>当前水位 · m</span><strong>{{ floodState ? floodState.waterHeight.toFixed(1) : '—' }}</strong><small>{{ floodReady ? floodLabels[floodState?.status] : '绘制范围后启用' }}</small></div>

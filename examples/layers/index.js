@@ -1,5 +1,6 @@
 import iconGroup from './icon-group.js'
 import iconCluster from './icon-cluster.js'
+import iconClusterBasic from './icon-cluster-basic.js'
 import labelGroup from './label-group.js'
 import textGroup from './text-group.js'
 import lineGroup from './line-group.js'
@@ -32,6 +33,7 @@ import mask from './mask.js'
 export const layerExamples = [
   iconGroup,
   iconCluster,
+  iconClusterBasic,
   labelGroup,
   textGroup,
   lineGroup,

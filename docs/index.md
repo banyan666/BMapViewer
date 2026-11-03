@@ -30,7 +30,7 @@ features:
     title: 交互与空间分析
     details: 提供 PickTools 拾取绘制，以及 SpatialAnalysis 测量、缓冲区、空间查询与区域运算。
   - icon: 🌦️
-    title: 天气粒子系统
+    title: 天气系统
     details: 提供雨、雪、雾、沙尘、云层和闪电屏幕空间效果。
   - icon: ⛰️
     title: 三维地形分析
@@ -49,5 +49,5 @@ BMapViewer 负责场景初始化与生命周期，`BaseMaps` 管理地理背景�
 | 在线文档 | [banyan666.github.io/BMapViewer/docs](https://banyan666.github.io/BMapViewer/docs/) | 接入指南、API、底图、图层、工具与天气说明 |
 
 ::: tip 推荐阅读顺序
-[快速开始](/getting-started) → [底图模块](/base-maps) → [图层模块](/layers) → [拾取与绘制](/tools/pick-tool) → [天气粒子](/weather)
+[快速开始](/getting-started) → [底图模块](/base-maps) → [图层模块](/layers) → [拾取与绘制](/tools/pick-tool) → [天气系统](/weather)
 :::

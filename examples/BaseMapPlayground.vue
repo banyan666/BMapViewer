@@ -4,6 +4,7 @@ import * as Cesium from 'cesium'
 import { BaseMaps, BMapViewer } from '../src/sdk/index.js'
 import CodeExampleEditor from './CodeExampleEditor.vue'
 import { baseMapExamples, baseMapGroups } from './base-maps/index.js'
+import { createBaseMapExampleSession } from './base-maps/runtime.js'
 
 const HOME_CAMERA = {
   longitude: 125.83372000975274,
@@ -16,7 +17,6 @@ const HOME_CAMERA = {
 
 const publicRoot = new URL(import.meta.env.BASE_URL, window.location.href)
 const tileUrl = new URL('tiles/{z}/{x}/{reverseY}.png', publicRoot).href
-const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
 
 const mapRef = ref(null)
 const activeId = ref(baseMapExamples[0].id)
@@ -29,7 +29,7 @@ const runDuration = ref(null)
 const coordinate = ref(null)
 
 let viewer = null
-let activeCleanup = null
+let activeSession = null
 let runVersion = 0
 let resizeTimer = null
 
@@ -46,78 +46,35 @@ const statusLabel = computed(() => ({
   error: '运行失败',
 }[runState.value]))
 
-function readImageryLayers() {
-  const layers = []
-  if (!viewer || viewer.isDestroyed()) return layers
-  for (let index = 0; index < viewer.imageryLayers.length; index += 1) {
-    layers.push(viewer.imageryLayers.get(index))
-  }
-  return layers
-}
-
-async function disposeActive() {
-  if (!activeCleanup) return
-  const cleanup = activeCleanup
-  activeCleanup = null
-  try {
-    await cleanup()
-  } catch (error) {
-    console.warn('底图示例清理失败：', error)
-  }
+function disposeActive() {
+  activeSession?.destroy()
+  activeSession = null
 }
 
 async function runCode() {
   if (!viewer || viewer.isDestroyed() || runState.value === 'running') return
   const startTime = performance.now()
   const currentRun = ++runVersion
+  const currentExample = activeExample.value
+  const currentCode = code.value
+  disposeActive()
+  const session = createBaseMapExampleSession({ Cesium, BaseMaps, viewer, tileUrl })
+  activeSession = session
   runState.value = 'running'
   runDuration.value = null
-  runMessage.value = `正在加载 ${activeExample.value.title}`
+  runMessage.value = `正在加载 ${currentExample.title}`
 
-  await disposeActive()
-  if (currentRun !== runVersion) return
-
-  mapRef.value?.flyTo(HOME_CAMERA, 0)
-  const before = new Set(readImageryLayers())
+  if (!activeExample.value.managesCamera) mapRef.value?.flyTo(HOME_CAMERA, 0)
 
   try {
-    const execute = new AsyncFunction(
-      'Cesium',
-      'BaseMaps',
-      'viewer',
-      'tileUrl',
-      `'use strict';\n${code.value}`,
-    )
-    const result = await execute(Cesium, BaseMaps, viewer, tileUrl)
-    const createdLayers = readImageryLayers().filter((layer) => !before.has(layer))
-    const cleanup = async () => {
-      if (typeof result === 'function') await result()
-      else if (typeof result?.destroy === 'function') result.destroy()
-      else if (typeof result?.remove === 'function') result.remove()
-
-      if (!viewer || viewer.isDestroyed()) return
-      createdLayers
-        .filter((layer) => viewer.imageryLayers.contains(layer))
-        .forEach((layer) => viewer.imageryLayers.remove(layer, true))
-    }
-
-    if (currentRun !== runVersion) {
-      await cleanup()
-      return
-    }
-
-    activeCleanup = cleanup
-    if (result?.readyPromise) await result.readyPromise
-    if (currentRun !== runVersion) { await cleanup(); return }
+    await session.execute(currentCode)
+    if (currentRun !== runVersion) return
     runState.value = 'success'
-    runMessage.value = `${activeExample.value.title} 已加载`
+    runMessage.value = `${currentExample.title} 已加载`
     runDuration.value = Math.round(performance.now() - startTime)
   } catch (error) {
     if (currentRun !== runVersion) return
-    await disposeActive()
-    readImageryLayers()
-      .filter((layer) => !before.has(layer))
-      .forEach((layer) => viewer.imageryLayers.remove(layer, true))
+    session.destroy()
     runState.value = 'error'
     runMessage.value = error?.message || String(error)
     runDuration.value = Math.round(performance.now() - startTime)
@@ -125,15 +82,14 @@ async function runCode() {
   }
 }
 
-async function selectExample(example) {
+function selectExample(example) {
   if (activeId.value === example.id) return
   runVersion += 1
-  await disposeActive()
+  disposeActive()
   activeId.value = example.id
   code.value = example.code
   runState.value = 'idle'
   runMessage.value = '示例已切换，准备运行'
-  await nextTick()
   runCode()
 }
 

@@ -14,7 +14,7 @@ const layer = new MapLayers.IconClusterLayer(viewer, {
   icon: markerUrl,
   width: 30,
   height: 38,
-  pixelRange: 72,
+  pixelRange: 80,
   minimumClusterSize: 2,
   clusterShowText: true,
   clusterText: '{count} 台', // 可拼接文字，例如 '共 {count} 台设备'

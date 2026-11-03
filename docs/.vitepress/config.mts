@@ -23,7 +23,7 @@ export default defineConfig({
       { text: '图层', link: '/layers' },
       { text: '空间分析', link: '/analysis/' },
       { text: '三维分析', link: '/analysis/terrain' },
-      { text: '天气粒子', link: '/weather' },
+      { text: '天气系统', link: '/weather' },
       { text: '在线预览', link: 'https://banyan666.github.io/BMapViewer/' },
       { text: 'GitHub', link: 'https://github.com/banyan666/BMapViewer' },
     ],
@@ -76,6 +76,7 @@ export default defineConfig({
         items: [
           { text: 'IconGroupLayer 图标', link: '/layers/icon-group' },
           { text: 'IconClusterLayer 图标聚合', link: '/layers/icon-cluster' },
+          { text: 'IconClusterBasicLayer 基础图标聚合', link: '/layers/icon-cluster-basic' },
           { text: 'LabelGroupLayer 文字', link: '/layers/label-group' },
           { text: 'TextGroupLayer Canvas 文字', link: '/layers/text-group' },
           { text: 'BubbleGroupLayer 气泡', link: '/layers/bubble-group' },

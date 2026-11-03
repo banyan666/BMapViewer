@@ -88,5 +88,5 @@ function onReady(viewer) {
 - 配置 [BaseMaps 底图模块](/base-maps)
 - 浏览 [可视化图层](/layers)
 - 使用 [PickTools 拾取与绘制](/tools/pick-tool)
-- 添加 [WeatherEffects 天气粒子](/weather)
+- 添加 [WeatherEffects 天气系统](/weather)
 - 了解 [GeoJSON 数据约定](/data)

@@ -1,4 +1,4 @@
-# 天气粒子系统
+# 天气系统
 
 `WeatherEffects` 是 BMapViewer 的天气模块，提供雨、雪、距离雾、高度雾、沙尘、体积云和闪电。常规效果使用 Cesium 后处理；`CloudUltraEffect` 使用独立的多阶段世界空间体积云管线，加入大气散射、级联阴影和时间抗锯齿。
 
@@ -111,7 +111,7 @@ const rain = new WeatherEffects.RainEffect(viewer)
 rain.setOptions({
   angle: -38,   // 屏幕空间方向，单位：度
   speed: 1.8,   // 动画速度倍率
-  density: 1.2, // 粒子密度
+  density: 1.2, // 雨线密度
   size: 0.65,   // 雨线粗细，小于 1 时比默认更细
   wind: 0.55,   // 雨线随时间产生的横向风偏
   lightning: true,

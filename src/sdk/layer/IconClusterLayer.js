@@ -1,5 +1,6 @@
 import * as Cesium from 'cesium'
 import { uuid } from '../utils/utils.js'
+import ClusterWorker from './cluster/ClusterWorker.js'
 
 const DEFAULT_CLUSTER_STYLES = [
   { min: 2, size: 34, color: '#1c86d1dd' },
@@ -96,8 +97,7 @@ function normalizeData(data) {
 /**
  * 图标聚合图层。
  *
- * 使用 Cesium.CustomDataSource 与 EntityCluster 管理点位，在相机缩放时自动在
- * 单个 Billboard 和聚合 Billboard 之间切换。
+ * 使用 Worker 屏幕网格聚合；Entity 保留 SDK 数据接口，图元集合负责显示。
  */
 class IconClusterLayer {
   constructor(viewer, config = {}) {
@@ -115,10 +115,155 @@ class IconClusterLayer {
     this.clusterIconCache = new Map()
     this.removeClusterListener = null
     this.destroyed = false
-
-    this.viewer.dataSources.add(this.dataSource)
+    this._loadVersion = 0
+    this._dirtyData = true
+    this._entities = []
+    this._timer = null
+    this._lastView = new Cesium.Matrix4()
+    this._lastProjection = new Cesium.Matrix4()
+    this._mode = null
+    this._width = this._height = 0
+    this._shown = true
+    this._root = viewer.scene.primitives.add(new Cesium.PrimitiveCollection())
+    this._singleBillboards = this._root.add(new Cesium.BillboardCollection({ scene: viewer.scene }))
+    this._clusterBillboards = this._root.add(new Cesium.BillboardCollection({ scene: viewer.scene }))
+    this._clusterLabels = this._root.add(new Cesium.LabelCollection({ scene: viewer.scene }))
+    this._engine = new ClusterWorker((result) => this._applyResult(result))
+    // Do not register this metadata data source with DataSourceDisplay: it would render
+    // every Entity again and reintroduce the native EntityCluster calculation.
+    this._removeEntities = this.dataSource.entities.collectionChanged.addEventListener(() => {
+      this._dirtyData = true
+      this.forceCluster()
+    })
+    this._removePreRender = viewer.scene.preRender.addEventListener(() => this._checkCamera())
+    this._removeCamera = viewer.camera.changed.addEventListener(() => this._schedule())
+    this._removeMoveEnd = viewer.camera.moveEnd.addEventListener(() => this._schedule(0))
     this.applyClustering()
     this.bindClusterStyle()
+  }
+
+  _schedule(delay = 60) {
+    if (this.destroyed || this.viewer.isDestroyed()) return
+    this._engine.invalidate()
+    if (this._timer !== null) return
+    this._timer = setTimeout(() => { this._timer = null; this._flush() }, delay)
+  }
+
+  _checkCamera() {
+    const scene = this.viewer.scene, camera = this.viewer.camera, canvas = scene.canvas
+    const shown = this.dataSource.show && scene.mode !== Cesium.SceneMode.MORPHING
+    this._root.show = shown
+    if (!shown) { this._shown = false; return }
+    const modeChanged = scene.mode !== this._mode
+    if (!this._shown || modeChanged || canvas.clientWidth !== this._width || canvas.clientHeight !== this._height
+      || !Cesium.Matrix4.equals(camera.viewMatrix, this._lastView)
+      || !Cesium.Matrix4.equals(camera.frustum.projectionMatrix, this._lastProjection)) {
+      this._shown = true
+      this._dirtyData ||= modeChanged
+      this._mode = scene.mode
+      this._width = canvas.clientWidth; this._height = canvas.clientHeight
+      Cesium.Matrix4.clone(camera.viewMatrix, this._lastView)
+      Cesium.Matrix4.clone(camera.frustum.projectionMatrix, this._lastProjection)
+      this._schedule()
+    }
+  }
+
+  _flush() {
+    if (this.destroyed || this.viewer.isDestroyed() || !this.dataSource.show) return
+    const scene = this.viewer.scene, camera = this.viewer.camera
+    if (scene.mode === Cesium.SceneMode.MORPHING || !scene.canvas.clientWidth || !scene.canvas.clientHeight) return
+    const ellipsoid = scene.globe?.ellipsoid || scene.mapProjection?.ellipsoid || Cesium.Ellipsoid.WGS84
+    const time = this.viewer.clock.currentTime
+    if (this._dirtyData) {
+      this._entities = []
+      const points = [], coordinates = []
+      for (const entity of this.dataSource.entities.values) {
+        if (!entity.isShowing || !Cesium.Property.getValueOrDefault(entity.billboard?.show, time, true)) continue
+        const position = entity.position?.getValue(time)
+        if (!position) continue
+        const coordinate = ellipsoid.cartesianToCartographic(position)
+        if (!coordinate) continue
+        this._entities.push(entity)
+        coordinates.push(coordinate)
+        if (scene.mode === Cesium.SceneMode.SCENE3D) points.push(position.x, position.y, position.z)
+        else {
+          const projected = scene.mapProjection.project(coordinate)
+          points.push(scene.mode === Cesium.SceneMode.SCENE2D ? 0 : projected.z, projected.x, projected.y)
+        }
+      }
+      this._engine.setData({
+        count: this._entities.length,
+        position: Float64Array.from(points),
+        lons: Float64Array.from(coordinates, (p) => Cesium.Math.toDegrees(p.longitude)),
+        lats: Float64Array.from(coordinates, (p) => Cesium.Math.toDegrees(p.latitude)),
+        heights: Float64Array.from(coordinates, (p) => p.height),
+      })
+      this._dirtyData = false
+    }
+    const radii = ellipsoid.radii, position = camera.positionWC, clustering = this.dataSource.clustering
+    this._engine.request({
+      view: Cesium.Matrix4.toArray(camera.viewMatrix),
+      projection: Cesium.Matrix4.toArray(camera.frustum.projectionMatrix),
+      width: scene.canvas.clientWidth, height: scene.canvas.clientHeight,
+      cameraPosition: [position.x, position.y, position.z], ellipsoidRadii: [radii.x, radii.y, radii.z],
+      horizonCulling: scene.mode === Cesium.SceneMode.SCENE3D,
+    }, { enabled: clustering.enabled, pixelRange: clustering.pixelRange, minimumClusterSize: clustering.minimumClusterSize })
+  }
+
+  _applyResult(result) {
+    if (this.destroyed || this.viewer.isDestroyed() || !this.dataSource.show) return
+    const time = this.viewer.clock.currentTime
+    const value = (property, fallback) => Cesium.Property.getValueOrDefault(property, time, fallback)
+    for (let i = 0; i < result.singles.length; i++) {
+      const entity = this._entities[result.singles[i]], graphics = entity.billboard
+      const billboard = i < this._singleBillboards.length ? this._singleBillboards.get(i) : this._singleBillboards.add()
+      billboard.show = true
+      billboard.id = entity
+      billboard.position = entity.position.getValue(time)
+      billboard.image = value(graphics.image, this.config.icon)
+      billboard.width = value(graphics.width, this.config.width)
+      billboard.height = value(graphics.height, this.config.height)
+      billboard.color = value(graphics.color, Cesium.Color.WHITE)
+      billboard.pixelOffset = value(graphics.pixelOffset, Cesium.Cartesian2.ZERO)
+      billboard.horizontalOrigin = Cesium.HorizontalOrigin.CENTER
+      billboard.verticalOrigin = Cesium.VerticalOrigin.BOTTOM
+      billboard.disableDepthTestDistance = value(graphics.disableDepthTestDistance, this.config.disableDepthTestDistance)
+      billboard.scaleByDistance = value(graphics.scaleByDistance, undefined)
+      billboard.properties = entity.properties
+    }
+    for (let i = result.singles.length; i < this._singleBillboards.length; i++) {
+      const billboard = this._singleBillboards.get(i)
+      billboard.show = false; billboard.id = undefined; billboard.properties = undefined
+    }
+    const ellipsoid = this.viewer.scene.globe?.ellipsoid || this.viewer.scene.mapProjection?.ellipsoid || Cesium.Ellipsoid.WGS84
+    for (let i = 0; i < result.clusters.length; i++) {
+      const item = result.clusters[i]
+      const members = Array.from(result.members.subarray(item.offset, item.offset + item.pointCount), (index) => this._entities[index])
+      const billboard = i < this._clusterBillboards.length ? this._clusterBillboards.get(i) : this._clusterBillboards.add()
+      const label = i < this._clusterLabels.length ? this._clusterLabels.get(i) : this._clusterLabels.add()
+      const position = Cesium.Cartesian3.fromDegrees(item.longitude, item.latitude, item.height, ellipsoid)
+      billboard.position = position
+      label.position = position
+      label.id = members
+      this.dataSource.clustering.clusterEvent.raiseEvent(members, { billboard, label, point: { show: false, position } })
+    }
+    for (let i = result.clusters.length; i < this._clusterBillboards.length; i++) {
+      this._clusterBillboards.get(i).show = false
+      this._clusterBillboards.get(i).id = undefined
+      this._clusterBillboards.get(i).properties = undefined
+      this._clusterLabels.get(i).show = false
+      this._clusterLabels.get(i).id = undefined
+      this._clusterLabels.get(i).properties = undefined
+    }
+    this._clusterStats = { visibleCount: result.visibleCount, clusterCount: result.clusters.length, singleCount: result.singles.length, computeTime: result.computeTime }
+    this.viewer.scene.requestRender()
+  }
+
+  _clearRender() {
+    this._singleBillboards.removeAll()
+    this._clusterBillboards.removeAll()
+    this._clusterLabels.removeAll()
+    this._clusterStats = { visibleCount: 0, clusterCount: 0, singleCount: 0, computeTime: 0 }
   }
 
   applyClustering() {
@@ -290,6 +435,7 @@ class IconClusterLayer {
    * 批量设置数据，支持 SDK 点数据数组或 GeoJSON FeatureCollection。
    */
   setData(data) {
+    if (this.destroyed) throw new Error('IconClusterLayer has been destroyed.')
     const items = normalizeData(data)
     if (!items) {
       console.error('data must be an array or GeoJSON FeatureCollection.')
@@ -297,23 +443,25 @@ class IconClusterLayer {
     }
 
     this.clearLayer()
-    this.data = items
-    const entities = items.map((item) => this.addLayer(item)).filter(Boolean)
-    this.forceCluster()
-    return entities
+    this.dataSource.entities.suspendEvents()
+    try { return items.map((item) => this.addLayer(item)).filter(Boolean) }
+    finally { this.dataSource.entities.resumeEvents(); this.forceCluster() }
   }
 
   /**
    * 从 URL、Cesium.Resource 或本地对象加载 GeoJSON 点数据。
    */
   async load(dataOrUrl) {
+    if (this.destroyed) throw new Error('IconClusterLayer has been destroyed.')
     if (typeof dataOrUrl !== 'string' && !(dataOrUrl instanceof Cesium.Resource)) {
       return this.setData(dataOrUrl)
     }
     const resource = dataOrUrl instanceof Cesium.Resource
       ? dataOrUrl
       : new Cesium.Resource({ url: dataOrUrl })
+    const version = ++this._loadVersion
     const data = await resource.fetchJson()
+    if (this.destroyed || version !== this._loadVersion) throw new DOMException('IconClusterLayer load was cancelled.', 'AbortError')
     return this.setData(data)
   }
 
@@ -321,6 +469,7 @@ class IconClusterLayer {
    * 添加单个点位。
    */
   addLayer(options) {
+    if (this.destroyed) throw new Error('IconClusterLayer has been destroyed.')
     const coordinates = options?.geometry?.coordinates
     if (!Array.isArray(coordinates) || coordinates.length < 2) {
       console.error('缺少coordinates字段')
@@ -359,6 +508,7 @@ class IconClusterLayer {
       },
     })
     entity.bmapViewerSource = options
+    this.data.push(options)
     return entity
   }
 
@@ -368,7 +518,10 @@ class IconClusterLayer {
       return false
     }
     const removed = this.dataSource.entities.remove(entity)
-    if (removed) this.forceCluster()
+    if (removed) {
+      this.data = this.data.filter((item) => item !== entity.bmapViewerSource)
+      this.forceCluster()
+    }
     return removed
   }
 
@@ -387,17 +540,27 @@ class IconClusterLayer {
 
   clearLayer() {
     if (!this.dataSource) return
+    this._loadVersion++
+    this._engine.setData(null)
     this.dataSource.entities.removeAll()
+    this._entities = []
+    this._dirtyData = true
     this.data = []
+    this._clearRender()
     this.forceCluster()
   }
 
   show() {
-    if (this.dataSource) this.dataSource.show = true
+    if (this.dataSource) { this.dataSource.show = true; this._root.show = true; this.forceCluster() }
   }
 
   hide() {
-    if (this.dataSource) this.dataSource.show = false
+    if (this.dataSource) {
+      this.dataSource.show = false
+      this._root.show = false
+      this._engine.invalidate()
+      this.viewer.scene.requestRender()
+    }
   }
 
   setEnabled(enabled) {
@@ -423,26 +586,31 @@ class IconClusterLayer {
 
   forceCluster() {
     if (!this.dataSource || !this.viewer || this.viewer.isDestroyed()) return
-    const clustering = this.dataSource.clustering
-    const pixelRange = clustering.pixelRange
-    clustering.pixelRange = pixelRange === 0 ? 1 : 0
-    clustering.pixelRange = pixelRange
+    this._schedule(0)
     this.viewer.scene.requestRender()
   }
 
   destroy() {
     if (this.destroyed) return
+    this.destroyed = true
+    this._loadVersion++
+    clearTimeout(this._timer)
+    this._engine.destroy()
+    this._removeEntities?.()
+    this._removePreRender?.()
+    this._removeCamera?.()
+    this._removeMoveEnd?.()
     this.removeClusterListener?.()
     this.removeClusterListener = null
     this.clusterIconCache.clear()
-    this.clearLayer()
-    if (this.viewer && !this.viewer.isDestroyed() && this.viewer.dataSources.contains(this.dataSource)) {
-      this.viewer.dataSources.remove(this.dataSource, true)
-    }
+    this.dataSource.entities.removeAll()
+    if (!this.viewer.isDestroyed()) this.viewer.scene.primitives.remove(this._root)
+    if (!this._root.isDestroyed()) this._root.destroy()
+    this.dataSource.clustering.destroy()
+    this._entities = []
     this.dataSource = null
     this.viewer = null
     this.data = null
-    this.destroyed = true
   }
 
   isDestroyed() {

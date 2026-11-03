@@ -1,8 +1,12 @@
 # IconClusterLayer 图标聚合图层
 
-`IconClusterLayer` 用于展示数量较多、分布密集的点位。图层基于 `Cesium.CustomDataSource` 和 `EntityCluster` 实现：相邻图标会按照屏幕像素距离合并为带数量的聚合图标，放大地图后自动拆分为单个图标。
+`IconClusterLayer` 用于展示数量较多、分布密集的点位。图层按当前视图的屏幕网格进行聚合：同一网格内的可见点达到最小数量时，合并为聚合图标；缩放、平移或倾斜地图后自动重新计算。
+
+聚合计算在 Web Worker 中执行，显示使用 Billboard 和 Label 图元集合。视野外及被地球遮挡的点不参与统计；不支持 Worker 的环境使用相同算法回退计算。单点图标、数字圆标、图标与统计文字组合的样式配置保持一致。
 
 适合设备点位、事件位置、门店、车辆和监测站等大批量点数据。
+
+如需 Cesium 内置的基础聚合方式，可使用 [IconClusterBasicLayer](./icon-cluster-basic)。两者的数据格式和样式配置一致，但聚合分组规则不同。
 
 ## 组件案例
 
@@ -24,7 +28,7 @@ new MapLayers.IconClusterLayer(viewer, config)
 | 参数 | 类型 | 默认值 | 描述 |
 | --- | --- | --- | --- |
 | `enabled` | `boolean` | `true` | 是否启用聚合 |
-| `pixelRange` | `number` | `36` | 参与聚合的屏幕像素范围，数值越大越容易聚合 |
+| `pixelRange` | `number` | `36` | 屏幕网格边长，单位为 CSS 像素；越大越容易聚合，0 表示不合并 |
 | `minimumClusterSize` | `number` | `2` | 形成聚合图标所需的最少点数 |
 | `icon` | `string / Canvas / Image` | 内置定位图标 | 单个点位的默认图标 |
 | `width` | `number` | `34` | 单个图标宽度 |
@@ -148,7 +152,7 @@ await layer.load('/data/devices.geojson')
 
 ### `setEnabled(enabled)`
 
-动态开启或关闭聚合。关闭后显示全部单点图标。
+动态开启或关闭聚合。关闭后，视野内的点以单点图标显示。
 
 ### `updateConfig(config)`
 
@@ -164,11 +168,11 @@ layer.updateConfig({ clusterShowText: false })
 
 ### `show()` / `hide()`
 
-显示或隐藏整个数据源。
+显示或隐藏整个图层。
 
 ### `clearLayer()` / `destroy()`
 
-清空数据，或销毁图层并解除聚合事件监听。
+清空数据，或销毁图层并释放 Worker、图元集合和相机事件监听。
 
 ## 完整示例
 

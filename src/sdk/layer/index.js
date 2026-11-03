@@ -1,5 +1,6 @@
 import IconGroupLayer from "./IconGroupLayer.js";
 import IconClusterLayer from './IconClusterLayer.js'
+import IconClusterBasicLayer from './IconClusterBasicLayer.js'
 import LabelGroupLayer from "./LabelGroupLayer.js";
 import TextGroupLayer from './TextGroupLayer.js'
 import LineGroupLayer from "./LineGroupLayer.js";
@@ -32,6 +33,7 @@ import WaterFlowLayer from './WaterFlowLayer.js'
 export default {
     IconGroupLayer,
     IconClusterLayer,
+    IconClusterBasicLayer,
     LabelGroupLayer,
     TextGroupLayer,
     LineGroupLayer,

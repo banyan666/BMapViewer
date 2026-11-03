@@ -179,7 +179,7 @@ onBeforeUnmount(() => {
       <aside class="catalog-panel">
         <span class="panel-kicker">WEATHER INDEX</span>
         <div class="catalog-heading"><h1>天气目录</h1><b>{{ weatherExamples.length }}</b></div>
-        <nav aria-label="天气粒子示例">
+        <nav aria-label="天气系统示例">
           <button
             v-for="(example, index) in weatherExamples"
             :key="example.id"

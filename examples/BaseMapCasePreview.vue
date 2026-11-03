@@ -3,6 +3,7 @@ import { computed, nextTick, onBeforeUnmount, ref } from 'vue'
 import * as Cesium from 'cesium'
 import { BaseMaps, BMapViewer } from '../src/sdk/index.js'
 import { baseMapExamples } from './base-maps/index.js'
+import { createBaseMapExampleSession } from './base-maps/runtime.js'
 
 const HOME_CAMERA = {
   longitude: 125.83372000975274,
@@ -17,49 +18,30 @@ const queryId = new URLSearchParams(window.location.search).get('base-map-previe
 const example = computed(() => baseMapExamples.find((item) => item.id === queryId) || baseMapExamples[0])
 const publicRoot = new URL(import.meta.env.BASE_URL, window.location.href)
 const tileUrl = new URL('tiles/{z}/{x}/{reverseY}.png', publicRoot).href
-const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
 
 const mapRef = ref(null)
 let viewer = null
-let activeBaseMap = null
+let activeSession = null
 let version = 0
 
 function destroyBaseMap() {
-  try {
-    if (typeof activeBaseMap === 'function') activeBaseMap()
-    else if (typeof activeBaseMap?.destroy === 'function') activeBaseMap.destroy()
-    else if (typeof activeBaseMap?.remove === 'function') activeBaseMap.remove()
-  } catch (error) {
-    console.warn('底图案例资源清理失败：', error)
-  }
-  activeBaseMap = null
+  activeSession?.destroy()
+  activeSession = null
 }
 
 async function runExample() {
   if (!viewer || viewer.isDestroyed()) return
   const current = ++version
   destroyBaseMap()
-  mapRef.value?.flyTo(HOME_CAMERA, 0)
+  const session = createBaseMapExampleSession({ Cesium, BaseMaps, viewer, tileUrl })
+  activeSession = session
+  if (!example.value.managesCamera) mapRef.value?.flyTo(HOME_CAMERA, 0)
 
   try {
-    const execute = new AsyncFunction(
-      'Cesium',
-      'BaseMaps',
-      'viewer',
-      'tileUrl',
-      `'use strict';\n${example.value.code}`,
-    )
-    const result = await execute(Cesium, BaseMaps, viewer, tileUrl)
-    if (current !== version) {
-      if (typeof result === 'function') result()
-      else result?.destroy?.()
-      return
-    }
-    activeBaseMap = result
-    if (result?.readyPromise) await result.readyPromise
+    await session.execute(example.value.code)
   } catch (error) {
     if (current !== version) return
-    destroyBaseMap()
+    session.destroy()
     console.error('底图案例运行失败：', error)
   }
 }

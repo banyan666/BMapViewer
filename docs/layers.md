@@ -10,7 +10,7 @@ import { MapLayers } from 'b-map-viewer'
 
 | 分类 | 图层 |
 | --- | --- |
-| 点位与标注 | `IconGroupLayer`、`IconClusterLayer`、`LabelGroupLayer`、`TextGroupLayer`、`BubbleLayer`、`BubbleGroupLayer` |
+| 点位与标注 | `IconGroupLayer`、`IconClusterLayer`、`IconClusterBasicLayer`、`LabelGroupLayer`、`TextGroupLayer`、`BubbleLayer`、`BubbleGroupLayer` |
 | 线与面 | `LineGroupLayer`、`LinePrimitiveLayer`、`LineMaterialLayer`、`FlowLineLayer`、[`LineLightingTrailLayer`](/layers/line-lighting-trail)、`PolygonPrimitiveLayer`、`CircleGroupLayer`、[`CircleBlurLayer`](/layers/circle-blur)、`MaskLayer` |
 | 动态效果 | `DynamicWaterLayer`、[`WaterFlowLayer`](/layers/water-flow)、[`FloodLayer`](/layers/flood)、[`WallTrailLayer`](/layers/wall-trail)、[`DiffuseWallLayer`](/layers/diffuse-wall)、`CircleWaveLayer`、`CircleExplosionLayer`、`PointRippleLayer`、`RadarScanLayer` |
 | 三维场景 | `Build3DLayer`、`GradientWallLayer`、`Heatmap3DLayer`、`RadarScanner3DLayer` |
