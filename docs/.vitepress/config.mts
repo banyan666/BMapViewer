@@ -167,8 +167,14 @@ export default defineConfig({
           { text: 'HeightFogEffect 高度雾', link: '/weather/height-fog' },
           { text: 'SandstormEffect 沙尘', link: '/weather/sandstorm' },
           { text: 'CloudEffect 体积云', link: '/weather/cloud' },
-          { text: 'CloudUltraEffect 体积云 Ultra', link: '/weather/cloud-ultra' },
           { text: 'RainEffect 雷雨闪电', link: '/weather/lightning' },
+        ],
+      },
+      {
+        text: '扩展能力',
+        collapsed: false,
+        items: [
+          { text: 'CloudUltraEffect 体积云 Ultra', link: '/weather/cloud-ultra' }
         ],
       },
     ],
